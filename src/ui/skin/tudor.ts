@@ -72,4 +72,11 @@ export const tudorSkin: Skin = {
       marker: '#F1E2BF',
     },
   },
+  screen: {
+    text: '#F1E2BF',
+    mutedText: 'rgba(241, 226, 191, 0.65)',
+    highlight: '#B8862B',
+    highlightFill: 'rgba(201, 160, 69, 0.22)',
+    lockedOverlay: 'rgba(12, 10, 14, 0.78)',
+  },
 };

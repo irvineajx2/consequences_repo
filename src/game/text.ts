@@ -36,6 +36,8 @@ export interface RulerText {
   readonly scenes: Readonly<Record<string, SceneText>>;
   readonly beats: Readonly<Record<string, BeatText>>;
   readonly endings: Readonly<Record<string, EndingText>>;
+  /** What the ruler actually did in each scene and what followed; revealed only once discovered. */
+  readonly chronicle: Readonly<Record<string, { readonly note: string }>>;
 }
 
 function lookup(
@@ -71,6 +73,10 @@ export function consequenceText(
 
 export function beatText(text: RulerText, beatId: string): BeatText {
   return text.beats[beatId] ?? { caption: missing(beatId), text: '' };
+}
+
+export function chronicleNote(text: RulerText, sceneId: string): string {
+  return text.chronicle[sceneId]?.note ?? missing(`chronicle ${sceneId}`);
 }
 
 export function endingText(text: RulerText, endingId: string): EndingText {

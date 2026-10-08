@@ -8,3 +8,8 @@ export function format(template: string, values: Readonly<Record<string, string 
     key in values ? String(values[key]) : match,
   );
 }
+
+/** The display name of an ending category (e.g. "fallen_short" -> "Fallen short"). */
+export function categoryLabel(category: string): string {
+  return (strings.categories as Record<string, string>)[category] ?? category;
+}

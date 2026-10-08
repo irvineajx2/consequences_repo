@@ -25,10 +25,11 @@ describe('Tudor skin', () => {
   });
 
   it('matches the values in tudor.skin.json', () => {
-    const { images, meters, ...values } = tudorSkin;
+    const { images, meters, screen, ...values } = tudorSkin;
     const { note, ...json } = tudorJson;
     expect(images).toBeDefined();
     expect(meters).toBeDefined();
+    expect(screen).toBeDefined();
     expect(note).toEqual(expect.any(String));
     expect(values).toEqual(json);
   });

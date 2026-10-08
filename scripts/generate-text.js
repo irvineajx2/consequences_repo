@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 /**
  * Fills a ruler's text.en.json with an entry for every scene, option, beat and ending in its
- * rules.json, and a name for every meter its ui.json shows. Existing text is never overwritten,
- * so this is safe to re-run after rules change.
+ * rules.json, a chronicle note per scene, and a name for every meter its ui.json shows. Existing
+ * text is never overwritten, so this is safe to re-run after rules change.
  *
  * Option text defaults to the option's label, scene captions to "<title>, <year>" and beat
  * captions to the beat id. Narration, consequence, beat and ending text are placeholders. When an
@@ -26,6 +26,7 @@ const NARRATION = '[Narration to be written]';
 const CONSEQUENCE = '[Consequence to be written]';
 const BEAT = '[Beat text to be written]';
 const ENDING = '[Ending text to be written]';
+const CHRONICLE = '[Historical note to be written]';
 
 const fill = (obj, key, value) => {
   if (obj[key] === undefined) obj[key] = value;
@@ -39,6 +40,7 @@ fill(text, 'meters', {});
 fill(text, 'scenes', {});
 fill(text, 'beats', {});
 fill(text, 'endings', {});
+fill(text, 'chronicle', {});
 
 // Hidden meters get no name, so they cannot be shown by mistake.
 const shownMeters = ui ? ui.meters.filter((m) => m.visible).map((m) => m.id) : Object.keys(rules.meters);
@@ -67,6 +69,8 @@ for (const scene of rules.scenes) {
     }
   });
 }
+
+for (const scene of rules.scenes) fill(fill(text.chronicle, scene.id, {}), 'note', CHRONICLE);
 
 for (const id of Object.keys(rules.beats || {})) {
   const entry = fill(text.beats, id, {});

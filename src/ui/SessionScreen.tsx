@@ -27,16 +27,19 @@ export interface SessionHandlers {
   readonly onChoose: (optionId: string) => void;
   readonly onContinue: () => void;
   readonly onPlayAgain: () => void;
+  readonly onChronicle: () => void;
   readonly onBackToTitle: () => void;
 }
 
 interface Props extends SessionHandlers {
   readonly view: SessionView;
   readonly text: RulerText;
+  /** The finished run has been recorded, so its chronicle can be shown. */
+  readonly chronicleReady?: boolean;
 }
 
 /** Renders whichever view the session is on. */
-export function SessionScreen({ view, text, ...handlers }: Props) {
+export function SessionScreen({ view, text, chronicleReady = false, ...handlers }: Props) {
   switch (view.kind) {
     case 'scene':
       return view.mode === 'choice' ? (
@@ -49,7 +52,7 @@ export function SessionScreen({ view, text, ...handlers }: Props) {
     case 'beat':
       return <BeatView view={view} text={text} {...handlers} />;
     case 'ending':
-      return <EndingView view={view} text={text} {...handlers} />;
+      return <EndingView view={view} text={text} chronicleReady={chronicleReady} {...handlers} />;
   }
 }
 
@@ -166,9 +169,11 @@ function BeatView({ view, text, onContinue }: { view: BeatViewModel; text: Ruler
 function EndingView({
   view,
   text,
+  chronicleReady,
   onPlayAgain,
+  onChronicle,
   onBackToTitle,
-}: { view: EndingViewModel; text: RulerText } & SessionHandlers) {
+}: { view: EndingViewModel; text: RulerText; chronicleReady: boolean } & SessionHandlers) {
   const type = useSkinTextStyles();
   const ending = endingText(text, view.ending);
   return (
@@ -176,7 +181,14 @@ function EndingView({
       image={view.image}
       footer={
         <Footer>
-          <GameButton label={strings.playAgain} onPress={onPlayAgain} />
+          <View style={styles.pair}>
+            <View style={styles.half}>
+              <GameButton label={strings.playAgain} onPress={onPlayAgain} />
+            </View>
+            <View style={styles.half}>
+              <GameButton label={strings.chronicle} onPress={onChronicle} disabled={!chronicleReady} />
+            </View>
+          </View>
           <GameButton label={strings.backToTitle} onPress={onBackToTitle} />
         </Footer>
       }
@@ -204,4 +216,6 @@ const styles = StyleSheet.create({
   narration: { marginTop: spacing.xs },
   line: { marginTop: spacing.xs },
   footer: { flexShrink: 0 },
+  pair: { flexDirection: 'row', gap: spacing.sm },
+  half: { flex: 1 },
 });

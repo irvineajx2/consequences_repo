@@ -26,6 +26,17 @@ export interface MeterSkin {
   };
 }
 
+/** Colours for screens drawn on the dark background (chronicle, endings, title). */
+export interface ScreenSkin {
+  readonly text: string;
+  readonly mutedText: string;
+  /** Matched decisions in the chronicle. */
+  readonly highlight: string;
+  readonly highlightFill: string;
+  /** Darkens a locked ending's image. */
+  readonly lockedOverlay: string;
+}
+
 export interface SliceFrame {
   /** Slice images are named `<prefix>_tl`, `<prefix>_t`, ... `<prefix>_br`. */
   readonly prefix: string;
@@ -80,6 +91,7 @@ export interface Skin {
   /** Every image the skin names, by name. */
   readonly images: Readonly<Record<string, ImageSourcePropType>>;
   readonly meters: MeterSkin;
+  readonly screen: ScreenSkin;
 }
 
 export const SLICE_NAMES = ['tl', 't', 'tr', 'l', 'r', 'bl', 'b', 'br'] as const;

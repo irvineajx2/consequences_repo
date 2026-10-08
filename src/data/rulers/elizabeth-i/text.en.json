@@ -371,5 +371,58 @@
       "title": "The French Match",
       "text": "[Ending text to be written]"
     }
+  },
+  "chronicle": {
+    "s01": {
+      "note": "[Historical note to be written]"
+    },
+    "s02": {
+      "note": "[Historical note to be written]"
+    },
+    "s03": {
+      "note": "[Historical note to be written]"
+    },
+    "s04": {
+      "note": "[Historical note to be written]"
+    },
+    "s05": {
+      "note": "[Historical note to be written]"
+    },
+    "s06": {
+      "note": "[Historical note to be written]"
+    },
+    "s07": {
+      "note": "[Historical note to be written]"
+    },
+    "s08": {
+      "note": "[Historical note to be written]"
+    },
+    "s09": {
+      "note": "[Historical note to be written]"
+    },
+    "s10": {
+      "note": "[Historical note to be written]"
+    },
+    "s11": {
+      "note": "[Historical note to be written]"
+    },
+    "s12": {
+      "note": "[Historical note to be written]"
+    },
+    "s13": {
+      "note": "[Historical note to be written]"
+    },
+    "s14": {
+      "note": "[Historical note to be written]"
+    },
+    "s15": {
+      "note": "[Historical note to be written]"
+    },
+    "s16": {
+      "note": "[Historical note to be written]"
+    },
+    "s17": {
+      "note": "[Historical note to be written]"
+    }
   }
 }

@@ -16,5 +16,31 @@
   "meterBalanced": "balanced",
   "meterLeaning": "leaning {side}",
   "meterWarning": "{label}, in danger",
-  "meterLabel": "{name}: {level}"
+  "meterLabel": "{name}: {level}",
+  "chronicle": "Chronicle",
+  "undiscovered": "Undiscovered",
+  "newlyDiscovered": "Newly discovered",
+  "asRulerChose": "As {ruler} chose",
+  "endings": "Endings",
+  "continueReign": "Continue reign",
+  "newReign": "New reign",
+  "back": "Back",
+  "decisionsMatched": "{matched} of {total} decisions matched {ruler}",
+  "discoveredCount": "{discovered} of {total} discovered",
+  "timesReached": "Reached {count}×",
+  "bestScore": "Best score: {score}",
+  "locked": "???",
+  "confirmNewReign": "Begin a new reign? The reign in progress will be lost.",
+  "confirmDiscard": "Begin anew",
+  "keepReign": "Keep my reign",
+  "restoreFailed": "Your unfinished reign could not be restored.",
+  "showNote": "Read the chronicle",
+  "hideNote": "Hide",
+  "categories": {
+    "historical": "Historical",
+    "outperformed": "Outperformed",
+    "fallen_short": "Fallen short",
+    "fallen": "Fallen",
+    "alternate": "Alternate"
+  }
 }

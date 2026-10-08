@@ -33,6 +33,11 @@ describe('text file', () => {
     for (const id of Object.keys(text.beats)) expect(Object.keys(rules.beats)).toContain(id);
   });
 
+  it('has a chronicle note for every scene, and no unknown scenes', () => {
+    for (const scene of rules.scenes) expect(text.chronicle[scene.id]?.note).toEqual(expect.any(String));
+    for (const id of Object.keys(text.chronicle)) expect(rules.scenes.map((s) => s.id)).toContain(id);
+  });
+
   it('has a title and text for every ending', () => {
     for (const id of Object.keys(rules.endings)) {
       expect(text.endings[id]?.title).toEqual(expect.any(String));
