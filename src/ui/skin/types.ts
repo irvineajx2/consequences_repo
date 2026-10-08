@@ -1,6 +1,30 @@
 // A cosmetic skin: everything the panel and buttons draw with. Insets are in source pixels;
 // `scale` is display points per source pixel. Paddings and heights are in points.
+import type MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import type { ComponentProps } from 'react';
 import type { ImageSourcePropType } from 'react-native';
+
+/** A placeholder icon name; illustrated icons can replace these later. */
+export type MeterIconName = ComponentProps<typeof MaterialCommunityIcons>['name'];
+
+export interface MeterSkin {
+  /** Icon for each meter id, with a fallback for meters the skin does not know. */
+  readonly icons: Readonly<Record<string, MeterIconName>>;
+  readonly fallbackIcon: MeterIconName;
+  readonly iconSize: number;
+  readonly colors: {
+    /** The translucent strip behind the meters. */
+    readonly strip: string;
+    /** The unfilled copy of a fill icon. */
+    readonly iconDim: string;
+    readonly iconBright: string;
+    /** Icon colour while a meter is past a warning threshold. */
+    readonly warning: string;
+    readonly chevron: string;
+    readonly track: string;
+    readonly marker: string;
+  };
+}
 
 export interface SliceFrame {
   /** Slice images are named `<prefix>_tl`, `<prefix>_t`, ... `<prefix>_br`. */
@@ -55,12 +79,13 @@ export interface Skin {
   readonly fonts: { readonly caption: string; readonly body: string; readonly button: string };
   /** Every image the skin names, by name. */
   readonly images: Readonly<Record<string, ImageSourcePropType>>;
+  readonly meters: MeterSkin;
 }
 
 export const SLICE_NAMES = ['tl', 't', 'tr', 'l', 'r', 'bl', 'b', 'br'] as const;
 
 /** Names of every image a skin refers to. */
-export function skinImageNames(skin: Omit<Skin, 'images'>): string[] {
+export function skinImageNames(skin: Pick<Skin, 'panel' | 'button'>): string[] {
   const frame = (f: SliceFrame) => [
     ...SLICE_NAMES.map((s) => `${f.prefix}_${s}`),
     ...(f.hasCentre ? [`${f.prefix}_c`] : []),

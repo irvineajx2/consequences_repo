@@ -3,6 +3,25 @@
     "name": "Elizabeth I",
     "short_name": "Elizabeth"
   },
+  "meters": {
+    "tr": {
+      "name": "Treasury"
+    },
+    "rel": {
+      "name": "Religion",
+      "left": "Catholic",
+      "right": "Protestant"
+    },
+    "auth": {
+      "name": "Authority"
+    },
+    "navy": {
+      "name": "Navy"
+    },
+    "succ": {
+      "name": "Succession"
+    }
+  },
   "scenes": {
     "s01": {
       "caption": "Choosing the Council, 1558",

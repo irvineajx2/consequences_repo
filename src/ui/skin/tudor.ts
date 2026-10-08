@@ -1,4 +1,5 @@
-// The default skin: AJ's parchment panel and navy buttons. Values from docs/skins/tudor/tudor.skin.json.
+// The default skin: AJ's parchment panel and navy buttons. Panel, button, colour and font values
+// come from docs/skins/tudor/tudor.skin.json; the meter icons are placeholders.
 import type { Skin } from './types';
 
 export const tudorSkin: Skin = {
@@ -50,5 +51,25 @@ export const tudorSkin: Skin = {
     button_bl: require('../../../assets/ui/skins/tudor/button_bl.png'),
     button_b: require('../../../assets/ui/skins/tudor/button_b.png'),
     button_br: require('../../../assets/ui/skins/tudor/button_br.png'),
+  },
+  meters: {
+    icons: {
+      tr: 'treasure-chest',
+      rel: 'church',
+      auth: 'crown',
+      navy: 'sail-boat',
+      succ: 'family-tree',
+    },
+    fallbackIcon: 'circle-outline',
+    iconSize: 22,
+    colors: {
+      strip: 'rgba(14, 12, 16, 0.55)',
+      iconDim: 'rgba(241, 226, 191, 0.25)',
+      iconBright: '#F1E2BF',
+      warning: '#E2553F',
+      chevron: '#F1E2BF',
+      track: 'rgba(241, 226, 191, 0.35)',
+      marker: '#F1E2BF',
+    },
   },
 };

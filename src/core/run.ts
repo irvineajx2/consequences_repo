@@ -58,8 +58,19 @@ export function currentScene(rules: Rules, run: Run): SceneView | null {
   return run.outcome === null ? getScene(rules, run.sceneIndex, run.state) : null;
 }
 
+export interface Step {
+  readonly run: Run;
+  /** The state right after the choice's own effects, before failures, drift or the finale. */
+  readonly afterChoice: GameState;
+}
+
 /** Plays one option in the current scene and returns the next run. */
 export function advance(rules: Rules, run: Run, optionId: string): Run {
+  return step(rules, run, optionId).run;
+}
+
+/** As `advance`, also returning the state between the choice and the scene's resolution. */
+export function step(rules: Rules, run: Run, optionId: string): Step {
   if (run.outcome !== null) throw new Error('The run is already over');
   const view = getScene(rules, run.sceneIndex, run.state);
   const option = view.options.find((o) => o.id === optionId);
@@ -76,13 +87,15 @@ export function advance(rules: Rules, run: Run, optionId: string): Run {
   });
 
   if (chosen.ending !== null) {
-    return Object.freeze({
+    const ended = Object.freeze({
       state: chosen.state,
       history,
       sceneIndex: run.sceneIndex,
       outcome: { ending: chosen.ending, score: null, early: false, beats: [] },
     });
+    return { run: ended, afterChoice: chosen.state };
   }
   const { state, outcome } = resolve(rules, run.sceneIndex, chosen.state);
-  return settle(rules, { state, history, sceneIndex: run.sceneIndex + 1, outcome });
+  const next = settle(rules, { state, history, sceneIndex: run.sceneIndex + 1, outcome });
+  return { run: next, afterChoice: chosen.state };
 }

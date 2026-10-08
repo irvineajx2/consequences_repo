@@ -8,10 +8,12 @@ interface Props {
   readonly label: string;
   readonly onPress: () => void;
   readonly disabled?: boolean;
+  /** Overrides the skin's minimum height, e.g. to fit a crowded panel. */
+  readonly minHeight?: number;
 }
 
 /** A full-width skinned button. Long labels wrap and the button grows; nothing is truncated. */
-export function GameButton({ label, onPress, disabled = false }: Props) {
+export function GameButton({ label, onPress, disabled = false, minHeight }: Props) {
   const skin = useSkin();
   const { button } = skin;
   const text = useSkinTextStyles();
@@ -35,7 +37,7 @@ export function GameButton({ label, onPress, disabled = false }: Props) {
           images={skin.images}
           contentPadding={button.contentPadding}
           tint={pressed ? button.pressed.overlay : undefined}
-          style={[styles.frame, { minHeight: button.minHeight }]}
+          style={[styles.frame, { minHeight: minHeight ?? button.minHeight }]}
         >
           <Text style={[text.button, styles.label]}>{label}</Text>
         </NineSlice>

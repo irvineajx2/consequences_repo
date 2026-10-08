@@ -1,0 +1,10 @@
+{
+  "meters": [
+    { "id": "tr",    "visible": true,  "style": "fill",    "warnBelow": 15 },
+    { "id": "rel",   "visible": true,  "style": "balance", "warnBelow": 25, "warnAbove": 75 },
+    { "id": "auth",  "visible": true,  "style": "fill",    "warnBelow": 15 },
+    { "id": "navy",  "visible": true,  "style": "fill" },
+    { "id": "succ",  "visible": true,  "style": "fill",    "warnBelow": 15 },
+    { "id": "spain", "visible": false }
+  ]
+}

@@ -1,14 +1,21 @@
-import { allOptions } from '../../src/core';
+import { allOptions, choose, flatten, replay, resolve, start, step, startRun } from '../../src/core';
 import * as session from '../../src/game/session';
 import type { Session, SessionView } from '../../src/game/session';
 import { deepFreeze, goldenCases, rules } from '../core/helpers';
 
-/** Plays choices through the session, continuing past consequences and beats. Returns every view seen. */
+/**
+ * Plays choices through the session: Decide on choice scenes, then the option, continuing past
+ * consequences and beats. Returns every view seen.
+ */
 function play(choices: readonly string[]): { final: Session; views: SessionView[] } {
   let s = session.start(rules);
   const views: SessionView[] = [s.view];
   for (const choice of choices) {
     expect(s.view.kind).toBe('scene');
+    if (s.view.kind === 'scene' && s.view.mode === 'choice') {
+      s = session.decide(s);
+      views.push(s.view);
+    }
     s = session.choose(s, choice);
     views.push(s.view);
     while (s.view.kind === 'consequence' || s.view.kind === 'beat') {
@@ -20,12 +27,12 @@ function play(choices: readonly string[]): { final: Session; views: SessionView[
 }
 
 const sceneIdsShown = (views: SessionView[]) =>
-  views.flatMap((v) => (v.kind === 'scene' ? [v.sceneId] : []));
+  views.flatMap((v) => (v.kind === 'scene' && v.phase === 'read' ? [v.sceneId] : []));
 
 /** A compact trace: "s08" for scenes, "beat:<id>" for beats, "end:<id>" for the ending. */
 const trace = (views: SessionView[]) =>
   views.flatMap((v) => {
-    if (v.kind === 'scene') return [v.sceneId];
+    if (v.kind === 'scene') return v.phase === 'read' ? [v.sceneId] : [];
     if (v.kind === 'beat') return [`beat:${v.beatId}`];
     if (v.kind === 'ending') return [`end:${v.ending}`];
     return [];
@@ -76,7 +83,7 @@ describe('game session', () => {
     const { views } = play(byName('historical_path').choices);
     const first = views.findIndex((v) => v.kind === 'beat');
     expect(views[first - 1].kind).toBe('consequence');
-    expect(views[first]).toEqual({
+    expect(views[first]).toMatchObject({
       kind: 'beat',
       beatId: 'papal_bull',
       image: rules.beats.papal_bull.image,
@@ -187,7 +194,8 @@ describe('game session', () => {
     const snapshot = JSON.stringify(first);
     const view = first.view;
     if (view.kind !== 'scene') throw new Error('expected a scene');
-    const chosen = session.choose(first, view.options[0]);
+    const deciding = session.decide(first);
+    const chosen = session.choose(deciding, view.options[0]);
     expect(chosen).not.toBe(first);
     const next = session.continue(chosen);
     expect(next).not.toBe(chosen);
@@ -198,7 +206,8 @@ describe('game session', () => {
     const s = session.start(rules);
     const view = s.view;
     if (view.kind !== 'scene') throw new Error('expected a scene');
-    const played = session.sessionReducer(s, { type: 'choose', optionId: view.options[0] });
+    const deciding = session.sessionReducer(s, { type: 'decide' });
+    const played = session.sessionReducer(deciding, { type: 'choose', optionId: view.options[0] });
     const restarted = session.sessionReducer(played, { type: 'start' });
     expect(restarted.view).toEqual(s.view);
   });
@@ -206,6 +215,72 @@ describe('game session', () => {
   it('rejects actions that do not fit the current view', () => {
     const s = session.start(rules);
     expect(() => session.continue(s)).toThrow(/Cannot continue/);
-    expect(() => session.choose(s, 'no_such_option')).toThrow(/no available option/);
+    expect(() => session.choose(session.decide(s), 'no_such_option')).toThrow(/no available option/);
+  });
+
+  describe('read then decide', () => {
+    it('opens a choice scene in the read phase and only takes options in the decide phase', () => {
+      const s = session.start(rules);
+      expect(s.view).toMatchObject({ kind: 'scene', mode: 'choice', phase: 'read' });
+      const view = s.view as session.SceneViewModel;
+      expect(() => session.choose(s, view.options[0])).toThrow(/decide phase/);
+      const deciding = session.decide(s);
+      expect(deciding.view).toEqual({ ...view, phase: 'decide' });
+      expect(() => session.decide(deciding)).toThrow(/only available while reading/);
+    });
+
+    it('plays auto scenes without a decide phase', () => {
+      const golden = goldenCases.find((c) => c.expected.decisions.some((d) => d.auto));
+      const { views } = play(golden!.choices);
+      const auto = views.filter((v) => v.kind === 'scene' && v.mode === 'auto');
+      expect(auto.length).toBeGreaterThan(0);
+      for (const v of auto) expect(v).toMatchObject({ phase: 'read' });
+    });
+  });
+
+  describe('displayed state', () => {
+    const historical = byName('historical_path');
+    const { views } = play(historical.choices);
+    const sceneView = (id: string) =>
+      views.find((v) => v.kind === 'scene' && v.sceneId === id && v.phase === 'read') as session.SceneViewModel;
+    const consequenceOf = (id: string) =>
+      views.find((v) => v.kind === 'consequence' && v.sceneId === id) as session.ConsequenceViewModel;
+
+    it('shows Treasury before drift after scene 6, and 10 higher (the era drift) at scene 7', () => {
+      // Independently: replay to scene 6 with the core engine and split the choice from the drift.
+      let run = startRun(rules);
+      for (const choice of historical.choices.slice(0, 5)) run = step(rules, run, choice).run;
+      expect(rules.scenes[run.sceneIndex].id).toBe('s06');
+      const { afterChoice, run: afterS06 } = step(rules, run, historical.choices[5]);
+
+      const consequence = consequenceOf('s06');
+      const s07 = sceneView('s07');
+      expect(consequence.state).toEqual(afterChoice);
+      expect(s07.state).toEqual(afterS06.state);
+      expect(s07.state.meters.tr).toBe(consequence.state.meters.tr + 10);
+      expect(rules.scenes[5].drift_after).toBe(true);
+    });
+
+    it('shows the state at the start of each scene, and the same state through its beats', () => {
+      for (const [i, view] of views.entries()) {
+        if (view.kind === 'beat') expect(view.state).toEqual(views[i - 1].state);
+      }
+      const s01 = sceneView('s01');
+      expect(s01.state).toEqual(start(rules));
+    });
+
+    it('ends on the golden final state', () => {
+      const ending = views[views.length - 1];
+      expect(ending.kind).toBe('ending');
+      expect(flatten(ending.state)).toEqual(historical.expected.final_state);
+      expect(replay(rules, historical.choices).run.state).toEqual(ending.state);
+    });
+
+    it('shows the choice’s own effect, before drift, on the consequence', () => {
+      const s06 = sceneView('s06');
+      const expected = choose(rules, 5, s06.state, historical.choices[5]).state;
+      expect(consequenceOf('s06').state).toEqual(expected);
+      expect(resolve(rules, 5, expected).state).toEqual(sceneView('s07').state);
+    });
   });
 });

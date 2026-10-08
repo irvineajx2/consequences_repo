@@ -22,8 +22,17 @@ export interface EndingText {
   readonly text: string;
 }
 
+export interface MeterText {
+  readonly name: string;
+  /** For balance meters: what the low and high ends stand for. */
+  readonly left?: string;
+  readonly right?: string;
+}
+
 export interface RulerText {
   readonly ruler: { readonly name: string; readonly short_name: string };
+  /** Names of the meters that are shown. Hidden meters have none. */
+  readonly meters: Readonly<Record<string, MeterText>>;
   readonly scenes: Readonly<Record<string, SceneText>>;
   readonly beats: Readonly<Record<string, BeatText>>;
   readonly endings: Readonly<Record<string, EndingText>>;
