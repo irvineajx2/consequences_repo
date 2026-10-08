@@ -32,7 +32,6 @@ export const textSizes = {
 } as const;
 
 export const type = {
-  title: { fontFamily: fonts.serif, fontSize: 40, color: colors.parchment },
   heading: { fontFamily: fonts.serif, fontSize: 26, color: colors.parchment },
   caption: {
     fontFamily: fonts.serif,

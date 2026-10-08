@@ -1,10 +1,11 @@
 import { router, useFocusEffect } from 'expo-router';
 import { useCallback, useState } from 'react';
-import { Modal, StyleSheet, Text, View } from 'react-native';
+import { Image, Modal, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { type Ruler, rulers } from '@/data/rulers';
 import { loadRun } from '@/game/persistence';
 import { appStorage } from '@/ui/appStorage';
+import { wordmark, wordmarkAspectRatio } from '@/ui/branding';
 import { GameButton } from '@/ui/GameButton';
 import { SkinPanel } from '@/ui/skin/SkinPanel';
 import { useSkin } from '@/ui/skin/SkinProvider';
@@ -14,19 +15,28 @@ import { colors, spacing, type } from '@/ui/theme';
 
 type SaveStatus = 'loading' | 'none' | 'saved' | 'discarded';
 
+/** Share of the screen width the wordmark spans. */
+const WORDMARK_WIDTH = 0.85;
+
 export default function TitleScreen() {
   const insets = useSafeAreaInsets();
+  const { width, height } = useWindowDimensions();
+  const wordmarkWidth = Math.round(width * WORDMARK_WIDTH);
   return (
-    <View
-      style={[
-        styles.root,
-        { paddingTop: insets.top + spacing.xl, paddingBottom: insets.bottom + spacing.lg },
-      ]}
-    >
-      <View style={styles.header}>
-        <Text style={type.title}>{strings.gameTitle}</Text>
-        <Text style={[type.muted, styles.tagline]}>{strings.tagline}</Text>
+    <View style={[styles.root, { paddingTop: insets.top, paddingBottom: insets.bottom + spacing.lg }]}>
+      {/* The wordmark is centred in the upper third of the screen. */}
+      <View style={[styles.upperThird, { height: (height - insets.top) / 3 }]}>
+        <Image
+          source={wordmark}
+          accessibilityRole="image"
+          accessibilityLabel={strings.gameTitle}
+          resizeMode="contain"
+          style={{ width: wordmarkWidth, height: wordmarkWidth / wordmarkAspectRatio() }}
+        />
       </View>
+      {/* The sword hangs well below the letters, so the tagline and menu keep their distance. */}
+      <Text style={[type.muted, styles.tagline]}>{strings.tagline}</Text>
+      <View style={styles.spacer} />
       <View>
         <Text style={type.caption}>{strings.chooseRuler}</Text>
         {rulers.map((ruler) => (
@@ -119,10 +129,10 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.background,
     paddingHorizontal: spacing.lg,
-    justifyContent: 'space-between',
   },
-  header: { marginTop: spacing.xl },
-  tagline: { marginTop: spacing.sm },
+  upperThird: { alignItems: 'center', justifyContent: 'center', marginHorizontal: -spacing.lg },
+  tagline: { marginTop: spacing.md, textAlign: 'center' },
+  spacer: { flexGrow: 1, minHeight: spacing.xl },
   ruler: { marginTop: spacing.md },
   notice: { marginTop: spacing.xs },
   pair: { flexDirection: 'row', gap: spacing.sm },
