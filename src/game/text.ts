@@ -1,0 +1,59 @@
+// Player-facing text for a ruler, keyed by the ids in its rules file.
+
+export interface OptionTexts {
+  readonly options: Readonly<Record<string, string>>;
+  readonly consequences: Readonly<Record<string, string>>;
+}
+
+export interface SceneText extends OptionTexts {
+  readonly caption: string;
+  readonly narration: string;
+  /** Overrides for options whose text differs in a particular variant, keyed by variant index. */
+  readonly variants?: Readonly<Record<string, Partial<OptionTexts>>>;
+}
+
+export interface EndingText {
+  readonly title: string;
+  readonly text: string;
+}
+
+export interface RulerText {
+  readonly ruler: { readonly name: string; readonly short_name: string };
+  readonly scenes: Readonly<Record<string, SceneText>>;
+  readonly endings: Readonly<Record<string, EndingText>>;
+}
+
+function lookup(
+  text: RulerText,
+  sceneId: string,
+  variant: number,
+  kind: keyof OptionTexts,
+  optionId: string,
+): string | undefined {
+  const scene = text.scenes[sceneId];
+  return scene?.variants?.[String(variant)]?.[kind]?.[optionId] ?? scene?.[kind][optionId];
+}
+
+const missing = (what: string): string => `[Missing text: ${what}]`;
+
+export function sceneText(text: RulerText, sceneId: string): Pick<SceneText, 'caption' | 'narration'> {
+  const scene = text.scenes[sceneId];
+  return scene ?? { caption: missing(sceneId), narration: '' };
+}
+
+export function optionText(text: RulerText, sceneId: string, variant: number, optionId: string): string {
+  return lookup(text, sceneId, variant, 'options', optionId) ?? missing(`${sceneId}/${optionId}`);
+}
+
+export function consequenceText(
+  text: RulerText,
+  sceneId: string,
+  variant: number,
+  optionId: string,
+): string | undefined {
+  return lookup(text, sceneId, variant, 'consequences', optionId);
+}
+
+export function endingText(text: RulerText, endingId: string): EndingText {
+  return text.endings[endingId] ?? { title: missing(endingId), text: '' };
+}

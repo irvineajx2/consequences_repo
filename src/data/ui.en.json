@@ -1,0 +1,12 @@
+{
+  "gameTitle": "Consequences",
+  "tagline": "Rule as they ruled. Then try to do better.",
+  "chooseRuler": "Choose a ruler",
+  "play": "Play",
+  "continue": "Continue",
+  "playAgain": "Play again",
+  "backToTitle": "Back to title",
+  "finaleScore": "Finale score: {score}",
+  "earlyFinale": "The reckoning came early.",
+  "historicalMatches": "Decisions matching {ruler}: {matched} of {total}"
+}

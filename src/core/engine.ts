@@ -6,6 +6,8 @@ export type SceneMode = 'choice' | 'auto' | 'skip';
 
 export interface SceneView {
   readonly mode: SceneMode;
+  /** Index of the matching variant (0 for scenes without variants). */
+  readonly variant: number;
   readonly options: readonly Option[];
 }
 
@@ -41,10 +43,10 @@ function sceneAt(rules: Rules, index: number) {
 export function getScene(rules: Rules, index: number, state: GameState): SceneView {
   const scene = sceneAt(rules, index);
   const variants = scene.variants ?? [{ options: scene.options }];
-  for (const v of variants) {
+  for (const [variant, v] of variants.entries()) {
     if (!matches(state, v.if)) continue;
-    if (v.skip) return { mode: 'skip', options: [] };
-    return { mode: v.auto ? 'auto' : 'choice', options: v.options ?? [] };
+    if (v.skip) return { mode: 'skip', variant, options: [] };
+    return { mode: v.auto ? 'auto' : 'choice', variant, options: v.options ?? [] };
   }
   throw new Error(`Scene "${scene.id}" has no variant matching the current state`);
 }

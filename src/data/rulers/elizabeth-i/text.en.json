@@ -1,0 +1,310 @@
+{
+  "ruler": {
+    "name": "Elizabeth I",
+    "short_name": "Elizabeth"
+  },
+  "scenes": {
+    "s01": {
+      "caption": "Choosing the Council, 1558",
+      "narration": "[Narration to be written]",
+      "options": {
+        "cecil": "Appoint Cecil and the moderates",
+        "catholic": "Keep Mary's Catholic councillors",
+        "mixed": "Build a mixed council"
+      },
+      "consequences": {
+        "cecil": "[Consequence to be written]",
+        "catholic": "[Consequence to be written]",
+        "mixed": "[Consequence to be written]"
+      }
+    },
+    "s02": {
+      "caption": "The Religious Settlement, 1559",
+      "narration": "[Narration to be written]",
+      "options": {
+        "middle": "The middle way",
+        "protestant": "Full Protestantism",
+        "mass": "Keep the Catholic Mass"
+      },
+      "consequences": {
+        "middle": "[Consequence to be written]",
+        "protestant": "[Consequence to be written]",
+        "mass": "[Consequence to be written]"
+      }
+    },
+    "s03": {
+      "caption": "Philip II's Proposal, 1559",
+      "narration": "[Narration to be written]",
+      "options": {
+        "decline": "Decline with courtesy",
+        "accept": "Accept Philip",
+        "dangle": "Keep him dangling"
+      },
+      "consequences": {
+        "decline": "[Consequence to be written]",
+        "accept": "[Consequence to be written]",
+        "dangle": "[Consequence to be written]"
+      }
+    },
+    "s04": {
+      "caption": "The Scottish Question, 1560",
+      "narration": "[Narration to be written]",
+      "options": {
+        "intervene": "Send fleet and army",
+        "covert": "Covert funding only",
+        "stay_out": "Stay out"
+      },
+      "consequences": {
+        "intervene": "[Consequence to be written]",
+        "covert": "[Consequence to be written]",
+        "stay_out": "[Consequence to be written]"
+      }
+    },
+    "s05": {
+      "caption": "The Dudley Scandal, 1560",
+      "narration": "[Narration to be written]",
+      "options": {
+        "favourite": "Favourite, not husband",
+        "marry": "Marry Dudley",
+        "banish": "Banish him from court"
+      },
+      "consequences": {
+        "favourite": "[Consequence to be written]",
+        "marry": "[Consequence to be written]",
+        "banish": "[Consequence to be written]"
+      }
+    },
+    "s06": {
+      "caption": "Smallpox, 1562",
+      "narration": "[Narration to be written]",
+      "options": {
+        "refuse": "Refuse to name an heir",
+        "mary_heir": "Name Mary Queen of Scots",
+        "grey": "Name Katherine Grey"
+      },
+      "consequences": {
+        "refuse": "[Consequence to be written]",
+        "mary_heir": "[Consequence to be written]",
+        "grey": "[Consequence to be written]"
+      }
+    },
+    "s07": {
+      "caption": "Mary Flees to England, 1568",
+      "narration": "[Narration to be written]",
+      "options": {
+        "captive": "Hold her captive",
+        "restore": "Restore her in Scotland",
+        "france": "Send her to France"
+      },
+      "consequences": {
+        "captive": "[Consequence to be written]",
+        "restore": "[Consequence to be written]",
+        "france": "[Consequence to be written]"
+      }
+    },
+    "s08": {
+      "caption": "The Rising of the North, 1569",
+      "narration": "[Narration to be written]",
+      "options": {
+        "crush": "Crush it harshly",
+        "concede": "Negotiate concessions",
+        "lenient": "Lenient to the leaders"
+      },
+      "consequences": {
+        "crush": "[Consequence to be written]",
+        "concede": "[Consequence to be written]",
+        "lenient": "[Consequence to be written]"
+      }
+    },
+    "s09": {
+      "caption": "The Ridolfi Plot, 1571",
+      "narration": "[Narration to be written]",
+      "options": {
+        "norfolk": "Execute Norfolk, spare Mary",
+        "both": "Execute Norfolk and Mary",
+        "spare": "Spare both"
+      },
+      "consequences": {
+        "norfolk": "[Consequence to be written]",
+        "both": "[Consequence to be written]",
+        "spare": "[Consequence to be written]"
+      },
+      "variants": {
+        "1": {
+          "options": {
+            "norfolk": "Execute Norfolk",
+            "spare": "Spare Norfolk"
+          },
+          "consequences": {
+            "norfolk": "[Consequence to be written]",
+            "spare": "[Consequence to be written]"
+          }
+        }
+      }
+    },
+    "s10": {
+      "caption": "Walsingham's Service, 1573",
+      "narration": "[Narration to be written]",
+      "options": {
+        "self_fund": "Underfund it; he pays the rest",
+        "full": "Fully fund it",
+        "refuse": "Refuse"
+      },
+      "consequences": {
+        "self_fund": "[Consequence to be written]",
+        "full": "[Consequence to be written]",
+        "refuse": "[Consequence to be written]"
+      }
+    },
+    "s11": {
+      "caption": "Hawkins and the Navy, 1577",
+      "narration": "[Narration to be written]",
+      "options": {
+        "race_built": "Back the race-built galleons",
+        "traditional": "Traditional warships",
+        "minimal": "Minimal spending"
+      },
+      "consequences": {
+        "race_built": "[Consequence to be written]",
+        "traditional": "[Consequence to be written]",
+        "minimal": "[Consequence to be written]"
+      }
+    },
+    "s12": {
+      "caption": "Drake's Secret Voyage, 1577",
+      "narration": "[Narration to be written]",
+      "options": {
+        "invest": "Invest secretly",
+        "forbid": "Forbid it"
+      },
+      "consequences": {
+        "invest": "[Consequence to be written]",
+        "forbid": "[Consequence to be written]"
+      }
+    },
+    "s13": {
+      "caption": "The Anjou Courtship, 1579",
+      "narration": "[Narration to be written]",
+      "options": {
+        "lapse": "Prolong it, then let it lapse",
+        "marry": "Marry Anjou",
+        "reject": "Reject him outright"
+      },
+      "consequences": {
+        "lapse": "[Consequence to be written]",
+        "marry": "[Consequence to be written]",
+        "reject": "[Consequence to be written]"
+      }
+    },
+    "s14": {
+      "caption": "The Treaty of Nonsuch, 1585",
+      "narration": "[Narration to be written]",
+      "options": {
+        "army": "Send an army under Leicester",
+        "money": "Send money only",
+        "stay_out": "Stay out"
+      },
+      "consequences": {
+        "army": "[Consequence to be written]",
+        "money": "[Consequence to be written]",
+        "stay_out": "[Consequence to be written]"
+      }
+    },
+    "s15": {
+      "caption": "The Babington Plot, 1586",
+      "narration": "[Narration to be written]",
+      "options": {
+        "undetected": "The plot goes undetected",
+        "execute": "Try Mary and sign the warrant",
+        "imprison": "Keep her imprisoned",
+        "exile": "Exile her abroad"
+      },
+      "consequences": {
+        "undetected": "[Consequence to be written]",
+        "execute": "[Consequence to be written]",
+        "imprison": "[Consequence to be written]",
+        "exile": "[Consequence to be written]"
+      }
+    },
+    "s16": {
+      "caption": "Cadiz, 1587",
+      "narration": "[Narration to be written]",
+      "options": {
+        "raid": "Authorise Drake's raid",
+        "home": "Concentrate the fleet at home",
+        "talks": "Peace talks with Parma"
+      },
+      "consequences": {
+        "raid": "[Consequence to be written]",
+        "home": "[Consequence to be written]",
+        "talks": "[Consequence to be written]"
+      }
+    },
+    "s17": {
+      "caption": "Victualling the Fleet, 1588",
+      "narration": "[Narration to be written]",
+      "options": {
+        "sparing": "Supply it sparingly",
+        "full": "Fully supply powder and shot"
+      },
+      "consequences": {
+        "sparing": "[Consequence to be written]",
+        "full": "[Consequence to be written]"
+      }
+    }
+  },
+  "endings": {
+    "gloriana": {
+      "title": "Gloriana",
+      "text": "[Ending text to be written]"
+    },
+    "mistress": {
+      "title": "Mistress of the Seas",
+      "text": "[Ending text to be written]"
+    },
+    "pyrrhic": {
+      "title": "Pyrrhic Victory",
+      "text": "[Ending text to be written]"
+    },
+    "invasion": {
+      "title": "Invasion",
+      "text": "[Ending text to be written]"
+    },
+    "bankrupt": {
+      "title": "Bankrupt Crown",
+      "text": "[Ending text to be written]"
+    },
+    "deposed": {
+      "title": "Deposed by Council",
+      "text": "[Ending text to be written]"
+    },
+    "assassinated": {
+      "title": "Assassinated",
+      "text": "[Ending text to be written]"
+    },
+    "catholic_rising": {
+      "title": "Catholic Rising",
+      "text": "[Ending text to be written]"
+    },
+    "protestant_revolt": {
+      "title": "Protestant Revolt",
+      "text": "[Ending text to be written]"
+    },
+    "habsburg_queen": {
+      "title": "Habsburg Queen",
+      "text": "[Ending text to be written]"
+    },
+    "dudleys_wife": {
+      "title": "Dudley's Wife",
+      "text": "[Ending text to be written]"
+    },
+    "scottish_succession": {
+      "title": "Scottish Succession",
+      "text": "[Ending text to be written]"
+    },
+    "french_match": {
+      "title": "The French Match",
+      "text": "[Ending text to be written]"
+    }
+  }
+}

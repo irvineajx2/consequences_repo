@@ -1,0 +1,126 @@
+// Turns the rules engine into a sequence of screens. Pure TypeScript: no React.
+import { advance, currentScene, type Decision, type Rules, type Run, startRun } from '../core';
+
+export interface SceneViewModel {
+  readonly kind: 'scene';
+  readonly sceneIndex: number;
+  readonly sceneId: string;
+  readonly variant: number;
+  readonly image: string;
+  readonly mode: 'choice' | 'auto';
+  /** Option ids in display order. Whether an option is historical is deliberately not exposed. */
+  readonly options: readonly string[];
+}
+
+export interface ConsequenceViewModel {
+  readonly kind: 'consequence';
+  readonly sceneIndex: number;
+  readonly sceneId: string;
+  readonly variant: number;
+  readonly image: string;
+  readonly optionId: string;
+}
+
+export interface EndingViewModel {
+  readonly kind: 'ending';
+  readonly ending: string;
+  readonly image: string;
+  readonly score: number | null;
+  readonly early: boolean;
+  readonly decisions: readonly Decision[];
+  /** Player decisions (auto scenes excluded) that matched the ruler. */
+  readonly historicalMatches: number;
+  /** Player decisions, auto scenes excluded. */
+  readonly playerDecisions: number;
+}
+
+export type SessionView = SceneViewModel | ConsequenceViewModel | EndingViewModel;
+
+export interface Session {
+  readonly rules: Rules;
+  readonly run: Run;
+  readonly view: SessionView;
+}
+
+function viewFor(rules: Rules, run: Run): SceneViewModel | EndingViewModel {
+  if (run.outcome !== null) {
+    const { decisions, historicalMatches } = run.history;
+    return {
+      kind: 'ending',
+      ending: run.outcome.ending,
+      image: rules.endings[run.outcome.ending].image,
+      score: run.outcome.score,
+      early: run.outcome.early,
+      decisions,
+      historicalMatches,
+      playerDecisions: decisions.filter((d) => !d.auto).length,
+    };
+  }
+  const scene = currentScene(rules, run);
+  if (scene === null || scene.mode === 'skip') {
+    throw new Error(`Run is not at a playable scene (index ${run.sceneIndex})`);
+  }
+  const sceneData = rules.scenes[run.sceneIndex];
+  return {
+    kind: 'scene',
+    sceneIndex: run.sceneIndex,
+    sceneId: sceneData.id,
+    variant: scene.variant,
+    image: sceneData.image,
+    mode: scene.mode,
+    options: scene.options.map((o) => o.id),
+  };
+}
+
+export function start(rules: Rules): Session {
+  const run = startRun(rules);
+  return { rules, run, view: viewFor(rules, run) };
+}
+
+/** Plays an option in the current scene. Shows its consequence, or the ending if it ends the run. */
+export function choose(session: Session, optionId: string): Session {
+  const { view, rules } = session;
+  if (view.kind !== 'scene') throw new Error(`Cannot choose an option from the ${view.kind} view`);
+  const option = currentScene(rules, session.run)?.options.find((o) => o.id === optionId);
+  if (!option) throw new Error(`Scene "${view.sceneId}" has no available option "${optionId}"`);
+
+  const run = advance(rules, session.run, optionId);
+  if (option.end !== undefined) return { rules, run, view: viewFor(rules, run) };
+  return {
+    rules,
+    run,
+    view: {
+      kind: 'consequence',
+      sceneIndex: view.sceneIndex,
+      sceneId: view.sceneId,
+      variant: view.variant,
+      image: view.image,
+      optionId,
+    },
+  };
+}
+
+/** Moves on from a consequence to the next shown scene, or to the ending. */
+function continueSession(session: Session): Session {
+  if (session.view.kind !== 'consequence') {
+    throw new Error(`Cannot continue from the ${session.view.kind} view`);
+  }
+  return { ...session, view: viewFor(session.rules, session.run) };
+}
+export { continueSession as continue };
+
+export type SessionAction =
+  | { readonly type: 'start' }
+  | { readonly type: 'choose'; readonly optionId: string }
+  | { readonly type: 'continue' };
+
+export function sessionReducer(session: Session, action: SessionAction): Session {
+  switch (action.type) {
+    case 'start':
+      return start(session.rules);
+    case 'choose':
+      return choose(session, action.optionId);
+    case 'continue':
+      return continueSession(session);
+  }
+}
