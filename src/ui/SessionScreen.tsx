@@ -17,7 +17,8 @@ import type {
 import { GameButton } from './GameButton';
 import { SceneFrame } from './SceneFrame';
 import { format, strings } from './strings';
-import { spacing, type } from './theme';
+import { useSkinTextStyles } from './skin/textStyles';
+import { spacing } from './theme';
 
 export interface SessionHandlers {
   readonly onChoose: (optionId: string) => void;
@@ -46,6 +47,7 @@ export function SessionScreen({ view, text, ...handlers }: Props) {
 }
 
 function SceneView({ view, text, onChoose }: { view: SceneViewModel; text: RulerText } & SessionHandlers) {
+  const type = useSkinTextStyles();
   const { caption, narration } = sceneText(text, view.sceneId);
   const label = (id: string) => optionText(text, view.sceneId, view.variant, id);
   return (
@@ -73,6 +75,7 @@ function ConsequenceView({
   text,
   onContinue,
 }: { view: ConsequenceViewModel; text: RulerText } & SessionHandlers) {
+  const type = useSkinTextStyles();
   const { caption } = sceneText(text, view.sceneId);
   const consequence = consequenceText(text, view.sceneId, view.variant, view.optionId);
   return (
@@ -85,6 +88,7 @@ function ConsequenceView({
 }
 
 function BeatView({ view, text, onContinue }: { view: BeatViewModel; text: RulerText } & SessionHandlers) {
+  const type = useSkinTextStyles();
   const beat = beatText(text, view.beatId);
   return (
     <SceneFrame image={view.image}>
@@ -101,6 +105,7 @@ function EndingView({
   onPlayAgain,
   onBackToTitle,
 }: { view: EndingViewModel; text: RulerText } & SessionHandlers) {
+  const type = useSkinTextStyles();
   const ending = endingText(text, view.ending);
   return (
     <SceneFrame image={view.image}>

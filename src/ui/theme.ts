@@ -1,4 +1,5 @@
-// Shared colours, fonts and spacing. A later task can swap these for a full theme.
+// Shared layout and typography. The panel and buttons take their colours and fonts from the skin
+// (src/ui/skin); this file holds sizes, spacing and the title screen's styles.
 import { Platform } from 'react-native';
 
 export const colors = {
@@ -6,12 +7,6 @@ export const colors = {
   parchment: '#ead9b8',
   parchmentMuted: '#b9a888',
   gold: '#c9a45c',
-  buttonFill: 'rgba(234, 217, 184, 0.08)',
-  buttonFillPressed: 'rgba(201, 164, 92, 0.28)',
-  buttonBorder: 'rgba(201, 164, 92, 0.65)',
-  /** Behind the bottom panel, from transparent (top) to near-opaque (bottom). */
-  panelGradient: ['rgba(13, 11, 9, 0)', 'rgba(13, 11, 9, 0.82)', 'rgba(13, 11, 9, 0.97)'],
-  panelGradientStops: [0, 0.35, 1],
 } as const;
 
 export const fonts = {
@@ -19,6 +14,15 @@ export const fonts = {
 } as const;
 
 export const spacing = { xs: 4, sm: 8, md: 16, lg: 24, xl: 40 } as const;
+
+/** Sizes for skinned text; fonts and colours come from the skin. */
+export const textSizes = {
+  caption: { fontSize: 13, letterSpacing: 1.2, lineHeight: 18 },
+  heading: { fontSize: 24, lineHeight: 30 },
+  body: { fontSize: 18, lineHeight: 25 },
+  muted: { fontSize: 16, lineHeight: 22 },
+  button: { fontSize: 18, lineHeight: 23 },
+} as const;
 
 export const type = {
   title: { fontFamily: fonts.serif, fontSize: 40, color: colors.parchment },
@@ -32,5 +36,4 @@ export const type = {
   },
   body: { fontFamily: fonts.serif, fontSize: 17, lineHeight: 25, color: colors.parchment },
   muted: { fontFamily: fonts.serif, fontSize: 15, lineHeight: 22, color: colors.parchmentMuted },
-  button: { fontFamily: fonts.serif, fontSize: 17, color: colors.parchment, textAlign: 'center' },
 } as const;

@@ -1,32 +1,51 @@
 import { Pressable, StyleSheet, Text } from 'react-native';
-import { colors, spacing, type } from './theme';
+import { NineSlice } from './skin/NineSlice';
+import { useSkin } from './skin/SkinProvider';
+import { useSkinTextStyles } from './skin/textStyles';
+import { spacing } from './theme';
 
 interface Props {
   readonly label: string;
   readonly onPress: () => void;
+  readonly disabled?: boolean;
 }
 
-export function GameButton({ label, onPress }: Props) {
+/** A full-width skinned button. Long labels wrap and the button grows; nothing is truncated. */
+export function GameButton({ label, onPress, disabled = false }: Props) {
+  const skin = useSkin();
+  const { button } = skin;
+  const text = useSkinTextStyles();
   return (
     <Pressable
       accessibilityRole="button"
+      accessibilityLabel={label}
+      accessibilityState={{ disabled }}
+      disabled={disabled}
       onPress={onPress}
-      style={({ pressed }) => [styles.button, pressed && styles.pressed]}
+      style={({ pressed }) => [
+        styles.button,
+        disabled && { opacity: button.disabledOpacity },
+        pressed && { transform: [{ scale: button.pressed.scale }] },
+      ]}
     >
-      <Text style={type.button}>{label}</Text>
+      {({ pressed }) => (
+        <NineSlice
+          frame={button.frame}
+          scale={button.scale}
+          images={skin.images}
+          contentPadding={button.contentPadding}
+          tint={pressed ? button.pressed.overlay : undefined}
+          style={[styles.frame, { minHeight: button.minHeight }]}
+        >
+          <Text style={[text.button, styles.label]}>{label}</Text>
+        </NineSlice>
+      )}
     </Pressable>
   );
 }
 
 const styles = StyleSheet.create({
-  button: {
-    borderWidth: 1,
-    borderColor: colors.buttonBorder,
-    backgroundColor: colors.buttonFill,
-    borderRadius: 6,
-    paddingVertical: 14,
-    paddingHorizontal: spacing.md,
-    marginTop: spacing.sm,
-  },
-  pressed: { backgroundColor: colors.buttonFillPressed },
+  button: { alignSelf: 'stretch', marginTop: spacing.sm },
+  frame: { justifyContent: 'center' },
+  label: { textAlign: 'center' },
 });
