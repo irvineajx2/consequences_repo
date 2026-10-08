@@ -1,0 +1,1208 @@
+{
+ "ruler": "elizabeth_i",
+ "version": 5,
+ "meters": {
+  "tr": 30,
+  "rel": 35,
+  "auth": 50,
+  "navy": 25,
+  "spain": 20,
+  "succ": 20
+ },
+ "meter_range": [
+  0,
+  100
+ ],
+ "flags": {
+  "mary": "reigning",
+  "wals": false,
+  "drake": false,
+  "dutch": "none",
+  "spoiled": false,
+  "leicester": true,
+  "supplied": false,
+  "philip_open": false
+ },
+ "failures": [
+  {
+   "if": [
+    [
+     "succ",
+     "<=",
+     0
+    ]
+   ],
+   "end": "assassinated"
+  },
+  {
+   "if": [
+    [
+     "auth",
+     "<=",
+     0
+    ]
+   ],
+   "end": "deposed"
+  },
+  {
+   "if": [
+    [
+     "tr",
+     "<=",
+     0
+    ]
+   ],
+   "end": "bankrupt"
+  },
+  {
+   "if": [
+    [
+     "rel",
+     ">",
+     80
+    ]
+   ],
+   "end": "catholic_rising"
+  },
+  {
+   "if": [
+    [
+     "rel",
+     "<",
+     20
+    ]
+   ],
+   "end": "protestant_revolt"
+  }
+ ],
+ "drift": [
+  {
+   "then": {
+    "add": {
+     "tr": 10
+    }
+   }
+  },
+  {
+   "if": [
+    [
+     "philip_open",
+     "==",
+     true
+    ]
+   ],
+   "then": {
+    "add": {
+     "spain": 10
+    },
+    "set": {
+     "philip_open": false
+    }
+   }
+  },
+  {
+   "if": [
+    [
+     "mary",
+     "==",
+     "scotland"
+    ]
+   ],
+   "then": {
+    "add": {
+     "succ": -10
+    }
+   }
+  },
+  {
+   "if": [
+    [
+     "mary",
+     "in",
+     [
+      "captive",
+      "france"
+     ]
+    ]
+   ],
+   "then": {
+    "add": {
+     "succ": -5
+    }
+   }
+  },
+  {
+   "if": [
+    [
+     "drake",
+     "==",
+     true
+    ]
+   ],
+   "then": {
+    "add": {
+     "tr": 5,
+     "spain": 5
+    }
+   }
+  }
+ ],
+ "events": {
+  "papal_bull": {
+   "image_by_branch": [
+    "B2",
+    "B1",
+    "B1"
+   ],
+   "branches": [
+    {
+     "if": [
+      [
+       "rel",
+       "<=",
+       45
+      ]
+     ],
+     "then": {
+      "add": {
+       "spain": -5,
+       "auth": -5
+      }
+     }
+    },
+    {
+     "if": [
+      [
+       "rel",
+       "<=",
+       65
+      ]
+     ],
+     "then": {
+      "add": {
+       "spain": 10
+      }
+     }
+    },
+    {
+     "then": {
+      "add": {
+       "spain": 15,
+       "succ": -5
+      }
+     }
+    }
+   ]
+  },
+  "throckmorton": {
+   "image_by_branch": [
+    "T1",
+    null
+   ],
+   "branches": [
+    {
+     "if": [
+      [
+       "wals",
+       "==",
+       false
+      ],
+      [
+       "mary",
+       "!=",
+       "executed"
+      ]
+     ],
+     "then": {
+      "add": {
+       "succ": -20
+      }
+     }
+    },
+    {
+     "then": {}
+    }
+   ]
+  }
+ },
+ "early_finale": {
+  "if": [
+   [
+    "spain",
+    ">=",
+    100
+   ]
+  ],
+  "until_scene": "s15"
+ },
+ "finale": {
+  "terms": [
+   {
+    "var": "navy",
+    "mult": 1
+   },
+   {
+    "var": "tr",
+    "mult": 0.5
+   },
+   {
+    "var": "auth",
+    "mult": 0.2
+   },
+   {
+    "if": [
+     [
+      "rel",
+      ">=",
+      45
+     ],
+     [
+      "rel",
+      "<=",
+      70
+     ]
+    ],
+    "add": 10
+   },
+   {
+    "if": [
+     [
+      "spoiled",
+      "==",
+      true
+     ]
+    ],
+    "add": 10
+   },
+   {
+    "if": [
+     [
+      "dutch",
+      "==",
+      "army"
+     ],
+     [
+      "leicester",
+      "==",
+      true
+     ]
+    ],
+    "add": 10
+   },
+   {
+    "if": [
+     [
+      "dutch",
+      "==",
+      "army"
+     ],
+     [
+      "leicester",
+      "==",
+      false
+     ]
+    ],
+    "add": 5
+   },
+   {
+    "if": [
+     [
+      "dutch",
+      "==",
+      "none"
+     ]
+    ],
+    "add": -10
+   },
+   {
+    "if": [
+     [
+      "supplied",
+      "==",
+      true
+     ]
+    ],
+    "add": 15
+   },
+   {
+    "var": "spain",
+    "over": 70,
+    "mult": -0.5
+   }
+  ],
+  "outcomes": [
+   {
+    "below": 75,
+    "end": "invasion"
+   },
+   {
+    "if": [
+     [
+      "tr",
+      "<",
+      15
+     ]
+    ],
+    "end": "pyrrhic"
+   },
+   {
+    "below": 108,
+    "end": "pyrrhic"
+   },
+   {
+    "at_least": 128,
+    "end": "mistress"
+   },
+   {
+    "end": "gloriana"
+   }
+  ]
+ },
+ "endings": {
+  "gloriana": {
+   "title": "Gloriana",
+   "category": "historical",
+   "image": "X1"
+  },
+  "mistress": {
+   "title": "Mistress of the Seas",
+   "category": "outperformed",
+   "image": "X2"
+  },
+  "pyrrhic": {
+   "title": "Pyrrhic Victory",
+   "category": "fallen_short",
+   "image": "X3"
+  },
+  "invasion": {
+   "title": "Invasion",
+   "category": "fallen",
+   "image": "X4"
+  },
+  "bankrupt": {
+   "title": "Bankrupt Crown",
+   "category": "fallen",
+   "image": "X5"
+  },
+  "deposed": {
+   "title": "Deposed by Council",
+   "category": "fallen",
+   "image": "X6"
+  },
+  "assassinated": {
+   "title": "Assassinated",
+   "category": "fallen",
+   "image": "X7"
+  },
+  "catholic_rising": {
+   "title": "Catholic Rising",
+   "category": "fallen",
+   "image": "X8"
+  },
+  "protestant_revolt": {
+   "title": "Protestant Revolt",
+   "category": "fallen",
+   "image": "X9"
+  },
+  "habsburg_queen": {
+   "title": "Habsburg Queen",
+   "category": "alternate",
+   "image": "X10"
+  },
+  "dudleys_wife": {
+   "title": "Dudley's Wife",
+   "category": "alternate",
+   "image": "X11"
+  },
+  "scottish_succession": {
+   "title": "Scottish Succession",
+   "category": "alternate",
+   "image": "X12"
+  },
+  "french_match": {
+   "title": "The French Match",
+   "category": "alternate",
+   "image": "X13"
+  }
+ },
+ "scenes": [
+  {
+   "id": "s01",
+   "title": "Choosing the Council",
+   "year": "1558",
+   "image": "01",
+   "options": [
+    {
+     "id": "cecil",
+     "label": "Appoint Cecil and the moderates",
+     "historical": true,
+     "add": {
+      "auth": 10,
+      "rel": 5
+     }
+    },
+    {
+     "id": "catholic",
+     "label": "Keep Mary's Catholic councillors",
+     "historical": false,
+     "add": {
+      "auth": -10,
+      "rel": -5,
+      "spain": -5
+     }
+    },
+    {
+     "id": "mixed",
+     "label": "Build a mixed council",
+     "historical": false,
+     "add": {
+      "auth": -5
+     }
+    }
+   ]
+  },
+  {
+   "id": "s02",
+   "title": "The Religious Settlement",
+   "year": "1559",
+   "image": "02",
+   "options": [
+    {
+     "id": "middle",
+     "label": "The middle way",
+     "historical": true,
+     "add": {
+      "rel": 15,
+      "auth": 5,
+      "spain": 5
+     }
+    },
+    {
+     "id": "protestant",
+     "label": "Full Protestantism",
+     "historical": false,
+     "add": {
+      "rel": 30,
+      "auth": -5,
+      "spain": 15
+     }
+    },
+    {
+     "id": "mass",
+     "label": "Keep the Catholic Mass",
+     "historical": false,
+     "add": {
+      "rel": -10,
+      "auth": -15,
+      "spain": -10
+     }
+    }
+   ]
+  },
+  {
+   "id": "s03",
+   "title": "Philip II's Proposal",
+   "year": "1559",
+   "image": "03",
+   "options": [
+    {
+     "id": "decline",
+     "label": "Decline with courtesy",
+     "historical": true,
+     "add": {
+      "spain": 5,
+      "auth": 5
+     }
+    },
+    {
+     "id": "accept",
+     "label": "Accept Philip",
+     "historical": false,
+     "end": "habsburg_queen"
+    },
+    {
+     "id": "dangle",
+     "label": "Keep him dangling",
+     "historical": false,
+     "add": {
+      "spain": -5,
+      "succ": -5
+     },
+     "set": {
+      "philip_open": true
+     }
+    }
+   ]
+  },
+  {
+   "id": "s04",
+   "title": "The Scottish Question",
+   "year": "1560",
+   "image": "04",
+   "options": [
+    {
+     "id": "intervene",
+     "label": "Send fleet and army",
+     "historical": true,
+     "add": {
+      "tr": -10,
+      "navy": 5,
+      "succ": 10
+     }
+    },
+    {
+     "id": "covert",
+     "label": "Covert funding only",
+     "historical": false,
+     "add": {
+      "tr": -5,
+      "succ": 5
+     }
+    },
+    {
+     "id": "stay_out",
+     "label": "Stay out",
+     "historical": false,
+     "add": {
+      "succ": -10
+     }
+    }
+   ]
+  },
+  {
+   "id": "s05",
+   "title": "The Dudley Scandal",
+   "year": "1560",
+   "image": "05",
+   "options": [
+    {
+     "id": "favourite",
+     "label": "Favourite, not husband",
+     "historical": true,
+     "add": {
+      "auth": -5
+     }
+    },
+    {
+     "id": "marry",
+     "label": "Marry Dudley",
+     "historical": false,
+     "end": "dudleys_wife"
+    },
+    {
+     "id": "banish",
+     "label": "Banish him from court",
+     "historical": false,
+     "add": {
+      "auth": 10,
+      "succ": -5
+     },
+     "set": {
+      "leicester": false
+     }
+    }
+   ]
+  },
+  {
+   "id": "s06",
+   "title": "Smallpox",
+   "year": "1562",
+   "image": "06",
+   "drift_after": true,
+   "options": [
+    {
+     "id": "refuse",
+     "label": "Refuse to name an heir",
+     "historical": true,
+     "add": {
+      "succ": -5,
+      "auth": -5
+     }
+    },
+    {
+     "id": "mary_heir",
+     "label": "Name Mary Queen of Scots",
+     "historical": false,
+     "end": "scottish_succession"
+    },
+    {
+     "id": "grey",
+     "label": "Name Katherine Grey",
+     "historical": false,
+     "add": {
+      "succ": 10,
+      "rel": 5,
+      "spain": 5,
+      "auth": -10
+     }
+    }
+   ]
+  },
+  {
+   "id": "s07",
+   "title": "Mary Flees to England",
+   "year": "1568",
+   "image": "07",
+   "options": [
+    {
+     "id": "captive",
+     "label": "Hold her captive",
+     "historical": true,
+     "set": {
+      "mary": "captive"
+     }
+    },
+    {
+     "id": "restore",
+     "label": "Restore her in Scotland",
+     "historical": false,
+     "add": {
+      "succ": -10,
+      "rel": -5
+     },
+     "set": {
+      "mary": "scotland"
+     }
+    },
+    {
+     "id": "france",
+     "label": "Send her to France",
+     "historical": false,
+     "add": {
+      "succ": -15
+     },
+     "set": {
+      "mary": "france"
+     }
+    }
+   ]
+  },
+  {
+   "id": "s08",
+   "title": "The Rising of the North",
+   "year": "1569",
+   "image": "08",
+   "after": [
+    "papal_bull"
+   ],
+   "scene_cond": [
+    {
+     "if": [
+      [
+       "rel",
+       ">",
+       65
+      ]
+     ],
+     "then": {
+      "add": {
+       "succ": -5
+      }
+     }
+    }
+   ],
+   "options": [
+    {
+     "id": "crush",
+     "label": "Crush it harshly",
+     "historical": true,
+     "add": {
+      "auth": 10,
+      "rel": 5,
+      "succ": 5
+     }
+    },
+    {
+     "id": "concede",
+     "label": "Negotiate concessions",
+     "historical": false,
+     "add": {
+      "auth": -10,
+      "rel": -10
+     }
+    },
+    {
+     "id": "lenient",
+     "label": "Lenient to the leaders",
+     "historical": false,
+     "add": {
+      "auth": -5,
+      "succ": -5
+     }
+    }
+   ]
+  },
+  {
+   "id": "s09",
+   "title": "The Ridolfi Plot",
+   "year": "1571",
+   "image": "09",
+   "variants": [
+    {
+     "if": [
+      [
+       "mary",
+       "==",
+       "captive"
+      ]
+     ],
+     "options": [
+      {
+       "id": "norfolk",
+       "label": "Execute Norfolk, spare Mary",
+       "historical": true,
+       "add": {
+        "succ": 10,
+        "auth": 5
+       }
+      },
+      {
+       "id": "both",
+       "label": "Execute Norfolk and Mary",
+       "historical": false,
+       "add": {
+        "succ": 20,
+        "spain": 20,
+        "rel": 5
+       },
+       "set": {
+        "mary": "executed"
+       }
+      },
+      {
+       "id": "spare",
+       "label": "Spare both",
+       "historical": false,
+       "add": {
+        "succ": -10,
+        "auth": -10
+       }
+      }
+     ]
+    },
+    {
+     "options": [
+      {
+       "id": "norfolk",
+       "label": "Execute Norfolk",
+       "historical": true,
+       "add": {
+        "succ": 10,
+        "auth": 5
+       }
+      },
+      {
+       "id": "spare",
+       "label": "Spare Norfolk",
+       "historical": false,
+       "add": {
+        "succ": -10,
+        "auth": -10
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "s10",
+   "title": "Walsingham's Service",
+   "year": "1573",
+   "image": "10",
+   "drift_after": true,
+   "options": [
+    {
+     "id": "self_fund",
+     "label": "Underfund it; he pays the rest",
+     "historical": true,
+     "add": {
+      "tr": -5
+     },
+     "set": {
+      "wals": true
+     }
+    },
+    {
+     "id": "full",
+     "label": "Fully fund it",
+     "historical": false,
+     "add": {
+      "tr": -15,
+      "succ": 10
+     },
+     "set": {
+      "wals": true
+     }
+    },
+    {
+     "id": "refuse",
+     "label": "Refuse",
+     "historical": false
+    }
+   ]
+  },
+  {
+   "id": "s11",
+   "title": "Hawkins and the Navy",
+   "year": "1577",
+   "image": "11",
+   "options": [
+    {
+     "id": "race_built",
+     "label": "Back the race-built galleons",
+     "historical": true,
+     "add": {
+      "tr": -15,
+      "navy": 20
+     }
+    },
+    {
+     "id": "traditional",
+     "label": "Traditional warships",
+     "historical": false,
+     "add": {
+      "tr": -5,
+      "navy": 10,
+      "auth": 10
+     }
+    },
+    {
+     "id": "minimal",
+     "label": "Minimal spending",
+     "historical": false
+    }
+   ]
+  },
+  {
+   "id": "s12",
+   "title": "Drake's Secret Voyage",
+   "year": "1577",
+   "image": "12",
+   "options": [
+    {
+     "id": "invest",
+     "label": "Invest secretly",
+     "historical": true,
+     "add": {
+      "tr": -5
+     },
+     "set": {
+      "drake": true
+     },
+     "cond": [
+      {
+       "then": {
+        "add": {
+         "tr": 25,
+         "navy": 10,
+         "spain": 15
+        }
+       }
+      }
+     ]
+    },
+    {
+     "id": "forbid",
+     "label": "Forbid it",
+     "historical": false,
+     "add": {
+      "spain": -5
+     }
+    }
+   ]
+  },
+  {
+   "id": "s13",
+   "title": "The Anjou Courtship",
+   "year": "1579",
+   "image": "13",
+   "after": [
+    "throckmorton"
+   ],
+   "options": [
+    {
+     "id": "lapse",
+     "label": "Prolong it, then let it lapse",
+     "historical": true,
+     "add": {
+      "succ": -5,
+      "spain": -5
+     }
+    },
+    {
+     "id": "marry",
+     "label": "Marry Anjou",
+     "historical": false,
+     "end": "french_match"
+    },
+    {
+     "id": "reject",
+     "label": "Reject him outright",
+     "historical": false,
+     "add": {
+      "spain": 10,
+      "auth": 5
+     }
+    }
+   ]
+  },
+  {
+   "id": "s14",
+   "title": "The Treaty of Nonsuch",
+   "year": "1585",
+   "image": "14",
+   "drift_after": true,
+   "options": [
+    {
+     "id": "army",
+     "label": "Send an army under Leicester",
+     "historical": true,
+     "add": {
+      "tr": -15,
+      "spain": 20
+     },
+     "set": {
+      "dutch": "army"
+     }
+    },
+    {
+     "id": "money",
+     "label": "Send money only",
+     "historical": false,
+     "add": {
+      "tr": -10,
+      "spain": 10
+     },
+     "set": {
+      "dutch": "money"
+     }
+    },
+    {
+     "id": "stay_out",
+     "label": "Stay out",
+     "historical": false,
+     "add": {
+      "spain": -5
+     }
+    }
+   ]
+  },
+  {
+   "id": "s15",
+   "title": "The Babington Plot",
+   "year": "1586",
+   "image": "15",
+   "variants": [
+    {
+     "if": [
+      [
+       "mary",
+       "!=",
+       "captive"
+      ]
+     ],
+     "skip": true
+    },
+    {
+     "if": [
+      [
+       "wals",
+       "==",
+       false
+      ],
+      [
+       "succ",
+       "<",
+       60
+      ]
+     ],
+     "auto": true,
+     "options": [
+      {
+       "id": "undetected",
+       "label": "The plot goes undetected",
+       "historical": true,
+       "end": "assassinated"
+      }
+     ]
+    },
+    {
+     "if": [
+      [
+       "wals",
+       "==",
+       false
+      ]
+     ],
+     "auto": true,
+     "options": [
+      {
+       "id": "undetected",
+       "label": "The plot goes undetected",
+       "historical": true,
+       "add": {
+        "succ": -30
+       }
+      }
+     ]
+    },
+    {
+     "options": [
+      {
+       "id": "execute",
+       "label": "Try Mary and sign the warrant",
+       "historical": true,
+       "add": {
+        "succ": 25,
+        "spain": 10,
+        "rel": 5
+       },
+       "set": {
+        "mary": "executed"
+       }
+      },
+      {
+       "id": "imprison",
+       "label": "Keep her imprisoned",
+       "historical": false,
+       "add": {
+        "succ": -15
+       }
+      },
+      {
+       "id": "exile",
+       "label": "Exile her abroad",
+       "historical": false,
+       "add": {
+        "succ": -10,
+        "spain": 5
+       },
+       "set": {
+        "mary": "france"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "s16",
+   "title": "Cadiz",
+   "year": "1587",
+   "image": "16",
+   "options": [
+    {
+     "id": "raid",
+     "label": "Authorise Drake's raid",
+     "historical": true,
+     "add": {
+      "tr": -10,
+      "spain": 5
+     },
+     "cond": [
+      {
+       "if": [
+        [
+         "navy",
+         ">=",
+         50
+        ]
+       ],
+       "then": {
+        "add": {
+         "navy": 10
+        },
+        "set": {
+         "spoiled": true
+        }
+       },
+       "else": {
+        "add": {
+         "navy": -15
+        }
+       }
+      }
+     ]
+    },
+    {
+     "id": "home",
+     "label": "Concentrate the fleet at home",
+     "historical": false,
+     "add": {
+      "tr": 5,
+      "navy": 10
+     }
+    },
+    {
+     "id": "talks",
+     "label": "Peace talks with Parma",
+     "historical": false,
+     "add": {
+      "spain": -15,
+      "auth": -10,
+      "tr": 10
+     },
+     "cond": [
+      {
+       "if": [
+        [
+         "dutch",
+         "==",
+         "army"
+        ]
+       ],
+       "then": {
+        "set": {
+         "dutch": "lost"
+        }
+       }
+      },
+      {
+       "if": [
+        [
+         "spain",
+         "<",
+         85
+        ]
+       ],
+       "then": {
+        "add": {
+         "navy": 10
+        }
+       },
+       "else": {
+        "add": {
+         "navy": -5
+        }
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "s17",
+   "title": "Victualling the Fleet",
+   "year": "1588",
+   "image": "17",
+   "options": [
+    {
+     "id": "sparing",
+     "label": "Supply it sparingly",
+     "historical": true
+    },
+    {
+     "id": "full",
+     "label": "Fully supply powder and shot",
+     "historical": false,
+     "add": {
+      "tr": -15
+     },
+     "set": {
+      "supplied": true
+     }
+    }
+   ]
+  }
+ ]
+}
