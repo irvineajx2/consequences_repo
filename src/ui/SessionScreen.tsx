@@ -8,6 +8,7 @@ import type {
   SessionView,
 } from '../game/session';
 import {
+  autoNarration,
   beatText,
   consequenceText,
   endingText,
@@ -119,7 +120,7 @@ function AutoSceneView({ view, text, onChoose }: { view: SceneViewModel; text: R
     >
       <Text style={type.caption}>{caption}</Text>
       <Text style={[type.body, styles.narration]}>
-        {optionText(text, view.sceneId, view.variant, option)}
+        {autoNarration(text, view.sceneId, view.variant, option)}
       </Text>
     </SceneFrame>
   );

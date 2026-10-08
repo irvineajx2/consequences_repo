@@ -1,6 +1,6 @@
 import { allOptions } from '../../src/core';
 import { getRuler } from '../../src/data/rulers';
-import { consequenceText, optionText } from '../../src/game/text';
+import { autoNarration, consequenceText, optionText } from '../../src/game/text';
 
 const { rules, text } = getRuler('elizabeth-i');
 
@@ -36,6 +36,26 @@ describe('text file', () => {
   it('has a chronicle note for every scene, and no unknown scenes', () => {
     for (const scene of rules.scenes) expect(text.chronicle[scene.id]?.note).toEqual(expect.any(String));
     for (const id of Object.keys(text.chronicle)) expect(rules.scenes.map((s) => s.id)).toContain(id);
+  });
+
+  it('has auto narration for every scene that can play in auto mode', () => {
+    const autoScenes = rules.scenes.filter((s) => s.variants?.some((v) => v.auto));
+    expect(autoScenes.length).toBeGreaterThan(0);
+    for (const scene of autoScenes) {
+      expect(text.scenes[scene.id].auto_narration).toEqual(expect.any(String));
+      scene.variants!.forEach((v, i) => {
+        if (v.auto) {
+          expect(autoNarration(text, scene.id, i, v.options![0].id)).toBe(text.scenes[scene.id].auto_narration);
+        }
+      });
+    }
+  });
+
+  it('gives auto narration only to scenes that can play in auto mode', () => {
+    for (const [id, scene] of Object.entries(text.scenes)) {
+      if (scene.auto_narration === undefined) continue;
+      expect(rules.scenes.find((s) => s.id === id)?.variants?.some((v) => v.auto)).toBe(true);
+    }
   });
 
   it('has a title and text for every ending', () => {

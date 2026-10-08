@@ -27,6 +27,7 @@ const CONSEQUENCE = '[Consequence to be written]';
 const BEAT = '[Beat text to be written]';
 const ENDING = '[Ending text to be written]';
 const CHRONICLE = '[Historical note to be written]';
+const AUTO_NARRATION = '[Auto narration to be written]';
 
 const fill = (obj, key, value) => {
   if (obj[key] === undefined) obj[key] = value;
@@ -50,6 +51,7 @@ for (const scene of rules.scenes) {
   const entry = fill(text.scenes, scene.id, {});
   fill(entry, 'caption', `${scene.title}, ${scene.year}`);
   fill(entry, 'narration', NARRATION);
+  if ((scene.variants || []).some((v) => v.auto)) fill(entry, 'auto_narration', AUTO_NARRATION);
   fill(entry, 'options', {});
   fill(entry, 'consequences', {});
 

@@ -8,6 +8,8 @@ export interface OptionTexts {
 export interface SceneText extends OptionTexts {
   readonly caption: string;
   readonly narration: string;
+  /** Shown instead of `narration` when the scene plays in auto mode (no player choice). */
+  readonly auto_narration?: string;
   /** Overrides for options whose text differs in a particular variant, keyed by variant index. */
   readonly variants?: Readonly<Record<string, Partial<OptionTexts>>>;
 }
@@ -56,6 +58,11 @@ const missing = (what: string): string => `[Missing text: ${what}]`;
 export function sceneText(text: RulerText, sceneId: string): Pick<SceneText, 'caption' | 'narration'> {
   const scene = text.scenes[sceneId];
   return scene ?? { caption: missing(sceneId), narration: '' };
+}
+
+/** Text for a scene playing in auto mode: its auto narration, or the auto option's own text. */
+export function autoNarration(text: RulerText, sceneId: string, variant: number, optionId: string): string {
+  return text.scenes[sceneId]?.auto_narration ?? optionText(text, sceneId, variant, optionId);
 }
 
 export function optionText(text: RulerText, sceneId: string, variant: number, optionId: string): string {

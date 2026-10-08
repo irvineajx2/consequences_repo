@@ -24,129 +24,129 @@
   },
   "scenes": {
     "s01": {
-      "caption": "Choosing the Council, 1558",
-      "narration": "[Narration to be written]",
+      "caption": "Hatfield, November 1558",
+      "narration": "Your sister Mary is dead, and at twenty-five you are queen of a divided, debt-ridden realm. Her Catholic councillors wait to learn their fate. Whom will you trust to govern beside you?",
       "options": {
         "cecil": "Appoint Cecil and the moderates",
         "catholic": "Keep Mary's Catholic councillors",
         "mixed": "Build a mixed council"
       },
       "consequences": {
-        "cecil": "[Consequence to be written]",
-        "catholic": "[Consequence to be written]",
-        "mixed": "[Consequence to be written]"
+        "cecil": "Cecil kneels to take his oath. Mary's old guard leave Hatfield in silence.",
+        "catholic": "Mary's men keep their seats. The Protestant lords who cheered your accession exchange uneasy looks.",
+        "mixed": "Old faces and new share the council table, and every debate becomes a quarrel."
       }
     },
     "s02": {
-      "caption": "The Religious Settlement, 1559",
-      "narration": "[Narration to be written]",
+      "caption": "Westminster, 1559",
+      "narration": "England has changed its religion three times in a generation. Parliament awaits your settlement, and every Catholic bishop in the Lords will fight a break with Rome. What faith will England keep?",
       "options": {
         "middle": "The middle way",
         "protestant": "Full Protestantism",
         "mass": "Keep the Catholic Mass"
       },
       "consequences": {
-        "middle": "[Consequence to be written]",
-        "protestant": "[Consequence to be written]",
-        "mass": "[Consequence to be written]"
+        "middle": "A Protestant Church with the old ceremonies, and you as its Supreme Governor. Few are delighted; fewer are outraged.",
+        "protestant": "The altars come down and the reformers rejoice. In the north, and in Madrid, the mood darkens.",
+        "mass": "The Latin Mass continues. Rome is pleased; the Protestants who hailed you feel betrayed."
       }
     },
     "s03": {
-      "caption": "Philip II's Proposal, 1559",
-      "narration": "[Narration to be written]",
+      "caption": "Whitehall, 1559",
+      "narration": "Philip of Spain, your late sister's husband, asks for your hand. The match would bind England to the greatest power in Europe, and bind you to a Catholic king. How will you answer?",
       "options": {
         "decline": "Decline with courtesy",
         "accept": "Accept Philip",
         "dangle": "Keep him dangling"
       },
       "consequences": {
-        "decline": "[Consequence to be written]",
+        "decline": "You refuse with every courtesy. The Spanish ambassador bows, and writes to Madrid that England is drifting away.",
         "accept": "[Consequence to be written]",
-        "dangle": "[Consequence to be written]"
+        "dangle": "You neither accept nor refuse. Philip waits, patiently for now."
       }
     },
     "s04": {
-      "caption": "The Scottish Question, 1560",
-      "narration": "[Narration to be written]",
+      "caption": "Edinburgh, 1560",
+      "narration": "Scotland's Protestant lords have risen against the French regent. If France crushes them, French troops will hold your northern border for Mary, Queen of Scots, who claims your throne. Will you intervene?",
       "options": {
         "intervene": "Send fleet and army",
         "covert": "Covert funding only",
         "stay_out": "Stay out"
       },
       "consequences": {
-        "intervene": "[Consequence to be written]",
-        "covert": "[Consequence to be written]",
-        "stay_out": "[Consequence to be written]"
+        "intervene": "English ships close the Firth of Forth. Within months the French sail home, and the north is safe.",
+        "covert": "English gold reaches the Scottish lords quietly. They hold on, but the French remain.",
+        "stay_out": "You keep your money and your distance. French soldiers dig in at Leith, within striking distance of England."
       }
     },
     "s05": {
-      "caption": "The Dudley Scandal, 1560",
-      "narration": "[Narration to be written]",
+      "caption": "Windsor, September 1560",
+      "narration": "Robert Dudley's wife has been found dead at the foot of a staircase. The court whispers that he arranged it to free himself to marry you. Everyone knows he is your favourite. What will you do?",
       "options": {
         "favourite": "Favourite, not husband",
         "marry": "Marry Dudley",
         "banish": "Banish him from court"
       },
       "consequences": {
-        "favourite": "[Consequence to be written]",
+        "favourite": "Dudley stays at your side, but not at the altar. The whispers grow quieter, never silent.",
         "marry": "[Consequence to be written]",
-        "banish": "[Consequence to be written]"
+        "banish": "Dudley rides from court in disgrace. The Council approves; you sleep badly."
       }
     },
     "s06": {
-      "caption": "Smallpox, 1562",
-      "narration": "[Narration to be written]",
+      "caption": "Hampton Court, October 1562",
+      "narration": "Smallpox brought you close to death. You have recovered, but the Council is terrified: you have no husband, no child and no heir. They beg you to name a successor. Will you?",
       "options": {
         "refuse": "Refuse to name an heir",
         "mary_heir": "Name Mary Queen of Scots",
         "grey": "Name Katherine Grey"
       },
       "consequences": {
-        "refuse": "[Consequence to be written]",
+        "refuse": "No heir will be named while you live. The Council leaves frightened and frustrated.",
         "mary_heir": "[Consequence to be written]",
-        "grey": "[Consequence to be written]"
+        "grey": "Katherine Grey is named your heir. Protestants rejoice, and ambitious men begin to visit her household."
       }
     },
     "s07": {
-      "caption": "Mary Flees to England, 1568",
-      "narration": "[Narration to be written]",
+      "caption": "Cumberland, May 1568",
+      "narration": "Defeated by her own lords, Mary, Queen of Scots has fled across the Solway in a fishing boat and begs your protection. Free, she is a Catholic rival for your crown. What will you do with her?",
       "options": {
         "captive": "Hold her captive",
         "restore": "Restore her in Scotland",
         "france": "Send her to France"
       },
       "consequences": {
-        "captive": "[Consequence to be written]",
-        "restore": "[Consequence to be written]",
-        "france": "[Consequence to be written]"
+        "captive": "Mary is lodged under guard in comfortable captivity. She is safe, and so, for now, are you.",
+        "restore": "English pikes return Mary to Edinburgh. She thanks you, and writes at once to Paris and Madrid.",
+        "france": "Mary sails for France, where her Guise kinsmen welcome her, and her claim to your throne."
       }
     },
     "s08": {
-      "caption": "The Rising of the North, 1569",
-      "narration": "[Narration to be written]",
+      "caption": "Durham, November 1569",
+      "narration": "The Catholic Earls of Northumberland and Westmorland have risen. Their army has restored the Mass in Durham Cathedral and marches south under the banner of the Five Wounds. How will you answer them?",
       "options": {
         "crush": "Crush it harshly",
         "concede": "Negotiate concessions",
         "lenient": "Lenient to the leaders"
       },
       "consequences": {
-        "crush": "[Consequence to be written]",
-        "concede": "[Consequence to be written]",
-        "lenient": "[Consequence to be written]"
+        "crush": "Your armies scatter the rebels and the gallows follow. The north will not rise again soon.",
+        "concede": "You promise the northern Catholics tolerance. The rebels disperse, and Protestant London is appalled.",
+        "lenient": "The earls are hunted; their followers are pardoned. Mercy wins some hearts and costs you others."
       }
     },
     "s09": {
-      "caption": "The Ridolfi Plot, 1571",
-      "narration": "[Narration to be written]",
+      "caption": "London, 1571",
+      "narration": "Your agents have uncovered the Ridolfi Plot: a Spanish invasion to put Mary on your throne and marry her to the Duke of Norfolk, England's greatest noble. Norfolk is in the Tower, and Parliament wants blood. What is your judgement?",
       "options": {
         "norfolk": "Execute Norfolk, spare Mary",
         "both": "Execute Norfolk and Mary",
         "spare": "Spare both"
       },
       "consequences": {
-        "norfolk": "[Consequence to be written]",
-        "both": "[Consequence to be written]",
-        "spare": "[Consequence to be written]"
+        "norfolk": "Norfolk goes to the block. England's only duke is gone, and the warning to others is plain.",
+        "both": "Norfolk and Mary both die. Catholic Europe calls it murder, and Spain begins to rearm.",
+        "spare": "You choose mercy. To those plotting the next attempt, mercy looks very like weakness."
       },
       "variants": {
         "1": {
@@ -155,83 +155,83 @@
             "spare": "Spare Norfolk"
           },
           "consequences": {
-            "norfolk": "[Consequence to be written]",
-            "spare": "[Consequence to be written]"
+            "norfolk": "Norfolk goes to the block. England's only duke is gone, and the warning to others is plain.",
+            "spare": "You choose mercy. To those plotting the next attempt, mercy looks very like weakness."
           }
         }
       }
     },
     "s10": {
-      "caption": "Walsingham's Service, 1573",
-      "narration": "[Narration to be written]",
+      "caption": "Whitehall, 1573",
+      "narration": "Francis Walsingham, your new Secretary, asks for money to build a network of spies and codebreakers across Europe. Plots against you multiply, but so do your debts. Will you pay for his secret service?",
       "options": {
         "self_fund": "Underfund it; he pays the rest",
         "full": "Fully fund it",
         "refuse": "Refuse"
       },
       "consequences": {
-        "self_fund": "[Consequence to be written]",
-        "full": "[Consequence to be written]",
-        "refuse": "[Consequence to be written]"
+        "self_fund": "You grant him a little. Walsingham pays for the rest himself, and his agents begin to report.",
+        "full": "Walsingham's agents spread from Paris to Rome, paid in full. Little now happens without his knowing.",
+        "refuse": "Walsingham bows and says nothing. The plots against you will go unwatched."
       }
     },
     "s11": {
-      "caption": "Hawkins and the Navy, 1577",
-      "narration": "[Narration to be written]",
+      "caption": "Deptford, 1577",
+      "narration": "John Hawkins, your new Treasurer of the Navy, shows you plans for a new kind of warship: lower, faster, built to fight with guns rather than boarding. The old admirals call it folly. How will you build your fleet?",
       "options": {
         "race_built": "Back the race-built galleons",
         "traditional": "Traditional warships",
         "minimal": "Minimal spending"
       },
       "consequences": {
-        "race_built": "[Consequence to be written]",
-        "traditional": "[Consequence to be written]",
-        "minimal": "[Consequence to be written]"
+        "race_built": "Hawkins rebuilds the fleet ship by ship. It is costly, but nothing afloat can match their speed.",
+        "traditional": "Towering warships rise at Deptford. The admirals are pleased; the shipwrights shrug.",
+        "minimal": "The dockyards fall quiet. Your treasury breathes; your fleet rots at anchor."
       }
     },
     "s12": {
-      "caption": "Drake's Secret Voyage, 1577",
-      "narration": "[Narration to be written]",
+      "caption": "Plymouth, 1577",
+      "narration": "Francis Drake proposes a secret voyage around the world to raid Spain's treasure ports in the Pacific. Officially, you would know nothing about it. Will you put money into it?",
       "options": {
         "invest": "Invest secretly",
         "forbid": "Forbid it"
       },
       "consequences": {
-        "invest": "[Consequence to be written]",
-        "forbid": "[Consequence to be written]"
+        "invest": "Three years later the Golden Hind returns laden with Spanish silver. Your share is enormous; Philip's fury is greater.",
+        "forbid": "Drake stays in harbour, grumbling. The Spanish ambassador reports that England may yet be reasonable."
       }
     },
     "s13": {
-      "caption": "The Anjou Courtship, 1579",
-      "narration": "[Narration to be written]",
+      "caption": "Whitehall, 1579",
+      "narration": "Francis, Duke of Anjou, brother of the French king, has come to woo you in person. A French marriage would make France an ally against Spain, but London's Protestants dread a Catholic consort. How will you answer him?",
       "options": {
         "lapse": "Prolong it, then let it lapse",
         "marry": "Marry Anjou",
         "reject": "Reject him outright"
       },
       "consequences": {
-        "lapse": "[Consequence to be written]",
+        "lapse": "You keep Anjou hoping for years, and France stays friendly while he hopes. Then, gently, the match fades away.",
         "marry": "[Consequence to be written]",
-        "reject": "[Consequence to be written]"
+        "reject": "You send Anjou home. France is insulted, and Spain no longer fears an English-French alliance."
       }
     },
     "s14": {
-      "caption": "The Treaty of Nonsuch, 1585",
-      "narration": "[Narration to be written]",
+      "caption": "Nonsuch Palace, 1585",
+      "narration": "The Dutch rebels are losing their war against Spain, and their leader, William of Orange, has been assassinated. If they fall, Spain's best army will stand across the Channel. Will you go to war to save them?",
       "options": {
         "army": "Send an army under Leicester",
         "money": "Send money only",
         "stay_out": "Stay out"
       },
       "consequences": {
-        "army": "[Consequence to be written]",
-        "money": "[Consequence to be written]",
-        "stay_out": "[Consequence to be written]"
+        "army": "An English army sails for the Netherlands under Leicester. It is war with Spain in all but name.",
+        "money": "English money flows to the Dutch, but no English soldiers. Philip takes note all the same.",
+        "stay_out": "You leave the Dutch to their fate. Spain's grip on the Low Countries tightens."
       }
     },
     "s15": {
-      "caption": "The Babington Plot, 1586",
-      "narration": "[Narration to be written]",
+      "caption": "Chartley, 1586",
+      "narration": "Walsingham's agents have been reading Mary's secret letters, smuggled in beer barrels. Now she has approved a plot to murder you and set her free. The proof is in your hands. What will you do with her?",
       "options": {
         "undetected": "The plot goes undetected",
         "execute": "Try Mary and sign the warrant",
@@ -239,190 +239,191 @@
         "exile": "Exile her abroad"
       },
       "consequences": {
-        "undetected": "[Consequence to be written]",
-        "execute": "[Consequence to be written]",
-        "imprison": "[Consequence to be written]",
-        "exile": "[Consequence to be written]"
-      }
+        "undetected": "The assassins strike, and fail by inches. You live, but you will never feel safe again.",
+        "execute": "You sign the death warrant, then rage at the men who carried it out. Mary is to die at Fotheringhay.",
+        "imprison": "Mary lives, guarded more closely than ever. Every Catholic plotter in Europe now sees her as the key to your throne.",
+        "exile": "Mary is sent abroad under guard. Within weeks she is a guest of the Guise, and a queen in waiting."
+      },
+      "auto_narration": "A young gentleman named Anthony Babington has gathered Catholic friends sworn to murder you and free Mary. With no spies to warn you, no one knows until the day they strike."
     },
     "s16": {
-      "caption": "Cadiz, 1587",
-      "narration": "[Narration to be written]",
+      "caption": "Plymouth, 1587",
+      "narration": "Philip is gathering a great fleet in Cadiz harbour to invade England. Drake begs leave to strike it before it sails. Your Council is split, and Parma hints that peace may still be possible. What will you do?",
       "options": {
         "raid": "Authorise Drake's raid",
         "home": "Concentrate the fleet at home",
         "talks": "Peace talks with Parma"
       },
       "consequences": {
-        "raid": "[Consequence to be written]",
-        "home": "[Consequence to be written]",
-        "talks": "[Consequence to be written]"
+        "raid": "Drake sails for Cadiz with every ship you can spare. How he fares will show how well you built your fleet.",
+        "home": "Your fleet gathers at Plymouth, crews drilled and ready. Whatever comes will meet it in English waters.",
+        "talks": "Your envoys meet Parma's men to talk of peace. The Council fumes, and the Dutch feel betrayed."
       }
     },
     "s17": {
-      "caption": "Victualling the Fleet, 1588",
-      "narration": "[Narration to be written]",
+      "caption": "Plymouth, 1588",
+      "narration": "The Armada is coming. Lord Admiral Howard writes begging for powder, shot and food. The treasury is thin, and a full supply would cost a fortune. How will you provision the fleet?",
       "options": {
         "sparing": "Supply it sparingly",
         "full": "Fully supply powder and shot"
       },
       "consequences": {
-        "sparing": "[Consequence to be written]",
-        "full": "[Consequence to be written]"
+        "sparing": "Supplies reach Plymouth in careful measure. Howard writes back, politely, that it is not enough.",
+        "full": "Powder, shot and food pour into Plymouth. The treasury groans; the fleet cheers."
       }
     }
   },
   "beats": {
     "rome_courts": {
-      "caption": "The Vatican, February 1570",
-      "text": "[Beat text to be written]"
+      "caption": "Whitehall, 1570",
+      "text": "A papal envoy arrives bearing friendly letters. Rome still hopes to win England back, and your Protestant councillors watch you closely."
     },
     "papal_bull": {
-      "caption": "Rome, February 1570",
-      "text": "[Beat text to be written]"
+      "caption": "London, May 1570",
+      "text": "At dawn, a papal bull is found nailed to the Bishop of London's gate. The Pope has excommunicated you and released your Catholic subjects from obedience."
     },
     "papal_crusade": {
-      "caption": "Rome, February 1570",
-      "text": "[Beat text to be written]"
+      "caption": "London, May 1570",
+      "text": "At dawn, a papal bull is found nailed to the Bishop of London's gate. The Pope has excommunicated you and calls on Catholic princes to remove you by force."
     },
     "mary_execution_1572": {
-      "caption": "June 1572",
-      "text": "[Beat text to be written]"
+      "caption": "1572",
+      "text": "Mary, Queen of Scots goes to the block. Her death shocks every court in Europe and gives England's Catholics a martyr."
     },
     "drake_return": {
-      "caption": "Plymouth, September 1580",
-      "text": "[Beat text to be written]"
+      "caption": "Deptford, April 1581",
+      "text": "The Golden Hind lies at Deptford, home with a fortune in Spanish silver. On her deck, Francis Drake kneels to be knighted."
     },
     "throckmorton_undetected": {
-      "caption": "London, November 1583",
-      "text": "[Beat text to be written]"
+      "caption": "London, 1583",
+      "text": "In a quiet London house, Catholic plotters and the Spanish ambassador plan a French invasion to put Mary on your throne. No one is watching."
     },
     "mary_execution_fotheringhay": {
-      "caption": "Fotheringhay Castle, February 1587",
-      "text": "[Beat text to be written]"
+      "caption": "Fotheringhay, February 1587",
+      "text": "Mary, Queen of Scots walks calmly to the block in the great hall. Beneath her black gown she wears red, the colour of martyrdom."
     },
     "armada_sighted": {
-      "caption": "Off the Lizard, July 1588",
-      "text": "[Beat text to be written]"
+      "caption": "Cornwall, July 1588",
+      "text": "The Spanish Armada is sighted off the Lizard: some 130 ships in a vast crescent. Beacon fires carry the news from hilltop to hilltop."
     },
     "fireships": {
-      "caption": "Calais Roads, July 1588",
-      "text": "[Beat text to be written]"
+      "caption": "Off Calais, July 1588",
+      "text": "At midnight, eight English fireships drift into the anchored Armada. Spanish captains cut their cables and scatter into the dark."
     },
     "tilbury": {
       "caption": "Tilbury, August 1588",
-      "text": "[Beat text to be written]"
+      "text": "You ride among your soldiers at Tilbury. You have the body of a weak and feeble woman, you tell them, but the heart and stomach of a king."
     },
     "storm": {
-      "caption": "The coast of Ireland, September 1588",
-      "text": "[Beat text to be written]"
+      "caption": "The Atlantic, autumn 1588",
+      "text": "The broken Armada flees north around Scotland. Off Ireland, storms drive ship after ship onto the rocks."
     }
   },
   "endings": {
     "gloriana": {
       "title": "Gloriana",
-      "text": "[Ending text to be written]"
+      "text": "Spain's Armada is broken and England stands. Your people call you Gloriana, the Virgin Queen who defied an empire, and a golden age begins."
     },
     "mistress": {
       "title": "Mistress of the Seas",
-      "text": "[Ending text to be written]"
+      "text": "The Armada is not merely beaten but destroyed, and Spanish galleons sail up the Thames as prizes. You have bettered history: England's mastery of the seas begins with you."
     },
     "pyrrhic": {
       "title": "Pyrrhic Victory",
-      "text": "[Ending text to be written]"
+      "text": "The Armada is beaten, but at ruinous cost. Unpaid sailors die of hunger and sickness on Margate sands, and your treasury is empty. England survives, only just."
     },
     "invasion": {
       "title": "Invasion",
-      "text": "[Ending text to be written]"
+      "text": "Parma's veterans wade ashore in Kent. Your fleet could not stop them, and London lies only days away. Your reign ends in fire and occupation."
     },
     "bankrupt": {
       "title": "Bankrupt Crown",
-      "text": "[Ending text to be written]"
+      "text": "The Crown can no longer pay its soldiers, its sailors or its debts. Foreign bankers seize your jewels, and your authority goes with them."
     },
     "deposed": {
       "title": "Deposed by Council",
-      "text": "[Ending text to be written]"
+      "text": "Your Council has lost all faith in you. Ruling in your name, they take power for themselves, and you become a queen in name only."
     },
     "assassinated": {
       "title": "Assassinated",
-      "text": "[Ending text to be written]"
+      "text": "An assassin reaches you at last. England is left with no monarch and no heir, and civil war follows. Your reign ends in darkness."
     },
     "catholic_rising": {
       "title": "Catholic Rising",
-      "text": "[Ending text to be written]"
+      "text": "England's Catholics rise in their thousands, with Spanish gold behind them. The rebels march on London, and your Protestant crown is lost."
     },
     "protestant_revolt": {
       "title": "Protestant Revolt",
-      "text": "[Ending text to be written]"
+      "text": "Convinced you have betrayed them to Rome, your Protestant subjects rise in revolt. Preachers call for a new monarch, and London shuts its gates to you."
     },
     "habsburg_queen": {
       "title": "Habsburg Queen",
-      "text": "[Ending text to be written]"
+      "text": "You marry Philip of Spain. England becomes the jewel of the Habsburg empire: safe from invasion, but no longer its own master."
     },
     "dudleys_wife": {
       "title": "Dudley's Wife",
-      "text": "[Ending text to be written]"
+      "text": "You marry Robert Dudley. The court is scandalised, the Council divided, and every rival noble a possible rebel. You have your husband; you may yet lose your crown."
     },
     "scottish_succession": {
       "title": "Scottish Succession",
-      "text": "[Ending text to be written]"
+      "text": "You name Mary, Queen of Scots, your heir. England's Catholics rejoice and its Protestants arm themselves. The peace you bought may not outlive you."
     },
     "french_match": {
       "title": "The French Match",
-      "text": "[Ending text to be written]"
+      "text": "You marry the Duke of Anjou. France becomes your ally, but London riots against a Catholic consort, and your reformers never forgive you."
     }
   },
   "chronicle": {
     "s01": {
-      "note": "[Historical note to be written]"
+      "note": "Elizabeth appointed William Cecil her Secretary at Hatfield within days of her accession. He served her for forty years, later as Lord Burghley, while Mary's hardline Catholic councillors were replaced by moderates and Protestants."
     },
     "s02": {
-      "note": "[Historical note to be written]"
+      "note": "The Religious Settlement of 1559 made the Church of England Protestant in belief but kept bishops, vestments and much old ceremony. Elizabeth took the title Supreme Governor rather than Supreme Head, softening the break with Rome."
     },
     "s03": {
-      "note": "[Historical note to be written]"
+      "note": "Philip proposed in early 1559, hoping to keep England in the Spanish camp. Elizabeth declined politely, and within months Philip married a French princess instead."
     },
     "s04": {
-      "note": "[Historical note to be written]"
+      "note": "Elizabeth sent a fleet, then an army, to help the Scottish Protestant lords. The Treaty of Edinburgh in 1560 removed French troops from Scotland and secured England's northern border for a generation."
     },
     "s05": {
-      "note": "[Historical note to be written]"
+      "note": "Amy Robsart's death was ruled an accident, but the scandal made marriage to Dudley impossible. Elizabeth kept him as her closest favourite, made him Earl of Leicester in 1564, and never married him."
     },
     "s06": {
-      "note": "[Historical note to be written]"
+      "note": "Elizabeth nearly died of smallpox in October 1562. Even so, she refused to name an heir for the rest of her life, fearing that a named successor would become a focus for plots against her."
     },
     "s07": {
-      "note": "[Historical note to be written]"
+      "note": "Mary crossed the Solway in May 1568 expecting help. Instead, Elizabeth held her captive in England for nearly nineteen years, moving her from house to house under guard."
     },
     "s08": {
-      "note": "[Historical note to be written]"
+      "note": "Elizabeth crushed the Rising of the North in 1569 and ordered hundreds of executions. In 1570 the Pope excommunicated her and declared her Catholic subjects free from their obedience."
     },
     "s09": {
-      "note": "[Historical note to be written]"
+      "note": "The Duke of Norfolk was executed in 1572 for his part in the Ridolfi Plot. Parliament demanded Mary's death too, but Elizabeth refused to execute an anointed queen."
     },
     "s10": {
-      "note": "[Historical note to be written]"
+      "note": "Walsingham built the most effective intelligence service in Europe, often paying agents from his own pocket because Elizabeth would not fund it fully. He died in debt in 1590."
     },
     "s11": {
-      "note": "[Historical note to be written]"
+      "note": "As Treasurer of the Navy from 1577, John Hawkins rebuilt the fleet with lower, faster race-built galleons designed for gunnery. In 1588 they outsailed and outgunned the Armada."
     },
     "s12": {
-      "note": "[Historical note to be written]"
+      "note": "Elizabeth secretly invested in Drake's voyage of 1577 to 1580, the first English circumnavigation of the world. Her share of the plunder was enormous, and she had him knighted aboard the Golden Hind in 1581."
     },
     "s13": {
-      "note": "[Historical note to be written]"
+      "note": "Elizabeth courted Anjou on and off from 1579 to 1581, even giving him a ring in public. The courtship kept France friendly as a counterweight to Spain, but she never married him, and he left England in 1582."
     },
     "s14": {
-      "note": "[Historical note to be written]"
+      "note": "By the Treaty of Nonsuch in 1585, Elizabeth sent an army under the Earl of Leicester to support the Dutch rebels. It made open war with Spain inevitable."
     },
     "s15": {
-      "note": "[Historical note to be written]"
+      "note": "Walsingham's agents read every letter of the Babington Plot, including Mary's approval of it. Elizabeth signed Mary's death warrant in February 1587, then blamed her secretary, William Davison, for sending it."
     },
     "s16": {
-      "note": "[Historical note to be written]"
+      "note": "In April 1587 Drake raided Cadiz, destroying dozens of ships and great stores of supplies. He called it singeing the King of Spain's beard, and it delayed the Armada by a year."
     },
     "s17": {
-      "note": "[Historical note to be written]"
+      "note": "Elizabeth kept the fleet on tight rations in 1588. The English ran desperately short of powder and shot during the fighting, and afterwards thousands of sailors died of disease and hunger, many of them unpaid."
     }
   }
 }
