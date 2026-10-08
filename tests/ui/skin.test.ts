@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { fontAssets } from '../../src/ui/fonts';
+import { textSizes } from '../../src/ui/theme';
 import { tudorSkin } from '../../src/ui/skin/tudor';
 import { skinImageNames } from '../../src/ui/skin/types';
 
@@ -33,5 +34,13 @@ describe('Tudor skin', () => {
 
   it('uses only fonts that are loaded at startup', () => {
     for (const family of Object.values(tudorSkin.fonts)) expect(Object.keys(fontAssets)).toContain(family);
+  });
+});
+
+describe('panel text sizes', () => {
+  it('keeps every line height at least 1.3x its font size so wrapped text is never squashed', () => {
+    for (const size of Object.values(textSizes)) {
+      expect(size.lineHeight / size.fontSize).toBeGreaterThanOrEqual(1.3);
+    }
   });
 });

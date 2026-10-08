@@ -5,7 +5,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { getImage } from './images';
 import { SkinPanel } from './skin/SkinPanel';
 import { useSkin } from './skin/SkinProvider';
-import { spacing } from './theme';
+import { panelMaxScreenShare, spacing } from './theme';
 
 interface Props {
   readonly image: string;
@@ -13,8 +13,8 @@ interface Props {
 }
 
 /**
- * A full-screen image with the skin's panel over its lower part. The panel's content scrolls when
- * it is taller than the space it has; the image never shrinks.
+ * A full-screen image with the skin's panel over its lower part. The panel never covers more than
+ * the bottom `panelMaxScreenShare` of the screen; taller content scrolls. The image never shrinks.
  */
 export function SceneFrame({ image, children }: Props) {
   const insets = useSafeAreaInsets();
@@ -42,7 +42,7 @@ export function SceneFrame({ image, children }: Props) {
 
 const styles = StyleSheet.create({
   root: { flex: 1 },
-  panelArea: { position: 'absolute', left: 0, right: 0, bottom: 0, maxHeight: '62%' },
+  panelArea: { position: 'absolute', left: 0, right: 0, bottom: 0, maxHeight: panelMaxScreenShare },
   panel: { flexShrink: 1 },
   scroll: { flexGrow: 0, flexShrink: 1 },
 });

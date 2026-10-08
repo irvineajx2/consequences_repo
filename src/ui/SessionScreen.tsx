@@ -131,6 +131,6 @@ function EndingView({
 }
 
 const styles = StyleSheet.create({
-  narration: { marginTop: spacing.sm, marginBottom: spacing.md },
-  line: { marginBottom: spacing.sm },
+  narration: { marginTop: spacing.xs, marginBottom: spacing.sm },
+  line: { marginBottom: spacing.xs },
 });

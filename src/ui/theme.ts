@@ -15,13 +15,20 @@ export const fonts = {
 
 export const spacing = { xs: 4, sm: 8, md: 16, lg: 24, xl: 40 } as const;
 
-/** Sizes for skinned text; fonts and colours come from the skin. */
+/** The panel never covers more than this share of the screen (bottom up); its content scrolls. */
+export const panelMaxScreenShare = '35%';
+
+/**
+ * Sizes for skinned text; fonts and colours come from the skin. Kept compact so a scene's caption,
+ * narration and first option fit in the capped panel, with line heights of at least 1.3x so wrapped
+ * lines never crowd each other.
+ */
 export const textSizes = {
-  caption: { fontSize: 13, letterSpacing: 1.2, lineHeight: 18 },
-  heading: { fontSize: 24, lineHeight: 30 },
-  body: { fontSize: 18, lineHeight: 25 },
-  muted: { fontSize: 16, lineHeight: 22 },
-  button: { fontSize: 18, lineHeight: 23 },
+  caption: { fontSize: 11, letterSpacing: 1, lineHeight: 15 },
+  heading: { fontSize: 19, lineHeight: 25 },
+  body: { fontSize: 15, lineHeight: 21 },
+  muted: { fontSize: 13, lineHeight: 18 },
+  button: { fontSize: 15, lineHeight: 20 },
 } as const;
 
 export const type = {
