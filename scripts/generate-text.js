@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 /**
- * Fills a ruler's text.en.json with an entry for every scene, option and ending in its rules.json.
- * Existing text is never overwritten, so this is safe to re-run after rules change.
+ * Fills a ruler's text.en.json with an entry for every scene, option, beat and ending in its
+ * rules.json. Existing text is never overwritten, so this is safe to re-run after rules change.
  *
- * Option text defaults to the option's label, captions to "<title>, <year>". Narration,
- * consequence and ending text are placeholders. When an option id appears in several variants of a
- * scene with different labels, the first label goes in `options` and the others go in
- * `variants.<index>.options` (same for consequences).
+ * Option text defaults to the option's label, scene captions to "<title>, <year>" and beat
+ * captions to the beat id. Narration, consequence, beat and ending text are placeholders. When an
+ * option id appears in several variants of a scene with different labels, the first label goes in
+ * `options` and the others go in `variants.<index>.options` (same for consequences).
  *
  * Usage: node scripts/generate-text.js [ruler-id]   (default: elizabeth-i)
  */
@@ -21,6 +21,7 @@ const text = fs.existsSync(textPath) ? JSON.parse(fs.readFileSync(textPath, 'utf
 
 const NARRATION = '[Narration to be written]';
 const CONSEQUENCE = '[Consequence to be written]';
+const BEAT = '[Beat text to be written]';
 const ENDING = '[Ending text to be written]';
 
 const fill = (obj, key, value) => {
@@ -32,6 +33,7 @@ fill(text, 'ruler', {});
 fill(text.ruler, 'name', rules.ruler);
 fill(text.ruler, 'short_name', rules.ruler);
 fill(text, 'scenes', {});
+fill(text, 'beats', {});
 fill(text, 'endings', {});
 
 for (const scene of rules.scenes) {
@@ -56,6 +58,12 @@ for (const scene of rules.scenes) {
       }
     }
   });
+}
+
+for (const id of Object.keys(rules.beats || {})) {
+  const entry = fill(text.beats, id, {});
+  fill(entry, 'caption', id);
+  fill(entry, 'text', BEAT);
 }
 
 for (const [id, ending] of Object.entries(rules.endings)) {

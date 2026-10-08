@@ -84,9 +84,9 @@ def decision_log(choices):
             if end: break
             continue
         o = next(x for x in opts if x["id"] == choices[k]); k += 1
+        s2, end, beats = E.choose_with_beats(i, st, o)
         log.append({"scene": E.scenes[i]["id"], "option": o["id"],
-                    "historical": o["historical"], "auto": mode == "auto"})
-        s2, end = E.choose(i, st, o)
+                    "historical": o["historical"], "auto": mode == "auto", "beats": beats})
         if end: break
         st, end, *_ = E.resolve(i, s2)
         if end: break
@@ -99,6 +99,7 @@ def case(name, choices, term):
     return {"name": name, "choices": choices,
             "expected": {"ending": end, "score": sc, "early_finale": early, "final_state": st,
                          "decisions": log,
+                         "finale_beats": E.finale_beats() if sc is not None else [],
                          "historical_matches": sum(1 for d in log if d["historical"] and not d["auto"])}}
 
 def follow(fn):
@@ -125,7 +126,7 @@ for r in range(200):
         return random.choice(keep if keep and random.random() < 0.95 else tr)
     cases.append(case(f"random_{r:03d}", *follow(pick)))
 assert covered == set(ALL)
-json.dump({"generated_from": "elizabeth_rules.json version 5",
+json.dump({"generated_from": "rules.json version 6",
            "note": "choices lists the option id picked at each scene shown to the player, including auto scenes; skipped scenes have no entry",
            "cases": cases}, open("tests/fixtures/golden_paths.json", "w"), indent=1)
 print("coverage cases:", len(cases) - 201, " total cases:", len(cases))

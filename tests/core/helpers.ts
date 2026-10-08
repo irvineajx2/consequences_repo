@@ -11,6 +11,7 @@ export interface GoldenCase {
     early_finale: boolean;
     final_state: Record<string, StateValue>;
     decisions: Decision[];
+    finale_beats: string[];
     historical_matches: number;
   };
 }

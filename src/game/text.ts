@@ -12,6 +12,11 @@ export interface SceneText extends OptionTexts {
   readonly variants?: Readonly<Record<string, Partial<OptionTexts>>>;
 }
 
+export interface BeatText {
+  readonly caption: string;
+  readonly text: string;
+}
+
 export interface EndingText {
   readonly title: string;
   readonly text: string;
@@ -20,6 +25,7 @@ export interface EndingText {
 export interface RulerText {
   readonly ruler: { readonly name: string; readonly short_name: string };
   readonly scenes: Readonly<Record<string, SceneText>>;
+  readonly beats: Readonly<Record<string, BeatText>>;
   readonly endings: Readonly<Record<string, EndingText>>;
 }
 
@@ -52,6 +58,10 @@ export function consequenceText(
   optionId: string,
 ): string | undefined {
   return lookup(text, sceneId, variant, 'consequences', optionId);
+}
+
+export function beatText(text: RulerText, beatId: string): BeatText {
+  return text.beats[beatId] ?? { caption: missing(beatId), text: '' };
 }
 
 export function endingText(text: RulerText, endingId: string): EndingText {

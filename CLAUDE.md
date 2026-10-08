@@ -96,16 +96,22 @@ scene began, the "pre" state):
 **Finale outcome:** the first entry in `outcomes` where every present test passes
 (`below`: score < value; `at_least`: score >= value; `if`: condition holds).
 
+**Story beats.** Beats are presentation only and never change state. Each beat id in `beats` maps
+to an image. After a decision, its beats are, in order: the option's own `beats`, then the `beat`
+of each event branch that fired (only branches that have one). An option with `end` has no beats.
+When the run ends through the finale (early or not), `finale.beats` play in order before the
+ending. Failure and alternate endings have no finale beats.
+
 **Run history.** Record every shown scene (choice or auto, never skipped):
-`{scene, option, historical, auto}`. Historical matches = decisions where `historical` is true and
-`auto` is false.
+`{scene, option, historical, auto, beats}`. Historical matches = decisions where `historical` is
+true and `auto` is false.
 
 ## Testing
 
 - `npm test` runs Jest (preset `jest-expo`). `npx tsc --noEmit` must also pass.
 - `tests/fixtures/golden_paths.json` cases replay `choices` (one option id per shown scene,
   including auto scenes) and assert ending, score (tolerance 1e-9), early flag, final state,
-  decision log and match count.
+  decision log (including beats), finale beats and match count.
 - After any edit to `rules.json`, regenerate fixtures with `python tools/make_fixtures.py` from the
   repo root and review the diff before committing.
 - Run the tests yourself after every change and fix failures before reporting a task done.

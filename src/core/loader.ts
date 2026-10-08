@@ -16,6 +16,7 @@ const REQUIRED_KEYS = [
   'failures',
   'drift',
   'events',
+  'beats',
   'early_finale',
   'finale',
   'endings',
@@ -34,7 +35,7 @@ export function allOptions(scene: Scene): readonly Option[] {
 
 /**
  * Takes the parsed rules JSON and returns typed rules. Throws a RulesError if the shape is wrong
- * or if any referenced ending, event, scene, meter or flag does not exist.
+ * or if any referenced ending, event, beat, scene, meter or flag does not exist.
  */
 export function loadRules(json: unknown): Rules {
   if (!isObject(json)) throw new RulesError('expected an object');
@@ -53,6 +54,11 @@ export function loadRules(json: unknown): Rules {
 
   const checkEnding = (id: string, where: string): void => {
     if (!endings.has(id)) throw new RulesError(`${where} references unknown ending "${id}"`);
+  };
+  const checkBeats = (ids: readonly string[] | undefined, where: string): void => {
+    for (const id of ids ?? []) {
+      if (!(id in rules.beats)) throw new RulesError(`${where} references unknown beat "${id}"`);
+    }
   };
   const checkCondition = (cond: Condition | undefined, where: string): void => {
     for (const [name] of cond ?? []) {
@@ -78,12 +84,17 @@ export function loadRules(json: unknown): Rules {
     checkCondition(d.if, `drift[${i}]`);
     checkEffect(d.then, `drift[${i}]`);
   });
+  for (const [id, beat] of Object.entries(rules.beats)) {
+    if (typeof beat?.image !== 'string') throw new RulesError(`beat "${id}" has no image`);
+  }
   for (const [id, event] of Object.entries(rules.events)) {
     event.branches.forEach((b, i) => {
       checkCondition(b.if, `event "${id}" branch ${i}`);
       checkEffect(b.then, `event "${id}" branch ${i}`);
+      if (b.beat !== undefined) checkBeats([b.beat], `event "${id}" branch ${i}`);
     });
   }
+  checkBeats(rules.finale.beats, 'finale');
   rules.finale.outcomes.forEach((o, i) => {
     checkEnding(o.end, `finale outcome ${i}`);
     checkCondition(o.if, `finale outcome ${i}`);
@@ -123,6 +134,7 @@ export function loadRules(json: unknown): Rules {
       const at = `${where} option "${option.id}"`;
       if (option.end !== undefined) checkEnding(option.end, at);
       checkEffect(option, at);
+      checkBeats(option.beats, at);
       (option.cond ?? []).forEach((c, i) => {
         checkCondition(c.if, `${at} cond ${i}`);
         checkEffect(c.then, `${at} cond ${i}`);

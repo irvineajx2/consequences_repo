@@ -253,6 +253,52 @@
       }
     }
   },
+  "beats": {
+    "rome_courts": {
+      "caption": "The Vatican, February 1570",
+      "text": "[Beat text to be written]"
+    },
+    "papal_bull": {
+      "caption": "Rome, February 1570",
+      "text": "[Beat text to be written]"
+    },
+    "papal_crusade": {
+      "caption": "Rome, February 1570",
+      "text": "[Beat text to be written]"
+    },
+    "mary_execution_1572": {
+      "caption": "June 1572",
+      "text": "[Beat text to be written]"
+    },
+    "drake_return": {
+      "caption": "Plymouth, September 1580",
+      "text": "[Beat text to be written]"
+    },
+    "throckmorton_undetected": {
+      "caption": "London, November 1583",
+      "text": "[Beat text to be written]"
+    },
+    "mary_execution_fotheringhay": {
+      "caption": "Fotheringhay Castle, February 1587",
+      "text": "[Beat text to be written]"
+    },
+    "armada_sighted": {
+      "caption": "Off the Lizard, July 1588",
+      "text": "[Beat text to be written]"
+    },
+    "fireships": {
+      "caption": "Calais Roads, July 1588",
+      "text": "[Beat text to be written]"
+    },
+    "tilbury": {
+      "caption": "Tilbury, August 1588",
+      "text": "[Beat text to be written]"
+    },
+    "storm": {
+      "caption": "The coast of Ireland, September 1588",
+      "text": "[Beat text to be written]"
+    }
+  },
   "endings": {
     "gloriana": {
       "title": "Gloriana",

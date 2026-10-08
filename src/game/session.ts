@@ -21,6 +21,12 @@ export interface ConsequenceViewModel {
   readonly optionId: string;
 }
 
+export interface BeatViewModel {
+  readonly kind: 'beat';
+  readonly beatId: string;
+  readonly image: string;
+}
+
 export interface EndingViewModel {
   readonly kind: 'ending';
   readonly ending: string;
@@ -34,12 +40,14 @@ export interface EndingViewModel {
   readonly playerDecisions: number;
 }
 
-export type SessionView = SceneViewModel | ConsequenceViewModel | EndingViewModel;
+export type SessionView = SceneViewModel | ConsequenceViewModel | BeatViewModel | EndingViewModel;
 
 export interface Session {
   readonly rules: Rules;
   readonly run: Run;
   readonly view: SessionView;
+  /** Beats still to show, in order, before the next scene or the ending. */
+  readonly pendingBeats: readonly string[];
 }
 
 function viewFor(rules: Rules, run: Run): SceneViewModel | EndingViewModel {
@@ -74,10 +82,18 @@ function viewFor(rules: Rules, run: Run): SceneViewModel | EndingViewModel {
 
 export function start(rules: Rules): Session {
   const run = startRun(rules);
-  return { rules, run, view: viewFor(rules, run) };
+  return { rules, run, view: viewFor(rules, run), pendingBeats: [] };
 }
 
-/** Plays an option in the current scene. Shows its consequence, or the ending if it ends the run. */
+function beatView(rules: Rules, beatId: string): BeatViewModel {
+  return { kind: 'beat', beatId, image: rules.beats[beatId].image };
+}
+
+/**
+ * Plays an option in the current scene. Shows its consequence, or the ending if the option itself
+ * ends the run. The decision's beats follow the consequence, then the finale beats if the run
+ * reached the finale.
+ */
 export function choose(session: Session, optionId: string): Session {
   const { view, rules } = session;
   if (view.kind !== 'scene') throw new Error(`Cannot choose an option from the ${view.kind} view`);
@@ -85,10 +101,12 @@ export function choose(session: Session, optionId: string): Session {
   if (!option) throw new Error(`Scene "${view.sceneId}" has no available option "${optionId}"`);
 
   const run = advance(rules, session.run, optionId);
-  if (option.end !== undefined) return { rules, run, view: viewFor(rules, run) };
+  if (option.end !== undefined) return { rules, run, view: viewFor(rules, run), pendingBeats: [] };
+  const decision = run.history.decisions[run.history.decisions.length - 1];
   return {
     rules,
     run,
+    pendingBeats: [...decision.beats, ...(run.outcome?.beats ?? [])],
     view: {
       kind: 'consequence',
       sceneIndex: view.sceneIndex,
@@ -100,12 +118,15 @@ export function choose(session: Session, optionId: string): Session {
   };
 }
 
-/** Moves on from a consequence to the next shown scene, or to the ending. */
+/** Moves on from a consequence or beat to the next beat, the next shown scene, or the ending. */
 function continueSession(session: Session): Session {
-  if (session.view.kind !== 'consequence') {
-    throw new Error(`Cannot continue from the ${session.view.kind} view`);
+  const { view, rules, pendingBeats } = session;
+  if (view.kind !== 'consequence' && view.kind !== 'beat') {
+    throw new Error(`Cannot continue from the ${view.kind} view`);
   }
-  return { ...session, view: viewFor(session.rules, session.run) };
+  const [next, ...rest] = pendingBeats;
+  if (next !== undefined) return { ...session, view: beatView(rules, next), pendingBeats: rest };
+  return { ...session, view: viewFor(rules, session.run) };
 }
 export { continueSession as continue };
 

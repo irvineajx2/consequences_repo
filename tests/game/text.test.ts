@@ -24,6 +24,15 @@ describe('text file', () => {
     }
   });
 
+  it('has a caption and text for every beat, and no unknown beats', () => {
+    for (const id of Object.keys(rules.beats)) {
+      expect(text.beats[id]?.caption).toEqual(expect.any(String));
+      expect(text.beats[id]?.caption).not.toBe(id);
+      expect(text.beats[id]?.text).toEqual(expect.any(String));
+    }
+    for (const id of Object.keys(text.beats)) expect(Object.keys(rules.beats)).toContain(id);
+  });
+
   it('has a title and text for every ending', () => {
     for (const id of Object.keys(rules.endings)) {
       expect(text.endings[id]?.title).toEqual(expect.any(String));

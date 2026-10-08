@@ -3,7 +3,7 @@ import * as session from '../../src/game/session';
 import type { Session, SessionView } from '../../src/game/session';
 import { deepFreeze, goldenCases, rules } from '../core/helpers';
 
-/** Plays choices through the session, continuing past every consequence. Returns every view seen. */
+/** Plays choices through the session, continuing past consequences and beats. Returns every view seen. */
 function play(choices: readonly string[]): { final: Session; views: SessionView[] } {
   let s = session.start(rules);
   const views: SessionView[] = [s.view];
@@ -11,7 +11,7 @@ function play(choices: readonly string[]): { final: Session; views: SessionView[
     expect(s.view.kind).toBe('scene');
     s = session.choose(s, choice);
     views.push(s.view);
-    if (s.view.kind === 'consequence') {
+    while (s.view.kind === 'consequence' || s.view.kind === 'beat') {
       s = session.continue(s);
       views.push(s.view);
     }
@@ -21,6 +21,15 @@ function play(choices: readonly string[]): { final: Session; views: SessionView[
 
 const sceneIdsShown = (views: SessionView[]) =>
   views.flatMap((v) => (v.kind === 'scene' ? [v.sceneId] : []));
+
+/** A compact trace: "s08" for scenes, "beat:<id>" for beats, "end:<id>" for the ending. */
+const trace = (views: SessionView[]) =>
+  views.flatMap((v) => {
+    if (v.kind === 'scene') return [v.sceneId];
+    if (v.kind === 'beat') return [`beat:${v.beatId}`];
+    if (v.kind === 'ending') return [`end:${v.ending}`];
+    return [];
+  });
 
 const byName = (name: string) => {
   const found = goldenCases.find((c) => c.name === name);
@@ -39,6 +48,72 @@ describe('game session', () => {
       early: false,
     });
     if (final.view.kind === 'ending') expect(final.view.score).toBeCloseTo(120, 9);
+  });
+
+  it('shows the story beats of the historical path in order', () => {
+    const { views } = play(byName('historical_path').choices);
+    const around = ['s08', 's09', 's12', 's13', 's15', 's16'];
+    const shown = trace(views).filter((t) => !/^s\d/.test(t) || around.includes(t));
+    expect(shown).toEqual([
+      's08',
+      'beat:papal_bull',
+      's09',
+      's12',
+      'beat:drake_return',
+      's13',
+      's15',
+      'beat:mary_execution_fotheringhay',
+      's16',
+      'beat:armada_sighted',
+      'beat:fireships',
+      'beat:tilbury',
+      'beat:storm',
+      'end:gloriana',
+    ]);
+  });
+
+  it('shows each beat after its consequence and with its image', () => {
+    const { views } = play(byName('historical_path').choices);
+    const first = views.findIndex((v) => v.kind === 'beat');
+    expect(views[first - 1].kind).toBe('consequence');
+    expect(views[first]).toEqual({
+      kind: 'beat',
+      beatId: 'papal_bull',
+      image: rules.beats.papal_bull.image,
+    });
+  });
+
+  it('shows the Rome-courts beat instead of the bull after a Catholic-leaning start', () => {
+    const golden = goldenCases.find((c) =>
+      c.expected.decisions.some((d) => d.scene === 's08' && d.beats.includes('rome_courts')),
+    );
+    expect(golden).toBeDefined();
+    const { views } = play(golden!.choices);
+    const beats = trace(views).filter((t) => t.startsWith('beat:'));
+    expect(beats).toContain('beat:rome_courts');
+    expect(beats).not.toContain('beat:papal_bull');
+  });
+
+  it('shows every golden case decision and finale beat, in order', () => {
+    for (const c of goldenCases) {
+      const { views } = play(c.choices);
+      const expected = [...c.expected.decisions.flatMap((d) => d.beats), ...c.expected.finale_beats];
+      const shown = trace(views).filter((t) => t.startsWith('beat:'));
+      expect(shown).toEqual(expected.map((b) => `beat:${b}`));
+    }
+  });
+
+  it('plays finale beats before an early finale but not before failure or alternate endings', () => {
+    const early = goldenCases.find((c) => c.expected.early_finale);
+    const failure = goldenCases.find((c) => c.expected.score === null && c.expected.ending === 'bankrupt');
+    expect(early && failure).toBeTruthy();
+    const earlyViews = play(early!.choices).views;
+    expect(trace(earlyViews).slice(-5)).toEqual([
+      ...(rules.finale.beats ?? []).map((b) => `beat:${b}`),
+      `end:${early!.expected.ending}`,
+    ]);
+    const failureTrace = trace(play(failure!.choices).views);
+    for (const b of rules.finale.beats ?? []) expect(failureTrace).not.toContain(`beat:${b}`);
   });
 
   it('goes straight to the ending view for an option with an end', () => {

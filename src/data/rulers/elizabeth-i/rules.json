@@ -1,6 +1,6 @@
 {
  "ruler": "elizabeth_i",
- "version": 5,
+ "version": 6,
  "meters": {
   "tr": 30,
   "rel": 35,
@@ -149,11 +149,6 @@
  ],
  "events": {
   "papal_bull": {
-   "image_by_branch": [
-    "B2",
-    "B1",
-    "B1"
-   ],
    "branches": [
     {
      "if": [
@@ -168,7 +163,8 @@
        "spain": -5,
        "auth": -5
       }
-     }
+     },
+     "beat": "rome_courts"
     },
     {
      "if": [
@@ -182,7 +178,8 @@
       "add": {
        "spain": 10
       }
-     }
+     },
+     "beat": "papal_bull"
     },
     {
      "then": {
@@ -190,15 +187,12 @@
        "spain": 15,
        "succ": -5
       }
-     }
+     },
+     "beat": "papal_crusade"
     }
    ]
   },
   "throckmorton": {
-   "image_by_branch": [
-    "T1",
-    null
-   ],
    "branches": [
     {
      "if": [
@@ -217,12 +211,48 @@
       "add": {
        "succ": -20
       }
-     }
+     },
+     "beat": "throckmorton_undetected"
     },
     {
      "then": {}
     }
    ]
+  }
+ },
+ "beats": {
+  "rome_courts": {
+   "image": "B2"
+  },
+  "papal_bull": {
+   "image": "B1"
+  },
+  "papal_crusade": {
+   "image": "B1"
+  },
+  "mary_execution_1572": {
+   "image": "M1"
+  },
+  "drake_return": {
+   "image": "D1"
+  },
+  "throckmorton_undetected": {
+   "image": "T1"
+  },
+  "mary_execution_fotheringhay": {
+   "image": "M1"
+  },
+  "armada_sighted": {
+   "image": "A1"
+  },
+  "fireships": {
+   "image": "A2"
+  },
+  "tilbury": {
+   "image": "A3"
+  },
+  "storm": {
+   "image": "A4"
   }
  },
  "early_finale": {
@@ -329,6 +359,12 @@
     "over": 70,
     "mult": -0.5
    }
+  ],
+  "beats": [
+   "armada_sighted",
+   "fireships",
+   "tilbury",
+   "storm"
   ],
   "outcomes": [
    {
@@ -767,7 +803,10 @@
        },
        "set": {
         "mary": "executed"
-       }
+       },
+       "beats": [
+        "mary_execution_1572"
+       ]
       },
       {
        "id": "spare",
@@ -899,6 +938,9 @@
         }
        }
       }
+     ],
+     "beats": [
+      "drake_return"
      ]
     },
     {
@@ -1059,7 +1101,10 @@
        },
        "set": {
         "mary": "executed"
-       }
+       },
+       "beats": [
+        "mary_execution_fotheringhay"
+       ]
       },
       {
        "id": "imprison",

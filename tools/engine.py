@@ -35,7 +35,14 @@ class Engine:
 
     def choose(self, i, pre, opt):
         """Apply one option. Returns (state, ending|None). All conditions read the pre-scene state."""
-        if "end" in opt: return pre, opt["end"]
+        st, end, _ = self.choose_with_beats(i, pre, opt)
+        return st, end
+
+    def choose_with_beats(self, i, pre, opt):
+        """As choose, plus the story beats to show after this decision, in order:
+        the option's own beats, then the beat of each event branch that fired."""
+        if "end" in opt: return pre, opt["end"], []
+        beats = list(opt.get("beats", []))
         add = dict(opt.get("add", {}))
         for c in self.scenes[i].get("scene_cond", []):          # merged into the option's own adds
             if self.test(pre, c.get("if")):
@@ -46,8 +53,14 @@ class Engine:
             if branch: st = self.apply(st, branch)
         for ev in self.scenes[i].get("after", []):               # events read the current state
             for b in self.d["events"][ev]["branches"]:
-                if self.test(st, b.get("if")): st = self.apply(st, b["then"]); break
-        return st, None
+                if self.test(st, b.get("if")):
+                    st = self.apply(st, b["then"])
+                    if "beat" in b: beats.append(b["beat"])
+                    break
+        return st, None, beats
+
+    def finale_beats(self):
+        return list(self.d["finale"].get("beats", []))
 
     def failure(self, st):
         for f in self.d["failures"]:

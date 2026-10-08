@@ -35,6 +35,28 @@ describe('rules file', () => {
     }
   });
 
+  it('gives every beat an image id and only references beats that exist', () => {
+    const beats = Object.keys(rules.beats);
+    for (const beat of Object.values(rules.beats)) expect(beat.image).toEqual(expect.any(String));
+    const referenced = [
+      ...(rules.finale.beats ?? []),
+      ...Object.values(rules.events).flatMap((e) => e.branches.flatMap((b) => (b.beat ? [b.beat] : []))),
+      ...rules.scenes.flatMap((s) => allOptions(s).flatMap((o) => o.beats ?? [])),
+    ];
+    expect(referenced.length).toBeGreaterThan(0);
+    for (const id of referenced) expect(beats).toContain(id);
+  });
+
+  it('rejects a missing beat with a clear error', () => {
+    const broken = JSON.parse(JSON.stringify(rawRules));
+    broken.finale.beats = ['no_such_beat'];
+    expect(() => loadRules(broken)).toThrow(/unknown beat "no_such_beat"/);
+    const brokenEvent = JSON.parse(JSON.stringify(rawRules));
+    Object.values(brokenEvent.events as Record<string, { branches: { beat?: string }[] }>)[0].branches[0].beat =
+      'no_such_beat';
+    expect(() => loadRules(brokenEvent)).toThrow(/unknown beat "no_such_beat"/);
+  });
+
   it('rejects a missing ending with a clear error', () => {
     const broken = JSON.parse(JSON.stringify(rawRules));
     broken.failures[0].end = 'no_such_ending';

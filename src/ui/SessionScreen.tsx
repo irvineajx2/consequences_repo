@@ -1,6 +1,14 @@
 import { StyleSheet, Text } from 'react-native';
-import { consequenceText, endingText, optionText, type RulerText, sceneText } from '../game/text';
+import {
+  beatText,
+  consequenceText,
+  endingText,
+  optionText,
+  type RulerText,
+  sceneText,
+} from '../game/text';
 import type {
+  BeatViewModel,
   ConsequenceViewModel,
   EndingViewModel,
   SceneViewModel,
@@ -30,6 +38,8 @@ export function SessionScreen({ view, text, ...handlers }: Props) {
       return <SceneView view={view} text={text} {...handlers} />;
     case 'consequence':
       return <ConsequenceView view={view} text={text} {...handlers} />;
+    case 'beat':
+      return <BeatView view={view} text={text} {...handlers} />;
     case 'ending':
       return <EndingView view={view} text={text} {...handlers} />;
   }
@@ -69,6 +79,17 @@ function ConsequenceView({
     <SceneFrame image={view.image}>
       <Text style={type.caption}>{caption}</Text>
       <Text style={[type.body, styles.narration]}>{consequence}</Text>
+      <GameButton label={strings.continue} onPress={onContinue} />
+    </SceneFrame>
+  );
+}
+
+function BeatView({ view, text, onContinue }: { view: BeatViewModel; text: RulerText } & SessionHandlers) {
+  const beat = beatText(text, view.beatId);
+  return (
+    <SceneFrame image={view.image}>
+      <Text style={type.caption}>{beat.caption}</Text>
+      <Text style={[type.body, styles.narration]}>{beat.text}</Text>
       <GameButton label={strings.continue} onPress={onContinue} />
     </SceneFrame>
   );

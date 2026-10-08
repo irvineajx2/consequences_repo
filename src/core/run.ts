@@ -7,6 +7,8 @@ export interface Decision {
   readonly option: string;
   readonly historical: boolean;
   readonly auto: boolean;
+  /** Story beats shown after this decision. */
+  readonly beats: readonly string[];
 }
 
 export interface RunHistory {
@@ -30,8 +32,9 @@ export const emptyHistory: RunHistory = Object.freeze({ decisions: Object.freeze
 
 export function record(history: RunHistory, decision: Decision): RunHistory {
   const counts = decision.historical && !decision.auto;
+  const entry = Object.freeze({ ...decision, beats: Object.freeze([...decision.beats]) });
   return Object.freeze({
-    decisions: Object.freeze([...history.decisions, Object.freeze({ ...decision })]),
+    decisions: Object.freeze([...history.decisions, entry]),
     historicalMatches: history.historicalMatches + (counts ? 1 : 0),
   });
 }
@@ -63,20 +66,21 @@ export function advance(rules: Rules, run: Run, optionId: string): Run {
   if (!option) {
     throw new Error(`Scene "${rules.scenes[run.sceneIndex].id}" has no available option "${optionId}"`);
   }
+  const chosen = choose(rules, run.sceneIndex, run.state, optionId);
   const history = record(run.history, {
     scene: rules.scenes[run.sceneIndex].id,
     option: option.id,
     historical: option.historical,
     auto: view.mode === 'auto',
+    beats: chosen.beats,
   });
 
-  const chosen = choose(rules, run.sceneIndex, run.state, optionId);
   if (chosen.ending !== null) {
     return Object.freeze({
       state: chosen.state,
       history,
       sceneIndex: run.sceneIndex,
-      outcome: { ending: chosen.ending, score: null, early: false },
+      outcome: { ending: chosen.ending, score: null, early: false, beats: [] },
     });
   }
   const { state, outcome } = resolve(rules, run.sceneIndex, chosen.state);

@@ -20,6 +20,7 @@ describe('golden paths', () => {
     }
     expect(flatten(run.state)).toEqual(expected.final_state);
     expect(run.history.decisions).toEqual(expected.decisions);
+    expect(outcome.beats).toEqual(expected.finale_beats);
     expect(run.history.historicalMatches).toBe(expected.historical_matches);
   });
 });

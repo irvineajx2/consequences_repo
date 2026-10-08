@@ -32,6 +32,8 @@ export interface Option {
   readonly cond?: readonly ConditionalEffect[];
   /** When present, choosing this option ends the run immediately with this ending. */
   readonly end?: string;
+  /** Story beats shown after this decision. */
+  readonly beats?: readonly string[];
 }
 
 export interface Variant {
@@ -72,11 +74,17 @@ export interface DriftRule {
 export interface EventBranch {
   readonly if?: Condition;
   readonly then: Effect;
+  /** Story beat shown when this branch fires. */
+  readonly beat?: string;
 }
 
 export interface GameEvent {
   readonly branches: readonly EventBranch[];
-  readonly image_by_branch?: readonly (string | null)[];
+}
+
+/** A presentation-only story moment. Beats never change state. */
+export interface Beat {
+  readonly image: string;
 }
 
 export interface EarlyFinale {
@@ -98,6 +106,8 @@ export interface FinaleOutcome {
 export interface Finale {
   readonly terms: readonly FinaleTerm[];
   readonly outcomes: readonly FinaleOutcome[];
+  /** Story beats played before any finale ending. */
+  readonly beats?: readonly string[];
 }
 
 export interface Ending {
@@ -115,6 +125,7 @@ export interface Rules {
   readonly failures: readonly Failure[];
   readonly drift: readonly DriftRule[];
   readonly events: Readonly<Record<string, GameEvent>>;
+  readonly beats: Readonly<Record<string, Beat>>;
   readonly early_finale: EarlyFinale;
   readonly finale: Finale;
   readonly endings: Readonly<Record<string, Ending>>;

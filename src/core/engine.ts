@@ -15,6 +15,8 @@ export interface ChooseResult {
   readonly state: GameState;
   /** Set when the option ends the run on the spot. */
   readonly ending: string | null;
+  /** Story beats for this decision: the option's own, then those of event branches that fired. */
+  readonly beats: readonly string[];
 }
 
 export interface Outcome {
@@ -22,6 +24,8 @@ export interface Outcome {
   /** Finale score, or null when the run ended some other way. */
   readonly score: number | null;
   readonly early: boolean;
+  /** Story beats to play before the ending: the finale beats, or none for other endings. */
+  readonly beats: readonly string[];
 }
 
 export interface ResolveResult {
@@ -56,7 +60,8 @@ export function choose(rules: Rules, index: number, pre: GameState, optionId: st
   const scene = sceneAt(rules, index);
   const option = getScene(rules, index, pre).options.find((o) => o.id === optionId);
   if (!option) throw new Error(`Scene "${scene.id}" has no available option "${optionId}"`);
-  if (option.end !== undefined) return { state: pre, ending: option.end };
+  if (option.end !== undefined) return { state: pre, ending: option.end, beats: [] };
+  const beats: string[] = [...(option.beats ?? [])];
 
   const add: Record<string, number> = { ...option.add };
   for (const c of scene.scene_cond ?? []) {
@@ -72,9 +77,11 @@ export function choose(rules: Rules, index: number, pre: GameState, optionId: st
 
   for (const eventId of scene.after ?? []) {
     const branch = rules.events[eventId].branches.find((b) => matches(state, b.if));
-    if (branch) state = applyEffect(state, branch.then, rules.meter_range);
+    if (!branch) continue;
+    state = applyEffect(state, branch.then, rules.meter_range);
+    if (branch.beat !== undefined) beats.push(branch.beat);
   }
-  return { state, ending: null };
+  return { state, ending: null, beats };
 }
 
 function failure(rules: Rules, state: GameState): string | null {
@@ -100,7 +107,7 @@ export function finale(rules: Rules, state: GameState, early: boolean): Outcome 
     if (o.below !== undefined && !(score < o.below)) continue;
     if (o.at_least !== undefined && !(score >= o.at_least)) continue;
     if (!matches(state, o.if)) continue;
-    return { ending: o.end, score, early };
+    return { ending: o.end, score, early, beats: rules.finale.beats ?? [] };
   }
   throw new Error(`No finale outcome matches score ${score}`);
 }
@@ -110,7 +117,7 @@ export function resolve(rules: Rules, index: number, state: GameState): ResolveR
   const scene = sceneAt(rules, index);
   const ended = (s: GameState, ending: string): ResolveResult => ({
     state: s,
-    outcome: { ending, score: null, early: false },
+    outcome: { ending, score: null, early: false, beats: [] },
   });
 
   const failed = failure(rules, state);
