@@ -4,18 +4,13 @@
     "slug": "consequences",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/branding/icon.png",
     "scheme": "consequences",
     "userInterfaceStyle": "automatic",
-    "ios": {
-      "icon": "./assets/expo.icon"
-    },
     "android": {
       "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
-        "foregroundImage": "./assets/images/android-icon-foreground.png",
-        "backgroundImage": "./assets/images/android-icon-background.png",
-        "monochromeImage": "./assets/images/android-icon-monochrome.png"
+        "foregroundImage": "./assets/branding/adaptive-icon.png",
+        "backgroundColor": "#141830"
       },
       "predictiveBackGestureEnabled": false
     },
@@ -28,9 +23,13 @@
       [
         "expo-splash-screen",
         {
-          "backgroundColor": "#208AEF",
-          "image": "./assets/images/splash-icon.png",
-          "imageWidth": 76
+          "backgroundColor": "#141830",
+          "image": "./assets/branding/splash-logo.png",
+          "imageWidth": 200,
+          "dark": {
+            "backgroundColor": "#141830",
+            "image": "./assets/branding/splash-logo.png"
+          }
         }
       ],
       "expo-image",
