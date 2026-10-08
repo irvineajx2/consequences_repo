@@ -1,13 +1,15 @@
 {
   "expo": {
-    "name": "consequences",
+    "name": "Consequences",
     "slug": "consequences",
+    "owner": "talos-technology",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/branding/icon.png",
     "scheme": "consequences",
     "userInterfaceStyle": "automatic",
     "android": {
+      "package": "com.talostechnology.consequences",
       "adaptiveIcon": {
         "foregroundImage": "./assets/branding/adaptive-icon.png",
         "backgroundColor": "#141830"
@@ -38,6 +40,12 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "eb97ff49-f476-44f8-814f-cab115bc5099"
+      }
     }
   }
 }
