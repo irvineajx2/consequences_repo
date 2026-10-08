@@ -7,6 +7,9 @@ export const colors = {
   parchment: '#ead9b8',
   parchmentMuted: '#b9a888',
   gold: '#c9a45c',
+  /** Behind the title menu, from clear (top) to dark (bottom), so text reads over the backdrop. */
+  titleScrim: ['rgba(13, 11, 9, 0)', 'rgba(13, 11, 9, 0.7)', 'rgba(13, 11, 9, 0.92)'],
+  titleScrimStops: [0, 0.35, 1],
 } as const;
 
 export const fonts = {

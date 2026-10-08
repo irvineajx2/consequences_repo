@@ -1,11 +1,13 @@
+import { Image as BackgroundImage } from 'expo-image';
 import { router, useFocusEffect } from 'expo-router';
+import { LinearGradient } from 'expo-linear-gradient';
 import { useCallback, useState } from 'react';
 import { Image, Modal, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { type Ruler, rulers } from '@/data/rulers';
 import { loadRun } from '@/game/persistence';
 import { appStorage } from '@/ui/appStorage';
-import { wordmark, wordmarkAspectRatio } from '@/ui/branding';
+import { titleBackground, wordmark, wordmarkAspectRatio } from '@/ui/branding';
 import { GameButton } from '@/ui/GameButton';
 import { SkinPanel } from '@/ui/skin/SkinPanel';
 import { useSkin } from '@/ui/skin/SkinProvider';
@@ -20,24 +22,29 @@ const WORDMARK_WIDTH = 0.85;
 
 export default function TitleScreen() {
   const insets = useSafeAreaInsets();
-  const { width, height } = useWindowDimensions();
+  const { width } = useWindowDimensions();
   const wordmarkWidth = Math.round(width * WORDMARK_WIDTH);
   return (
-    <View style={[styles.root, { paddingTop: insets.top, paddingBottom: insets.bottom + spacing.lg }]}>
-      {/* The wordmark is centred in the upper third of the screen. */}
-      <View style={[styles.upperThird, { height: (height - insets.top) / 3 }]}>
-        <Image
-          source={wordmark}
-          accessibilityRole="image"
-          accessibilityLabel={strings.gameTitle}
-          resizeMode="contain"
-          style={{ width: wordmarkWidth, height: wordmarkWidth / wordmarkAspectRatio() }}
-        />
-      </View>
-      {/* The sword hangs well below the letters, so the tagline and menu keep their distance. */}
-      <Text style={[type.muted, styles.tagline]}>{strings.tagline}</Text>
+    <View style={[styles.root, { paddingTop: insets.top + spacing.lg, paddingBottom: insets.bottom + spacing.lg }]}>
+      <BackgroundImage source={titleBackground} style={StyleSheet.absoluteFill} contentFit="cover" />
+      <LinearGradient
+        colors={colors.titleScrim}
+        locations={colors.titleScrimStops}
+        style={styles.scrimGradient}
+        pointerEvents="none"
+      />
+      {/* The wordmark sits at the top, over the dark band of the backdrop. */}
+      <Image
+        source={wordmark}
+        accessibilityRole="image"
+        accessibilityLabel={strings.gameTitle}
+        resizeMode="contain"
+        style={[styles.wordmark, { width: wordmarkWidth, height: wordmarkWidth / wordmarkAspectRatio() }]}
+      />
+      {/* The sword hangs well below the letters; the throne room shows between it and the menu. */}
       <View style={styles.spacer} />
       <View>
+        <Text style={[type.muted, styles.tagline]}>{strings.tagline}</Text>
         <Text style={type.caption}>{strings.chooseRuler}</Text>
         {rulers.map((ruler) => (
           <RulerMenu key={ruler.id} ruler={ruler} />
@@ -130,8 +137,9 @@ const styles = StyleSheet.create({
     backgroundColor: colors.background,
     paddingHorizontal: spacing.lg,
   },
-  upperThird: { alignItems: 'center', justifyContent: 'center', marginHorizontal: -spacing.lg },
-  tagline: { marginTop: spacing.md, textAlign: 'center' },
+  wordmark: { alignSelf: 'center' },
+  scrimGradient: { position: 'absolute', left: 0, right: 0, bottom: 0, height: '50%' },
+  tagline: { marginBottom: spacing.md },
   spacer: { flexGrow: 1, minHeight: spacing.xl },
   ruler: { marginTop: spacing.md },
   notice: { marginTop: spacing.xs },
