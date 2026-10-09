@@ -11,12 +11,8 @@ export interface MeterDisplay {
   readonly warnAbove?: number;
 }
 
-export interface RulerUi {
-  readonly meters: readonly MeterDisplay[];
-}
-
 /** Meters to show, in display order. Hidden meters are never shown. */
-export function visibleMeters(ui: RulerUi): readonly MeterDisplay[] {
+export function visibleMeters(ui: { readonly meters: readonly MeterDisplay[] }): readonly MeterDisplay[] {
   return ui.meters.filter((m) => m.visible);
 }
 

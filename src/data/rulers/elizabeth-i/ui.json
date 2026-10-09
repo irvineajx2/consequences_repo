@@ -6,5 +6,14 @@
     { "id": "navy",  "visible": true,  "style": "fill" },
     { "id": "succ",  "visible": true,  "style": "fill",    "warnBelow": 15 },
     { "id": "spain", "visible": false }
-  ]
+  ],
+  "prologue": { "image": "P1" },
+  "eras": [
+    { "id": "era1", "startsAt": "s01", "image": "ERA1" },
+    { "id": "era2", "startsAt": "s07", "image": "ERA2" },
+    { "id": "era3", "startsAt": "s11", "image": "ERA3" },
+    { "id": "era4", "startsAt": "s15", "image": "ERA4" }
+  ],
+  "title": { "background": "TITLE" },
+  "rulerCard": { "image": "R1" }
 }

@@ -4,6 +4,8 @@ import type {
   BeatViewModel,
   ConsequenceViewModel,
   EndingViewModel,
+  EraViewModel,
+  PrologueViewModel,
   SceneViewModel,
   SessionView,
 } from '../game/session';
@@ -12,6 +14,7 @@ import {
   beatText,
   consequenceText,
   endingText,
+  eraText,
   optionText,
   type RulerText,
   sceneText,
@@ -42,6 +45,10 @@ interface Props extends SessionHandlers {
 /** Renders whichever view the session is on. */
 export function SessionScreen({ view, text, chronicleReady = false, ...handlers }: Props) {
   switch (view.kind) {
+    case 'prologue':
+      return <PrologueView view={view} text={text} {...handlers} />;
+    case 'era':
+      return <EraView view={view} text={text} {...handlers} />;
     case 'scene':
       return view.mode === 'choice' ? (
         <ChoiceSceneView view={view} text={text} {...handlers} />
@@ -101,6 +108,43 @@ function ChoiceSceneView({
     >
       {!deciding && <Text style={type.caption}>{caption}</Text>}
       <Text style={[type.body, !deciding && styles.narration]}>{narration}</Text>
+    </SceneFrame>
+  );
+}
+
+function PrologueView({ view, text, onContinue }: { view: PrologueViewModel; text: RulerText } & SessionHandlers) {
+  const type = useSkinTextStyles();
+  return (
+    <SceneFrame
+      image={view.image}
+      footer={
+        <Footer>
+          <GameButton label={strings.continue} onPress={onContinue} />
+        </Footer>
+      }
+    >
+      <Text style={type.caption}>{text.prologue.caption}</Text>
+      <Text style={[type.body, styles.narration]}>{text.prologue.text}</Text>
+    </SceneFrame>
+  );
+}
+
+/** An era's title (in the caption font), its years, then its text. The meters animate the drift here. */
+function EraView({ view, text, onContinue }: { view: EraViewModel; text: RulerText } & SessionHandlers) {
+  const type = useSkinTextStyles();
+  const era = eraText(text, view.eraId);
+  return (
+    <SceneFrame
+      image={view.image}
+      footer={
+        <Footer>
+          <GameButton label={strings.continue} onPress={onContinue} />
+        </Footer>
+      }
+    >
+      <Text style={type.heading}>{era.title}</Text>
+      <Text style={type.caption}>{era.years}</Text>
+      <Text style={[type.body, styles.narration]}>{era.text}</Text>
     </SceneFrame>
   );
 }

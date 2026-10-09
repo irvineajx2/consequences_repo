@@ -2,7 +2,7 @@
 // option ids chosen so far and rebuilt by replaying them. Pure TypeScript.
 import type { Rules } from '../core';
 import * as session from './session';
-import type { Session } from './session';
+import type { Presentation, Session } from './session';
 
 export interface RunSave {
   readonly rulesVersion: number;
@@ -39,18 +39,23 @@ export function parseRunSave(json: string | null): RunSave | null {
 
 /**
  * Rebuilds a session from a save by replaying its choices, opening at the next unanswered scene
- * (never mid-consequence or mid-beat). Fails, without throwing, when the rules version differs,
- * an option no longer exists, or the choices do not leave a run in progress.
+ * (never on the prologue, an era card, a consequence or a beat; the eras passed are marked as
+ * shown). Fails, without throwing, when the rules version differs, an option no longer exists, or
+ * the choices do not leave a run in progress.
  */
-export function resume(rules: Rules, save: RunSave): ResumeResult {
+export function resume(rules: Rules, save: RunSave, presentation: Presentation = {}): ResumeResult {
   if (save.rulesVersion !== rules.version) return { ok: false, reason: 'version' };
+  const passOver = (s: Session): Session => {
+    let current = s;
+    while (current.view.kind !== 'scene' && current.view.kind !== 'ending') current = session.continue(current);
+    return current;
+  };
   try {
-    let s = session.start(rules);
+    let s = passOver(session.start(rules, presentation));
     for (const choice of save.choices) {
       if (s.view.kind !== 'scene') return { ok: false, reason: 'invalid' };
       if (s.view.mode === 'choice') s = session.decide(s);
-      s = session.choose(s, choice);
-      while (s.view.kind === 'consequence' || s.view.kind === 'beat') s = session.continue(s);
+      s = passOver(session.choose(s, choice));
     }
     if (s.view.kind !== 'scene' || s.run.outcome !== null) return { ok: false, reason: 'invalid' };
     return { ok: true, session: s };

@@ -2,7 +2,7 @@
 import type { Rules } from '../core';
 import { applyRunResult, parseProfile, type Profile, type RunResult, rulerProfile, withRulerProfile } from './profile';
 import { parseRunSave, resume, type RunSave } from './save';
-import type { Session } from './session';
+import type { Presentation, Session } from './session';
 import { type KeyValueStorage, storageKeys } from './storage';
 
 export async function loadProfile(storage: KeyValueStorage): Promise<Profile> {
@@ -32,7 +32,11 @@ export type LoadedRun =
   | { readonly status: 'discarded' };
 
 /** Loads and replays the run in progress, quietly deleting a save that cannot be restored. */
-export async function loadRun(storage: KeyValueStorage, rules: Rules): Promise<LoadedRun> {
+export async function loadRun(
+  storage: KeyValueStorage,
+  rules: Rules,
+  presentation: Presentation = {},
+): Promise<LoadedRun> {
   let json: string | null;
   try {
     json = await storage.getItem(storageKeys.run(rules.ruler));
@@ -41,7 +45,7 @@ export async function loadRun(storage: KeyValueStorage, rules: Rules): Promise<L
   }
   if (json === null) return { status: 'none' };
   const save = parseRunSave(json);
-  const resumed = save ? resume(rules, save) : null;
+  const resumed = save ? resume(rules, save, presentation) : null;
   if (resumed?.ok) return { status: 'resumed', session: resumed.session };
   try {
     await clearRun(storage, rules);

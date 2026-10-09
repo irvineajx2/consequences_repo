@@ -36,6 +36,12 @@
   "restoreFailed": "Your unfinished reign could not be restored.",
   "showNote": "Read the chronicle",
   "hideNote": "Hide",
+  "beginReign": "Begin reign",
+  "comingSoon": "Coming soon",
+  "moreRulers": "More rulers on the way",
+  "discovered": "{count} of {total} discovered",
+  "endingsReached": "{count} of {total} endings",
+  "version": "Version {version}",
   "categories": {
     "historical": "Historical",
     "outperformed": "Outperformed",

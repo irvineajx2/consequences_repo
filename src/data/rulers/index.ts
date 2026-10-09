@@ -1,6 +1,7 @@
-// The playable rulers: rules and text bundled together.
+// The ruler registry: rules, text and presentation for each playable ruler. Adding a ruler means
+// adding an entry here; the screens list whatever is registered.
 import { loadRules, type Rules } from '../../core';
-import type { RulerUi } from '../../game/meters';
+import type { RulerUi } from '../../game/rulerUi';
 import type { RulerText } from '../../game/text';
 import elizabethRules from './elizabeth-i/rules.json';
 import elizabethText from './elizabeth-i/text.en.json';
@@ -10,7 +11,7 @@ export interface Ruler {
   readonly id: string;
   readonly rules: Rules;
   readonly text: RulerText;
-  /** Presentation only: which meters show and how. */
+  /** Presentation only: meters, prologue, eras, title backdrop and ruler card. */
   readonly ui: RulerUi;
 }
 

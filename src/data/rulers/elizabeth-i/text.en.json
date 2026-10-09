@@ -1,7 +1,9 @@
 {
   "ruler": {
     "name": "Elizabeth I",
-    "short_name": "Elizabeth"
+    "short_name": "Elizabeth",
+    "subtitle": "England, 1558–1588",
+    "tagline": "Inherit a broken kingdom. Survive plots, rebellions and the might of Spain."
   },
   "meters": {
     "tr": {
@@ -20,6 +22,32 @@
     },
     "succ": {
       "name": "Succession"
+    }
+  },
+  "prologue": {
+    "caption": "Hatfield, November 1558",
+    "text": "A rider gallops up the drive at Hatfield with news from London. After years of danger and suspicion, everything is about to change."
+  },
+  "eras": {
+    "era1": {
+      "title": "The New Queen",
+      "years": "1558–1562",
+      "text": "England is small, poor and bitterly divided, and few expect its new queen to last. You must prove them wrong."
+    },
+    "era2": {
+      "title": "The Queen of Scots",
+      "years": "1568–1573",
+      "text": "Ten years into your reign. Across the border, Scotland's lords have turned on their queen, and her troubles are about to become yours."
+    },
+    "era3": {
+      "title": "The Sea Dogs",
+      "years": "1577–1585",
+      "text": "Nearly twenty years on, England's sailors are growing bold, and rich, at Spain's expense. The sea may decide your reign."
+    },
+    "era4": {
+      "title": "The Enterprise of England",
+      "years": "1586–1588",
+      "text": "Philip of Spain has run out of patience. In the Escorial he plans the Enterprise of England: an armada to end your reign."
     }
   },
   "scenes": {

@@ -60,14 +60,48 @@ export interface EndingViewModel extends Displayed {
   readonly playerDecisions: number;
 }
 
-export type SessionView = SceneViewModel | ConsequenceViewModel | BeatViewModel | EndingViewModel;
+/** The opening slide of a new run. */
+export interface PrologueViewModel extends Displayed {
+  readonly kind: 'prologue';
+  readonly image: string;
+}
+
+/**
+ * The card at the start of an era. It shows the resolved state, including the drift that led into
+ * the era, so the meters animate here rather than on the scene that follows.
+ */
+export interface EraViewModel extends Displayed {
+  readonly kind: 'era';
+  readonly eraId: string;
+  readonly image: string;
+}
+
+export type SessionView =
+  | PrologueViewModel
+  | EraViewModel
+  | SceneViewModel
+  | ConsequenceViewModel
+  | BeatViewModel
+  | EndingViewModel;
+
+/** Presentation that shapes the run's flow without touching its rules (from a ruler's ui.json). */
+export interface Presentation {
+  readonly prologue?: { readonly image: string };
+  /** In scene order. A scene belongs to the last era whose `startsAt` is at or before it. */
+  readonly eras?: readonly { readonly id: string; readonly startsAt: string; readonly image: string }[];
+}
 
 export interface Session {
   readonly rules: Rules;
+  readonly presentation: Presentation;
   readonly run: Run;
   readonly view: SessionView;
   /** Beats still to show, in order, before the next scene or the ending. */
   readonly pendingBeats: readonly string[];
+  /** Era cards (indexes into `presentation.eras`) still to show before the next scene. */
+  readonly pendingEras: readonly number[];
+  /** Index of the last era card shown, or -1. Each card appears at most once per run. */
+  readonly lastEra: number;
   /** The state shown while the consequence and beats play (after the choice, before drift). */
   readonly afterChoice: GameState;
 }
@@ -106,9 +140,59 @@ function viewFor(rules: Rules, run: Run): SceneViewModel | EndingViewModel {
   };
 }
 
-export function start(rules: Rules): Session {
+/** Index of the era a scene belongs to, or -1 when it comes before every era. */
+function eraIndexOf(session: Session, sceneIndex: number): number {
+  const eras = session.presentation.eras ?? [];
+  let found = -1;
+  eras.forEach((era, i) => {
+    const start = session.rules.scenes.findIndex((s) => s.id === era.startsAt);
+    if (start < 0) throw new Error(`Era "${era.id}" starts at unknown scene "${era.startsAt}"`);
+    if (start <= sceneIndex) found = i;
+  });
+  return found;
+}
+
+function showEra(session: Session, queue: readonly number[]): Session {
+  const [index, ...rest] = queue;
+  const era = (session.presentation.eras ?? [])[index];
+  return {
+    ...session,
+    view: { kind: 'era', eraId: era.id, image: era.image, state: session.run.state },
+    pendingEras: rest,
+    lastEra: index,
+  };
+}
+
+/**
+ * Shows where the run now stands: the ending, or the next scene, preceded by the card of every
+ * era begun since the last card (an era whose first scene was skipped still gets its card).
+ */
+function arrive(session: Session): Session {
+  const view = viewFor(session.rules, session.run);
+  if (view.kind !== 'scene') return { ...session, view, pendingEras: [] };
+  const era = eraIndexOf(session, view.sceneIndex);
+  if (era <= session.lastEra) return { ...session, view };
+  const queue = Array.from({ length: era - session.lastEra }, (_, i) => session.lastEra + 1 + i);
+  return showEra(session, queue);
+}
+
+/** A new run: the prologue (if any), then the first era card, then the first scene. */
+export function start(rules: Rules, presentation: Presentation = {}): Session {
   const run = startRun(rules);
-  return { rules, run, view: viewFor(rules, run), pendingBeats: [], afterChoice: run.state };
+  const base: Session = {
+    rules,
+    presentation,
+    run,
+    view: viewFor(rules, run),
+    pendingBeats: [],
+    pendingEras: [],
+    lastEra: -1,
+    afterChoice: run.state,
+  };
+  if (presentation.prologue) {
+    return { ...base, view: { kind: 'prologue', image: presentation.prologue.image, state: run.state } };
+  }
+  return arrive(base);
 }
 
 /** Moves a choice scene from reading to deciding. */
@@ -140,11 +224,11 @@ export function choose(session: Session, optionId: string): Session {
 
   const { run, afterChoice } = step(rules, session.run, optionId);
   if (option.end !== undefined) {
-    return { rules, run, view: viewFor(rules, run), pendingBeats: [], afterChoice };
+    return arrive({ ...session, run, pendingBeats: [], afterChoice });
   }
   const decision = run.history.decisions[run.history.decisions.length - 1];
   return {
-    rules,
+    ...session,
     run,
     afterChoice,
     pendingBeats: [...decision.beats, ...(run.outcome?.beats ?? [])],
@@ -160,17 +244,21 @@ export function choose(session: Session, optionId: string): Session {
   };
 }
 
-/** Moves on from a consequence or beat to the next beat, the next shown scene, or the ending. */
+/**
+ * Moves on from a prologue, era card, consequence or beat: to the next beat, the next era card,
+ * the next shown scene, or the ending.
+ */
 function continueSession(session: Session): Session {
-  const { view, rules, pendingBeats, afterChoice } = session;
-  if (view.kind !== 'consequence' && view.kind !== 'beat') {
+  const { view, rules, pendingBeats, pendingEras, afterChoice } = session;
+  if (view.kind === 'scene' || view.kind === 'ending') {
     throw new Error(`Cannot continue from the ${view.kind} view`);
   }
   const [next, ...rest] = pendingBeats;
   if (next !== undefined) {
     return { ...session, view: beatView(rules, next, afterChoice), pendingBeats: rest };
   }
-  return { ...session, view: viewFor(rules, session.run) };
+  if (pendingEras.length > 0) return showEra(session, pendingEras);
+  return arrive(session);
 }
 export { continueSession as continue };
 
@@ -183,7 +271,7 @@ export type SessionAction =
 export function sessionReducer(session: Session, action: SessionAction): Session {
   switch (action.type) {
     case 'start':
-      return start(session.rules);
+      return start(session.rules, session.presentation);
     case 'decide':
       return decide(session);
     case 'choose':

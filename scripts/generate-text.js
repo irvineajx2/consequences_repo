@@ -37,6 +37,20 @@ const fill = (obj, key, value) => {
 fill(text, 'ruler', {});
 fill(text.ruler, 'name', rules.ruler);
 fill(text.ruler, 'short_name', rules.ruler);
+fill(text.ruler, 'subtitle', '[Subtitle to be written]');
+fill(text.ruler, 'tagline', '[Tagline to be written]');
+if (ui && ui.prologue) {
+  fill(text, 'prologue', {});
+  fill(text.prologue, 'caption', '[Caption to be written]');
+  fill(text.prologue, 'text', '[Prologue to be written]');
+}
+fill(text, 'eras', {});
+for (const era of (ui && ui.eras) || []) {
+  const entry = fill(text.eras, era.id, {});
+  fill(entry, 'title', era.id);
+  fill(entry, 'years', '[Years]');
+  fill(entry, 'text', '[Era text to be written]');
+}
 fill(text, 'meters', {});
 fill(text, 'scenes', {});
 fill(text, 'beats', {});

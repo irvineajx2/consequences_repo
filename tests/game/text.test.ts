@@ -2,7 +2,7 @@ import { allOptions } from '../../src/core';
 import { getRuler } from '../../src/data/rulers';
 import { autoNarration, consequenceText, optionText } from '../../src/game/text';
 
-const { rules, text } = getRuler('elizabeth-i');
+const { rules, text, ui } = getRuler('elizabeth-i');
 
 describe('text file', () => {
   it('has a caption and narration for every scene', () => {
@@ -56,6 +56,30 @@ describe('text file', () => {
       if (scene.auto_narration === undefined) continue;
       expect(rules.scenes.find((s) => s.id === id)?.variants?.some((v) => v.auto)).toBe(true);
     }
+  });
+
+  it('has the ruler’s name, subtitle and tagline', () => {
+    for (const key of ['name', 'short_name', 'subtitle', 'tagline'] as const) {
+      expect(text.ruler[key]).toEqual(expect.any(String));
+      expect(text.ruler[key]).not.toMatch(/to be written/);
+    }
+  });
+
+  it('has prologue text when ui.json has a prologue', () => {
+    expect(ui.prologue).toBeDefined();
+    expect(text.prologue.caption).toEqual(expect.any(String));
+    expect(text.prologue.text).toEqual(expect.any(String));
+  });
+
+  it('has a title, years and text for every era in ui.json, and no unknown eras', () => {
+    const ids = (ui.eras ?? []).map((e) => e.id);
+    expect(ids.length).toBeGreaterThan(0);
+    for (const id of ids) {
+      expect(text.eras[id]?.title).toEqual(expect.any(String));
+      expect(text.eras[id]?.years).toEqual(expect.any(String));
+      expect(text.eras[id]?.text).toEqual(expect.any(String));
+    }
+    for (const id of Object.keys(text.eras)) expect(ids).toContain(id);
   });
 
   it('has a title and text for every ending', () => {

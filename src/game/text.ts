@@ -31,8 +31,24 @@ export interface MeterText {
   readonly right?: string;
 }
 
+export interface EraText {
+  readonly title: string;
+  readonly years: string;
+  readonly text: string;
+}
+
 export interface RulerText {
-  readonly ruler: { readonly name: string; readonly short_name: string };
+  readonly ruler: {
+    readonly name: string;
+    readonly short_name: string;
+    /** Shown on the ruler-select card. */
+    readonly subtitle: string;
+    readonly tagline: string;
+  };
+  /** The slide before the first era card of a new run. */
+  readonly prologue: { readonly caption: string; readonly text: string };
+  /** Era cards, keyed by the era ids in ui.json. */
+  readonly eras: Readonly<Record<string, EraText>>;
   /** Names of the meters that are shown. Hidden meters have none. */
   readonly meters: Readonly<Record<string, MeterText>>;
   readonly scenes: Readonly<Record<string, SceneText>>;
@@ -76,6 +92,10 @@ export function consequenceText(
   optionId: string,
 ): string | undefined {
   return lookup(text, sceneId, variant, 'consequences', optionId);
+}
+
+export function eraText(text: RulerText, eraId: string): EraText {
+  return text.eras[eraId] ?? { title: missing(eraId), years: '', text: '' };
 }
 
 export function beatText(text: RulerText, beatId: string): BeatText {

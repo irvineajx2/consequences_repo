@@ -19,9 +19,9 @@ import {
   isWarning,
   type MeterDisplay,
   meterLevel,
-  type RulerUi,
   visibleMeters,
 } from '../../game/meters';
+import type { RulerUi } from '../../game/rulerUi';
 import type { RulerText } from '../../game/text';
 import { useSkin } from '../skin/SkinProvider';
 import type { MeterSkin } from '../skin/types';

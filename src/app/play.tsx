@@ -26,15 +26,15 @@ export default function PlayScreen() {
     let cancelled = false;
     const begin = async (): Promise<Session> => {
       if (mode === 'continue') {
-        const loaded = await loadRun(appStorage, ruler.rules);
+        const loaded = await loadRun(appStorage, ruler.rules, ruler.ui);
         if (loaded.status === 'resumed') return loaded.session;
       } else {
         await clearRun(appStorage, ruler.rules).catch(() => {});
       }
-      return start(ruler.rules);
+      return start(ruler.rules, ruler.ui);
     };
     begin()
-      .catch(() => start(ruler.rules))
+      .catch(() => start(ruler.rules, ruler.ui))
       .then((s) => {
         if (!cancelled) setInitial(s);
       });
