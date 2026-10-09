@@ -3,9 +3,9 @@ import { Image } from 'expo-image';
 import { router } from 'expo-router';
 import { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { type Ruler, rulers } from '@/data/rulers';
+import { getRuler, type Ruler, rulerUnlocked, rulers } from '@/data/rulers';
 import { chronicleBook } from '@/game/chronicle';
-import { emptyRulerProfile } from '@/game/profile';
+import { type Profile, rulerProfile } from '@/game/profile';
 import { ConfirmNewReign } from '@/ui/ConfirmNewReign';
 import { GameButton } from '@/ui/GameButton';
 import { getImage } from '@/ui/images';
@@ -15,34 +15,42 @@ import { useSkin } from '@/ui/skin/SkinProvider';
 import { useSkinTextStyles } from '@/ui/skin/textStyles';
 import { format, strings } from '@/ui/strings';
 import { spacing } from '@/ui/theme';
-import { useRulerProfile } from '@/ui/useProfile';
+import { useProfile, useUnlockAll } from '@/ui/useProfile';
 import { useRunSave } from '@/ui/useRunSave';
 
-/** Every registered ruler, then a card promising more. Adding a ruler adds a card here. */
+/**
+ * Every registered ruler, locked or open, then a card promising more. Adding a ruler adds a card
+ * here; a locked ruler shows how to unlock it.
+ */
 export default function RulerSelectScreen() {
+  const profile = useProfile();
+  const [unlockAll] = useUnlockAll();
   return (
     <ScreenScaffold
       title={strings.chooseRuler}
       footer={<GameButton label={strings.back} onPress={() => router.back()} />}
     >
-      {rulers.map((ruler) => (
-        <RulerCard key={ruler.id} ruler={ruler} />
-      ))}
-      <ComingSoonCard />
+      {profile &&
+        rulers.map((ruler) => (
+          <RulerCard key={ruler.id} ruler={ruler} profile={profile} unlocked={rulerUnlocked(ruler, profile, unlockAll)} />
+        ))}
+      {/* Always after the last real ruler. */}
+      {profile && <ComingSoonCard />}
     </ScreenScaffold>
   );
 }
 
-function RulerCard({ ruler }: { ruler: Ruler }) {
+function RulerCard({ ruler, profile, unlocked }: { ruler: Ruler; profile: Profile; unlocked: boolean }) {
   const type = useSkinTextStyles();
   const { screen } = useSkin();
   const save = useRunSave(ruler);
-  const profile = useRulerProfile(ruler.rules.ruler) ?? emptyRulerProfile;
+  const record = rulerProfile(profile, ruler.rules.ruler);
   const [confirming, setConfirming] = useState(false);
-  const book = chronicleBook(ruler.rules, profile);
+  const book = chronicleBook(ruler.rules, record);
   const endingIds = Object.keys(ruler.rules.endings);
-  const endingsReached = endingIds.filter((id) => profile.endings[id] !== undefined).length;
+  const endingsReached = endingIds.filter((id) => record.endings[id] !== undefined).length;
   const portrait = ruler.ui.rulerCard?.image;
+  const prerequisite = ruler.unlockedBy !== undefined ? getRuler(ruler.unlockedBy) : null;
 
   const begin = () => {
     setConfirming(false);
@@ -53,27 +61,45 @@ function RulerCard({ ruler }: { ruler: Ruler }) {
     <SkinPanel>
       <View style={styles.cardBody}>
         {portrait !== undefined && (
-          <View style={[styles.portraitFrame, { borderColor: screen.highlight }]}>
-            <Image source={getImage(portrait)} style={StyleSheet.absoluteFill} contentFit="cover" />
+          <View style={[styles.portraitFrame, { borderColor: unlocked ? screen.highlight : screen.mutedText }]}>
+            <Image source={getImage(ruler.id, portrait)} style={StyleSheet.absoluteFill} contentFit="cover" />
+            {/* Locked: the portrait is darkened. */}
+            {!unlocked && <View style={[StyleSheet.absoluteFill, { backgroundColor: screen.lockedOverlay }]} />}
           </View>
         )}
         <View style={styles.details}>
           <Text style={type.heading}>{ruler.text.ruler.name}</Text>
           <Text style={type.caption}>{ruler.text.ruler.subtitle}</Text>
           <Text style={[type.body, styles.gap]}>{ruler.text.ruler.tagline}</Text>
-          <Text style={[type.muted, styles.gap]}>
-            {format(strings.discovered, { count: book.discovered, total: book.total })}
-          </Text>
-          <Text style={type.muted}>
-            {format(strings.endingsReached, { count: endingsReached, total: endingIds.length })}
-          </Text>
+          {unlocked ? (
+            <>
+              <Text style={[type.muted, styles.gap]}>
+                {format(strings.discovered, { count: book.discovered, total: book.total })}
+              </Text>
+              <Text style={type.muted}>
+                {format(strings.endingsReached, { count: endingsReached, total: endingIds.length })}
+              </Text>
+            </>
+          ) : (
+            <Text style={[type.muted, styles.gap]}>
+              {format(strings.unlockHint, { ruler: prerequisite?.text.ruler.name ?? '' })}
+            </Text>
+          )}
         </View>
       </View>
-      <GameButton
-        label={strings.beginReign}
-        disabled={save === 'loading'}
-        onPress={() => (save === 'saved' ? setConfirming(true) : begin())}
-      />
+      {unlocked && save === 'saved' && (
+        <GameButton
+          label={strings.continue_short}
+          onPress={() => router.push({ pathname: '/play', params: { ruler: ruler.id, mode: 'continue' } })}
+        />
+      )}
+      {unlocked && (
+        <GameButton
+          label={strings.beginReign}
+          disabled={save === 'loading'}
+          onPress={() => (save === 'saved' ? setConfirming(true) : begin())}
+        />
+      )}
       <ConfirmNewReign visible={confirming} onConfirm={begin} onCancel={() => setConfirming(false)} />
     </SkinPanel>
   );

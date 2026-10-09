@@ -16,16 +16,21 @@ export interface RulerProfile {
   readonly discovered: readonly string[];
   readonly endings: Readonly<Record<string, EndingRecord>>;
   readonly runsCompleted: number;
+  /** Branch scenes visited in any run (uncharted paths), in the order first found. */
+  readonly uncharted: readonly string[];
 }
 
-/** The stored profile: one record per ruler, keyed by the rules file's `ruler` id. */
+/**
+ * The stored profile: one record per ruler, keyed by the rules file's `ruler` id. Version 2 adds
+ * uncharted paths; a version 1 profile is migrated on reading, keeping everything it recorded.
+ */
 export interface Profile {
-  readonly version: 1;
+  readonly version: 2;
   readonly rulers: Readonly<Record<string, RulerProfile>>;
 }
 
-export const emptyRulerProfile: RulerProfile = { discovered: [], endings: {}, runsCompleted: 0 };
-export const emptyProfile: Profile = { version: 1, rulers: {} };
+export const emptyRulerProfile: RulerProfile = { discovered: [], endings: {}, runsCompleted: 0, uncharted: [] };
+export const emptyProfile: Profile = { version: 2, rulers: {} };
 
 /** What a finished run contributes to the profile. */
 export interface RunResult {
@@ -48,9 +53,13 @@ export function matchedScenes(decisions: readonly Decision[]): string[] {
 export function applyRunResult(
   profile: RulerProfile,
   result: RunResult,
-): { profile: RulerProfile; newlyDiscovered: string[] } {
+): { profile: RulerProfile; newlyDiscovered: string[]; newlyUncharted: string[] } {
   const known = new Set(profile.discovered);
   const newlyDiscovered = [...new Set(matchedScenes(result.decisions))].filter((s) => !known.has(s));
+  const found = new Set(profile.uncharted);
+  const newlyUncharted = [...new Set(result.decisions.filter((d) => d.branch).map((d) => d.scene))].filter(
+    (s) => !found.has(s),
+  );
 
   const previous = profile.endings[result.ending];
   const scores = [previous?.bestScore, result.score ?? undefined].filter((s): s is number => s !== undefined);
@@ -62,10 +71,12 @@ export function applyRunResult(
 
   return {
     newlyDiscovered,
+    newlyUncharted,
     profile: {
       discovered: [...profile.discovered, ...newlyDiscovered],
       endings: { ...profile.endings, [result.ending]: record },
       runsCompleted: profile.runsCompleted + 1,
+      uncharted: [...profile.uncharted, ...newlyUncharted],
     },
   };
 }
@@ -96,21 +107,28 @@ function parseRuler(value: unknown): RulerProfile | null {
       ...(typeof e.bestScore === 'number' ? { bestScore: e.bestScore } : {}),
     };
   }
-  return { discovered, endings: parsed, runsCompleted };
+  // Version 1 records have no uncharted paths.
+  const { uncharted } = value;
+  const paths = Array.isArray(uncharted) && uncharted.every((s) => typeof s === 'string') ? uncharted : [];
+  return { discovered, endings: parsed, runsCompleted, uncharted: paths };
 }
 
-/** Reads a stored profile. Anything unreadable becomes an empty profile rather than an error. */
+/**
+ * Reads a stored profile, version 1 or 2, as version 2. Anything unreadable becomes an empty
+ * profile rather than an error.
+ */
 export function parseProfile(json: string | null): Profile {
   if (json === null) return emptyProfile;
   try {
     const value: unknown = JSON.parse(json);
-    if (!isRecord(value) || value.version !== 1 || !isRecord(value.rulers)) return emptyProfile;
+    const known = isRecord(value) && (value.version === 1 || value.version === 2);
+    if (!known || !isRecord(value.rulers)) return emptyProfile;
     const rulers: Record<string, RulerProfile> = {};
     for (const [id, r] of Object.entries(value.rulers)) {
       const parsed = parseRuler(r);
       if (parsed) rulers[id] = parsed;
     }
-    return { version: 1, rulers };
+    return { version: 2, rulers };
   } catch {
     return emptyProfile;
   }

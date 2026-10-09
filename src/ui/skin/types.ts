@@ -30,8 +30,8 @@ export interface MeterImageMetrics {
  * (fill icons and the marker) and `<name>_empty` (fill icons).
  */
 export interface MeterSkin {
-  /** Art for each meter id. */
-  readonly art: Readonly<Record<string, MeterArt>>;
+  /** Art by ruler, then meter id. A meter without art is drawn as a placeholder medal. */
+  readonly art: Readonly<Record<string, Readonly<Record<string, MeterArt>>>>;
   readonly metrics: Readonly<Record<string, MeterImageMetrics>>;
   /** Every meter image by name, variants included. */
   readonly images: Readonly<Record<string, ImageSourcePropType>>;
@@ -54,6 +54,12 @@ export interface MeterSkin {
     readonly trackDanger: string;
     readonly chevronUp: string;
     readonly chevronDown: string;
+    /** The placeholder medal for meters without illustrated art: full, drained, rim and initial. */
+    readonly medalFull: string;
+    readonly medalEmpty: string;
+    readonly medalRim: string;
+    readonly medalText: string;
+    readonly medalGlow: string;
   };
 }
 
@@ -61,7 +67,8 @@ export const isBalanceArt = (art: MeterArt): art is BalanceMeterArt => 'marker' 
 
 /** Every meter image name a skin uses, with the variants each kind of image has. */
 export function meterImageNames(meters: Pick<MeterSkin, 'art'>): string[] {
-  return Object.values(meters.art).flatMap((art) =>
+  const all = Object.values(meters.art).flatMap((byMeter) => Object.values(byMeter));
+  const names = all.flatMap((art) =>
     isBalanceArt(art)
       ? [
           art.marker, `${art.marker}_shadow`, `${art.marker}_glow`,
@@ -70,6 +77,7 @@ export function meterImageNames(meters: Pick<MeterSkin, 'art'>): string[] {
         ]
       : [art.full, `${art.full}_shadow`, `${art.full}_glow`, art.empty],
   );
+  return [...new Set(names)];
 }
 
 /** Colours for screens drawn on the dark background (chronicle, endings, title). */

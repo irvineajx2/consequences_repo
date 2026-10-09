@@ -36,11 +36,36 @@
   "discovered": "{count} of {total} discovered",
   "endingsReached": "{count} of {total} endings",
   "version": "Version {version}",
+  "uncharted": "Uncharted path",
+  "unchartedPaths": "Uncharted paths",
+  "unchartedFound": "{count} of {total} found",
+  "noneFound": "None found yet",
+  "continue_short": "Continue",
+  "unlockHint": "Complete a reign as {ruler} to unlock",
+  "locked_ruler": "Locked",
+  "debugUnlocked": "All rulers unlocked (testing)",
+  "debugLocked": "Ruler unlocks restored",
   "categories": {
     "historical": "Historical",
     "outperformed": "Outperformed",
     "fallen_short": "Fallen short",
     "fallen": "Fallen",
     "alternate": "Alternate"
+  },
+  "meterStates": {
+    "fill": {
+      "critical": "Critical",
+      "low": "Low",
+      "steady": "Steady",
+      "strong": "Strong",
+      "formidable": "Formidable"
+    },
+    "balance": {
+      "dangerouslyLeft": "Dangerously {left}",
+      "leaningLeft": "Leaning {left}",
+      "balanced": "Balanced",
+      "leaningRight": "Leaning {right}",
+      "dangerouslyRight": "Dangerously {right}"
+    }
   }
 }

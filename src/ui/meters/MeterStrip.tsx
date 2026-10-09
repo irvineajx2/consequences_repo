@@ -25,23 +25,21 @@ import Animated, {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import type { GameState } from '../../core';
 import {
-  balanceState,
   chevronCount,
   fillFraction,
-  fillState,
   isWarning,
   type MeterDisplay,
   trackSegments,
   visibleMeters,
 } from '../../game/meters';
-import type { RulerUi } from '../../game/rulerUi';
-import type { RulerText } from '../../game/text';
 import { assetSize } from '../skin/assetSize';
+import { useRuler } from '../RulerContext';
 import { useSkin } from '../skin/SkinProvider';
 import { type BalanceMeterArt, type FillMeterArt, isBalanceArt, type MeterSkin } from '../skin/types';
 import { format, strings } from '../strings';
 import { spacing, textSizes } from '../theme';
 import { meterRowLayout, meterSlots } from './meterRowLayout';
+import { stateWord } from './stateWord';
 
 const CHANGE_MS = 600;
 const CHEVRON_FADE_MS = 500;
@@ -54,28 +52,21 @@ const TOOLTIP_WIDTH = 180;
 
 interface Props {
   readonly state: GameState;
-  readonly ui: RulerUi;
-  readonly text: RulerText;
-  readonly range: readonly [number, number];
-}
-
-/** The state word for a meter (shown on tap and read by screen readers). Never a number. */
-function stateWord(meter: MeterDisplay, value: number, text: RulerText): string {
-  return meter.style === 'balance'
-    ? text.meterStates.balance[balanceState(meter, value)]
-    : text.meterStates.fill[fillState(value)];
 }
 
 /**
  * The visible meters as one centred row of illustrated icons floating over the scene, just below
  * the top safe area. Tapping a meter shows its name and state word. No numbers are ever shown.
  */
-export function MeterStrip({ state, ui, text, range }: Props) {
+export function MeterStrip({ state }: Props) {
   const insets = useSafeAreaInsets();
   const { width: screenWidth } = useWindowDimensions();
   const { meters: skin } = useSkin();
+  const ruler = useRuler();
+  const { text, ui } = ruler;
+  const range = ruler.rules.meter_range;
   const meters = visibleMeters(ui);
-  const layout = meterRowLayout(screenWidth, meterSlots(meters, skin), skin.layout);
+  const layout = meterRowLayout(screenWidth, meterSlots(meters, skin, ruler.id), skin.layout);
   const rowHeight = skin.layout.fillHeight * layout.scale;
   const [tooltip, setTooltip] = useState<string | null>(null);
 
@@ -94,11 +85,12 @@ export function MeterStrip({ state, ui, text, range }: Props) {
       <View pointerEvents="box-none" style={{ height: rowHeight }}>
         {layout.slots.map((slot) => {
           const meter = meters.find((m) => m.id === slot.id);
-          const art = skin.art[slot.id];
-          if (!meter || !art) return null;
+          const art = skin.art[ruler.id]?.[slot.id];
+          if (!meter) return null;
+          const name = text.meters[meter.id]?.name ?? meter.id;
           const value = state.meters[meter.id] ?? range[0];
           const label = format(strings.meterLabel, {
-            name: text.meters[meter.id]?.name ?? meter.id,
+            name,
             level: stateWord(meter, value, text),
           });
           return (
@@ -109,7 +101,16 @@ export function MeterStrip({ state, ui, text, range }: Props) {
               onPress={() => setTooltip(tooltip === slot.id ? null : slot.id)}
               style={[styles.slot, { left: slot.x, width: slot.width, height: rowHeight }]}
             >
-              {isBalanceArt(art) ? (
+              {art === undefined ? (
+                <PlaceholderMedal
+                  meter={meter}
+                  initial={name.charAt(0)}
+                  value={value}
+                  range={range}
+                  skin={skin}
+                  scale={layout.scale}
+                />
+              ) : isBalanceArt(art) ? (
                 <BalanceMeter
                   meter={meter}
                   art={art}
@@ -366,6 +367,57 @@ function BalanceMeter({
   );
 }
 
+/**
+ * Stand-in for a meter whose illustrated icon does not exist yet: a gold disc with the meter's
+ * initial over a drained copy, filling and draining (and glowing, bouncing, showing chevrons) like
+ * the real icons.
+ */
+function PlaceholderMedal({ meter, initial, value, range, skin, scale }: MeterProps & { initial: string }) {
+  const anim = useMeterAnimation(meter, value, range);
+  const size = skin.layout.fillHeight * scale;
+  const rim = Math.max(1, 2 * scale);
+  const fill = useAnimatedStyle(() => ({ height: anim.level.get() * size }));
+  const disc = (color: string) => ({
+    width: size,
+    height: size,
+    borderRadius: size / 2,
+    borderWidth: rim,
+    borderColor: skin.colors.medalRim,
+    backgroundColor: color,
+  });
+  const letter = (
+    <Text
+      style={[
+        styles.medalInitial,
+        { width: size, lineHeight: size, fontSize: size * 0.5, color: skin.colors.medalText },
+      ]}
+    >
+      {initial}
+    </Text>
+  );
+  return (
+    <View style={{ width: size, height: size }}>
+      <Animated.View
+        pointerEvents="none"
+        style={[
+          styles.abs,
+          { left: -4 * scale, top: -4 * scale, width: size + 8 * scale, height: size + 8 * scale },
+          { borderRadius: size, backgroundColor: skin.colors.medalGlow },
+          anim.glowStyle,
+        ]}
+      />
+      <Animated.View style={[styles.abs, { left: 0, top: 0, width: size, height: size }, anim.bounceStyle]}>
+        <View style={[styles.abs, disc(skin.colors.medalEmpty)]}>{letter}</View>
+        {/* Anchored to the bottom: the gold drains downward as the meter falls. */}
+        <Animated.View style={[styles.clip, { width: size }, fill]}>
+          <View style={[styles.abs, { left: 0, bottom: 0 }, disc(skin.colors.medalFull)]}>{letter}</View>
+        </Animated.View>
+      </Animated.View>
+      <Chevrons change={anim.change} chevronStyle={anim.chevronStyle} skin={skin} style={{ left: size - 2, top: -6 }} />
+    </View>
+  );
+}
+
 /** One to three chevrons, gold for up and crimson for down, fading after the change. */
 function Chevrons({
   change,
@@ -439,6 +491,7 @@ const styles = StyleSheet.create({
   clip: { position: 'absolute', left: 0, bottom: 0, overflow: 'hidden' },
   chevrons: { alignItems: 'center' },
   chevron: { marginVertical: -5 },
+  medalInitial: { position: 'absolute', left: 0, top: 0, textAlign: 'center', fontWeight: '700' },
   tooltip: {
     position: 'absolute',
     top: '100%',

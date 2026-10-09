@@ -9,6 +9,7 @@ import { MeterStrip } from '@/ui/meters/MeterStrip';
 import { RunChronicleScreen } from '@/ui/screens/RunChronicleScreen';
 import { SessionScreen } from '@/ui/SessionScreen';
 import { useSkin } from '@/ui/skin/SkinProvider';
+import { RulerProvider } from '@/ui/RulerContext';
 import { useRunPersistence } from '@/ui/useRunPersistence';
 
 const backToTitle = () => (router.canGoBack() ? router.back() : router.replace('/'));
@@ -44,7 +45,11 @@ export default function PlayScreen() {
   }, [mode, ruler]);
 
   if (initial === null) return <View style={[styles.root, { backgroundColor: skin.colors.screenBackground }]} />;
-  return <PlayRun ruler={ruler} initial={initial} />;
+  return (
+    <RulerProvider ruler={ruler}>
+      <PlayRun ruler={ruler} initial={initial} />
+    </RulerProvider>
+  );
 }
 
 function PlayRun({ ruler, initial }: { ruler: Ruler; initial: Session }) {
@@ -86,9 +91,7 @@ function PlayRun({ ruler, initial }: { ruler: Ruler; initial: Session }) {
         Outside the per-view tree, so it persists between views and animates the changes. Shown on
         scenes, consequences, beats and era cards; hidden on the prologue and the ending.
       */}
-      {view.kind !== 'prologue' && view.kind !== 'ending' && (
-        <MeterStrip state={view.state} ui={ruler.ui} text={ruler.text} range={ruler.rules.meter_range} />
-      )}
+      {view.kind !== 'prologue' && view.kind !== 'ending' && <MeterStrip state={view.state} />}
     </View>
   );
 }

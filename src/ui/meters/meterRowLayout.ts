@@ -45,11 +45,18 @@ export function meterRowLayout(
   return { scale, left, width, slots: placed };
 }
 
-/** Full-size slots for the visible meters: fill icons at their natural aspect, balance meters fixed. */
-export function meterSlots(meters: readonly MeterDisplay[], skin: Pick<MeterSkin, 'art' | 'metrics' | 'layout'>): MeterSlot[] {
+/**
+ * Full-size slots for a ruler's visible meters: fill icons at their natural aspect, balance meters
+ * fixed, and placeholder medals (meters without art) as circles of the fill height.
+ */
+export function meterSlots(
+  meters: readonly MeterDisplay[],
+  skin: Pick<MeterSkin, 'art' | 'metrics' | 'layout'>,
+  rulerId: string,
+): MeterSlot[] {
   return meters.flatMap((m) => {
-    const art = skin.art[m.id];
-    if (!art) return [];
+    const art = skin.art[rulerId]?.[m.id];
+    if (!art) return [{ id: m.id, width: skin.layout.fillHeight }];
     if (isBalanceArt(art)) return [{ id: m.id, width: skin.layout.balanceWidth }];
     const aspect = skin.metrics[art.full]?.aspect ?? 1;
     return [{ id: m.id, width: skin.layout.fillHeight * aspect }];

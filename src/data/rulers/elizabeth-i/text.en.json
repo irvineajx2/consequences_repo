@@ -24,22 +24,6 @@
       "name": "Succession"
     }
   },
-  "meterStates": {
-    "fill": {
-      "critical": "Critical",
-      "low": "Low",
-      "steady": "Steady",
-      "strong": "Strong",
-      "formidable": "Formidable"
-    },
-    "balance": {
-      "dangerouslyLeft": "Dangerously Catholic",
-      "leaningLeft": "Leaning Catholic",
-      "balanced": "Balanced",
-      "leaningRight": "Leaning Protestant",
-      "dangerouslyRight": "Dangerously Protestant"
-    }
-  },
   "prologue": {
     "caption": "Hatfield, November 1558",
     "text": "A rider gallops up the drive at Hatfield with news from London. After years of danger and suspicion, everything is about to change."

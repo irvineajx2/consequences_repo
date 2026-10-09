@@ -3,6 +3,7 @@ import { type ReactNode, useRef } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { getImage } from './images';
+import { useRuler } from './RulerContext';
 import { SkinPanel } from './skin/SkinPanel';
 import { useSkin } from './skin/SkinProvider';
 import { panelMaxScreenShare, spacing } from './theme';
@@ -28,11 +29,12 @@ interface Props {
 export function SceneFrame({ image, children, footer, panelHeight, scrollToEnd, scrollKey }: Props) {
   const insets = useSafeAreaInsets();
   const skin = useSkin();
+  const ruler = useRuler();
   const scroll = useRef<ScrollView>(null);
   const fixed = panelHeight !== undefined;
   return (
     <View style={[styles.root, { backgroundColor: skin.colors.screenBackground }]}>
-      <Image source={getImage(image)} style={StyleSheet.absoluteFill} contentFit="cover" transition={250} />
+      <Image source={getImage(ruler.id, image)} style={StyleSheet.absoluteFill} contentFit="cover" transition={250} />
       <View
         style={[
           styles.panelArea,

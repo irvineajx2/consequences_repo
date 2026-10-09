@@ -132,7 +132,8 @@ export interface Finale {
 }
 
 export interface Ending {
-  readonly title: string;
+  /** Display title; a ruler's text may give it instead. */
+  readonly title?: string;
   readonly category: string;
   readonly image: string;
 }

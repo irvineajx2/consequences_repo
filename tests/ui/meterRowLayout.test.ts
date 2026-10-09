@@ -5,7 +5,7 @@ import { tudorSkin } from '../../src/ui/skin/tudor';
 
 const { ui } = getRuler('elizabeth-i');
 const { layout } = tudorSkin.meters;
-const slots = meterSlots(visibleMeters(ui), tudorSkin.meters);
+const slots = meterSlots(visibleMeters(ui), tudorSkin.meters, 'elizabeth-i');
 const natural = slots.reduce((s, x) => s + x.width, 0) + layout.gap * (slots.length - 1);
 
 describe('meter row slots', () => {
@@ -51,5 +51,19 @@ describe('meterRowLayout', () => {
 
   it('handles an empty row', () => {
     expect(meterRowLayout(390, [], layout)).toEqual({ scale: 1, left: 195, width: 0, slots: [] });
+  });
+});
+
+describe('meter row for a ruler without illustrated art', () => {
+  it("draws Caesar's five meters as placeholder medals, one fill-height circle each", () => {
+    const caesar = getRuler('julius-caesar');
+    const medals = meterSlots(visibleMeters(caesar.ui), tudorSkin.meters, 'julius-caesar');
+    expect(medals).toEqual(
+      ['fortune', 'legions', 'people', 'senate', 'glory'].map((id) => ({ id, width: layout.fillHeight })),
+    );
+    for (const width of [320, 375, 390, 430]) {
+      const row = meterRowLayout(width, medals, layout);
+      expect(row.left).toBeGreaterThanOrEqual(12 - 1e-9);
+    }
   });
 });

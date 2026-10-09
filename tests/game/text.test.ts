@@ -1,5 +1,5 @@
 import { allOptions } from '../../src/core';
-import { getRuler } from '../../src/data/rulers';
+import { getRuler, rulers } from '../../src/data/rulers';
 import { autoNarration, consequenceText, optionText } from '../../src/game/text';
 
 const { rules, text, ui } = getRuler('elizabeth-i');
@@ -116,5 +116,86 @@ describe('text file', () => {
         expect(optionText(text, scene.id, Number(index), id)).toBe(label);
       }
     }
+  });
+});
+
+describe.each(rulers.map((r) => [r.id, r] as const))('%s text', (_id, ruler) => {
+  const { rules: r, text: t, ui: u } = ruler;
+  const optionsOf = (scene: (typeof r.scenes)[number]) =>
+    (scene.variants ?? [{ options: scene.options }]).flatMap((v, i) => (v.options ?? []).map((o) => ({ o, i })));
+
+  it('has a caption and narration for every scene', () => {
+    for (const scene of r.scenes) {
+      expect(t.scenes[scene.id]?.caption).toEqual(expect.any(String));
+      expect(t.scenes[scene.id]?.narration).toEqual(expect.any(String));
+    }
+  });
+
+  it('labels every option, and gives every option that does not end the run a consequence', () => {
+    for (const scene of r.scenes) {
+      for (const { o, i } of optionsOf(scene)) {
+        expect(optionText(t, scene.id, i, o.id)).not.toMatch(/^\[Missing text/);
+        // An option ends the run if it has `end`, or every branch of one of its conds ends it.
+        const alwaysEnds =
+          o.end !== undefined || (o.cond ?? []).some((c) => c.then.end !== undefined && c.else?.end !== undefined);
+        if (!alwaysEnds) expect(consequenceText(t, scene.id, i, o.id)).toEqual(expect.any(String));
+      }
+    }
+  });
+
+  it('has a chronicle note for every main scene and none for branch scenes', () => {
+    for (const scene of r.scenes) {
+      if (scene.branch) expect(t.chronicle[scene.id]).toBeUndefined();
+      else expect(t.chronicle[scene.id]?.note).toEqual(expect.any(String));
+    }
+  });
+
+  it('has text for every beat, ending, era, the prologue and the ruler', () => {
+    for (const id of Object.keys(r.beats)) expect(t.beats[id]?.text).toEqual(expect.any(String));
+    for (const id of Object.keys(r.endings)) {
+      expect(t.endings[id]?.title).toEqual(expect.any(String));
+      expect(t.endings[id]?.text).toEqual(expect.any(String));
+    }
+    for (const era of u.eras ?? []) expect(t.eras[era.id]?.title).toEqual(expect.any(String));
+    if (u.prologue) expect(t.prologue.text).toEqual(expect.any(String));
+    for (const key of ['name', 'short_name', 'subtitle', 'tagline'] as const) {
+      expect(t.ruler[key]).toEqual(expect.any(String));
+    }
+  });
+
+  it('has no text for ids the rules lack', () => {
+    const scenes = r.scenes.map((s) => s.id);
+    for (const id of Object.keys(t.scenes)) expect(scenes).toContain(id);
+    for (const id of Object.keys(t.chronicle)) expect(scenes).toContain(id);
+    for (const id of Object.keys(t.beats)) expect(Object.keys(r.beats)).toContain(id);
+    for (const id of Object.keys(t.endings)) expect(Object.keys(r.endings)).toContain(id);
+  });
+});
+
+describe('option labels', () => {
+  const caesar = getRuler('julius-caesar');
+
+  it("show the text's label when it gives one", () => {
+    expect(optionText(caesar.text, 's02', 0, 'mercy')).toBe('Argue for prison, not execution');
+    expect(optionText(caesar.text, 's17', 0, 'pardon')).toBe('Pardon them, Brutus and Cassius included');
+  });
+
+  it("fall back to the rules label otherwise, per variant", () => {
+    const withdraw = caesar.rules.scenes[0].options!.find((o) => o.id === 'withdraw')!;
+    expect(optionText(caesar.text, 's01', 0, 'withdraw')).toBe(withdraw.label);
+    const b01 = caesar.rules.scenes.find((s) => s.id === 'b01')!;
+    expect(optionText(caesar.text, 'b01', 1, 'flee')).toBe(b01.variants![1].options![1].label);
+  });
+
+  it("keep Elizabeth's variant-specific labels", () => {
+    expect(optionText(text, 's09', 0, 'spare')).toBe('Spare both');
+    expect(optionText(text, 's09', 1, 'spare')).toBe('Spare Norfolk');
+  });
+
+  it('take ending titles from the text, then the rules, then a title made from the id', () => {
+    expect(text.endings.gloriana.title).toBe('Gloriana');
+    expect(caesar.rules.endings.pater_patriae.title).toBeUndefined();
+    expect(caesar.text.endings.pater_patriae.title).toBe('Pater Patriae');
+    expect(caesar.text.endings.ides.title).toBe('Ides');
   });
 });

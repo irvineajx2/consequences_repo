@@ -24,7 +24,7 @@ describe('end-of-run chronicle', () => {
       for (const [i, row] of chronicle.rows.entries()) {
         const decision = c.expected.decisions[i];
         // A row names only the player's own option.
-        expect(Object.keys(row).sort()).toEqual(['auto', 'matched', 'newlyDiscovered', 'optionId', 'sceneId', 'variant']);
+        expect(Object.keys(row).sort()).toEqual(['auto', 'branch', 'matched', 'newlyDiscovered', 'optionId', 'sceneId', 'variant']);
         expect(row.optionId).toBe(decision.option);
         if (!row.matched && !row.auto) {
           expect(historicalIds(row.sceneId)).not.toContain(row.optionId);

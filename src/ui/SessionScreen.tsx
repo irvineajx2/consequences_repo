@@ -177,7 +177,10 @@ function ConsequenceView({
 }: { view: ConsequenceViewModel; text: RulerText } & SessionHandlers) {
   const type = useSkinTextStyles();
   const { caption } = sceneText(text, view.sceneId);
-  const consequence = consequenceText(text, view.sceneId, view.variant, view.optionId);
+  // An option that always ends the run may have no consequence text: show the decision itself.
+  const consequence =
+    consequenceText(text, view.sceneId, view.variant, view.optionId) ??
+    optionText(text, view.sceneId, view.variant, view.optionId);
   return (
     <SceneFrame
       image={view.image}

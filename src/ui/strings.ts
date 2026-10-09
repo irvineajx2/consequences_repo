@@ -1,4 +1,4 @@
-import ui from '../data/ui.en.json';
+import ui from '../data/strings.en.json';
 
 export const strings = ui;
 

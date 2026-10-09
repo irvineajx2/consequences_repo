@@ -23,7 +23,8 @@ interface Props {
 
 /**
  * The run's decisions in order. Matched ones are highlighted and can open their chronicle note;
- * unmatched ones show only the player's choice, never what the ruler did instead.
+ * unmatched ones show only the player's choice, never what the ruler did instead; branch decisions
+ * are marked as uncharted paths and left out of the match count.
  */
 export function RunChronicleScreen({ rules, text, ending, newlyDiscovered, onNewReign, onBackToTitle }: Props) {
   const type = useSkinTextStyles();
@@ -73,6 +74,8 @@ function RowCard({ row, text }: { row: RunChronicleRow; text: RulerText }) {
       >
         <Text style={type.caption}>{sceneText(text, row.sceneId).caption}</Text>
         <Text style={[type.body, styles.gapTop]}>{choice}</Text>
+        {/* A detour off the main story: marked, never highlighted, never counted as a match. */}
+        {row.branch && <Text style={[type.muted, styles.gapTop]}>{strings.uncharted}</Text>}
         {row.matched && (
           <>
             <View style={styles.badges}>

@@ -22,7 +22,7 @@ export function useRunPersistence(storage: KeyValueStorage, session: Session): F
   // Save once per choice: the decisions list only changes when a choice is made.
   useEffect(() => {
     if (run.outcome !== null || decisions.length === 0) return;
-    saveRun(storage, rules, saveOf({ rules, run })).catch(() => {
+    saveRun(storage, rules, saveOf({ rules, run }, new Date().toISOString())).catch(() => {
       // A failed save only loses resume; the game carries on.
     });
   }, [decisions, run, rules, storage]);

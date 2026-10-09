@@ -2,6 +2,8 @@ import fs from 'fs';
 import path from 'path';
 import { fontAssets } from '../../src/ui/fonts';
 import { textSizes } from '../../src/ui/theme';
+import { rulers } from '../../src/data/rulers';
+import { visibleMeters } from '../../src/game/meters';
 import { tudorSkin } from '../../src/ui/skin/tudor';
 import { isBalanceArt, meterImageNames, skinImageNames } from '../../src/ui/skin/types';
 
@@ -43,8 +45,8 @@ describe('Tudor meters', () => {
   const meterDir = path.join(skinDir, 'meters');
   const names = meterImageNames(tudorSkin.meters);
 
-  it('maps the five visible meters to art', () => {
-    expect(tudorSkin.meters.art).toEqual({
+  it("maps Elizabeth's five visible meters to art", () => {
+    expect(tudorSkin.meters.art['elizabeth-i']).toEqual({
       tr: { full: 'treasury', empty: 'treasury_empty' },
       auth: { full: 'authority', empty: 'authority_empty' },
       navy: { full: 'navy', empty: 'navy_empty' },
@@ -65,7 +67,7 @@ describe('Tudor meters', () => {
   });
 
   it('has a size for every icon, glowing marker and track end', () => {
-    for (const art of Object.values(tudorSkin.meters.art)) {
+    for (const art of Object.values(tudorSkin.meters.art).flatMap((byMeter) => Object.values(byMeter))) {
       const sized = isBalanceArt(art) ? [art.marker, art.left, art.right] : [art.full];
       for (const name of sized) expect(tudorSkin.meters.metrics[name]).toEqual({
         heightPt: expect.any(Number),
@@ -73,6 +75,20 @@ describe('Tudor meters', () => {
         effectPadPt: expect.any(Number),
       });
     }
+  });
+
+  it('has art for every visible meter of every ruler, or warns that a placeholder medal is drawn', () => {
+    const missing: string[] = [];
+    for (const ruler of rulers) {
+      for (const meter of visibleMeters(ruler.ui)) {
+        if (!tudorSkin.meters.art[ruler.id]?.[meter.id]) missing.push(`${ruler.id}/${meter.id}`);
+      }
+    }
+    // Missing ruler art is a warning, not a failure: the meter draws as a placeholder medal.
+    if (missing.length > 0) {
+      console.warn(`Meter art still to come (placeholder medals): ${missing.join(', ')}`);
+    }
+    expect(missing.filter((m) => m.startsWith('elizabeth-i/'))).toEqual([]);
   });
 
   it('no longer uses placeholder vector icons', () => {

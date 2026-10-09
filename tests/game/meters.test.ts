@@ -1,4 +1,5 @@
 import { getRuler } from '../../src/data/rulers';
+import { stateWord } from '../../src/ui/meters/stateWord';
 import {
   balanceState,
   chevronCount,
@@ -125,19 +126,18 @@ describe('ui.json', () => {
     }
   });
 
-  it('has a state word for every fill and balance state', () => {
-    for (const key of ['critical', 'low', 'steady', 'strong', 'formidable'] as const) {
-      expect(text.meterStates.fill[key]).toEqual(expect.any(String));
-    }
-    expect(text.meterStates.balance).toEqual({
-      dangerouslyLeft: 'Dangerously Catholic',
-      leaningLeft: 'Leaning Catholic',
-      balanced: 'Balanced',
-      leaningRight: 'Leaning Protestant',
-      dangerouslyRight: 'Dangerously Protestant',
-    });
-    for (const word of [...Object.values(text.meterStates.fill), ...Object.values(text.meterStates.balance)]) {
-      expect(word).not.toMatch(/\d/);
+  it('reads every fill and balance state as a word, never a number (shared words, ruler-named ends)', () => {
+    const fill: MeterDisplay = { id: 'tr', visible: true, style: 'fill' };
+    expect([0, 16, 36, 66, 86].map((v) => stateWord(fill, v, text))).toEqual([
+      'Critical', 'Low', 'Steady', 'Strong', 'Formidable',
+    ]);
+    const rel = ui.meters.find((m) => m.id === 'rel')!;
+    expect([10, 30, 50, 60, 90].map((v) => stateWord(rel, v, text))).toEqual([
+      'Dangerously Catholic', 'Leaning Catholic', 'Balanced', 'Leaning Protestant', 'Dangerously Protestant',
+    ]);
+    for (let v = 0; v <= 100; v++) {
+      expect(stateWord(fill, v, text)).not.toMatch(/\d/);
+      expect(stateWord(rel, v, text)).not.toMatch(/\d|\{/);
     }
   });
 
@@ -147,5 +147,23 @@ describe('ui.json', () => {
       else expect(text.meters[meter.id]).toBeUndefined();
     }
     for (const id of Object.keys(text.meters)) expect(Object.keys(rules.meters)).toContain(id);
+  });
+});
+
+describe("Caesar's meters", () => {
+  const caesar = getRuler('julius-caesar');
+
+  it('shows Fortune, Legions, People, Senate and Glory, and hides Rivalry and Resentment', () => {
+    expect(visibleMeters(caesar.ui).map((m) => caesar.text.meters[m.id]?.name)).toEqual([
+      'Fortune', 'Legions', 'People', 'Senate', 'Glory',
+    ]);
+    for (const id of ['rivalry', 'resentment']) {
+      expect(visibleMeters(caesar.ui).map((m) => m.id)).not.toContain(id);
+      expect(caesar.text.meters[id]).toBeUndefined();
+    }
+  });
+
+  it('lists every meter in his rules.json in his ui.json, and nothing else', () => {
+    expect(caesar.ui.meters.map((m) => m.id).sort()).toEqual(Object.keys(caesar.rules.meters).sort());
   });
 });

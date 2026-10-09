@@ -2,7 +2,7 @@ import Constants from 'expo-constants';
 import { Image as BackgroundImage } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
-import { Image, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
+import { Image, Pressable, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { rulers } from '@/data/rulers';
 import { wordmark, wordmarkAspectRatio } from '@/ui/branding';
@@ -10,7 +10,8 @@ import { GameButton } from '@/ui/GameButton';
 import { getImage } from '@/ui/images';
 import { format, strings } from '@/ui/strings';
 import { colors, spacing, type } from '@/ui/theme';
-import { useRunSave } from '@/ui/useRunSave';
+import { useUnlockAll } from '@/ui/useProfile';
+import { useLatestSave } from '@/ui/useRunSave';
 
 /** Share of the screen width the wordmark spans. */
 const WORDMARK_WIDTH = 0.85;
@@ -21,7 +22,8 @@ const featured = rulers[0];
 export default function TitleScreen() {
   const insets = useSafeAreaInsets();
   const { width } = useWindowDimensions();
-  const save = useRunSave(featured);
+  const save = useLatestSave(rulers);
+  const [unlockAll, toggleUnlockAll] = useUnlockAll();
   const wordmarkWidth = Math.round(width * WORDMARK_WIDTH);
   const background = featured.ui.title?.background;
   const params = { ruler: featured.id };
@@ -30,7 +32,7 @@ export default function TitleScreen() {
   return (
     <View style={[styles.root, { paddingTop: insets.top + spacing.lg, paddingBottom: insets.bottom + spacing.sm }]}>
       {background !== undefined && (
-        <BackgroundImage source={getImage(background)} style={StyleSheet.absoluteFill} contentFit="cover" />
+        <BackgroundImage source={getImage(featured.id, background)} style={StyleSheet.absoluteFill} contentFit="cover" />
       )}
       <LinearGradient
         colors={colors.titleScrim}
@@ -48,11 +50,13 @@ export default function TitleScreen() {
       />
       <View style={styles.spacer} />
       <View>
-        {save === 'discarded' && <Text style={[type.muted, styles.notice]}>{strings.restoreFailed}</Text>}
-        {save === 'saved' && (
+        {save.discarded && <Text style={[type.muted, styles.notice]}>{strings.restoreFailed}</Text>}
+        {save.ruler !== null && (
           <GameButton
             label={strings.continueReign}
-            onPress={() => router.push({ pathname: '/play', params: { ...params, mode: 'continue' } })}
+            onPress={() =>
+              router.push({ pathname: '/play', params: { ruler: save.ruler?.id ?? featured.id, mode: 'continue' } })
+            }
           />
         )}
         <GameButton label={strings.newReign} onPress={() => router.push('/rulers')} />
@@ -65,7 +69,13 @@ export default function TitleScreen() {
           </View>
         </View>
         {version !== undefined && (
-          <Text style={[type.muted, styles.version]}>{format(strings.version, { version })}</Text>
+          // Long-press: the hidden testing switch that unlocks every ruler.
+          <Pressable onLongPress={toggleUnlockAll} delayLongPress={800} accessible={false}>
+            <Text style={[type.muted, styles.version]}>
+              {format(strings.version, { version })}
+              {unlockAll ? ` · ${strings.debugUnlocked}` : ''}
+            </Text>
+          </Pressable>
         )}
       </View>
     </View>

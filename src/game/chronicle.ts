@@ -13,7 +13,9 @@ export interface RunChronicleRow {
   /** Variant the scene was played in, for variant-specific option text. */
   readonly variant: number;
   readonly auto: boolean;
-  /** The player chose as the ruler did (never for auto decisions). */
+  /** Made in a branch scene: an uncharted path, never a match. */
+  readonly branch: boolean;
+  /** The player chose as the ruler did (never for auto or branch decisions). */
   readonly matched: boolean;
   /** Matched, and discovered for the first time by this run. */
   readonly newlyDiscovered: boolean;
@@ -22,7 +24,7 @@ export interface RunChronicleRow {
 export interface RunChronicle {
   readonly rows: readonly RunChronicleRow[];
   readonly matched: number;
-  /** Player decisions, auto scenes excluded. */
+  /** Player decisions that could match: auto and branch decisions excluded. */
   readonly total: number;
 }
 
@@ -37,12 +39,13 @@ export function runChronicle(
   const rows: RunChronicleRow[] = [];
   for (const d of decisions) {
     const variant = getScene(rules, run.sceneIndex, run.state).variant;
-    const matched = d.historical && !d.auto;
+    const matched = d.historical && !d.auto && !d.branch;
     rows.push({
       sceneId: d.scene,
       optionId: d.option,
       variant,
       auto: d.auto,
+      branch: d.branch,
       matched,
       newlyDiscovered: matched && newlyDiscovered.includes(d.scene),
     });
@@ -51,7 +54,7 @@ export function runChronicle(
   return {
     rows,
     matched: rows.filter((r) => r.matched).length,
-    total: rows.filter((r) => !r.auto).length,
+    total: rows.filter((r) => !r.auto && !r.branch).length,
   };
 }
 
@@ -82,6 +85,8 @@ export interface ChronicleBook {
   readonly entries: readonly ChronicleEntry[];
   readonly discovered: number;
   readonly total: number;
+  /** Branch scenes (detours off the main story): those visited in any run, in scene order. */
+  readonly uncharted: { readonly found: readonly string[]; readonly total: number };
 }
 
 /** The permanent Chronicle: each decision scene, revealing the ruler's choice once discovered. */
@@ -89,14 +94,18 @@ export function chronicleBook(rules: Rules, profile: RulerProfile): ChronicleBoo
   const discovered = new Set(profile.discovered);
   const entries: ChronicleEntry[] = [];
   for (const scene of rules.scenes) {
+    if (scene.branch) continue;
     const choice = historicalChoice(rules, scene.id);
     if (!choice) continue;
     entries.push({ sceneId: scene.id, choice: discovered.has(scene.id) ? choice : null });
   }
+  const branches = rules.scenes.filter((s) => s.branch).map((s) => s.id);
+  const visited = new Set(profile.uncharted);
   return {
     entries,
     discovered: entries.filter((e) => e.choice !== null).length,
     total: entries.length,
+    uncharted: { found: branches.filter((id) => visited.has(id)), total: branches.length },
   };
 }
 

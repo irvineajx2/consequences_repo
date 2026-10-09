@@ -1,27 +1,34 @@
 import { Image } from 'expo-image';
 import { router, useLocalSearchParams } from 'expo-router';
+import { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { getRuler } from '@/data/rulers';
+import { getRuler, rulerUnlocked, rulers } from '@/data/rulers';
 import { endingsGallery, type GalleryEnding } from '@/game/chronicle';
-import { emptyRulerProfile } from '@/game/profile';
+import { emptyProfile, rulerProfile } from '@/game/profile';
 import { endingText, type RulerText } from '@/game/text';
 import { GameButton } from '@/ui/GameButton';
 import { getImage, placeholderImage } from '@/ui/images';
+import { RulerTabs } from '@/ui/screens/RulerTabs';
 import { ScreenScaffold } from '@/ui/screens/ScreenScaffold';
 import { SkinPanel } from '@/ui/skin/SkinPanel';
 import { useSkin } from '@/ui/skin/SkinProvider';
 import { useSkinTextStyles } from '@/ui/skin/textStyles';
 import { categoryLabel, format, strings } from '@/ui/strings';
 import { spacing, textSizes } from '@/ui/theme';
-import { useRulerProfile } from '@/ui/useProfile';
+import { useProfile, useUnlockAll } from '@/ui/useProfile';
 
-/** Every ending, grouped by category. Locked endings reveal only their category. */
+/** One tab per unlocked ruler: every ending, grouped by category; unreached ones show only their category. */
 export default function EndingsScreen() {
-  const { ruler: rulerId } = useLocalSearchParams<{ ruler?: string }>();
-  const ruler = getRuler(rulerId);
-  const profile = useRulerProfile(ruler.rules.ruler);
+  const { ruler: requested } = useLocalSearchParams<{ ruler?: string }>();
+  const stored = useProfile();
+  const [unlockAll] = useUnlockAll();
+  const all = stored ?? emptyProfile;
+  const open = rulers.filter((r) => rulerUnlocked(r, all, unlockAll));
+  const [selected, setSelected] = useState(requested ?? rulers[0].id);
+  const ruler = open.find((r) => r.id === selected) ?? getRuler(open[0]?.id);
+  const profile = stored ? rulerProfile(stored, ruler.rules.ruler) : null;
   const skin = useSkin();
-  const groups = endingsGallery(ruler.rules, profile ?? emptyRulerProfile);
+  const groups = endingsGallery(ruler.rules, profile ?? rulerProfile(all, ruler.rules.ruler));
   const unlocked = groups.flatMap((g) => g.endings).filter((e) => e.record).length;
   const total = groups.reduce((n, g) => n + g.endings.length, 0);
 
@@ -31,6 +38,7 @@ export default function EndingsScreen() {
       subtitle={profile ? `${unlocked} / ${total}` : ''}
       footer={<GameButton label={strings.back} onPress={() => router.back()} />}
     >
+      <RulerTabs rulers={open} selected={ruler.id} onSelect={setSelected} />
       {profile &&
         groups.map((group) => (
           <View key={group.category}>
@@ -40,7 +48,7 @@ export default function EndingsScreen() {
             <View style={styles.grid}>
               {group.endings.map((ending) => (
                 <View key={ending.id} style={styles.cell}>
-                  <EndingCard ending={ending} text={ruler.text} />
+                  <EndingCard ending={ending} text={ruler.text} rulerId={ruler.id} />
                 </View>
               ))}
             </View>
@@ -50,7 +58,7 @@ export default function EndingsScreen() {
   );
 }
 
-function EndingCard({ ending, text }: { ending: GalleryEnding; text: RulerText }) {
+function EndingCard({ ending, text, rulerId }: { ending: GalleryEnding; text: RulerText; rulerId: string }) {
   const type = useSkinTextStyles();
   const { screen } = useSkin();
   const record = ending.record;
@@ -58,7 +66,7 @@ function EndingCard({ ending, text }: { ending: GalleryEnding; text: RulerText }
     <SkinPanel style={styles.card}>
       <View style={styles.imageBox}>
         {/* A locked ending never shows its real image. */}
-        <Image source={record ? getImage(ending.image) : placeholderImage} style={StyleSheet.absoluteFill} contentFit="cover" />
+        <Image source={record ? getImage(rulerId, ending.image) : placeholderImage} style={StyleSheet.absoluteFill} contentFit="cover" />
         {!record && <View style={[StyleSheet.absoluteFill, { backgroundColor: screen.lockedOverlay }]} />}
       </View>
       {record ? (

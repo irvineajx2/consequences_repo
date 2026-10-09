@@ -8,6 +8,8 @@ export interface RunSave {
   readonly rulesVersion: number;
   /** One option id per shown scene so far, auto scenes included. */
   readonly choices: readonly string[];
+  /** When the save was written (ISO); picks the most recently played reign. */
+  readonly savedAt?: string;
 }
 
 export type ResumeResult =
@@ -15,10 +17,11 @@ export type ResumeResult =
   | { readonly ok: false; readonly reason: 'version' | 'invalid' };
 
 /** The save for a session's run so far. */
-export function saveOf(s: Pick<Session, 'rules' | 'run'>): RunSave {
+export function saveOf(s: Pick<Session, 'rules' | 'run'>, savedAt?: string): RunSave {
   return {
     rulesVersion: s.rules.version,
     choices: s.run.history.decisions.map((d) => d.option),
+    ...(savedAt !== undefined ? { savedAt } : {}),
   };
 }
 
@@ -28,10 +31,10 @@ export function parseRunSave(json: string | null): RunSave | null {
   try {
     const value: unknown = JSON.parse(json);
     if (typeof value !== 'object' || value === null) return null;
-    const { rulesVersion, choices } = value as Record<string, unknown>;
+    const { rulesVersion, choices, savedAt } = value as Record<string, unknown>;
     if (typeof rulesVersion !== 'number' || !Array.isArray(choices)) return null;
     if (!choices.every((c) => typeof c === 'string')) return null;
-    return { rulesVersion, choices };
+    return { rulesVersion, choices, ...(typeof savedAt === 'string' ? { savedAt } : {}) };
   } catch {
     return null;
   }

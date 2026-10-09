@@ -1,13 +1,15 @@
 #!/usr/bin/env node
 /**
- * Fills a ruler's text.en.json with an entry for every scene, option, beat and ending in its
- * rules.json, a chronicle note per scene, and a name for every meter its ui.json shows. Existing
- * text is never overwritten, so this is safe to re-run after rules change.
+ * Fills a ruler's text.en.json with an entry for every scene, beat and ending in its rules.json, a
+ * consequence for every option that does not end the run, a chronicle note per main scene (never
+ * for branch scenes), and a name for every meter its ui.json shows. Existing text is never
+ * overwritten, so this is safe to re-run after rules change.
  *
- * Option text defaults to the option's label, scene captions to "<title>, <year>" and beat
- * captions to the beat id. Narration, consequence, beat and ending text are placeholders. When an
- * option id appears in several variants of a scene with different labels, the first label goes in
- * `options` and the others go in `variants.<index>.options` (same for consequences).
+ * Option labels and ending titles are not copied: the game falls back to the rules for those, and a
+ * text file only needs `options` / `title` where it overrides them. Scene captions default to
+ * "<title>, <year>", beat captions to the beat id; narration, consequence, beat and ending text are
+ * placeholders. When an option id appears in several variants of a scene with different labels, its
+ * consequences for the later variants go in `variants.<index>.consequences`.
  *
  * Usage: node scripts/generate-text.js [ruler-id]   (default: elizabeth-i)
  */
@@ -36,7 +38,6 @@ const fill = (obj, key, value) => {
 
 fill(text, 'ruler', {});
 fill(text.ruler, 'name', rules.ruler);
-fill(text.ruler, 'short_name', rules.ruler);
 fill(text.ruler, 'subtitle', '[Subtitle to be written]');
 fill(text.ruler, 'tagline', '[Tagline to be written]');
 if (ui && ui.prologue) {
@@ -63,30 +64,32 @@ for (const id of shownMeters) fill(fill(text.meters, id, {}), 'name', id);
 
 for (const scene of rules.scenes) {
   const entry = fill(text.scenes, scene.id, {});
-  fill(entry, 'caption', `${scene.title}, ${scene.year}`);
+  fill(entry, 'caption', scene.year ? `${scene.title}, ${scene.year}` : scene.title);
   fill(entry, 'narration', NARRATION);
   if ((scene.variants || []).some((v) => v.auto)) fill(entry, 'auto_narration', AUTO_NARRATION);
-  fill(entry, 'options', {});
   fill(entry, 'consequences', {});
 
+  // An option ends the run if it has `end`, or both branches of one of its conds end it.
+  const alwaysEnds = (o) => o.end !== undefined || (o.cond || []).some((c) => c.then.end && c.else && c.else.end);
   const variants = scene.variants || [{ options: scene.options }];
   const baseLabels = {};
   variants.forEach((variant, index) => {
     for (const option of variant.options || []) {
+      if (alwaysEnds(option)) continue;
       if (baseLabels[option.id] === undefined) {
         baseLabels[option.id] = option.label;
-        fill(entry.options, option.id, option.label);
         fill(entry.consequences, option.id, CONSEQUENCE);
       } else if (baseLabels[option.id] !== option.label) {
         const override = fill(fill(entry, 'variants', {}), String(index), {});
-        fill(fill(override, 'options', {}), option.id, option.label);
         fill(fill(override, 'consequences', {}), option.id, CONSEQUENCE);
       }
     }
   });
 }
 
-for (const scene of rules.scenes) fill(fill(text.chronicle, scene.id, {}), 'note', CHRONICLE);
+for (const scene of rules.scenes) {
+  if (!scene.branch) fill(fill(text.chronicle, scene.id, {}), 'note', CHRONICLE);
+}
 
 for (const id of Object.keys(rules.beats || {})) {
   const entry = fill(text.beats, id, {});
@@ -96,7 +99,7 @@ for (const id of Object.keys(rules.beats || {})) {
 
 for (const [id, ending] of Object.entries(rules.endings)) {
   const entry = fill(text.endings, id, {});
-  fill(entry, 'title', ending.title);
+  // No title: the game takes it from the rules (or the ending id) unless the text overrides it.
   fill(entry, 'text', ENDING);
 }
 

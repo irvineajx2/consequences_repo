@@ -59,11 +59,14 @@ export const tudorSkin: Skin = {
   },
   meters: {
     art: {
-      tr: { full: 'treasury', empty: 'treasury_empty' },
-      auth: { full: 'authority', empty: 'authority_empty' },
-      navy: { full: 'navy', empty: 'navy_empty' },
-      succ: { full: 'succession', empty: 'succession_empty' },
-      rel: { marker: 'religion_church', left: 'religion_keys', right: 'religion_bible' },
+      'elizabeth-i': {
+        tr: { full: 'treasury', empty: 'treasury_empty' },
+        auth: { full: 'authority', empty: 'authority_empty' },
+        navy: { full: 'navy', empty: 'navy_empty' },
+        succ: { full: 'succession', empty: 'succession_empty' },
+        rel: { marker: 'religion_church', left: 'religion_keys', right: 'religion_bible' },
+      },
+      // Julius Caesar's illustrated meters are still to come: placeholder medals until then.
     },
     metrics: meterMetrics,
     images: {
@@ -98,6 +101,11 @@ export const tudorSkin: Skin = {
       trackDanger: '#A3242B',
       chevronUp: '#E2B54F',
       chevronDown: '#C0392B',
+      medalFull: '#C9A045',
+      medalEmpty: '#5A5246',
+      medalRim: '#14100C',
+      medalText: '#2A1D10',
+      medalGlow: 'rgba(214, 48, 39, 0.85)',
     },
   },
   screen: {

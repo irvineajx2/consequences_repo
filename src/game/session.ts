@@ -56,8 +56,10 @@ export interface EndingViewModel extends Displayed {
   readonly decisions: readonly Decision[];
   /** Player decisions (auto scenes excluded) that matched the ruler. */
   readonly historicalMatches: number;
-  /** Player decisions, auto scenes excluded. */
+  /** Player decisions that could match the ruler: auto and branch decisions excluded. */
   readonly playerDecisions: number;
+  /** Decisions made in branch scenes (uncharted paths). */
+  readonly branchDecisions: number;
 }
 
 /** The opening slide of a new run. */
@@ -109,7 +111,7 @@ export interface Session {
 /** The view for where the run now stands: the next scene (resolved state) or the ending. */
 function viewFor(rules: Rules, run: Run): SceneViewModel | EndingViewModel {
   if (run.outcome !== null) {
-    const { decisions, historicalMatches } = run.history;
+    const { decisions, historicalMatches, branchDecisions } = run.history;
     return {
       kind: 'ending',
       state: run.state,
@@ -119,7 +121,8 @@ function viewFor(rules: Rules, run: Run): SceneViewModel | EndingViewModel {
       early: run.outcome.early,
       decisions,
       historicalMatches,
-      playerDecisions: decisions.filter((d) => !d.auto).length,
+      playerDecisions: decisions.filter((d) => !d.auto && !d.branch).length,
+      branchDecisions,
     };
   }
   const scene = currentScene(rules, run);
