@@ -1,6 +1,11 @@
 // The default skin: AJ's parchment panel and navy buttons. Panel, button, colour and font values
-// come from docs/skins/tudor/tudor.skin.json; the meter icons are placeholders.
+// come from docs/skins/tudor/tudor.skin.json; the illustrated meters and their sizes from
+// assets/ui/skins/tudor/meters/.
+import meterFile from '../../../assets/ui/skins/tudor/meters/meters.json';
 import type { Skin } from './types';
+
+/** AJ's meter sizes, minus the file's note. */
+const { _note: _meterNote, ...meterMetrics } = meterFile;
 
 export const tudorSkin: Skin = {
   id: 'tudor',
@@ -53,23 +58,46 @@ export const tudorSkin: Skin = {
     button_br: require('../../../assets/ui/skins/tudor/button_br.png'),
   },
   meters: {
-    icons: {
-      tr: 'treasure-chest',
-      rel: 'church',
-      auth: 'crown',
-      navy: 'sail-boat',
-      succ: 'family-tree',
+    art: {
+      tr: { full: 'treasury', empty: 'treasury_empty' },
+      auth: { full: 'authority', empty: 'authority_empty' },
+      navy: { full: 'navy', empty: 'navy_empty' },
+      succ: { full: 'succession', empty: 'succession_empty' },
+      rel: { marker: 'religion_church', left: 'religion_keys', right: 'religion_bible' },
     },
-    fallbackIcon: 'circle-outline',
-    iconSize: 22,
+    metrics: meterMetrics,
+    images: {
+      authority: require('../../../assets/ui/skins/tudor/meters/authority.png'),
+      authority_empty: require('../../../assets/ui/skins/tudor/meters/authority_empty.png'),
+      authority_glow: require('../../../assets/ui/skins/tudor/meters/authority_glow.png'),
+      authority_shadow: require('../../../assets/ui/skins/tudor/meters/authority_shadow.png'),
+      navy: require('../../../assets/ui/skins/tudor/meters/navy.png'),
+      navy_empty: require('../../../assets/ui/skins/tudor/meters/navy_empty.png'),
+      navy_glow: require('../../../assets/ui/skins/tudor/meters/navy_glow.png'),
+      navy_shadow: require('../../../assets/ui/skins/tudor/meters/navy_shadow.png'),
+      religion_bible: require('../../../assets/ui/skins/tudor/meters/religion_bible.png'),
+      religion_bible_shadow: require('../../../assets/ui/skins/tudor/meters/religion_bible_shadow.png'),
+      religion_church: require('../../../assets/ui/skins/tudor/meters/religion_church.png'),
+      religion_church_glow: require('../../../assets/ui/skins/tudor/meters/religion_church_glow.png'),
+      religion_church_shadow: require('../../../assets/ui/skins/tudor/meters/religion_church_shadow.png'),
+      religion_keys: require('../../../assets/ui/skins/tudor/meters/religion_keys.png'),
+      religion_keys_shadow: require('../../../assets/ui/skins/tudor/meters/religion_keys_shadow.png'),
+      succession: require('../../../assets/ui/skins/tudor/meters/succession.png'),
+      succession_empty: require('../../../assets/ui/skins/tudor/meters/succession_empty.png'),
+      succession_glow: require('../../../assets/ui/skins/tudor/meters/succession_glow.png'),
+      succession_shadow: require('../../../assets/ui/skins/tudor/meters/succession_shadow.png'),
+      treasury: require('../../../assets/ui/skins/tudor/meters/treasury.png'),
+      treasury_empty: require('../../../assets/ui/skins/tudor/meters/treasury_empty.png'),
+      treasury_glow: require('../../../assets/ui/skins/tudor/meters/treasury_glow.png'),
+      treasury_shadow: require('../../../assets/ui/skins/tudor/meters/treasury_shadow.png'),
+    },
+    layout: { fillHeight: 40, balanceWidth: 130, gap: 9, margin: 12, shadowOffset: 2 },
     colors: {
-      strip: 'rgba(14, 12, 16, 0.55)',
-      iconDim: 'rgba(241, 226, 191, 0.25)',
-      iconBright: '#F1E2BF',
-      warning: '#E2553F',
-      chevron: '#F1E2BF',
-      track: 'rgba(241, 226, 191, 0.35)',
-      marker: '#F1E2BF',
+      trackBacking: 'rgba(20, 16, 12, 0.9)',
+      trackSafe: '#C9A045',
+      trackDanger: '#A3242B',
+      chevronUp: '#E2B54F',
+      chevronDown: '#C0392B',
     },
   },
   screen: {

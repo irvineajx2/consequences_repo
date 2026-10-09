@@ -1,0 +1,38 @@
+{
+ "treasury": {
+  "heightPt": 40,
+  "aspect": 1.0601,
+  "effectPadPt": 6
+ },
+ "authority": {
+  "heightPt": 40,
+  "aspect": 0.951,
+  "effectPadPt": 6
+ },
+ "navy": {
+  "heightPt": 40,
+  "aspect": 1.0045,
+  "effectPadPt": 6
+ },
+ "succession": {
+  "heightPt": 40,
+  "aspect": 1.0332,
+  "effectPadPt": 6
+ },
+ "religion_church": {
+  "heightPt": 30,
+  "aspect": 0.9505,
+  "effectPadPt": 6
+ },
+ "religion_keys": {
+  "heightPt": 24,
+  "aspect": 1.1632,
+  "effectPadPt": 6
+ },
+ "religion_bible": {
+  "heightPt": 24,
+  "aspect": 1.3395,
+  "effectPadPt": 6
+ },
+ "_note": "Icons are tight-cropped: fill level maps to the full image height. *_empty = drained state; *_shadow and *_glow are larger than the icon by effectPadPt on every side; centre them on the icon (offset the shadow 2pt down)."
+}

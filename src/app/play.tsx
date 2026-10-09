@@ -82,8 +82,13 @@ function PlayRun({ ruler, initial }: { ruler: Ruler; initial: Session }) {
         onChronicle={() => setChronicleOpen(true)}
         onBackToTitle={backToTitle}
       />
-      {/* Outside the per-view tree, so it persists between views and animates the changes. */}
-      <MeterStrip state={view.state} ui={ruler.ui} text={ruler.text} range={ruler.rules.meter_range} />
+      {/*
+        Outside the per-view tree, so it persists between views and animates the changes. Shown on
+        scenes, consequences, beats and era cards; hidden on the prologue and the ending.
+      */}
+      {view.kind !== 'prologue' && view.kind !== 'ending' && (
+        <MeterStrip state={view.state} ui={ruler.ui} text={ruler.text} range={ruler.rules.meter_range} />
+      )}
     </View>
   );
 }

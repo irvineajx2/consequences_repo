@@ -39,17 +39,64 @@ export function isWarning(meter: MeterDisplay, value: number): boolean {
   );
 }
 
-/** A word-sized reading of a meter for accessibility labels. */
-export type MeterLevel = 'low' | 'steady' | 'strong' | 'left' | 'balanced' | 'right';
+/** The state word a fill meter shows (tooltip and accessibility label). Never a number. */
+export type FillState = 'critical' | 'low' | 'steady' | 'strong' | 'formidable';
 
-export function meterLevel(meter: MeterDisplay, value: number, range: readonly [number, number]): MeterLevel {
-  const f = fillFraction(value, range);
-  if (meter.style === 'balance') {
-    if (f < 0.4) return 'left';
-    if (f > 0.6) return 'right';
-    return 'balanced';
-  }
-  if (f < 1 / 3) return 'low';
-  if (f < 2 / 3) return 'steady';
-  return 'strong';
+/** The state word a balance meter shows; `left` and `right` are the track's two ends. */
+export type BalanceState = 'dangerouslyLeft' | 'leaningLeft' | 'balanced' | 'leaningRight' | 'dangerouslyRight';
+
+/** Fill bands, inclusive upper bounds: 0-15, 16-35, 36-65, 66-85, 86-100. */
+const FILL_BANDS: readonly [number, FillState][] = [
+  [15, 'critical'],
+  [35, 'low'],
+  [65, 'steady'],
+  [85, 'strong'],
+];
+
+/** Inside the warn thresholds, a balance meter leans below 45 and above 55. */
+const BALANCE_LEAN_BELOW = 45;
+const BALANCE_LEAN_ABOVE = 55;
+
+export function fillState(value: number): FillState {
+  return FILL_BANDS.find(([max]) => value <= max)?.[1] ?? 'formidable';
+}
+
+/**
+ * Balance bands: past `warnBelow`/`warnAbove` (25 and 75 for Religion) is dangerous; 25-44 and
+ * 56-75 lean; 45-55 is balanced.
+ */
+export function balanceState(meter: MeterDisplay, value: number): BalanceState {
+  if (meter.warnBelow !== undefined && value < meter.warnBelow) return 'dangerouslyLeft';
+  if (meter.warnAbove !== undefined && value > meter.warnAbove) return 'dangerouslyRight';
+  if (value < BALANCE_LEAN_BELOW) return 'leaningLeft';
+  if (value > BALANCE_LEAN_ABOVE) return 'leaningRight';
+  return 'balanced';
+}
+
+/** Visible height of a fill icon's full-colour copy: the colour drains downward as the meter falls. */
+export function fillHeight(value: number, range: readonly [number, number], iconHeight: number): number {
+  return fillFraction(value, range) * iconHeight;
+}
+
+/** Distance of a balance marker's centre from the start of its track. */
+export function markerOffset(value: number, range: readonly [number, number], trackLength: number): number {
+  return fillFraction(value, range) * trackLength;
+}
+
+export interface TrackSegment {
+  /** 0..1 along the track. */
+  readonly from: number;
+  readonly to: number;
+  readonly danger: boolean;
+}
+
+/** The balance track: danger beyond the warn thresholds, safe between them. */
+export function trackSegments(meter: MeterDisplay, range: readonly [number, number]): TrackSegment[] {
+  const low = meter.warnBelow !== undefined ? fillFraction(meter.warnBelow, range) : 0;
+  const high = meter.warnAbove !== undefined ? fillFraction(meter.warnAbove, range) : 1;
+  return [
+    { from: 0, to: low, danger: true },
+    { from: low, to: high, danger: false },
+    { from: high, to: 1, danger: true },
+  ].filter((s) => s.to > s.from);
 }

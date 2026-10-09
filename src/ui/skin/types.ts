@@ -1,29 +1,75 @@
 // A cosmetic skin: everything the panel and buttons draw with. Insets are in source pixels;
 // `scale` is display points per source pixel. Paddings and heights are in points.
-import type MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
-import type { ComponentProps } from 'react';
 import type { ImageSourcePropType } from 'react-native';
 
-/** A placeholder icon name; illustrated icons can replace these later. */
-export type MeterIconName = ComponentProps<typeof MaterialCommunityIcons>['name'];
+/** A fill meter: the full-colour icon drains down to its greyed `empty` copy. */
+export interface FillMeterArt {
+  readonly full: string;
+  readonly empty: string;
+}
 
+/** A balance meter: a `marker` sliding along a track between a `left` and a `right` end. */
+export interface BalanceMeterArt {
+  readonly marker: string;
+  readonly left: string;
+  readonly right: string;
+}
+
+export type MeterArt = FillMeterArt | BalanceMeterArt;
+
+/** Size of a meter image. Shadow and glow images are larger by `effectPadPt` on every side. */
+export interface MeterImageMetrics {
+  readonly heightPt: number;
+  /** Width / height. */
+  readonly aspect: number;
+  readonly effectPadPt: number;
+}
+
+/**
+ * Illustrated meters. Images are named by convention: `<name>`, `<name>_shadow`, `<name>_glow`
+ * (fill icons and the marker) and `<name>_empty` (fill icons).
+ */
 export interface MeterSkin {
-  /** Icon for each meter id, with a fallback for meters the skin does not know. */
-  readonly icons: Readonly<Record<string, MeterIconName>>;
-  readonly fallbackIcon: MeterIconName;
-  readonly iconSize: number;
-  readonly colors: {
-    /** The translucent strip behind the meters. */
-    readonly strip: string;
-    /** The unfilled copy of a fill icon. */
-    readonly iconDim: string;
-    readonly iconBright: string;
-    /** Icon colour while a meter is past a warning threshold. */
-    readonly warning: string;
-    readonly chevron: string;
-    readonly track: string;
-    readonly marker: string;
+  /** Art for each meter id. */
+  readonly art: Readonly<Record<string, MeterArt>>;
+  readonly metrics: Readonly<Record<string, MeterImageMetrics>>;
+  /** Every meter image by name, variants included. */
+  readonly images: Readonly<Record<string, ImageSourcePropType>>;
+  readonly layout: {
+    /** Height of a fill icon in the row, before scaling. */
+    readonly fillHeight: number;
+    /** Width of a balance meter's slot, before scaling. */
+    readonly balanceWidth: number;
+    readonly gap: number;
+    /** Minimum space either side of the row. */
+    readonly margin: number;
+    /** How far the soft shadow sits below its icon. */
+    readonly shadowOffset: number;
   };
+  readonly colors: {
+    /** The dark line under a balance track. */
+    readonly trackBacking: string;
+    /** The track inside the safe band, and beyond it. */
+    readonly trackSafe: string;
+    readonly trackDanger: string;
+    readonly chevronUp: string;
+    readonly chevronDown: string;
+  };
+}
+
+export const isBalanceArt = (art: MeterArt): art is BalanceMeterArt => 'marker' in art;
+
+/** Every meter image name a skin uses, with the variants each kind of image has. */
+export function meterImageNames(meters: Pick<MeterSkin, 'art'>): string[] {
+  return Object.values(meters.art).flatMap((art) =>
+    isBalanceArt(art)
+      ? [
+          art.marker, `${art.marker}_shadow`, `${art.marker}_glow`,
+          art.left, `${art.left}_shadow`,
+          art.right, `${art.right}_shadow`,
+        ]
+      : [art.full, `${art.full}_shadow`, `${art.full}_glow`, art.empty],
+  );
 }
 
 /** Colours for screens drawn on the dark background (chronicle, endings, title). */

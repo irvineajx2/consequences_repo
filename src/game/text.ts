@@ -1,4 +1,5 @@
 // Player-facing text for a ruler, keyed by the ids in its rules file.
+import type { BalanceState, FillState } from './meters';
 
 export interface OptionTexts {
   readonly options: Readonly<Record<string, string>>;
@@ -51,6 +52,11 @@ export interface RulerText {
   readonly eras: Readonly<Record<string, EraText>>;
   /** Names of the meters that are shown. Hidden meters have none. */
   readonly meters: Readonly<Record<string, MeterText>>;
+  /** State words for meter tooltips and accessibility labels, by state. */
+  readonly meterStates: {
+    readonly fill: Readonly<Record<FillState, string>>;
+    readonly balance: Readonly<Record<BalanceState, string>>;
+  };
   readonly scenes: Readonly<Record<string, SceneText>>;
   readonly beats: Readonly<Record<string, BeatText>>;
   readonly endings: Readonly<Record<string, EndingText>>;
