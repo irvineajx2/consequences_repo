@@ -22,6 +22,7 @@ export function RulerTabs({ rulers, selected, onSelect }: Props) {
             key={r.id}
             accessibilityRole="tab"
             accessibilityState={{ selected: active }}
+            aria-selected={active}
             onPress={() => onSelect(r.id)}
             style={[
               styles.tab,
