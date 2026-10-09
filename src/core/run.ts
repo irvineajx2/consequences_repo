@@ -7,6 +7,8 @@ export interface Decision {
   readonly option: string;
   readonly historical: boolean;
   readonly auto: boolean;
+  /** Made in a branch scene (a detour off the main story): an uncharted path, never a match. */
+  readonly branch: boolean;
   /** Story beats shown after this decision. */
   readonly beats: readonly string[];
 }
@@ -15,6 +17,8 @@ export interface RunHistory {
   readonly decisions: readonly Decision[];
   /** Decisions that matched the ruler, excluding auto scenes. */
   readonly historicalMatches: number;
+  /** Decisions made in branch scenes. */
+  readonly branchDecisions: number;
 }
 
 /**
@@ -28,7 +32,11 @@ export interface Run {
   readonly outcome: Outcome | null;
 }
 
-export const emptyHistory: RunHistory = Object.freeze({ decisions: Object.freeze([]), historicalMatches: 0 });
+export const emptyHistory: RunHistory = Object.freeze({
+  decisions: Object.freeze([]),
+  historicalMatches: 0,
+  branchDecisions: 0,
+});
 
 export function record(history: RunHistory, decision: Decision): RunHistory {
   const counts = decision.historical && !decision.auto;
@@ -36,6 +44,7 @@ export function record(history: RunHistory, decision: Decision): RunHistory {
   return Object.freeze({
     decisions: Object.freeze([...history.decisions, entry]),
     historicalMatches: history.historicalMatches + (counts ? 1 : 0),
+    branchDecisions: history.branchDecisions + (decision.branch ? 1 : 0),
   });
 }
 
@@ -83,6 +92,7 @@ export function step(rules: Rules, run: Run, optionId: string): Step {
     option: option.id,
     historical: option.historical,
     auto: view.mode === 'auto',
+    branch: rules.scenes[run.sceneIndex].branch === true,
     beats: chosen.beats,
   });
 

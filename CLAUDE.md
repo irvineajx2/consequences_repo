@@ -12,15 +12,15 @@ Read this file fully before starting any task. Task prompts live in `docs/tasks/
 ## Non-negotiable design rules
 
 1. **Fully deterministic.** No randomness anywhere in game logic. Never use `Math.random`, dice or chance.
-2. **The rules file is the single source of truth.** All balance lives in
-   `src/data/rulers/elizabeth-i/rules.json`. Never hard-code effects, thresholds or conditions in
-   TypeScript. The engine interprets the data; it does not know about Elizabeth.
+2. **The rules files are the single source of truth.** Each ruler's balance lives in
+   `src/data/rulers/<ruler>/rules.json`. Never hard-code effects, thresholds or conditions in
+   TypeScript. The engine interprets the data; it knows nothing about any particular ruler.
 3. **Never edit `rules.json` or test fixtures to make a test pass.** If the engine disagrees with a
    fixture, the engine is wrong. Fixtures are generated from the Python reference engine.
 4. **No per-decision history lesson.** The player is never told what the real ruler did after a
    choice. They discover it across runs. At the end of a run, decisions that matched the ruler are
    highlighted. The engine must record every decision and whether it was the historical one.
-5. **Ruler-agnostic core.** Nothing in `src/core` may mention Elizabeth, Armada, Spain or any
+5. **Ruler-agnostic core.** Nothing in `src/core` may mention a ruler, an event (Armada, Ides) or any
    specific meter name. Meter and flag names come from the data. The finale is called "finale".
 6. **Monetisation (later tasks, not now):** rulers are mostly free; a few may be exclusives. The
    main paid layer is cosmetic customisation, added later. Do not add store, ads or purchase code
@@ -32,15 +32,19 @@ Read this file fully before starting any task. Task prompts live in `docs/tasks/
 app/                                   # Expo Router screens (later tasks)
 src/
   core/                                # pure TypeScript rules engine
-  data/rulers/elizabeth-i/rules.json   # rules - source of truth
+  data/rulers/<ruler>/rules.json       # rules - source of truth (elizabeth-i, julius-caesar)
+  data/rulers/<ruler>/text.en.json     # all player-facing text for that ruler
+  data/rulers/<ruler>/ui.json          # presentation: meters, eras, prologue, ruler card
+  data/strings.en.json                 # shared UI strings
   ui/                                  # components (later tasks)
-assets/rulers/elizabeth-i/images/      # scene and ending images (later tasks)
+assets/rulers/<ruler>/images/          # scene, beat, ending and card images
 tests/
   core/                                # Jest tests for src/core
-  fixtures/golden_paths.json           # generated - never hand-edit
+  fixtures/<ruler>/golden_paths.json   # generated - never hand-edit
 docs/tasks/                            # task prompts
 tools/engine.py                        # Python reference engine (the spec in executable form)
-tools/make_fixtures.py                 # regenerates golden_paths.json from rules.json
+tools/make_fixtures.py                 # exhaustive fixture generator (small rulers: Elizabeth)
+tools/make_fixtures_sampled.py         # coverage-sampled fixture generator (large rulers: Caesar)
 ```
 
 ## Architecture
@@ -67,7 +71,12 @@ or string. Start values come from `meters` and `flags`.
 `==`, `!=`, `<`, `<=`, `>`, `>=`, `in` (value is a list). A missing `if` is always true.
 
 **Effects.** `{"add": {meter: delta}, "set": {flag: value}}`. Adds are applied first (each
-clamped), then sets.
+clamped), then sets. An effect inside a `cond` branch or an event branch may instead be
+`{"end": endingId}`, which ends the run at that point.
+
+**Scored tests.** `{"terms": [...], "at_least": N}` uses the same term rules as the finale score.
+An event branch may carry `"score"`; the branch matches only if its `if` holds and the score is at
+least `at_least`.
 
 **Scene options.** A scene has either `options` or `variants`. With `variants`, the first variant
 whose `if` matches is used: `skip: true` means the scene is not shown and changes nothing;
@@ -78,10 +87,12 @@ scene began, the "pre" state):
 1. If the option has `end`, the run ends immediately with that ending. No other effects or checks.
 2. Sum the option's `add` with the `then.add` of every `scene_cond` whose `if` matches pre.
    Apply those adds in one pass (one clamp per meter), then the option's `set`.
-3. For each entry in the option's `cond`, in order: if its `if` matches pre, apply `then`,
-   otherwise apply `else` (if present). Each applies to the current state.
-4. For each event id in the scene's `after`, in order: apply the `then` of the first branch whose
-   `if` matches the current state.
+3. For each entry in the option's `cond`, in order: if its `if` matches pre, take `then`,
+   otherwise `else` (if present). A branch with `end` ends the run immediately; otherwise apply it to
+   the current state.
+4. For each event id in the scene's `after`, in order: take the first branch whose `if` (and
+   `score`, if present) matches the current state. A branch with `end` ends the run immediately
+   (its `beat`, if any, still plays); otherwise apply its `then`.
 
 **Resolving after a scene** (also run for skipped scenes):
 1. Check `failures` in order against the current state; the first match ends the run.
@@ -96,11 +107,15 @@ scene began, the "pre" state):
 **Finale outcome:** the first entry in `outcomes` where every present test passes
 (`below`: score < value; `at_least`: score >= value; `if`: condition holds).
 
+**Branch scenes.** A scene with `"branch": true` is a detour off the main story. It has no
+historical option; its decisions count as "uncharted paths" in the chronicle, never towards matches.
+
 **Story beats.** Beats are presentation only and never change state. Each beat id in `beats` maps
 to an image. After a decision, its beats are, in order: the option's own `beats`, then the `beat`
 of each event branch that fired (only branches that have one). An option with `end` has no beats.
 When the run ends through the finale (early or not), `finale.beats` play in order before the
-ending. Failure and alternate endings have no finale beats.
+ending. An entry is a beat id, or `{"beat": id, "if": clauses}`, which plays only if the clauses hold
+for the final state. `early_finale` may be absent or null. Failure and alternate endings have no finale beats.
 
 **Run history.** Record every shown scene (choice or auto, never skipped):
 `{scene, option, historical, auto, beats}`. Historical matches = decisions where `historical` is

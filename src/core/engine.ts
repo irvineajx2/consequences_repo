@@ -1,6 +1,6 @@
 import { matches } from './conditions';
-import type { Option, Rules } from './rules';
-import { applyEffect, type GameState, meterOf, startState } from './state';
+import type { EventBranch, FinaleTerm, Option, Rules } from './rules';
+import { applyEffect, type GameState, startState, valueOf } from './state';
 
 export type SceneMode = 'choice' | 'auto' | 'skip';
 
@@ -72,27 +72,41 @@ export function choose(rules: Rules, index: number, pre: GameState, optionId: st
 
   for (const c of option.cond ?? []) {
     const branch = matches(pre, c.if) ? c.then : c.else;
-    if (branch) state = applyEffect(state, branch, rules.meter_range);
+    if (!branch) continue;
+    // A conditional ending stops the run with the state as it stands, keeping the beats so far.
+    if (branch.end !== undefined) return { state, ending: branch.end, beats };
+    state = applyEffect(state, branch, rules.meter_range);
   }
 
   for (const eventId of scene.after ?? []) {
-    const branch = rules.events[eventId].branches.find((b) => matches(state, b.if));
+    const branch = rules.events[eventId].branches.find((b) => branchMatches(state, b));
     if (!branch) continue;
-    state = applyEffect(state, branch.then, rules.meter_range);
+    if (branch.end !== undefined) {
+      return { state, ending: branch.end, beats: branch.beat !== undefined ? [...beats, branch.beat] : beats };
+    }
+    state = applyEffect(state, branch.then ?? {}, rules.meter_range);
     if (branch.beat !== undefined) beats.push(branch.beat);
   }
   return { state, ending: null, beats };
+}
+
+/** An event branch matches when its `if` holds and its score test (if any) passes. */
+function branchMatches(state: GameState, branch: EventBranch): boolean {
+  if (!matches(state, branch.if)) return false;
+  return branch.score === undefined || scoreOf(state, branch.score.terms) >= branch.score.at_least;
 }
 
 function failure(rules: Rules, state: GameState): string | null {
   return rules.failures.find((f) => matches(state, f.if))?.end ?? null;
 }
 
-export function finaleScore(rules: Rules, state: GameState): number {
+/** Sum of score terms: `{var, mult}`, `{var, over, mult}` and `{if, add}` (finale and event tests). */
+export function scoreOf(state: GameState, terms: readonly FinaleTerm[]): number {
   let score = 0;
-  for (const term of rules.finale.terms) {
+  for (const term of terms) {
     if ('var' in term) {
-      const value = meterOf(state, term.var);
+      const value = valueOf(state, term.var);
+      if (typeof value !== 'number') throw new Error(`Score term "${term.var}" is not a number`);
       score += (term.over !== undefined ? Math.max(0, value - term.over) : value) * term.mult;
     } else if (matches(state, term.if)) {
       score += term.add;
@@ -101,13 +115,25 @@ export function finaleScore(rules: Rules, state: GameState): number {
   return score;
 }
 
+export function finaleScore(rules: Rules, state: GameState): number {
+  return scoreOf(state, rules.finale.terms);
+}
+
+/** Finale beats for the final state: plain ids always, conditional ones when their clauses hold. */
+export function finaleBeats(rules: Rules, state: GameState): string[] {
+  return (rules.finale.beats ?? []).flatMap((b) => {
+    if (typeof b === 'string') return [b];
+    return matches(state, b.if) ? [b.beat] : [];
+  });
+}
+
 export function finale(rules: Rules, state: GameState, early: boolean): Outcome {
   const score = finaleScore(rules, state);
   for (const o of rules.finale.outcomes) {
     if (o.below !== undefined && !(score < o.below)) continue;
     if (o.at_least !== undefined && !(score >= o.at_least)) continue;
     if (!matches(state, o.if)) continue;
-    return { ending: o.end, score, early, beats: rules.finale.beats ?? [] };
+    return { ending: o.end, score, early, beats: finaleBeats(rules, state) };
   }
   throw new Error(`No finale outcome matches score ${score}`);
 }
@@ -133,9 +159,10 @@ export function resolve(rules: Rules, index: number, state: GameState): ResolveR
 
   if (index === rules.scenes.length - 1) return { state, outcome: finale(rules, state, false) };
 
-  const until = rules.scenes.findIndex((s) => s.id === rules.early_finale.until_scene);
-  if (index <= until && matches(state, rules.early_finale.if)) {
-    return { state, outcome: finale(rules, state, true) };
+  const early = rules.early_finale;
+  if (early) {
+    const until = rules.scenes.findIndex((s) => s.id === early.until_scene);
+    if (index <= until && matches(state, early.if)) return { state, outcome: finale(rules, state, true) };
   }
   return { state, outcome: null };
 }

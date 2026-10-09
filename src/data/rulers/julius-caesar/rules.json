@@ -1,0 +1,1803 @@
+{
+ "ruler": "julius_caesar",
+ "version": 4,
+ "meter_range": [
+  0,
+  100
+ ],
+ "meters": {
+  "fortune": 30,
+  "legions": 10,
+  "people": 40,
+  "senate": 60,
+  "glory": 20,
+  "rivalry": 20,
+  "resentment": 10
+ },
+ "flags": {
+  "catiline": 0,
+  "spain": 0,
+  "crassus": false,
+  "julia": false,
+  "command": false,
+  "ocean": false,
+  "alesia": false,
+  "ravenna": false,
+  "nile": false,
+  "lists": false,
+  "pardoned": false,
+  "reformed": false,
+  "heir": "none",
+  "guard": false,
+  "calp": false,
+  "stayed": false,
+  "left": false
+ },
+ "failures": [
+  {
+   "if": [
+    [
+     "resentment",
+     ">=",
+     100
+    ]
+   ],
+   "end": "daggers_dark"
+  },
+  {
+   "if": [
+    [
+     "rivalry",
+     ">=",
+     100
+    ]
+   ],
+   "end": "enemy_state"
+  },
+  {
+   "if": [
+    [
+     "fortune",
+     "<=",
+     0
+    ]
+   ],
+   "end": "ruined_debt"
+  },
+  {
+   "if": [
+    [
+     "legions",
+     "<=",
+     0
+    ],
+    [
+     "command",
+     "==",
+     true
+    ]
+   ],
+   "end": "mutiny"
+  },
+  {
+   "if": [
+    [
+     "people",
+     "<=",
+     0
+    ]
+   ],
+   "end": "mob"
+  },
+  {
+   "if": [
+    [
+     "senate",
+     "<=",
+     0
+    ]
+   ],
+   "end": "enemy_state"
+  }
+ ],
+ "drift": [
+  {
+   "then": {
+    "add": {
+     "resentment": 5
+    }
+   }
+  },
+  {
+   "if": [
+    [
+     "crassus",
+     "==",
+     false
+    ],
+    [
+     "command",
+     "==",
+     true
+    ],
+    [
+     "alesia",
+     "==",
+     false
+    ]
+   ],
+   "then": {
+    "add": {
+     "fortune": -10
+    }
+   }
+  },
+  {
+   "if": [
+    [
+     "julia",
+     "==",
+     true
+    ]
+   ],
+   "then": {
+    "add": {
+     "rivalry": -5
+    }
+   }
+  },
+  {
+   "if": [
+    [
+     "julia",
+     "==",
+     false
+    ]
+   ],
+   "then": {
+    "add": {
+     "rivalry": 5
+    }
+   }
+  },
+  {
+   "if": [
+    [
+     "alesia",
+     "==",
+     true
+    ]
+   ],
+   "then": {
+    "add": {
+     "rivalry": 10,
+     "resentment": 5,
+     "fortune": 10
+    }
+   }
+  },
+  {
+   "if": [
+    [
+     "fortune",
+     "<",
+     20
+    ],
+    [
+     "command",
+     "==",
+     true
+    ]
+   ],
+   "then": {
+    "add": {
+     "legions": -10
+    }
+   }
+  }
+ ],
+ "events": {
+  "julia_death": {
+   "branches": [
+    {
+     "if": [
+      [
+       "julia",
+       "==",
+       true
+      ]
+     ],
+     "then": {
+      "add": {
+       "rivalry": 30
+      },
+      "set": {
+       "julia": false
+      }
+     },
+     "beat": "julia_dies"
+    },
+    {
+     "then": {}
+    }
+   ]
+  },
+  "carrhae": {
+   "branches": [
+    {
+     "then": {
+      "set": {
+       "crassus": false
+      }
+     },
+     "beat": "carrhae"
+    }
+   ]
+  },
+  "alesia": {
+   "branches": [
+    {
+     "if": [
+      [
+       "alesia",
+       "==",
+       true
+      ]
+     ],
+     "score": {
+      "terms": [
+       {
+        "var": "legions",
+        "mult": 1
+       },
+       {
+        "var": "glory",
+        "mult": 0.5
+       },
+       {
+        "var": "fortune",
+        "mult": 0.3
+       }
+      ],
+      "at_least": 70
+     },
+     "then": {
+      "add": {
+       "glory": 20,
+       "legions": 5,
+       "fortune": 10,
+       "rivalry": 20
+      }
+     },
+     "beat": "alesia_won"
+    },
+    {
+     "if": [
+      [
+       "alesia",
+       "==",
+       true
+      ]
+     ],
+     "end": "defeated_gaul"
+    },
+    {
+     "then": {}
+    }
+   ]
+  },
+  "pharsalus": {
+   "branches": [
+    {
+     "score": {
+      "terms": [
+       {
+        "var": "legions",
+        "mult": 1
+       },
+       {
+        "var": "glory",
+        "mult": 0.4
+       },
+       {
+        "var": "rivalry",
+        "mult": -0.5
+       }
+      ],
+      "at_least": 40
+     },
+     "then": {
+      "add": {
+       "glory": 20,
+       "senate": 10,
+       "rivalry": -100
+      }
+     },
+     "beat": "pompey_murdered"
+    },
+    {
+     "end": "defeated_pharsalus"
+    }
+   ]
+  }
+ },
+ "early_finale": null,
+ "finale": {
+  "beats": [
+   {
+    "beat": "theatre_of_pompey",
+    "if": [
+     [
+      "left",
+      "==",
+      false
+     ],
+     [
+      "stayed",
+      "==",
+      false
+     ]
+    ]
+   }
+  ],
+  "terms": [
+   {
+    "var": "resentment",
+    "mult": -1
+   },
+   {
+    "if": [],
+    "add": 100
+   },
+   {
+    "if": [
+     [
+      "guard",
+      "==",
+      true
+     ]
+    ],
+    "add": 30
+   },
+   {
+    "if": [
+     [
+      "pardoned",
+      "==",
+      true
+     ]
+    ],
+    "add": -25
+   },
+   {
+    "var": "senate",
+    "mult": 0.3
+   },
+   {
+    "if": [
+     [
+      "stayed",
+      "==",
+      true
+     ]
+    ],
+    "add": 5
+   }
+  ],
+  "outcomes": [
+   {
+    "if": [
+     [
+      "left",
+      "==",
+      true
+     ],
+     [
+      "heir",
+      "in",
+      [
+       "octavian",
+       "antony"
+      ]
+     ],
+     [
+      "reformed",
+      "==",
+      true
+     ],
+     [
+      "senate",
+      ">=",
+      40
+     ]
+    ],
+    "at_least": 65,
+    "end": "pater_patriae"
+   },
+   {
+    "if": [
+     [
+      "left",
+      "==",
+      true
+     ]
+    ],
+    "at_least": 35,
+    "end": "uneasy_crown"
+   },
+   {
+    "if": [
+     [
+      "left",
+      "==",
+      true
+     ]
+    ],
+    "end": "daggers_dark"
+   },
+   {
+    "if": [
+     [
+      "stayed",
+      "==",
+      true
+     ]
+    ],
+    "below": 80,
+    "end": "daggers_dark"
+   },
+   {
+    "below": 80,
+    "end": "ides"
+   },
+   {
+    "if": [
+     [
+      "heir",
+      "in",
+      [
+       "octavian",
+       "antony"
+      ]
+     ],
+     [
+      "reformed",
+      "==",
+      true
+     ],
+     [
+      "senate",
+      ">=",
+      40
+     ]
+    ],
+    "end": "pater_patriae"
+   },
+   {
+    "end": "uneasy_crown"
+   }
+  ]
+ },
+ "endings": {
+  "ides": {
+   "category": "historical",
+   "image": "CX01"
+  },
+  "pater_patriae": {
+   "category": "outperformed",
+   "image": "CX02"
+  },
+  "uneasy_crown": {
+   "category": "fallen_short",
+   "image": "CX03"
+  },
+  "ruined_debt": {
+   "category": "fallen",
+   "image": "CX04"
+  },
+  "mutiny": {
+   "category": "fallen",
+   "image": "CX05"
+  },
+  "mob": {
+   "category": "fallen",
+   "image": "CX06"
+  },
+  "enemy_state": {
+   "category": "fallen",
+   "image": "CX07"
+  },
+  "prosecuted": {
+   "category": "fallen",
+   "image": "CX08"
+  },
+  "defeated_gaul": {
+   "category": "fallen",
+   "image": "CX09"
+  },
+  "defeated_pharsalus": {
+   "category": "fallen",
+   "image": "CX10"
+  },
+  "daggers_dark": {
+   "category": "fallen",
+   "image": "CX11"
+  },
+  "died_catiline": {
+   "category": "fallen",
+   "image": "CX12"
+  },
+  "lost_britain": {
+   "category": "fallen",
+   "image": "CX13"
+  },
+  "republic_endures": {
+   "category": "alternate",
+   "image": "CX14"
+  },
+  "lord_nile": {
+   "category": "alternate",
+   "image": "CX15"
+  },
+  "second_sulla": {
+   "category": "alternate",
+   "image": "CX16"
+  },
+  "king_rome": {
+   "category": "alternate",
+   "image": "CX17"
+  }
+ },
+ "scenes": [
+  {
+   "id": "s01",
+   "title": "Pontifex Maximus",
+   "options": [
+    {
+     "id": "lavish",
+     "label": "Borrow everything and spend lavishly",
+     "historical": true,
+     "add": {
+      "fortune": -15,
+      "people": 10,
+      "glory": 10,
+      "senate": -5
+     }
+    },
+    {
+     "id": "modest",
+     "label": "Run a modest campaign",
+     "historical": false,
+     "add": {
+      "fortune": -5,
+      "people": 3
+     }
+    },
+    {
+     "id": "withdraw",
+     "label": "Withdraw",
+     "historical": false,
+     "add": {
+      "glory": -5,
+      "people": -3
+     }
+    }
+   ],
+   "image": "C01"
+  },
+  {
+   "id": "s02",
+   "title": "The Catiline debate",
+   "options": [
+    {
+     "id": "mercy",
+     "label": "Argue for imprisonment, not execution",
+     "historical": true,
+     "add": {
+      "people": 5,
+      "senate": -5
+     }
+    },
+    {
+     "id": "execute",
+     "label": "Support execution",
+     "historical": false,
+     "add": {
+      "senate": 10,
+      "people": -10
+     }
+    },
+    {
+     "id": "silent",
+     "label": "Stay silent",
+     "historical": false
+    },
+    {
+     "id": "catiline",
+     "label": "Secretly back Catiline",
+     "historical": false,
+     "add": {
+      "people": 5
+     },
+     "set": {
+      "catiline": 1
+     }
+    }
+   ],
+   "image": "C02"
+  },
+  {
+   "id": "b01",
+   "title": "Unmasked",
+   "branch": true,
+   "variants": [
+    {
+     "if": [
+      [
+       "catiline",
+       "!=",
+       1
+      ]
+     ],
+     "skip": true
+    },
+    {
+     "options": [
+      {
+       "id": "betray",
+       "label": "Betray Catiline's men to Cicero",
+       "historical": false,
+       "add": {
+        "senate": 10,
+        "people": -15
+       },
+       "set": {
+        "catiline": 0
+       }
+      },
+      {
+       "id": "flee",
+       "label": "Flee to Catiline's army",
+       "historical": false,
+       "set": {
+        "catiline": 2
+       }
+      }
+     ]
+    }
+   ],
+   "image": "CB1"
+  },
+  {
+   "id": "b02",
+   "title": "Pistoria",
+   "branch": true,
+   "variants": [
+    {
+     "if": [
+      [
+       "catiline",
+       "!=",
+       2
+      ]
+     ],
+     "skip": true
+    },
+    {
+     "options": [
+      {
+       "id": "fight",
+       "label": "Fight beside Catiline",
+       "historical": false,
+       "end": "died_catiline"
+      },
+      {
+       "id": "desert",
+       "label": "Desert and beg for pardon",
+       "historical": false,
+       "add": {
+        "senate": -20,
+        "glory": -10,
+        "people": -5
+       },
+       "set": {
+        "catiline": 0
+       }
+      }
+     ]
+    }
+   ],
+   "image": "CB2"
+  },
+  {
+   "id": "s03",
+   "title": "The Bona Dea scandal",
+   "options": [
+    {
+     "id": "divorce",
+     "label": "Divorce Pompeia, refuse to testify",
+     "historical": true,
+     "add": {
+      "people": 5,
+      "senate": -5
+     }
+    },
+    {
+     "id": "testify",
+     "label": "Testify against Clodius",
+     "historical": false,
+     "add": {
+      "senate": 5,
+      "people": -5
+     }
+    },
+    {
+     "id": "stand",
+     "label": "Stand by Pompeia",
+     "historical": false,
+     "add": {
+      "glory": -5,
+      "people": -3,
+      "senate": -5
+     }
+    }
+   ],
+   "image": "C03"
+  },
+  {
+   "id": "s04",
+   "title": "The creditors",
+   "options": [
+    {
+     "id": "crassus",
+     "label": "Accept Crassus as guarantor",
+     "historical": true,
+     "add": {
+      "fortune": 5
+     },
+     "set": {
+      "crassus": true
+     }
+    },
+    {
+     "id": "sell",
+     "label": "Sell what you can and delay",
+     "historical": false,
+     "add": {
+      "fortune": -5,
+      "glory": -5
+     }
+    },
+    {
+     "id": "slip",
+     "label": "Slip away to Spain in secret",
+     "historical": false,
+     "add": {
+      "senate": -5
+     },
+     "set": {
+      "spain": 1
+     }
+    }
+   ],
+   "image": "C04"
+  },
+  {
+   "id": "b03",
+   "title": "Plunder or law",
+   "branch": true,
+   "variants": [
+    {
+     "if": [
+      [
+       "spain",
+       "!=",
+       1
+      ]
+     ],
+     "skip": true
+    },
+    {
+     "options": [
+      {
+       "id": "plunder",
+       "label": "Wage war on the Lusitanians for plunder",
+       "historical": false,
+       "add": {
+        "fortune": 30,
+        "senate": -10,
+        "resentment": 5,
+        "legions": 5
+       },
+       "set": {
+        "spain": 0
+       }
+      },
+      {
+       "id": "court",
+       "label": "Return to face the court",
+       "historical": false,
+       "set": {
+        "spain": 0
+       },
+       "cond": [
+        {
+         "if": [
+          [
+           "fortune",
+           ">=",
+           15
+          ]
+         ],
+         "then": {
+          "add": {
+           "glory": -5
+          }
+         },
+         "else": {
+          "end": "ruined_debt"
+         }
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "image": "CB3"
+  },
+  {
+   "id": "s05",
+   "title": "Triumph or consulship",
+   "options": [
+    {
+     "id": "consul",
+     "label": "Give up the triumph to stand for consul",
+     "historical": true,
+     "add": {
+      "glory": -5,
+      "people": 5
+     }
+    },
+    {
+     "id": "triumph",
+     "label": "Take the triumph, stand a year later",
+     "historical": false,
+     "add": {
+      "glory": 10,
+      "fortune": 5,
+      "rivalry": 10,
+      "senate": 5
+     }
+    }
+   ],
+   "image": "C05"
+  },
+  {
+   "id": "s06",
+   "title": "The secret pact",
+   "options": [
+    {
+     "id": "pact",
+     "label": "Join Pompey and Crassus; marry Julia to Pompey",
+     "historical": true,
+     "add": {
+      "rivalry": -20,
+      "senate": -5,
+      "people": 5
+     },
+     "set": {
+      "julia": true
+     }
+    },
+    {
+     "id": "pompey",
+     "label": "Ally with Pompey alone",
+     "historical": false,
+     "add": {
+      "rivalry": -10,
+      "senate": -5
+     },
+     "set": {
+      "julia": true
+     }
+    },
+    {
+     "id": "alone",
+     "label": "Stand alone",
+     "historical": false,
+     "add": {
+      "rivalry": 10,
+      "senate": 5
+     }
+    }
+   ],
+   "image": "C06"
+  },
+  {
+   "id": "s07",
+   "title": "Consul",
+   "drift_after": true,
+   "options": [
+    {
+     "id": "force",
+     "label": "Force your laws through; take Gaul",
+     "historical": true,
+     "add": {
+      "people": 10,
+      "senate": -10,
+      "resentment": 10,
+      "legions": 30
+     },
+     "set": {
+      "command": true
+     }
+    },
+    {
+     "id": "consensus",
+     "label": "Govern with the Senate",
+     "historical": false,
+     "add": {
+      "senate": 10,
+      "people": -5,
+      "legions": 20
+     },
+     "set": {
+      "command": true
+     }
+    },
+    {
+     "id": "quiet",
+     "label": "Take a quiet province",
+     "historical": false,
+     "add": {
+      "senate": 10,
+      "glory": -10,
+      "resentment": -5,
+      "legions": 10
+     },
+     "set": {
+      "command": true
+     }
+    }
+   ],
+   "image": "C07"
+  },
+  {
+   "id": "s08",
+   "title": "The Helvetii",
+   "options": [
+    {
+     "id": "attack",
+     "label": "Attack the migrating Helvetii",
+     "historical": true,
+     "add": {
+      "glory": 15,
+      "legions": 10,
+      "fortune": 10,
+      "senate": -5
+     }
+    },
+    {
+     "id": "pass",
+     "label": "Let them pass",
+     "historical": false,
+     "add": {
+      "glory": -5,
+      "people": -5
+     }
+    },
+    {
+     "id": "negotiate",
+     "label": "Turn them back by negotiation",
+     "historical": false,
+     "add": {
+      "glory": 5,
+      "senate": 10
+     }
+    }
+   ],
+   "image": "C08"
+  },
+  {
+   "id": "s09",
+   "title": "Luca",
+   "options": [
+    {
+     "id": "renew",
+     "label": "Renew the pact",
+     "historical": true,
+     "add": {
+      "rivalry": -10,
+      "legions": 10,
+      "senate": -5,
+      "resentment": 5
+     }
+    },
+    {
+     "id": "more",
+     "label": "Demand more for yourself",
+     "historical": false,
+     "add": {
+      "glory": 5,
+      "rivalry": 15,
+      "legions": 15
+     }
+    },
+    {
+     "id": "lapse",
+     "label": "Let the pact lapse",
+     "historical": false,
+     "add": {
+      "rivalry": 20,
+      "senate": 10
+     }
+    }
+   ],
+   "image": "C09"
+  },
+  {
+   "id": "s10",
+   "title": "Britain",
+   "after": [
+    "julia_death",
+    "carrhae"
+   ],
+   "options": [
+    {
+     "id": "britain",
+     "label": "Cross the Ocean to Britain",
+     "historical": true,
+     "add": {
+      "glory": 15,
+      "legions": -10,
+      "fortune": -5
+     },
+     "cond": [
+      {
+       "if": [
+        [
+         "legions",
+         "<",
+         45
+        ]
+       ],
+       "then": {
+        "set": {
+         "ocean": true
+        }
+       }
+      }
+     ]
+    },
+    {
+     "id": "hold",
+     "label": "Hold Gaul and save your strength",
+     "historical": false,
+     "add": {
+      "legions": 5,
+      "fortune": 5
+     }
+    }
+   ],
+   "image": "C10"
+  },
+  {
+   "id": "b04",
+   "title": "The wrecked fleet",
+   "branch": true,
+   "variants": [
+    {
+     "if": [
+      [
+       "ocean",
+       "!=",
+       true
+      ]
+     ],
+     "skip": true
+    },
+    {
+     "options": [
+      {
+       "id": "holdout",
+       "label": "Hold out and repair the ships",
+       "historical": false,
+       "set": {
+        "ocean": false
+       },
+       "cond": [
+        {
+         "if": [
+          [
+           "legions",
+           ">=",
+           20
+          ],
+          [
+           "fortune",
+           ">=",
+           20
+          ]
+         ],
+         "then": {
+          "add": {
+           "glory": 10
+          }
+         },
+         "else": {
+          "end": "lost_britain"
+         }
+        }
+       ]
+      },
+      {
+       "id": "run",
+       "label": "Seize British boats and run",
+       "historical": false,
+       "add": {
+        "glory": -15
+       },
+       "set": {
+        "ocean": false
+       }
+      }
+     ]
+    }
+   ],
+   "image": "CB4"
+  },
+  {
+   "id": "s11",
+   "title": "After Julia",
+   "options": [
+    {
+     "id": "marriage",
+     "label": "Offer Pompey a new marriage alliance",
+     "historical": true,
+     "add": {
+      "rivalry": -5
+     }
+    },
+    {
+     "id": "senate",
+     "label": "Court the Senate instead",
+     "historical": false,
+     "add": {
+      "senate": 15,
+      "rivalry": 5,
+      "people": -5
+     }
+    },
+    {
+     "id": "letdie",
+     "label": "Let the alliance die",
+     "historical": false,
+     "add": {
+      "rivalry": 10,
+      "glory": 5
+     }
+    }
+   ],
+   "image": "C11"
+  },
+  {
+   "id": "s12",
+   "title": "Vercingetorix",
+   "after": [
+    "alesia"
+   ],
+   "options": [
+    {
+     "id": "besiege",
+     "label": "Besiege Alesia behind double walls",
+     "historical": true,
+     "set": {
+      "alesia": true
+     }
+    },
+    {
+     "id": "fallback",
+     "label": "Fall back to the Province",
+     "historical": false,
+     "add": {
+      "glory": -20,
+      "legions": 5,
+      "rivalry": 5
+     }
+    },
+    {
+     "id": "negotiate",
+     "label": "Negotiate",
+     "historical": false,
+     "add": {
+      "glory": -10,
+      "senate": 5
+     }
+    }
+   ],
+   "image": "C12"
+  },
+  {
+   "id": "s13",
+   "title": "The Senate's ultimatum",
+   "drift_after": true,
+   "options": [
+    {
+     "id": "disarm",
+     "label": "Propose that you and Pompey both disarm",
+     "historical": true,
+     "cond": [
+      {
+       "if": [
+        [
+         "rivalry",
+         "<",
+         40
+        ]
+       ],
+       "then": {
+        "end": "republic_endures"
+       },
+       "else": {
+        "add": {
+         "people": 10,
+         "senate": -5
+        }
+       }
+      }
+     ]
+    },
+    {
+     "id": "extend",
+     "label": "Demand an extension of your command",
+     "historical": false,
+     "add": {
+      "rivalry": 15,
+      "senate": -10,
+      "glory": 5
+     }
+    },
+    {
+     "id": "obey",
+     "label": "Obey and return as a private citizen",
+     "historical": false,
+     "end": "prosecuted"
+    }
+   ],
+   "image": "C13"
+  },
+  {
+   "id": "s14",
+   "title": "The Rubicon",
+   "options": [
+    {
+     "id": "cross",
+     "label": "Cross with one legion",
+     "historical": true,
+     "add": {
+      "resentment": 10,
+      "people": 5,
+      "senate": -10,
+      "glory": 5,
+      "rivalry": 10
+     }
+    },
+    {
+     "id": "wait",
+     "label": "Wait at Ravenna for terms",
+     "historical": false,
+     "set": {
+      "ravenna": true
+     }
+    }
+   ],
+   "image": "C14"
+  },
+  {
+   "id": "b05",
+   "title": "Pompey's terms",
+   "branch": true,
+   "variants": [
+    {
+     "if": [
+      [
+       "ravenna",
+       "!=",
+       true
+      ]
+     ],
+     "skip": true
+    },
+    {
+     "options": [
+      {
+       "id": "accept",
+       "label": "Disband for a future consulship",
+       "historical": false,
+       "cond": [
+        {
+         "if": [
+          [
+           "rivalry",
+           "<",
+           50
+          ]
+         ],
+         "then": {
+          "end": "republic_endures"
+         },
+         "else": {
+          "end": "prosecuted"
+         }
+        }
+       ]
+      },
+      {
+       "id": "late",
+       "label": "March south, late",
+       "historical": false,
+       "add": {
+        "legions": -15,
+        "fortune": -10,
+        "resentment": 5
+       },
+       "set": {
+        "ravenna": false
+       }
+      }
+     ]
+    }
+   ],
+   "image": "CB5"
+  },
+  {
+   "id": "s15",
+   "title": "Pharsalus",
+   "after": [
+    "pharsalus"
+   ],
+   "options": [
+    {
+     "id": "battle",
+     "label": "Offer battle",
+     "historical": true
+    },
+    {
+     "id": "starve",
+     "label": "Starve Pompey out",
+     "historical": false,
+     "add": {
+      "legions": -5,
+      "fortune": -10,
+      "rivalry": -10
+     }
+    },
+    {
+     "id": "peace",
+     "label": "Offer peace terms",
+     "historical": false,
+     "add": {
+      "senate": 15,
+      "rivalry": -10,
+      "people": -5
+     }
+    }
+   ],
+   "image": "C15"
+  },
+  {
+   "id": "s16",
+   "title": "Egypt",
+   "options": [
+    {
+     "id": "cleopatra",
+     "label": "Back Cleopatra",
+     "historical": true,
+     "add": {
+      "fortune": 15,
+      "glory": 5,
+      "resentment": 5
+     },
+     "beats": [
+      "veni_vidi_vici"
+     ]
+    },
+    {
+     "id": "ptolemy",
+     "label": "Back her brother Ptolemy",
+     "historical": false,
+     "add": {
+      "fortune": 10
+     },
+     "beats": [
+      "veni_vidi_vici"
+     ]
+    },
+    {
+     "id": "leave",
+     "label": "Leave Egypt at once",
+     "historical": false,
+     "add": {
+      "legions": 5,
+      "glory": -5
+     }
+    },
+    {
+     "id": "stay",
+     "label": "Stay in Egypt with Cleopatra",
+     "historical": false,
+     "set": {
+      "nile": true
+     }
+    }
+   ],
+   "image": "C16"
+  },
+  {
+   "id": "b06",
+   "title": "On the Nile",
+   "branch": true,
+   "variants": [
+    {
+     "if": [
+      [
+       "nile",
+       "!=",
+       true
+      ]
+     ],
+     "skip": true
+    },
+    {
+     "options": [
+      {
+       "id": "return",
+       "label": "Return to Rome",
+       "historical": false,
+       "add": {
+        "resentment": 10,
+        "glory": -10,
+        "people": -10
+       },
+       "set": {
+        "nile": false
+       }
+      },
+      {
+       "id": "remain",
+       "label": "Remain in Egypt",
+       "historical": false,
+       "end": "lord_nile"
+      }
+     ]
+    }
+   ],
+   "image": "CB6"
+  },
+  {
+   "id": "s17",
+   "title": "Clemency",
+   "drift_after": true,
+   "options": [
+    {
+     "id": "pardon",
+     "label": "Pardon your enemies, Brutus and Cassius among them",
+     "historical": true,
+     "add": {
+      "senate": 20,
+      "people": 5,
+      "resentment": -10
+     },
+     "set": {
+      "pardoned": true
+     }
+    },
+    {
+     "id": "proscribe",
+     "label": "Proscribe them, as Sulla did",
+     "historical": false,
+     "set": {
+      "lists": true
+     }
+    },
+    {
+     "id": "exile",
+     "label": "Exile them",
+     "historical": false,
+     "add": {
+      "senate": -5,
+      "resentment": -5
+     }
+    }
+   ],
+   "image": "C17"
+  },
+  {
+   "id": "b07",
+   "title": "The lists",
+   "branch": true,
+   "variants": [
+    {
+     "if": [
+      [
+       "lists",
+       "!=",
+       true
+      ]
+     ],
+     "skip": true
+    },
+    {
+     "options": [
+      {
+       "id": "purge",
+       "label": "Complete the purge",
+       "historical": false,
+       "add": {
+        "resentment": -40,
+        "senate": -55,
+        "people": -25,
+        "glory": -10
+       },
+       "set": {
+        "lists": false
+       }
+      },
+      {
+       "id": "halfway",
+       "label": "Stop halfway",
+       "historical": false,
+       "add": {
+        "resentment": -10,
+        "senate": -20,
+        "people": -10
+       },
+       "set": {
+        "lists": false,
+        "pardoned": true
+       }
+      }
+     ]
+    }
+   ],
+   "image": "CB7"
+  },
+  {
+   "id": "s18",
+   "title": "Reform",
+   "options": [
+    {
+     "id": "reform",
+     "label": "Reform the calendar, ease debts, settle veterans",
+     "historical": true,
+     "add": {
+      "people": 15,
+      "senate": -5,
+      "fortune": -10,
+      "resentment": 5
+     },
+     "set": {
+      "reformed": true
+     }
+    },
+    {
+     "id": "legions",
+     "label": "Reward the legions first",
+     "historical": false,
+     "add": {
+      "legions": 15,
+      "fortune": -15,
+      "people": -5,
+      "resentment": 5
+     }
+    },
+    {
+     "id": "leave",
+     "label": "Leave Rome's institutions as they are",
+     "historical": false,
+     "add": {
+      "senate": 10,
+      "people": -5
+     }
+    }
+   ],
+   "image": "C18"
+  },
+  {
+   "id": "s19",
+   "title": "Honours",
+   "options": [
+    {
+     "id": "accept",
+     "label": "Accept dictatorship for life and every honour",
+     "historical": true,
+     "add": {
+      "glory": 15,
+      "resentment": 15,
+      "senate": -5
+     }
+    },
+    {
+     "id": "power",
+     "label": "Keep the power, refuse the honours",
+     "historical": false,
+     "add": {
+      "resentment": 5,
+      "glory": -5
+     }
+    },
+    {
+     "id": "laydown",
+     "label": "Lay down the dictatorship",
+     "historical": false,
+     "end": "second_sulla"
+    }
+   ],
+   "image": "C19"
+  },
+  {
+   "id": "s20",
+   "title": "The heir",
+   "options": [
+    {
+     "id": "octavian",
+     "label": "Adopt Octavian",
+     "historical": true,
+     "add": {
+      "resentment": -5
+     },
+     "set": {
+      "heir": "octavian"
+     }
+    },
+    {
+     "id": "antony",
+     "label": "Name Mark Antony",
+     "historical": false,
+     "add": {
+      "resentment": 10,
+      "senate": -5
+     },
+     "set": {
+      "heir": "antony"
+     }
+    },
+    {
+     "id": "caesarion",
+     "label": "Acknowledge Cleopatra's son",
+     "historical": false,
+     "add": {
+      "resentment": 15
+     },
+     "set": {
+      "heir": "caesarion"
+     }
+    }
+   ],
+   "image": "C20"
+  },
+  {
+   "id": "s21",
+   "title": "The Lupercalia",
+   "options": [
+    {
+     "id": "refuse",
+     "label": "Refuse the crown",
+     "historical": true,
+     "add": {
+      "people": 5,
+      "resentment": -5
+     }
+    },
+    {
+     "id": "crown",
+     "label": "Accept the crown",
+     "historical": false,
+     "end": "king_rome"
+    }
+   ],
+   "image": "C21"
+  },
+  {
+   "id": "s22",
+   "title": "The Ides of March",
+   "options": [
+    {
+     "id": "noguard",
+     "label": "Go to the Senate without your guard",
+     "historical": true
+    },
+    {
+     "id": "guard",
+     "label": "Go with your guard",
+     "historical": false,
+     "add": {
+      "resentment": 5
+     },
+     "set": {
+      "guard": true
+     }
+    },
+    {
+     "id": "home",
+     "label": "Stay at home, as Calpurnia begs",
+     "historical": false,
+     "set": {
+      "calp": true
+     }
+    }
+   ],
+   "image": "C22"
+  },
+  {
+   "id": "b08",
+   "title": "Decimus at the door",
+   "branch": true,
+   "variants": [
+    {
+     "if": [
+      [
+       "calp",
+       "!=",
+       true
+      ]
+     ],
+     "skip": true
+    },
+    {
+     "options": [
+      {
+       "id": "go",
+       "label": "Go with Decimus",
+       "historical": false,
+       "set": {
+        "calp": false
+       }
+      },
+      {
+       "id": "refuse",
+       "label": "Refuse and summon your guard",
+       "historical": false,
+       "add": {
+        "senate": -10
+       },
+       "set": {
+        "guard": true,
+        "stayed": true
+       }
+      },
+      {
+       "id": "parthia",
+       "label": "Leave Rome for Parthia at dawn",
+       "historical": false,
+       "set": {
+        "left": true
+       }
+      }
+     ]
+    }
+   ],
+   "image": "CB8"
+  }
+ ],
+ "beats": {
+  "julia_dies": {
+   "image": "CT1"
+  },
+  "carrhae": {
+   "image": "CT2"
+  },
+  "alesia_won": {
+   "image": "CT3"
+  },
+  "pompey_murdered": {
+   "image": "CT4"
+  },
+  "veni_vidi_vici": {
+   "image": "CT5"
+  },
+  "theatre_of_pompey": {
+   "image": "CT6"
+  }
+ }
+}

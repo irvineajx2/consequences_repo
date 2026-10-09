@@ -17,10 +17,22 @@ export interface Effect {
   readonly set?: Readonly<Record<string, FlagValue>>;
 }
 
+/** An effect that may instead end the run (in an option's `cond`, or an event branch). */
+export interface BranchEffect extends Effect {
+  /** Ends the run here with this ending. */
+  readonly end?: string;
+}
+
 export interface ConditionalEffect {
   readonly if?: Condition;
-  readonly then: Effect;
-  readonly else?: Effect;
+  readonly then: BranchEffect;
+  readonly else?: BranchEffect;
+}
+
+/** Passes when the summed terms reach `at_least` (terms work as in the finale score). */
+export interface ScoredTest {
+  readonly terms: readonly FinaleTerm[];
+  readonly at_least: number;
 }
 
 export interface Option {
@@ -51,8 +63,10 @@ export interface SceneCondition {
 export interface Scene {
   readonly id: string;
   readonly title: string;
-  readonly year: string;
+  readonly year?: string;
   readonly image: string;
+  /** A detour off the main story: no historical option; its decisions are uncharted paths. */
+  readonly branch?: boolean;
   readonly options?: readonly Option[];
   readonly variants?: readonly Variant[];
   readonly scene_cond?: readonly SceneCondition[];
@@ -73,7 +87,11 @@ export interface DriftRule {
 
 export interface EventBranch {
   readonly if?: Condition;
-  readonly then: Effect;
+  /** The branch matches only if its `if` holds and this score test passes. */
+  readonly score?: ScoredTest;
+  readonly then?: Effect;
+  /** Ends the run here with this ending (the branch's beat still plays). */
+  readonly end?: string;
   /** Story beat shown when this branch fires. */
   readonly beat?: string;
 }
@@ -103,11 +121,14 @@ export interface FinaleOutcome {
   readonly end: string;
 }
 
+/** A finale beat: a beat id, or one that plays only when its clauses hold for the final state. */
+export type FinaleBeat = string | { readonly beat: string; readonly if?: Condition };
+
 export interface Finale {
   readonly terms: readonly FinaleTerm[];
   readonly outcomes: readonly FinaleOutcome[];
   /** Story beats played before any finale ending. */
-  readonly beats?: readonly string[];
+  readonly beats?: readonly FinaleBeat[];
 }
 
 export interface Ending {
@@ -126,7 +147,7 @@ export interface Rules {
   readonly drift: readonly DriftRule[];
   readonly events: Readonly<Record<string, GameEvent>>;
   readonly beats: Readonly<Record<string, Beat>>;
-  readonly early_finale: EarlyFinale;
+  readonly early_finale?: EarlyFinale | null;
   readonly finale: Finale;
   readonly endings: Readonly<Record<string, Ending>>;
   readonly scenes: readonly Scene[];

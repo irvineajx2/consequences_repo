@@ -1,79 +1,73 @@
-"""Reference rules engine: interprets elizabeth_rules.json.
-The Unity C# engine must implement exactly these semantics; parity is checked by tests."""
+"""Reference rules engine v2. Adds, without changing v1 behaviour:
+  - an option `cond` branch may contain "end" (conditional ending)
+  - an event branch may contain "end", and a "score" test: {"terms": [...], "at_least": N}
+Everything else is identical to v1."""
 import json
-
 OPS = {"==": lambda a, b: a == b, "!=": lambda a, b: a != b, "<": lambda a, b: a < b,
        "<=": lambda a, b: a <= b, ">": lambda a, b: a > b, ">=": lambda a, b: a >= b,
        "in": lambda a, b: a in b}
 
 class Engine:
     def __init__(self, path):
-        self.d = json.load(open(path))
-        self.lo, self.hi = self.d["meter_range"]
-        self.scenes = self.d["scenes"]
-
-    def start(self):
-        return {**self.d["meters"], **self.d["flags"]}
-
-    def test(self, st, clauses):
-        return all(OPS[op](st[var], val) for var, op, val in (clauses or []))
-
+        self.d = json.load(open(path)); self.lo, self.hi = self.d["meter_range"]; self.scenes = self.d["scenes"]
+    def start(self): return {**self.d["meters"], **self.d["flags"]}
+    def test(self, st, clauses): return all(OPS[op](st[v], val) for v, op, val in (clauses or []))
     def apply(self, st, eff):
         st = dict(st)
-        for k, v in eff.get("add", {}).items():
-            st[k] = max(self.lo, min(self.hi, st[k] + v))
-        st.update(eff.get("set", {}))
-        return st
-
+        for k, v in eff.get("add", {}).items(): st[k] = max(self.lo, min(self.hi, st[k] + v))
+        st.update(eff.get("set", {})); return st
+    def score(self, st, terms):
+        sc = 0
+        for t in terms:
+            if "over" in t: sc += max(0, st[t["var"]] - t["over"]) * t["mult"]
+            elif "var" in t: sc += st[t["var"]] * t["mult"]
+            elif self.test(st, t["if"]): sc += t["add"]
+        return sc
+    def branch_matches(self, st, b):
+        if not self.test(st, b.get("if")): return False
+        s = b.get("score")
+        return s is None or self.score(st, s["terms"]) >= s["at_least"]
     def options(self, i, st):
-        """Returns (mode, options): mode is 'choice', 'auto' or 'skip'."""
         sc = self.scenes[i]
         for v in sc.get("variants", [{"options": sc.get("options")}]):
             if self.test(st, v.get("if")):
                 if v.get("skip"): return "skip", []
                 return ("auto" if v.get("auto") else "choice"), v["options"]
-
     def choose(self, i, pre, opt):
-        """Apply one option. Returns (state, ending|None). All conditions read the pre-scene state."""
-        st, end, _ = self.choose_with_beats(i, pre, opt)
-        return st, end
-
+        st, end, _ = self.choose_with_beats(i, pre, opt); return st, end
     def choose_with_beats(self, i, pre, opt):
-        """As choose, plus the story beats to show after this decision, in order:
-        the option's own beats, then the beat of each event branch that fired."""
         if "end" in opt: return pre, opt["end"], []
         beats = list(opt.get("beats", []))
         add = dict(opt.get("add", {}))
-        for c in self.scenes[i].get("scene_cond", []):          # merged into the option's own adds
+        for c in self.scenes[i].get("scene_cond", []):
             if self.test(pre, c.get("if")):
                 for k, v in c["then"].get("add", {}).items(): add[k] = add.get(k, 0) + v
         st = self.apply(pre, {"add": add, "set": opt.get("set", {})})
         for c in opt.get("cond", []):
             branch = c["then"] if self.test(pre, c.get("if")) else c.get("else")
-            if branch: st = self.apply(st, branch)
-        for ev in self.scenes[i].get("after", []):               # events read the current state
+            if branch:
+                if "end" in branch: return st, branch["end"], beats
+                st = self.apply(st, branch)
+        for ev in self.scenes[i].get("after", []):
             for b in self.d["events"][ev]["branches"]:
-                if self.test(st, b.get("if")):
-                    st = self.apply(st, b["then"])
+                if self.branch_matches(st, b):
+                    if "end" in b: return st, b["end"], beats + ([b["beat"]] if "beat" in b else [])
+                    st = self.apply(st, b.get("then", {}))
                     if "beat" in b: beats.append(b["beat"])
                     break
         return st, None, beats
-
-    def finale_beats(self):
-        return list(self.d["finale"].get("beats", []))
-
+    def finale_beats(self, st=None):
+        """Finale beats, in order. An entry is a beat id, or {"beat": id, "if": clauses} shown only when the
+        clauses hold for the final state."""
+        out = []
+        for b in self.d["finale"].get("beats", []):
+            if isinstance(b, str): out.append(b)
+            elif st is None or self.test(st, b.get("if")): out.append(b["beat"])
+        return out
     def failure(self, st):
         for f in self.d["failures"]:
             if self.test(st, f["if"]): return f["end"]
-
-    def finale_score(self, st):
-        sc = 0
-        for t in self.d["finale"]["terms"]:
-            if "over" in t: sc += max(0, st[t["var"]] - t["over"]) * t["mult"]
-            elif "var" in t: sc += st[t["var"]] * t["mult"]
-            elif self.test(st, t["if"]): sc += t["add"]
-        return sc
-
+    def finale_score(self, st): return self.score(st, self.d["finale"]["terms"])
     def finale(self, st):
         sc = self.finale_score(st)
         for o in self.d["finale"]["outcomes"]:
@@ -81,9 +75,7 @@ class Engine:
             if "at_least" in o and not sc >= o["at_least"]: continue
             if not self.test(st, o.get("if")): continue
             return o["end"], sc
-
     def resolve(self, i, st):
-        """After scene i: failure, drift, failure, finale. Returns (state, ending|None, score|None, early)."""
         f = self.failure(st)
         if f: return st, f, None, False
         if self.scenes[i].get("drift_after"):
@@ -93,8 +85,9 @@ class Engine:
             if f: return st, f, None, False
         if i == len(self.scenes) - 1:
             e, sc = self.finale(st); return st, e, sc, False
-        ea = self.d["early_finale"]
-        until = [s["id"] for s in self.scenes].index(ea["until_scene"])
-        if i <= until and self.test(st, ea["if"]):
-            e, sc = self.finale(st); return st, e, sc, True
+        ea = self.d.get("early_finale")
+        if ea:
+            until = [s["id"] for s in self.scenes].index(ea["until_scene"])
+            if i <= until and self.test(st, ea["if"]):
+                e, sc = self.finale(st); return st, e, sc, True
         return st, None, None, False

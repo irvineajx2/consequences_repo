@@ -1,0 +1,492 @@
+{
+  "prologue": {
+    "caption": "Rome, 63 BC",
+    "text": "In a crowded house in the Subura, a man counts debts no one could hope to repay. He has one plan to escape them: become the most powerful man in Rome."
+  },
+  "eras": {
+    "era1": {
+      "title": "The Debtor",
+      "years": "63–59 BC",
+      "text": "You are thirty-seven, brilliant, ambitious and drowning in debt. Rome's great men think you a spendthrift dandy. They are about to learn otherwise."
+    },
+    "era2": {
+      "title": "The Gallic War",
+      "years": "58–50 BC",
+      "text": "Your consulship is over and Gaul is yours to govern. Beyond the Alps lie wealth, glory and an army that will follow you anywhere."
+    },
+    "era3": {
+      "title": "Civil War",
+      "years": "49–46 BC",
+      "text": "The Senate has made its choice, and so have you. Roman will fight Roman, and the prize is Rome itself."
+    },
+    "era4": {
+      "title": "Dictator",
+      "years": "46–44 BC",
+      "text": "The wars are over and Rome is yours. Now you must decide what kind of master it will have, and live among the men who hate you for it."
+    }
+  },
+  "ruler": {
+    "name": "Julius Caesar",
+    "subtitle": "Rome, 63–44 BC",
+    "tagline": "Conquer Gaul, win a civil war, and do what Caesar could not: survive the Ides."
+  },
+  "meters": {
+    "fortune": "Fortune",
+    "legions": "Legions",
+    "people": "People",
+    "senate": "Senate",
+    "glory": "Glory"
+  },
+  "scenes": {
+    "s01": {
+      "caption": "Rome, 63 BC",
+      "narration": "The office of Pontifex Maximus, Rome's high priest, has fallen vacant. Your rivals are older and richer, and you are already deeply in debt. Winning would make your name. How will you fight for it?",
+      "consequences": {
+        "lavish": "Your creditors shudder as the money flows. The voters will remember your name.",
+        "modest": "You campaign within your means. Respectable, and easily forgotten.",
+        "withdraw": "You step aside. Your purse is spared; your ambition is not served."
+      },
+      "options": {
+        "lavish": "Borrow everything and spend lavishly"
+      }
+    },
+    "s02": {
+      "caption": "Temple of Concord, December 63 BC",
+      "narration": "Cicero has exposed Catiline's plot to seize Rome, and five conspirators sit under guard. The Senate wants them killed without trial, and your enemies whisper that you knew of the plot. What will you say?",
+      "consequences": {
+        "mercy": "You argue for prison, not death. The crowd loves you for it; the Senate's hardliners never forget.",
+        "execute": "You vote with Cicero. The prisoners are executed that night, and the people mutter.",
+        "silent": "You say nothing. Neither side thanks you for it.",
+        "catiline": "You send word of support to Catiline's camp. It is a dangerous letter to have written."
+      },
+      "options": {
+        "mercy": "Argue for prison, not execution"
+      }
+    },
+    "b01": {
+      "caption": "Rome, December 63 BC",
+      "narration": "Cicero has seized letters from Catiline's agents, and one of them names you. Guards are already hunting his men through the city. You have hours to choose a side. Which will it be?",
+      "consequences": {
+        "betray": "You hand Cicero every name you know. The Senate trusts you a little; the people never will again.",
+        "flee": "You slip out of Rome by night and ride north to Catiline's army."
+      }
+    },
+    "b02": {
+      "caption": "Pistoria, January 62 BC",
+      "narration": "Catiline's ragged army is trapped in the hills near Pistoria, with a consul's legions closing in. Tomorrow there will be a battle few expect to survive. Will you stand with him?",
+      "consequences": {
+        "desert": "You ride to the consul's camp and beg for mercy. You are spared, but your name is badly stained."
+      }
+    },
+    "s03": {
+      "caption": "Rome, 62 BC",
+      "narration": "During the sacred women's rites at your house, a man was caught disguised as a woman: Clodius, a popular young noble. Rumour says he came for your wife Pompeia. Rome is watching you. What will you do?",
+      "consequences": {
+        "divorce": "You divorce Pompeia but will not testify against Clodius. The people admire your restraint; the Senate does not.",
+        "testify": "Your evidence damns Clodius in court. The nobles approve; his many admirers do not.",
+        "stand": "You stand by Pompeia. Rome laughs at you behind its hand."
+      },
+      "options": {
+        "divorce": "Divorce Pompeia, refuse to testify"
+      }
+    },
+    "s04": {
+      "caption": "Rome, 61 BC",
+      "narration": "You have been made governor of Further Spain, but your creditors are blocking your departure until you pay, and your debts are enormous. Crassus, the richest man in Rome, has offered help. What will you do?",
+      "consequences": {
+        "crassus": "Crassus guarantees your debts. You leave for Spain a free man, and in his debt.",
+        "sell": "You sell what you can and leave late. Your creditors are calmer; your reputation is thinner.",
+        "slip": "You leave Rome before dawn with your creditors unpaid. They will not forget."
+      },
+      "options": {
+        "crassus": "Accept Crassus as your guarantor"
+      }
+    },
+    "b03": {
+      "caption": "Further Spain, 61 BC",
+      "narration": "Word reaches Spain that your creditors have taken you to court in Rome. You could return and face them, or make war on the restless Lusitanian tribes and pay them in plunder. Which will it be?",
+      "consequences": {
+        "plunder": "Your campaign fills your chests with silver. Rome calls it conquest; your enemies call it robbery.",
+        "court": "You return and face the court. Your debts are settled, at some cost to your dignity."
+      },
+      "options": {
+        "plunder": "Make war on the Lusitanians for plunder"
+      }
+    },
+    "s05": {
+      "caption": "Outside Rome, 60 BC",
+      "narration": "Your victories in Spain have earned you a triumph, but you must wait outside the city to celebrate it, and the deadline to stand for consul is days away. The Senate will not bend the rules. Which do you choose?",
+      "consequences": {
+        "consul": "You walk into Rome without your parade. The crowds cheer the candidate, not the conqueror.",
+        "triumph": "Rome watches your golden chariot pass. The consulship will have to wait a year."
+      },
+      "options": {
+        "consul": "Give up the triumph to stand for consul",
+        "triumph": "Take the triumph, stand next year"
+      }
+    },
+    "s06": {
+      "caption": "Rome, 60 BC",
+      "narration": "The Senate blocks you at every turn, and it blocks Pompey and Crassus too. Together the three of you could run Rome; apart, the Senate will run you. Your daughter Julia could seal an alliance. What will you do?",
+      "consequences": {
+        "pact": "Three men now rule Rome in secret, and Julia becomes Pompey's wife.",
+        "pompey": "You and Pompey stand together, bound by Julia's marriage. Crassus watches, unconvinced.",
+        "alone": "You trust no one. The Senate is pleased; your road to power grows narrower."
+      },
+      "options": {
+        "pact": "Join Pompey and Crassus; wed Julia to Pompey"
+      }
+    },
+    "s07": {
+      "caption": "Rome, 59 BC",
+      "narration": "You are consul at last, but your colleague Bibulus blocks every law you propose. Your land law for Pompey's veterans waits, and so does the choice of your province when this year ends. How will you govern?",
+      "consequences": {
+        "force": "Your laws pass by force in the Forum, and Gaul is yours for five years. Bibulus hides at home.",
+        "consensus": "You bargain with the Senate. Your laws pass slowly, and your province is smaller than you hoped.",
+        "quiet": "You accept a quiet province. The Senate relaxes; your legions will be few."
+      },
+      "options": {
+        "force": "Force your laws through; take Gaul"
+      }
+    },
+    "s08": {
+      "caption": "Near Geneva, 58 BC",
+      "narration": "A whole people, the Helvetii, are migrating west past Roman land with their wagons and cattle. Your legions are few, but a war would make your name and fill your treasury. What will you do?",
+      "consequences": {
+        "attack": "You fall upon the Helvetii and break them. The war in Gaul, and your legend, have begun.",
+        "pass": "The Helvetii pass by. Rome wonders what its new governor is for.",
+        "negotiate": "Your envoys turn them back without a battle. The Senate approves; your soldiers are bored."
+      }
+    },
+    "s09": {
+      "caption": "Luca, 56 BC",
+      "narration": "Your alliance with Pompey and Crassus is fraying, and your command in Gaul will soon end. The three of you meet at Luca while hundreds of senators wait outside for favours. What will you ask for?",
+      "consequences": {
+        "renew": "The pact is renewed. Your command is extended, and Pompey and Crassus will be consuls.",
+        "more": "You demand more than your share, and get it. Pompey's smile grows thin.",
+        "lapse": "You let the pact lapse. The Senate is delighted, and Pompey is free to go his own way."
+      }
+    },
+    "s10": {
+      "caption": "Gaul, 55 BC",
+      "narration": "Beyond the Ocean lies Britain, an island most Romans think a legend. No Roman army has ever crossed. Your legions are needed in Gaul, but the glory would be immense. Will you make the crossing?",
+      "consequences": {
+        "britain": "Your ships sail for the white cliffs. Rome holds its breath.",
+        "hold": "You keep your legions in Gaul. The island can wait."
+      }
+    },
+    "b04": {
+      "caption": "Kent, 55 BC",
+      "narration": "A storm has wrecked your fleet on the British shore, and the tribes are gathering. You could hold the beach and repair your ships, or seize the Britons' own boats and escape. What will you do?",
+      "consequences": {
+        "holdout": "Your men repair the fleet under the Britons' eyes, and you sail back to Gaul in triumph.",
+        "run": "You escape in stolen boats. Rome hears of the expedition, and of how it ended."
+      }
+    },
+    "s11": {
+      "caption": "Gaul, 53 BC",
+      "narration": "Julia is dead and Crassus has fallen in the East. Only you and Pompey remain, and the Senate is courting him. A new marriage might still bind him to you. What will you do?",
+      "consequences": {
+        "marriage": "You offer Pompey a new bride from your family. He declines, politely.",
+        "senate": "You write warmly to your old enemies in the Senate. Pompey notices.",
+        "letdie": "You let the alliance go. Two men now face each other across Rome."
+      }
+    },
+    "s12": {
+      "caption": "Alesia, 52 BC",
+      "narration": "All Gaul has risen under Vercingetorix. He has taken refuge in the hill town of Alesia, and a vast relief army is gathering. You could besiege him behind walls facing both ways. Will you risk it?",
+      "consequences": {
+        "besiege": "Your legions dig miles of walls, facing inward and outward. Everything rests on this siege.",
+        "fallback": "You withdraw to the Province. Gaul slips from your grasp, and Rome notices.",
+        "negotiate": "You open talks with Vercingetorix. The war drags on without a victory."
+      },
+      "options": {
+        "besiege": "Besiege Alesia behind double walls"
+      }
+    },
+    "s13": {
+      "caption": "Ravenna, 50 BC",
+      "narration": "The Senate orders you to give up your army and return to Rome as a private citizen. Without your command, your enemies will put you on trial. Pompey keeps his legions. How will you answer?",
+      "consequences": {
+        "disarm": "You offer to disarm if Pompey does the same. Rome cheers; the Senate refuses.",
+        "extend": "You demand more time. The Senate calls it defiance."
+      },
+      "options": {
+        "disarm": "Propose that you and Pompey both disarm",
+        "obey": "Obey and return as a private citizen"
+      }
+    },
+    "s14": {
+      "caption": "The Rubicon, January 49 BC",
+      "narration": "The Senate has declared a state of emergency against you. Before you runs the Rubicon, the border of Italy. To cross it with an army is war. Behind you stands a single legion. What will you do?",
+      "consequences": {
+        "cross": "You ride into the river. Rome's civil war has begun.",
+        "wait": "You stay at Ravenna and send envoys south."
+      }
+    },
+    "b05": {
+      "caption": "Ravenna, 49 BC",
+      "narration": "Pompey's envoys bring terms: give up your army now, and a consulship may follow later. Every day you wait, Pompey grows stronger. Do you trust him?",
+      "consequences": {
+        "late": "You march at last, but Pompey has had time to prepare, and Rome's treasury is in his hands."
+      }
+    },
+    "s15": {
+      "caption": "Pharsalus, 48 BC",
+      "narration": "You have pursued Pompey to Greece. On the plain of Pharsalus his army, twice the size of yours, waits with masses of cavalry. Your veterans are hungry but loyal. What will you do?",
+      "consequences": {
+        "battle": "Your legions advance across the plain. The fate of Rome will be decided by nightfall.",
+        "starve": "You dig in and wait. Both armies go hungry, and in the end battle comes anyway.",
+        "peace": "You send an offer of peace. Pompey's camp laughs, and the armies form up."
+      }
+    },
+    "s16": {
+      "caption": "Alexandria, 48 BC",
+      "narration": "Egypt is torn between young Cleopatra and her brother Ptolemy. Tonight Cleopatra has had herself smuggled into the palace to meet you. Rome wants Egypt's grain and gold. Whom will you support?",
+      "consequences": {
+        "cleopatra": "You back Cleopatra. After months of hard fighting in Alexandria, she rules Egypt as your ally.",
+        "ptolemy": "You back Ptolemy. Egypt's gold flows to you, and Cleopatra flees.",
+        "leave": "You leave Egypt to its quarrels and sail on.",
+        "stay": "You stay at Cleopatra's side as the months slip by."
+      }
+    },
+    "b06": {
+      "caption": "The Nile, 47 BC",
+      "narration": "You and Cleopatra sail up the Nile among temples older than Rome. Letters from Rome grow urgent: your enemies are regrouping in Africa. Will you go home?",
+      "consequences": {
+        "return": "You tear yourself away and sail for Rome. Rome has noticed your absence."
+      }
+    },
+    "s17": {
+      "caption": "Rome, 46 BC",
+      "narration": "The civil war is won. Your defeated enemies, Brutus and Cassius among them, await your judgement. Sulla, the last man to win a civil war, killed his. What will you do with yours?",
+      "consequences": {
+        "pardon": "You pardon them all. Brutus and Cassius take their seats in the Senate again.",
+        "proscribe": "You order lists of the condemned to be drawn up.",
+        "exile": "You send your enemies into exile. They are gone, but not powerless."
+      },
+      "options": {
+        "pardon": "Pardon them, Brutus and Cassius included"
+      }
+    },
+    "b07": {
+      "caption": "Rome, 46 BC",
+      "narration": "The lists are posted in the Forum, and Rome lives in terror as the names go up: Cicero, Brutus and Cassius among them. Will you see the purge through to the end?",
+      "consequences": {
+        "purge": "The purge is completed. Your enemies are gone, and Rome is silent with fear.",
+        "halfway": "You halt the purge halfway. The survivors thank you, and hate you."
+      }
+    },
+    "s18": {
+      "caption": "Rome, 46 BC",
+      "narration": "With power at last, you can reshape Rome. The calendar has drifted months out of step with the seasons, debt cripples the poor, and your veterans want land. Where will you begin?",
+      "consequences": {
+        "reform": "A new calendar, debt relief and colonies for your veterans. The people bless you; the moneylenders do not.",
+        "legions": "Your veterans get land and silver first. Rome grumbles at the cost.",
+        "leave": "You leave Rome's institutions alone. The Senate breathes again."
+      },
+      "options": {
+        "reform": "Reform the calendar, ease debts, settle veterans"
+      }
+    },
+    "s19": {
+      "caption": "Rome, 44 BC",
+      "narration": "The Senate votes you honour after honour: your statue among the old kings, your face on coins, the dictatorship for life. Refusing would offend them; accepting may offend them more. What will you do?",
+      "consequences": {
+        "accept": "You accept every honour. Rome has never seen one man raised so high.",
+        "power": "You keep the dictatorship but refuse the statues and titles. The Senate is surprised."
+      },
+      "options": {
+        "accept": "Accept dictatorship for life and every honour"
+      }
+    },
+    "s20": {
+      "caption": "Your villa, September 45 BC",
+      "narration": "You are over fifty, with no legitimate son. Your will must name an heir to your fortune and your name: your great-nephew Octavian, barely eighteen; Antony, your loyal general; or Cleopatra's son. Whom will you name?",
+      "consequences": {
+        "octavian": "You name young Octavian in a sealed will, lodged with the Vestal Virgins.",
+        "antony": "You name Antony. He is delighted; few others are.",
+        "caesarion": "You acknowledge Cleopatra's son as yours. Rome is scandalised."
+      }
+    },
+    "s21": {
+      "caption": "The Forum, February 44 BC",
+      "narration": "At the Lupercalia festival, Antony runs up to your chair and offers you a royal diadem before the crowd. Rome has not had a king for nearly five hundred years. What will you do?",
+      "consequences": {
+        "refuse": "You push the diadem away, and the crowd roars its approval."
+      }
+    },
+    "s22": {
+      "caption": "Rome, 15 March 44 BC",
+      "narration": "Calpurnia dreamt of holding your body and begs you to stay home. A soothsayer warned you of this day. In three days you leave for war in Parthia, and the Senate meets this morning. Will you go?",
+      "consequences": {
+        "noguard": "You set out for the Senate with only your friends around you.",
+        "guard": "You go to the Senate ringed by armed men. The senators bristle.",
+        "home": "You send word that you are unwell. The Senate meets without you."
+      },
+      "options": {
+        "noguard": "Go to the Senate without your guard",
+        "home": "Stay at home, as Calpurnia begs"
+      }
+    },
+    "b08": {
+      "caption": "Rome, 15 March 44 BC",
+      "narration": "Decimus Brutus, one of your most trusted friends, comes to fetch you. The Senate is waiting, he says, and will think you a coward. He is strangely impatient. Will you go with him?",
+      "consequences": {
+        "go": "You laugh at your wife's fears and go with Decimus.",
+        "refuse": "You send Decimus away and call for your guard. Rome talks of nothing else.",
+        "parthia": "At dawn you ride out of Rome, towards your army and the East."
+      },
+      "options": {
+        "parthia": "Leave Rome for Parthia at dawn"
+      }
+    }
+  },
+  "beats": {
+    "julia_dies": {
+      "caption": "Gaul, 54 BC",
+      "text": "A letter arrives from Rome: your daughter Julia has died in childbirth. With her dies the bond between you and Pompey."
+    },
+    "carrhae": {
+      "caption": "Syria, 53 BC",
+      "text": "Beyond the Euphrates, Crassus and his army are destroyed by the Parthians at Carrhae. Of the three, only you and Pompey remain."
+    },
+    "alesia_won": {
+      "caption": "Alesia, 52 BC",
+      "text": "The relief army breaks against your outer wall. Vercingetorix rides out of Alesia and lays his arms at your feet. Gaul is conquered."
+    },
+    "pompey_murdered": {
+      "caption": "Egypt, 48 BC",
+      "text": "Pompey flees to Egypt and is murdered on the beach as he lands. When they bring you his signet ring, you weep."
+    },
+    "veni_vidi_vici": {
+      "caption": "Zela, 47 BC",
+      "text": "Marching north, you crush a rebel king at Zela in a single afternoon. Your report to Rome takes three words: I came, I saw, I conquered."
+    },
+    "theatre_of_pompey": {
+      "caption": "Rome, the Ides of March",
+      "text": "In the hall beside the Theatre of Pompey, beneath your old rival's statue, the senators gather, and wait."
+    }
+  },
+  "endings": {
+    "ides": {
+      "text": "Beneath Pompey's statue, the conspirators close around you, Brutus among them. You die on the Ides of March, and the Republic dies with you."
+    },
+    "pater_patriae": {
+      "text": "You survive the Ides, unmask the plot and leave for Parthia with Rome reformed and your heir secure. The Senate names you Father of your Country, and means it."
+    },
+    "uneasy_crown": {
+      "text": "You survive, but Rome does not settle. With no secure heir and the Senate against you, every shadow hides a dagger. You rule, but you never rest."
+    },
+    "ruined_debt": {
+      "text": "Your creditors win. Stripped of property and office, you flee Rome in disgrace, a brilliant career ended almost before it began."
+    },
+    "mutiny": {
+      "text": "Unpaid and unheeded, your legions turn on you. The soldiers who were your strength hand you over to your enemies."
+    },
+    "mob": {
+      "text": "The crowds who loved you turn against you. Driven from Rome by a furious mob, you never return."
+    },
+    "enemy_state": {
+      "text": "The Senate declares you an enemy of the state. Outlawed, with no army strong enough to protect you, you flee into exile."
+    },
+    "prosecuted": {
+      "text": "You return to Rome without your army. Your enemies drag you through the courts, and you end your days in exile at Massilia."
+    },
+    "defeated_gaul": {
+      "text": "At Alesia the Gauls break through your walls. Your army is destroyed, and Gaul is lost to Rome."
+    },
+    "defeated_pharsalus": {
+      "text": "At Pharsalus, Pompey's cavalry sweep around your flank. Your army breaks, and Pompey rides into Rome as master of the Republic."
+    },
+    "daggers_dark": {
+      "text": "The conspirators do not wait for the Ides. Daggers find you in the dark, and Rome learns of your death at dawn."
+    },
+    "died_catiline": {
+      "text": "You die at Pistoria beside Catiline, a rebel against Rome. History remembers you, if at all, as a footnote to his conspiracy."
+    },
+    "lost_britain": {
+      "text": "Trapped on the British shore, your army is overwhelmed. You never see Rome again."
+    },
+    "republic_endures": {
+      "text": "You and Pompey lay down your arms. The Republic survives, battered but whole, and your name stands among its greatest servants."
+    },
+    "lord_nile": {
+      "text": "You never return to Rome. You rule beside Cleopatra on the Nile, and Rome forgets the man who might have been its master."
+    },
+    "second_sulla": {
+      "text": "Like Sulla before you, you lay down the dictatorship and retire. Rome is astonished, and your enemies are left with no one to hate."
+    },
+    "king_rome": {
+      "text": "You take the crown. For a day Rome is silent; then the Senate rises against the first King of Rome in nearly five centuries."
+    }
+  },
+  "chronicle": {
+    "s01": {
+      "note": "In 63 BC Caesar borrowed enormous sums to win the election as Pontifex Maximus. That morning he told his mother he would come home as high priest or not at all. He won."
+    },
+    "s02": {
+      "note": "Caesar argued that the Catilinarian conspirators should be imprisoned rather than executed. Cicero and Cato won the vote, and the men were put to death that same night."
+    },
+    "s03": {
+      "note": "Caesar divorced Pompeia but refused to give evidence against Clodius, saying that Caesar's wife must be above suspicion. Clodius was acquitted and became a useful ally."
+    },
+    "s04": {
+      "note": "Caesar's creditors tried to stop him leaving for Spain in 61 BC. Crassus stood surety for a large part of his debts, and Caesar left for his province."
+    },
+    "s05": {
+      "note": "Blocked by Cato's delaying tactics in the Senate, Caesar gave up his triumph for Spain and entered Rome to stand for consul, and won."
+    },
+    "s06": {
+      "note": "Caesar, Pompey and Crassus formed a secret alliance, later called the First Triumvirate. Caesar's daughter Julia married Pompey in 59 BC, and by all accounts the marriage was happy."
+    },
+    "s07": {
+      "note": "As consul, Caesar forced his land law through the assembly. His colleague Bibulus had dung tipped over his head and stayed home for the rest of the year. Caesar secured Gaul for five years."
+    },
+    "s08": {
+      "note": "In 58 BC Caesar blocked the Helvetii's migration and defeated them, beginning the Gallic Wars. Eight years of campaigning made him the richest and most famous general of his age."
+    },
+    "s09": {
+      "note": "At Luca in 56 BC the three men renewed their pact. Pompey and Crassus became consuls again, and Caesar's command in Gaul was extended for five more years."
+    },
+    "s10": {
+      "note": "Caesar crossed to Britain in 55 BC and again in 54 BC. Storms wrecked his ships both times and he made no lasting conquest, but Rome was dazzled."
+    },
+    "s11": {
+      "note": "After Julia's death Caesar offered Pompey a new marriage alliance with his great-niece Octavia. Pompey declined and married the daughter of Caesar's enemy Metellus Scipio instead."
+    },
+    "s12": {
+      "note": "Caesar besieged Vercingetorix at Alesia behind two rings of walls, one facing the town and one facing the relief army. The relief army failed, and Vercingetorix surrendered."
+    },
+    "s13": {
+      "note": "Caesar offered to give up his army if Pompey did the same. The Senate refused, and in January 49 BC ordered him to disband or be treated as an enemy of the state."
+    },
+    "s14": {
+      "note": "In January 49 BC Caesar crossed the Rubicon with a single legion, reportedly saying that the die was cast. Pompey and much of the Senate fled Rome."
+    },
+    "s15": {
+      "note": "At Pharsalus in 48 BC, Caesar's outnumbered veterans broke Pompey's cavalry with a hidden fourth line of infantry. Pompey fled to Egypt, where he was murdered."
+    },
+    "s16": {
+      "note": "Caesar backed Cleopatra and fought a dangerous war in Alexandria to put her on the throne. Their son, Caesarion, was born in 47 BC."
+    },
+    "s17": {
+      "note": "Caesar was famous for his clemency. He pardoned many enemies, including Brutus and Cassius, and gave them high office. Both later led the plot to kill him."
+    },
+    "s18": {
+      "note": "Caesar's reforms included the Julian calendar of 365 days with a leap year, still the basis of the calendar used today, along with debt relief and colonies for his veterans."
+    },
+    "s19": {
+      "note": "Caesar accepted extraordinary honours, including the dictatorship for life in February 44 BC. When a Senate delegation brought him its decrees, he did not rise to greet them."
+    },
+    "s20": {
+      "note": "In September 45 BC Caesar named his great-nephew Octavian as his main heir and adopted him in his will. Octavian later became Augustus, Rome's first emperor."
+    },
+    "s21": {
+      "note": "At the Lupercalia in February 44 BC, Antony offered Caesar a diadem. Caesar refused it and had it sent to the Temple of Jupiter, but many suspected the scene was staged."
+    },
+    "s22": {
+      "note": "Despite Calpurnia's dream and the soothsayer's warning, Decimus Brutus persuaded Caesar to attend the Senate. He was stabbed to death beneath Pompey's statue."
+    }
+  }
+}

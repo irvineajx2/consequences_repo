@@ -128,7 +128,7 @@ for r in range(200):
 assert covered == set(ALL)
 json.dump({"generated_from": "rules.json version 6",
            "note": "choices lists the option id picked at each scene shown to the player, including auto scenes; skipped scenes have no entry",
-           "cases": cases}, open("tests/fixtures/golden_paths.json", "w"), indent=1)
+           "cases": cases}, open("tests/fixtures/elizabeth-i/golden_paths.json", "w"), indent=1)
 print("coverage cases:", len(cases) - 201, " total cases:", len(cases))
 from collections import Counter
 print(Counter(c["expected"]["ending"] + (" early" if c["expected"]["early_finale"] else "") for c in cases))

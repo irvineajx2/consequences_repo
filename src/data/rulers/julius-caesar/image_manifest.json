@@ -1,0 +1,71 @@
+{
+  "scenes": {
+    "s01": "C01",
+    "s02": "C02",
+    "b01": "CB1",
+    "b02": "CB2",
+    "s03": "C03",
+    "s04": "C04",
+    "b03": "CB3",
+    "s05": "C05",
+    "s06": "C06",
+    "s07": "C07",
+    "s08": "C08",
+    "s09": "C09",
+    "s10": "C10",
+    "b04": "CB4",
+    "s11": "C11",
+    "s12": "C12",
+    "s13": "C13",
+    "s14": "C14",
+    "b05": "CB5",
+    "s15": "C15",
+    "s16": "C16",
+    "b06": "CB6",
+    "s17": "C17",
+    "b07": "CB7",
+    "s18": "C18",
+    "s19": "C19",
+    "s20": "C20",
+    "s21": "C21",
+    "s22": "C22",
+    "b08": "CB8"
+  },
+  "beats": {
+    "julia_dies": "CT1",
+    "carrhae": "CT2",
+    "alesia_won": "CT3",
+    "pompey_murdered": "CT4",
+    "veni_vidi_vici": "CT5",
+    "theatre_of_pompey": "CT6"
+  },
+  "endings": {
+    "ides": "CX01",
+    "pater_patriae": "CX02",
+    "uneasy_crown": "CX03",
+    "ruined_debt": "CX04",
+    "mutiny": "CX05",
+    "mob": "CX06",
+    "enemy_state": "CX07",
+    "prosecuted": "CX08",
+    "defeated_gaul": "CX09",
+    "defeated_pharsalus": "CX10",
+    "daggers_dark": "CX11",
+    "died_catiline": "CX12",
+    "lost_britain": "CX13",
+    "republic_endures": "CX14",
+    "lord_nile": "CX15",
+    "second_sulla": "CX16",
+    "king_rome": "CX17"
+  },
+  "ui": {
+    "prologue": "CP1",
+    "eras": [
+      "CERA1",
+      "CERA2",
+      "CERA3",
+      "CERA4"
+    ],
+    "rulerCard": "CR1"
+  }
+}

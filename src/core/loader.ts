@@ -1,4 +1,4 @@
-import type { Condition, Effect, Option, Rules, Scene } from './rules';
+import type { BranchEffect, Condition, Effect, FinaleTerm, Option, Rules, Scene } from './rules';
 
 export class RulesError extends Error {
   constructor(message: string) {
@@ -17,7 +17,6 @@ const REQUIRED_KEYS = [
   'drift',
   'events',
   'beats',
-  'early_finale',
   'finale',
   'endings',
   'scenes',
@@ -76,6 +75,23 @@ export function loadRules(json: unknown): Rules {
     }
   };
 
+  const checkTerms = (terms: readonly FinaleTerm[], where: string): void => {
+    terms.forEach((t, i) => {
+      if ('var' in t) {
+        const numericFlag = typeof rules.flags[t.var] === 'number';
+        if (!meters.has(t.var) && !numericFlag) {
+          throw new RulesError(`${where} term ${i} uses unknown or non-numeric variable "${t.var}"`);
+        }
+      } else {
+        checkCondition(t.if, `${where} term ${i}`);
+      }
+    });
+  };
+  const checkBranchEffect = (effect: BranchEffect | undefined, where: string): void => {
+    if (effect?.end !== undefined) checkEnding(effect.end, where);
+    checkEffect(effect, where);
+  };
+
   rules.failures.forEach((f, i) => {
     checkEnding(f.end, `failures[${i}]`);
     checkCondition(f.if, `failures[${i}]`);
@@ -89,24 +105,25 @@ export function loadRules(json: unknown): Rules {
   }
   for (const [id, event] of Object.entries(rules.events)) {
     event.branches.forEach((b, i) => {
-      checkCondition(b.if, `event "${id}" branch ${i}`);
-      checkEffect(b.then, `event "${id}" branch ${i}`);
-      if (b.beat !== undefined) checkBeats([b.beat], `event "${id}" branch ${i}`);
+      const where = `event "${id}" branch ${i}`;
+      checkCondition(b.if, where);
+      checkEffect(b.then, where);
+      if (b.end !== undefined) checkEnding(b.end, where);
+      if (b.score) checkTerms(b.score.terms, `${where} score`);
+      if (b.beat !== undefined) checkBeats([b.beat], where);
     });
   }
-  checkBeats(rules.finale.beats, 'finale');
+  (rules.finale.beats ?? []).forEach((b, i) => {
+    if (typeof b === 'string') return checkBeats([b], 'finale');
+    checkBeats([b.beat], `finale beat ${i}`);
+    checkCondition(b.if, `finale beat ${i}`);
+  });
   rules.finale.outcomes.forEach((o, i) => {
     checkEnding(o.end, `finale outcome ${i}`);
     checkCondition(o.if, `finale outcome ${i}`);
   });
-  rules.finale.terms.forEach((t, i) => {
-    if ('var' in t) {
-      if (!meters.has(t.var)) throw new RulesError(`finale term ${i} uses unknown meter "${t.var}"`);
-    } else {
-      checkCondition(t.if, `finale term ${i}`);
-    }
-  });
-  checkCondition(rules.early_finale.if, 'early_finale');
+  checkTerms(rules.finale.terms, 'finale');
+  if (rules.early_finale) checkCondition(rules.early_finale.if, 'early_finale');
 
   for (const scene of rules.scenes) {
     const where = `scene "${scene.id}"`;
@@ -137,12 +154,12 @@ export function loadRules(json: unknown): Rules {
       checkBeats(option.beats, at);
       (option.cond ?? []).forEach((c, i) => {
         checkCondition(c.if, `${at} cond ${i}`);
-        checkEffect(c.then, `${at} cond ${i}`);
-        checkEffect(c.else, `${at} cond ${i}`);
+        checkBranchEffect(c.then, `${at} cond ${i}`);
+        checkBranchEffect(c.else, `${at} cond ${i}`);
       });
     }
   }
-  if (!sceneIds.has(rules.early_finale.until_scene)) {
+  if (rules.early_finale && !sceneIds.has(rules.early_finale.until_scene)) {
     throw new RulesError(`early_finale references unknown scene "${rules.early_finale.until_scene}"`);
   }
 

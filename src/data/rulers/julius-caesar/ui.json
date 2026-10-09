@@ -1,0 +1,69 @@
+{
+  "meters": [
+    {
+      "id": "fortune",
+      "visible": true,
+      "style": "fill",
+      "warnBelow": 15
+    },
+    {
+      "id": "legions",
+      "visible": true,
+      "style": "fill",
+      "warnBelow": 15
+    },
+    {
+      "id": "people",
+      "visible": true,
+      "style": "fill",
+      "warnBelow": 15
+    },
+    {
+      "id": "senate",
+      "visible": true,
+      "style": "fill",
+      "warnBelow": 15
+    },
+    {
+      "id": "glory",
+      "visible": true,
+      "style": "fill"
+    },
+    {
+      "id": "rivalry",
+      "visible": false
+    },
+    {
+      "id": "resentment",
+      "visible": false
+    }
+  ],
+  "prologue": {
+    "image": "CP1"
+  },
+  "eras": [
+    {
+      "id": "era1",
+      "startsAt": "s01",
+      "image": "CERA1"
+    },
+    {
+      "id": "era2",
+      "startsAt": "s08",
+      "image": "CERA2"
+    },
+    {
+      "id": "era3",
+      "startsAt": "s14",
+      "image": "CERA3"
+    },
+    {
+      "id": "era4",
+      "startsAt": "s18",
+      "image": "CERA4"
+    }
+  ],
+  "rulerCard": {
+    "image": "CR1"
+  }
+}
