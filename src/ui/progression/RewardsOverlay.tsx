@@ -14,6 +14,13 @@ import { BandGem, Coin, Medallion, XpBar } from './ProgressionArt';
 /** How long the bar takes to fill one level, and how long each level-up is held. */
 const FILL_MS = 1100;
 const LEVEL_UP_MS = 1600;
+/** The smallest medallion's height as a share of the laurel framing it. */
+const MEDALLION_IN_LAUREL = 0.46;
+/** A level-up that reaches a new rank is held longer. */
+const NEW_RANK_HOLD = 1.5;
+
+/** Whether reaching `level` crosses into a new rank. */
+const reachesNewRank = (level: number) => rankTitle(level) !== rankTitle(level - 1);
 
 export function RewardsOverlay({ rewards, onDone }: { rewards: RewardOutcome; onDone: () => void }) {
   const skin = useSkin();
@@ -33,24 +40,31 @@ export function RewardsOverlay({ rewards, onDone }: { rewards: RewardOutcome; on
     const timers: ReturnType<typeof setTimeout>[] = [];
     timers.push(setTimeout(() => setFilling(true), 300));
     if (segment.levelUp) {
+      const hold = reachesNewRank(segment.level + 1) ? LEVEL_UP_MS * NEW_RANK_HOLD : LEVEL_UP_MS;
       timers.push(setTimeout(() => setLevelUp(segment.level + 1), 300 + FILL_MS));
       timers.push(
         setTimeout(() => {
           setFilling(false);
           setIndex((i) => i + 1);
-        }, 300 + FILL_MS + LEVEL_UP_MS),
+        }, 300 + FILL_MS + hold),
       );
     }
     return () => timers.forEach(clearTimeout);
   }, [segment]);
 
   const shownLevel = levelUp ?? segment.level;
-  const newRank = levelUp !== null && rankTitle(levelUp) !== rankTitle(levelUp - 1) ? rankTitle(levelUp) : null;
+  // Only the level-up that crosses into a new rank gets the major laurel and the rank title.
+  const newRank = levelUp !== null && reachesNewRank(levelUp) ? rankTitle(levelUp) : null;
   const tiered = Math.round(breakdown.newEndingXp * breakdown.tier);
   const line = [text.body, styles.line];
   // The laurel at its layout size, smaller on short screens so the panel still fits.
   const { height: screenHeight } = useWindowDimensions();
-  const laurelHeight = Math.min(skin.progression.layout.laurel.heightPt, screenHeight * 0.2);
+  const { laurel } = skin.progression.ranks;
+  const laurelHeight = Math.min(laurel.heightPt, screenHeight * 0.2);
+  // As in the art's preview, the smallest medallion spans about 46% of the laurel's height; all
+  // tiers share that scale, so higher ranks stay larger.
+  const smallestTier = Math.min(...Object.values(skin.progression.ranks.tiers).map((t) => t.heightPt));
+  const medallionScale = (laurelHeight * MEDALLION_IN_LAUREL) / smallestTier;
 
   return (
     <Animated.View entering={FadeIn.duration(350)} exiting={FadeOut.duration(250)} style={styles.backdrop}>
@@ -71,7 +85,10 @@ export function RewardsOverlay({ rewards, onDone }: { rewards: RewardOutcome; on
           {format(strings.rewardTotal, { xp: formatNumber(breakdown.totalXp) })}
         </Text>
 
-        {/* The medallion; at each level-up the laurel scales in around it, framing the new level. */}
+        {/*
+          The medallion, in its rank's colour; at each level-up a laurel scales in around it, framing
+          the new level: the major laurel, with the new rank's title beneath, when the rank changes.
+        */}
         <View style={[styles.levelArea, { height: laurelHeight }]}>
           {levelUp !== null && (
             <Animated.View
@@ -80,26 +97,28 @@ export function RewardsOverlay({ rewards, onDone }: { rewards: RewardOutcome; on
               style={styles.laurel}
             >
               <Image
-                source={skin.progression.images.laurel}
+                source={skin.progression.images[newRank !== null ? laurel.major : laurel.normal]}
                 resizeMode="contain"
                 style={{ width: laurelHeight * skin.progression.layout.laurel.aspect, height: laurelHeight }}
               />
             </Animated.View>
           )}
-          <Medallion level={shownLevel} size={Math.min(skin.progression.layout.medallion.heightPt, laurelHeight * 0.45)} />
+          <Medallion level={shownLevel} scale={medallionScale} />
         </View>
-        <XpBar key={index} fraction={filling ? segment.to : segment.from} durationMs={FILL_MS} />
-        <View style={styles.levelUpLine}>
+        <View style={styles.levelUpLines}>
           {levelUp !== null && (
-            <Animated.Text
-              key={levelUp}
-              entering={FadeIn.duration(300)}
-              style={[text.heading, styles.centre, { color: skin.colors.panelCaption }]}
-            >
-              {format(strings.levelUp, { level: levelUp })}
-              {newRank !== null ? ` · ${format(strings.newRank, { rank: newRank })}` : ''}
-            </Animated.Text>
+            <Animated.View key={levelUp} entering={FadeIn.duration(300)}>
+              <Text style={[text.heading, styles.centre, { color: skin.colors.panelCaption }]}>
+                {format(strings.levelUp, { level: levelUp })}
+              </Text>
+              {newRank !== null && (
+                <Text style={[text.caption, styles.centre, styles.rank, { color: skin.colors.panelText }]}>{newRank}</Text>
+              )}
+            </Animated.View>
           )}
+        </View>
+        <View style={styles.bar}>
+          <XpBar key={index} fraction={filling ? segment.to : segment.from} durationMs={FILL_MS} />
         </View>
 
         {breakdown.band !== undefined && (
@@ -146,7 +165,10 @@ const styles = StyleSheet.create({
   total: { textAlign: 'center', marginTop: 4 },
   levelArea: { alignItems: 'center', justifyContent: 'center', marginTop: 4 },
   laurel: { position: 'absolute', pointerEvents: 'none', alignItems: 'center', justifyContent: 'center' },
-  levelUpLine: { minHeight: 30, justifyContent: 'center', marginTop: 6 },
+  // Room for the level and rank lines, so nothing moves when they appear.
+  levelUpLines: { minHeight: 52, justifyContent: 'center', marginBottom: 6 },
+  rank: { fontSize: 17, lineHeight: 22 },
+  bar: { marginBottom: 10 },
   centre: { textAlign: 'center' },
   iconRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 6 },
   button: { marginTop: 12 },
