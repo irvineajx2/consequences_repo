@@ -111,6 +111,27 @@ export interface ProgressionSkin {
   };
 }
 
+/** An image's size in progression_ui.json: its height in points and width / height. */
+export interface ImageMetrics {
+  readonly heightPt: number;
+  readonly aspect: number;
+}
+
+/**
+ * Every image progression_ui.json sizes (its entries with a height and aspect), by image name.
+ * These are the files the progression art must provide.
+ */
+export function progressionImageMetrics(layout: ProgressionSkin['layout']): Readonly<Record<string, ImageMetrics>> {
+  const metrics: Record<string, ImageMetrics> = {};
+  for (const [name, value] of Object.entries(layout as object)) {
+    if (typeof value === 'object' && value !== null && 'heightPt' in value && 'aspect' in value) {
+      const { heightPt, aspect } = value as ImageMetrics;
+      if (typeof heightPt === 'number' && typeof aspect === 'number') metrics[name] = { heightPt, aspect };
+    }
+  }
+  return metrics;
+}
+
 /** Colours for screens drawn on the dark background (chronicle, endings, title). */
 export interface ScreenSkin {
   readonly text: string;

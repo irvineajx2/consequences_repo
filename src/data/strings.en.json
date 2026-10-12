@@ -58,6 +58,7 @@
   "levelUp": "Level {level}",
   "newRank": "New rank: {rank}",
   "bandGold": "{band} · {gold} {currency}",
+  "bandEnding": "{band} ending",
   "categories": {
     "historical": "Historical",
     "outperformed": "Outperformed",

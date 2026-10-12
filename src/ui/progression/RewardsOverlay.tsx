@@ -1,15 +1,15 @@
 // The end-of-run Rewards panel: how the XP was earned, the XP bar filling (with a level-up moment
 // for each level gained) and the gold earned, or why none was.
 import { useEffect, useMemo, useState } from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
-import Animated, { FadeIn, FadeOut, ZoomIn } from 'react-native-reanimated';
+import { Image, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
+import Animated, { Easing, FadeIn, FadeOut, ZoomIn } from 'react-native-reanimated';
 import { progression as config, rankTitle, type RewardOutcome, xpBarSegments } from '../../game/progression';
 import { GameButton } from '../GameButton';
 import { SkinPanel } from '../skin/SkinPanel';
 import { useSkin } from '../skin/SkinProvider';
 import { useSkinTextStyles } from '../skin/textStyles';
-import { format, formatNumber, strings } from '../strings';
-import { Coin, Medallion, XpBar } from './ProgressionArt';
+import { bandLabel, format, formatNumber, strings } from '../strings';
+import { BandGem, Coin, Medallion, XpBar } from './ProgressionArt';
 
 /** How long the bar takes to fill one level, and how long each level-up is held. */
 const FILL_MS = 1100;
@@ -48,6 +48,9 @@ export function RewardsOverlay({ rewards, onDone }: { rewards: RewardOutcome; on
   const newRank = levelUp !== null && rankTitle(levelUp) !== rankTitle(levelUp - 1) ? rankTitle(levelUp) : null;
   const tiered = Math.round(breakdown.newEndingXp * breakdown.tier);
   const line = [text.body, styles.line];
+  // The laurel at its layout size, smaller on short screens so the panel still fits.
+  const { height: screenHeight } = useWindowDimensions();
+  const laurelHeight = Math.min(skin.progression.layout.laurel.heightPt, screenHeight * 0.2);
 
   return (
     <Animated.View entering={FadeIn.duration(350)} exiting={FadeOut.duration(250)} style={styles.backdrop}>
@@ -68,23 +71,24 @@ export function RewardsOverlay({ rewards, onDone }: { rewards: RewardOutcome; on
           {format(strings.rewardTotal, { xp: formatNumber(breakdown.totalXp) })}
         </Text>
 
-        <View style={styles.barRow}>
-          <View style={styles.medallion}>
-            {levelUp !== null && (
-              <Animated.View key={levelUp} entering={ZoomIn.duration(400)} style={styles.laurel}>
-                <Image
-                  source={skin.progression.images.laurel}
-                  resizeMode="contain"
-                  style={{ width: 84 * skin.progression.layout.laurel.aspect, height: 84 }}
-                />
-              </Animated.View>
-            )}
-            <Medallion level={shownLevel} />
-          </View>
-          <View style={styles.barColumn}>
-            <XpBar key={index} fraction={filling ? segment.to : segment.from} durationMs={FILL_MS} />
-          </View>
+        {/* The medallion; at each level-up the laurel scales in around it, framing the new level. */}
+        <View style={[styles.levelArea, { height: laurelHeight }]}>
+          {levelUp !== null && (
+            <Animated.View
+              key={levelUp}
+              entering={ZoomIn.duration(450).easing(Easing.out(Easing.cubic))}
+              style={styles.laurel}
+            >
+              <Image
+                source={skin.progression.images.laurel}
+                resizeMode="contain"
+                style={{ width: laurelHeight * skin.progression.layout.laurel.aspect, height: laurelHeight }}
+              />
+            </Animated.View>
+          )}
+          <Medallion level={shownLevel} size={Math.min(skin.progression.layout.medallion.heightPt, laurelHeight * 0.45)} />
         </View>
+        <XpBar key={index} fraction={filling ? segment.to : segment.from} durationMs={FILL_MS} />
         <View style={styles.levelUpLine}>
           {levelUp !== null && (
             <Animated.Text
@@ -98,8 +102,16 @@ export function RewardsOverlay({ rewards, onDone }: { rewards: RewardOutcome; on
           )}
         </View>
 
+        {breakdown.band !== undefined && (
+          <View style={styles.iconRow}>
+            <BandGem band={breakdown.band} />
+            <Text style={[text.body, { color: skin.colors.panelText }]}>
+              {format(strings.bandEnding, { band: bandLabel(breakdown.band) })}
+            </Text>
+          </View>
+        )}
         {breakdown.gold > 0 ? (
-          <View style={styles.goldRow}>
+          <View style={styles.iconRow}>
             <Coin />
             <Text style={[text.body, { color: skin.colors.panelText }]}>
               {format(strings.goldEarned, { gold: formatNumber(breakdown.gold), currency: config.currency.name })}
@@ -132,12 +144,10 @@ const styles = StyleSheet.create({
   title: { textAlign: 'center', marginBottom: 8 },
   line: { textAlign: 'center' },
   total: { textAlign: 'center', marginTop: 4 },
-  barRow: { flexDirection: 'row', alignItems: 'center', gap: 10, marginTop: 14 },
-  medallion: { alignItems: 'center', justifyContent: 'center' },
+  levelArea: { alignItems: 'center', justifyContent: 'center', marginTop: 4 },
   laurel: { position: 'absolute', pointerEvents: 'none', alignItems: 'center', justifyContent: 'center' },
-  barColumn: { flex: 1 },
   levelUpLine: { minHeight: 30, justifyContent: 'center', marginTop: 6 },
   centre: { textAlign: 'center' },
-  goldRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 6 },
+  iconRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 6 },
   button: { marginTop: 12 },
 });

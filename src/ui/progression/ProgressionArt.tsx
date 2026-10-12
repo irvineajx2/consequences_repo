@@ -1,19 +1,28 @@
 // The level plate's art: the XP bar, the level medallion, the gold coin and the ending-band gem.
 import { useEffect, useState } from 'react';
-import { Image, type LayoutChangeEvent, StyleSheet, Text, View } from 'react-native';
+import { Image, type LayoutChangeEvent, PixelRatio, StyleSheet, Text, View } from 'react-native';
 import Animated, { Easing, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import { useSkin } from '../skin/SkinProvider';
+import { progressionImageMetrics } from '../skin/types';
+
+/** Rounds a length to whole device pixels. */
+const snap = (pt: number) => PixelRatio.roundToNearestPixel(pt);
 
 /**
  * The XP bar: two end caps at their natural width and a stretched middle, with the fill drawn in
- * code over the bar's interior as a rounded bar inside the fill insets. `fraction` (0..1) animates over `durationMs`.
+ * code over the bar's interior as a rounded bar inside the fill insets. Slice edges sit on whole
+ * pixels and the middle overlaps each cap by one pixel, so no seam shows. `fraction` (0..1) animates over `durationMs`.
  */
 export function XpBar({ fraction, durationMs = 0, scale = 1 }: { fraction: number; durationMs?: number; scale?: number }) {
   const { progression } = useSkin();
   const { bar } = progression.layout;
   const [width, setWidth] = useState(0);
   const level = useSharedValue(fraction);
-  const height = bar.heightPt * scale;
+  const height = snap(bar.heightPt * scale);
+  const pixel = 1 / PixelRatio.get();
+  const capLeft = snap(bar.capLeftWidthPt * scale);
+  const capRight = snap(bar.capRightWidthPt * scale);
+  const rightEdge = snap(width);
   const inset = {
     left: bar.fillInsetPt.left * scale,
     right: bar.fillInsetPt.right * scale,
@@ -21,7 +30,7 @@ export function XpBar({ fraction, durationMs = 0, scale = 1 }: { fraction: numbe
     bottom: bar.fillInsetPt.bottom * scale,
   };
   const track = Math.max(0, width - inset.left - inset.right);
-  const fillHeight = height - inset.top - inset.bottom;
+  const fillHeight = snap(height - inset.top - inset.bottom);
 
   useEffect(() => {
     level.set(
@@ -36,17 +45,30 @@ export function XpBar({ fraction, durationMs = 0, scale = 1 }: { fraction: numbe
 
   return (
     <View onLayout={onLayout} style={[styles.bar, { height }]}>
-      <View style={[styles.row, StyleSheet.absoluteFill, styles.passThrough]}>
-        <Image source={progression.images.bar_left} resizeMode="stretch" style={{ width: bar.capLeftWidthPt * scale, height }} />
-        <Image source={progression.images.bar_mid} resizeMode="stretch" style={{ flex: 1, height }} />
-        <Image source={progression.images.bar_right} resizeMode="stretch" style={{ width: bar.capRightWidthPt * scale, height }} />
-      </View>
+      {width > 0 && (
+        <View style={[StyleSheet.absoluteFill, styles.passThrough]}>
+          <Image
+            source={progression.images.bar_mid}
+            resizeMode="stretch"
+            style={[
+              styles.slice,
+              { left: capLeft - pixel, width: Math.max(0, rightEdge - capRight - capLeft + 2 * pixel), height },
+            ]}
+          />
+          <Image source={progression.images.bar_left} resizeMode="stretch" style={[styles.slice, { left: 0, width: capLeft, height }]} />
+          <Image
+            source={progression.images.bar_right}
+            resizeMode="stretch"
+            style={[styles.slice, { left: rightEdge - capRight, width: capRight, height }]}
+          />
+        </View>
+      )}
       <Animated.View
         style={[
           styles.fill,
           {
-            left: inset.left,
-            top: inset.top,
+            left: snap(inset.left),
+            top: snap(inset.top),
             height: fillHeight,
             borderRadius: fillHeight / 2,
             backgroundColor: progression.colors.xpFill,
@@ -103,18 +125,20 @@ export function Coin({ size }: { size?: number }) {
   );
 }
 
-/** The gem for an ending band (common, uncommon, rare, legendary). */
-export function BandGem({ band, size = 14 }: { band: string; size?: number }) {
+/** The gem for an ending band (common, uncommon, rare, legendary), at its layout size by default. */
+export function BandGem({ band, size }: { band: string; size?: number }) {
   const { progression } = useSkin();
   const name = progression.layout.gems[band];
   const source = name !== undefined ? progression.images[name] : undefined;
-  if (source === undefined) return null;
-  return <Image source={source} resizeMode="contain" style={{ width: size, height: size }} />;
+  const metrics = name !== undefined ? progressionImageMetrics(progression.layout)[name] : undefined;
+  if (source === undefined || metrics === undefined) return null;
+  const height = size ?? metrics.heightPt;
+  return <Image source={source} resizeMode="contain" style={{ width: height * metrics.aspect, height }} />;
 }
 
 const styles = StyleSheet.create({
   bar: { justifyContent: 'center', alignSelf: 'stretch' },
-  row: { flexDirection: 'row', alignItems: 'center' },
+  slice: { position: 'absolute', top: 0 },
   fill: { position: 'absolute' },
   passThrough: { pointerEvents: 'none' },
   levelNumber: { position: 'absolute', textAlign: 'center' },

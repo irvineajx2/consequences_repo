@@ -5,7 +5,7 @@ import { textSizes } from '../../src/ui/theme';
 import { rulers } from '../../src/data/rulers';
 import { visibleMeters } from '../../src/game/meters';
 import { tudorSkin } from '../../src/ui/skin/tudor';
-import { isBalanceArt, meterImageNames, skinImageNames } from '../../src/ui/skin/types';
+import { isBalanceArt, meterImageNames, progressionImageMetrics, skinImageNames } from '../../src/ui/skin/types';
 
 const skinDir = path.join(__dirname, '../../assets/ui/skins/tudor');
 const tudorJson = JSON.parse(
@@ -56,6 +56,22 @@ describe('Tudor progression art', () => {
       for (const suffix of ['', '@2x', '@3x']) expect(fs.existsSync(path.join(dir, `${name}${suffix}.png`))).toBe(true);
     }
     expect(Object.keys(tudorSkin.progression.images)).not.toContain('_preview');
+  });
+
+  it('has every file progression_ui.json names, at @1x, @2x and @3x', () => {
+    const named = [...Object.keys(progressionImageMetrics(layout)), ...Object.values<string>(layout.gems)];
+    expect(new Set(named)).toEqual(
+      new Set(['coin', 'medallion', 'laurel', 'bar_left', 'bar_mid', 'bar_right', 'gem_common', 'gem_uncommon', 'gem_rare', 'gem_legendary']),
+    );
+    for (const name of named) {
+      for (const suffix of ['', '@2x', '@3x']) expect(fs.existsSync(path.join(dir, `${name}${suffix}.png`))).toBe(true);
+      expect(tudorSkin.progression.images[name]).toBeDefined();
+    }
+  });
+
+  it('does not bundle the preview', () => {
+    const source = fs.readFileSync(path.join(__dirname, '../../src/ui/skin/tudor.ts'), 'utf8');
+    expect(source).not.toMatch(/progression\/_preview/);
   });
 
   it('uses the layout from progression_ui.json', () => {
