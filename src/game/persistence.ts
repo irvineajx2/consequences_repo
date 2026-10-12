@@ -1,6 +1,15 @@
 // Reading and writing the profile and the run in progress, over any key-value store.
 import type { Rules } from '../core';
-import { applyRunResult, parseProfile, type Profile, type RunResult, rulerProfile, withRulerProfile } from './profile';
+import {
+  applyRunResult,
+  parseProfile,
+  type Profile,
+  rulerIdForProfileKey,
+  rulerProfile,
+  type RunResult,
+  withRulerProfile,
+} from './profile';
+import { applyRunRewards, type RewardOutcome } from './progression';
 import { parseRunSave, resume, type RunSave } from './save';
 import type { Presentation, Session } from './session';
 import { type KeyValueStorage, storageKeys } from './storage';
@@ -54,7 +63,9 @@ export type LoadedRun =
   /** `savedAt` is when the save was written (ISO), if known. */
   | { readonly status: 'resumed'; readonly session: Session; readonly savedAt?: string }
   /** A save existed but could not be restored; it has been deleted. */
-  | { readonly status: 'discarded' };
+  | { readonly status: 'discarded' }
+  /** The save held a run that had finished but was never recorded: it has been recorded now. */
+  | { readonly status: 'recorded' };
 
 /** Loads and replays the run in progress, quietly deleting a save that cannot be restored. */
 export async function loadRun(
@@ -74,6 +85,16 @@ export async function loadRun(
   if (resumed?.ok) {
     return { status: 'resumed', session: resumed.session, ...(save?.savedAt ? { savedAt: save.savedAt } : {}) };
   }
+  if (resumed && !resumed.ok && resumed.reason === 'finished') {
+    // The app closed between the run ending and its rewards being recorded: record them now
+    // (once only: a run already rewarded is just cleared).
+    try {
+      await finishRun(storage, rules, resultOf(resumed.session, new Date().toISOString()));
+      return { status: 'recorded' };
+    } catch {
+      return { status: 'none' };
+    }
+  }
   try {
     await clearRun(storage, rules);
   } catch {
@@ -82,16 +103,53 @@ export async function loadRun(
   return { status: 'discarded' };
 }
 
-/** Records a finished run in the profile and deletes its run save. Returns the newly discovered scenes. */
+/** A finished session as a run result. */
+export function resultOf(s: Pick<Session, 'run' | 'runId'>, finishedAt: string): RunResult & { readonly runId: string } {
+  const outcome = s.run.outcome;
+  if (outcome === null) throw new Error('The run has not finished');
+  return {
+    runId: s.runId,
+    ending: outcome.ending,
+    score: outcome.score,
+    decisions: s.run.history.decisions,
+    finishedAt,
+  };
+}
+
+export interface FinishedRunRecord {
+  readonly profile: Profile;
+  readonly newlyDiscovered: string[];
+  readonly newlyUncharted: string[];
+  readonly rewards: RewardOutcome;
+}
+
+/**
+ * Records a finished run once per run id: its discoveries and ending in the ruler's record, and its
+ * XP and gold in the account. A run already recorded changes nothing (so a crash after recording
+ * never awards twice). Then deletes the run save. Returns what this run earned.
+ */
 export async function finishRun(
   storage: KeyValueStorage,
   rules: Rules,
-  result: RunResult,
-): Promise<{ profile: Profile; newlyDiscovered: string[]; newlyUncharted: string[] }> {
+  result: RunResult & { readonly runId: string },
+): Promise<FinishedRunRecord> {
   const profile = await loadProfile(storage);
-  const applied = applyRunResult(rulerProfile(profile, rules.ruler), result);
-  const updated = withRulerProfile(profile, rules.ruler, applied.profile);
+  const before = rulerProfile(profile, rules.ruler);
+  const rewards = applyRunRewards(profile.progression, rulerIdForProfileKey(rules.ruler), result.runId, result, before);
+  if (!rewards.awarded) {
+    await clearRun(storage, rules);
+    return { profile, newlyDiscovered: [], newlyUncharted: [], rewards };
+  }
+  const applied = applyRunResult(before, result);
+  const updated = { ...withRulerProfile(profile, rules.ruler, applied.profile), progression: rewards.progression };
+  // The profile is saved before the run save is cleared: if the app closes in between, the next
+  // launch finds the save, sees this run id already rewarded, and only clears it.
   await saveProfile(storage, updated);
   await clearRun(storage, rules);
-  return { profile: updated, newlyDiscovered: applied.newlyDiscovered, newlyUncharted: applied.newlyUncharted };
+  return {
+    profile: updated,
+    newlyDiscovered: applied.newlyDiscovered,
+    newlyUncharted: applied.newlyUncharted,
+    rewards,
+  };
 }

@@ -4,8 +4,11 @@ import { loadProfile, loadUnlockAll, saveUnlockAll } from '../game/persistence';
 import { type Profile, type RulerProfile, rulerProfile } from '../game/profile';
 import { appStorage } from './appStorage';
 
-/** The stored profile, reloaded whenever the screen comes into focus. Null while loading. */
-export function useProfile(): Profile | null {
+/**
+ * The stored profile, reloaded whenever the screen comes into focus, and whenever `reloadKey`
+ * changes (e.g. once the saves have been checked, which may record a run finished before the app closed). Null while loading.
+ */
+export function useProfile(reloadKey?: unknown): Profile | null {
   const [profile, setProfile] = useState<Profile | null>(null);
   useFocusEffect(
     useCallback(() => {
@@ -16,7 +19,7 @@ export function useProfile(): Profile | null {
       return () => {
         cancelled = true;
       };
-    }, []),
+    }, [reloadKey]),
   );
   return profile;
 }

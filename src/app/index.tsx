@@ -8,9 +8,10 @@ import { rulers } from '@/data/rulers';
 import { wordmark, wordmarkAspectRatio } from '@/ui/branding';
 import { GameButton } from '@/ui/GameButton';
 import { getImage } from '@/ui/images';
+import { LevelPlate } from '@/ui/progression/LevelPlate';
 import { format, strings } from '@/ui/strings';
 import { colors, spacing, type } from '@/ui/theme';
-import { useUnlockAll } from '@/ui/useProfile';
+import { useProfile, useUnlockAll } from '@/ui/useProfile';
 import { useLatestSave } from '@/ui/useRunSave';
 
 /** Share of the screen width the wordmark spans. */
@@ -23,6 +24,8 @@ export default function TitleScreen() {
   const insets = useSafeAreaInsets();
   const { width } = useWindowDimensions();
   const save = useLatestSave(rulers);
+  // Reloaded once the saves are checked: that may record a run finished before the app closed.
+  const profile = useProfile(save.loading);
   const [unlockAll, toggleUnlockAll] = useUnlockAll();
   const wordmarkWidth = Math.round(width * WORDMARK_WIDTH);
   const background = featured.ui.title?.background;
@@ -50,6 +53,11 @@ export default function TitleScreen() {
       />
       <View style={styles.spacer} />
       <View>
+        {profile !== null && (
+          <View style={styles.plate}>
+            <LevelPlate progression={profile.progression} />
+          </View>
+        )}
         {save.discarded && <Text style={[type.muted, styles.notice]}>{strings.restoreFailed}</Text>}
         {save.ruler !== null && (
           <GameButton
@@ -87,6 +95,7 @@ const styles = StyleSheet.create({
   scrimGradient: { position: 'absolute', left: 0, right: 0, bottom: 0, height: '50%' },
   wordmark: { alignSelf: 'center' },
   spacer: { flexGrow: 1, minHeight: spacing.xl },
+  plate: { marginBottom: spacing.md },
   notice: { textAlign: 'center', marginBottom: spacing.xs },
   pair: { flexDirection: 'row', gap: spacing.sm },
   half: { flex: 1 },

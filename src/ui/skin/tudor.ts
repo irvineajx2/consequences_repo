@@ -2,6 +2,7 @@
 // come from docs/skins/tudor/tudor.skin.json; the illustrated meters and their sizes from
 // assets/ui/skins/tudor/meters/.
 import meterFile from '../../../assets/ui/skins/tudor/meters/meters.json';
+import progressionLayout from '../../../assets/ui/skins/tudor/progression/progression_ui.json';
 import type { Skin } from './types';
 
 /** AJ's meter sizes, minus the file's note. */
@@ -106,6 +107,28 @@ export const tudorSkin: Skin = {
       medalRim: '#14100C',
       medalText: '#2A1D10',
       medalGlow: 'rgba(214, 48, 39, 0.85)',
+    },
+  },
+  progression: {
+    images: {
+      bar_left: require('../../../assets/ui/skins/tudor/progression/bar_left.png'),
+      bar_mid: require('../../../assets/ui/skins/tudor/progression/bar_mid.png'),
+      bar_right: require('../../../assets/ui/skins/tudor/progression/bar_right.png'),
+      coin: require('../../../assets/ui/skins/tudor/progression/coin.png'),
+      gem_common: require('../../../assets/ui/skins/tudor/progression/gem_common.png'),
+      gem_legendary: require('../../../assets/ui/skins/tudor/progression/gem_legendary.png'),
+      gem_rare: require('../../../assets/ui/skins/tudor/progression/gem_rare.png'),
+      gem_uncommon: require('../../../assets/ui/skins/tudor/progression/gem_uncommon.png'),
+      laurel: require('../../../assets/ui/skins/tudor/progression/laurel.png'),
+      medallion: require('../../../assets/ui/skins/tudor/progression/medallion.png'),
+    },
+    layout: progressionLayout,
+    colors: {
+      xpFill: '#E2B54F',
+      plate: 'rgba(14, 12, 16, 0.62)',
+      rank: '#E8BE5C',
+      level: '#F4E7C8',
+      gold: '#F4E7C8',
     },
   },
   screen: {

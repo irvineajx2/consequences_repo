@@ -44,7 +44,7 @@ describe('save and resume', () => {
     const prefix = c.choices.slice(0, autoAt);
     const resumed = resume(rules, { rulesVersion: rules.version, choices: prefix });
     if (!resumed.ok) throw new Error('did not resume');
-    expect(saveOf(resumed.session)).toEqual({ rulesVersion: rules.version, choices: prefix });
+    expect(saveOf(resumed.session)).toEqual({ rulesVersion: rules.version, choices: prefix, runId: resumed.session.runId });
     expect(resumed.session.view).toMatchObject({ kind: 'scene', mode: 'auto', sceneId: 's15' });
   });
 
@@ -64,10 +64,18 @@ describe('save and resume', () => {
     expect(resume(rules, { rulesVersion: rules.version, choices })).toEqual({ ok: false, reason: 'invalid' });
   });
 
-  it('discards a save whose choices already finish the run', () => {
+  it('reports a save whose choices finish the run as finished (to be recorded), and rejects extra choices', () => {
     const { choices } = byName('historical_path');
-    expect(resume(rules, { rulesVersion: rules.version, choices })).toEqual({ ok: false, reason: 'invalid' });
-    expect(resume(rules, { rulesVersion: rules.version, choices: [...choices, 'extra'] }).ok).toBe(false);
+    const finished = resume(rules, { rulesVersion: rules.version, choices, runId: 'r1' });
+    expect(finished).toMatchObject({ ok: false, reason: 'finished' });
+    if (!finished.ok && finished.reason === 'finished') {
+      expect(finished.session.runId).toBe('r1');
+      expect(finished.session.run.outcome?.ending).toBe('gloriana');
+    }
+    expect(resume(rules, { rulesVersion: rules.version, choices: [...choices, 'extra'] })).toEqual({
+      ok: false,
+      reason: 'invalid',
+    });
   });
 
   it('reads malformed saves as no save', () => {
@@ -117,6 +125,7 @@ describe('storage', () => {
     await saveRun(storage, rules, { rulesVersion: rules.version, choices: choices.slice(0, -1) });
     const { outcome, run } = replay(rules, choices);
     const { profile, newlyDiscovered } = await finishRun(storage, rules, {
+      runId: 'run-1',
       ending: outcome.ending,
       score: outcome.score,
       decisions: run.history.decisions,

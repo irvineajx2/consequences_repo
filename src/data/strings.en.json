@@ -45,12 +45,31 @@
   "locked_ruler": "Locked",
   "debugUnlocked": "All rulers unlocked (testing)",
   "debugLocked": "Ruler unlocks restored",
+  "levelLabel": "Level {level}",
+  "xpProgress": "{into} / {needed} XP",
+  "goldAmount": "{gold}",
+  "rewards": "Rewards",
+  "rewardDecisions": "{count} decisions × {per} = {xp}",
+  "rewardTier": "Ruler difficulty ×{tier}",
+  "rewardNewEnding": "New ending +{xp}",
+  "rewardTotal": "+{xp} XP",
+  "goldEarned": "+{gold} {currency}, new ending",
+  "goldRule": "{currency} is awarded only for endings you haven't reached before.",
+  "levelUp": "Level {level}",
+  "newRank": "New rank: {rank}",
+  "bandGold": "{band} · {gold} {currency}",
   "categories": {
     "historical": "Historical",
     "outperformed": "Outperformed",
     "fallen_short": "Fallen short",
     "fallen": "Fallen",
     "alternate": "Alternate"
+  },
+  "bands": {
+    "common": "Common",
+    "uncommon": "Uncommon",
+    "rare": "Rare",
+    "legendary": "Legendary"
   },
   "meterStates": {
     "fill": {

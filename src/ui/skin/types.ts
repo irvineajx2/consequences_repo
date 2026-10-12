@@ -80,6 +80,37 @@ export function meterImageNames(meters: Pick<MeterSkin, 'art'>): string[] {
   return [...new Set(names)];
 }
 
+/**
+ * The level plate, XP bar, gold and ending-band art. Sizes come from the art pack's
+ * progression_ui.json: points, aspect ratios, the bar's caps and fill insets, the medallion's centre.
+ */
+export interface ProgressionSkin {
+  readonly images: Readonly<Record<string, ImageSourcePropType>>;
+  readonly layout: {
+    readonly coin: { readonly heightPt: number; readonly aspect: number };
+    readonly medallion: { readonly heightPt: number; readonly aspect: number };
+    readonly laurel: { readonly heightPt: number; readonly aspect: number };
+    readonly bar: {
+      readonly heightPt: number;
+      readonly capLeftWidthPt: number;
+      readonly capRightWidthPt: number;
+      readonly fillInsetPt: { readonly left: number; readonly right: number; readonly top: number; readonly bottom: number };
+    };
+    readonly medallion_text: { readonly centreX: number; readonly centreY: number; readonly interiorRadiusFraction: number };
+    /** Gem image name per ending band. */
+    readonly gems: Readonly<Record<string, string>>;
+  };
+  readonly colors: {
+    /** The XP fill inside the bar. */
+    readonly xpFill: string;
+    /** Behind the level plate on the title screen. */
+    readonly plate: string;
+    readonly rank: string;
+    readonly level: string;
+    readonly gold: string;
+  };
+}
+
 /** Colours for screens drawn on the dark background (chronicle, endings, title). */
 export interface ScreenSkin {
   readonly text: string;
@@ -146,6 +177,7 @@ export interface Skin {
   readonly images: Readonly<Record<string, ImageSourcePropType>>;
   readonly meters: MeterSkin;
   readonly screen: ScreenSkin;
+  readonly progression: ProgressionSkin;
 }
 
 export const SLICE_NAMES = ['tl', 't', 'tr', 'l', 'r', 'bl', 'b', 'br'] as const;

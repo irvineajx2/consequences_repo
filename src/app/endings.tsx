@@ -5,15 +5,17 @@ import { StyleSheet, Text, View } from 'react-native';
 import { getRuler, rulerUnlocked, rulers } from '@/data/rulers';
 import { endingsGallery, type GalleryEnding } from '@/game/chronicle';
 import { emptyProfile, rulerProfile } from '@/game/profile';
+import { endingBand, endingGold, progression } from '@/game/progression';
 import { endingText, type RulerText } from '@/game/text';
 import { GameButton } from '@/ui/GameButton';
 import { getImage, placeholderImage } from '@/ui/images';
+import { BandGem } from '@/ui/progression/ProgressionArt';
 import { RulerTabs } from '@/ui/screens/RulerTabs';
 import { ScreenScaffold } from '@/ui/screens/ScreenScaffold';
 import { SkinPanel } from '@/ui/skin/SkinPanel';
 import { useSkin } from '@/ui/skin/SkinProvider';
 import { useSkinTextStyles } from '@/ui/skin/textStyles';
-import { categoryLabel, format, strings } from '@/ui/strings';
+import { bandLabel, categoryLabel, format, formatNumber, strings } from '@/ui/strings';
 import { spacing, textSizes } from '@/ui/theme';
 import { useProfile, useUnlockAll } from '@/ui/useProfile';
 
@@ -62,6 +64,7 @@ function EndingCard({ ending, text, rulerId }: { ending: GalleryEnding; text: Ru
   const type = useSkinTextStyles();
   const { screen } = useSkin();
   const record = ending.record;
+  const band = endingBand(rulerId, ending.id);
   return (
     <SkinPanel style={styles.card}>
       <View style={styles.imageBox}>
@@ -83,6 +86,18 @@ function EndingCard({ ending, text, rulerId }: { ending: GalleryEnding; text: Ru
           <Text style={type.caption}>{categoryLabel(ending.category)}</Text>
         </>
       )}
+      {band !== undefined && (
+        <View style={styles.band}>
+          <BandGem band={band} />
+          <Text style={[type.muted, styles.bandText]} numberOfLines={1}>
+            {format(strings.bandGold, {
+              band: bandLabel(band),
+              gold: formatNumber(endingGold(rulerId, ending.id)),
+              currency: progression.currency.name,
+            })}
+          </Text>
+        </View>
+      )}
     </SkinPanel>
   );
 }
@@ -95,4 +110,6 @@ const styles = StyleSheet.create({
   // Cropped thumbnails keep the grid compact; the full 9:16 image is shown at the end of a run.
   imageBox: { aspectRatio: 4 / 5, borderRadius: 3, overflow: 'hidden', marginBottom: spacing.xs },
   title: { marginBottom: 2 },
+  band: { flexDirection: 'row', alignItems: 'center', gap: 4, marginTop: 2 },
+  bandText: { flexShrink: 1 },
 });

@@ -13,3 +13,15 @@ export function format(template: string, values: Readonly<Record<string, string 
 export function categoryLabel(category: string): string {
   return (strings.categories as Record<string, string>)[category] ?? category;
 }
+
+/** A whole number with thousands separators ("1,240"), the same on every platform. */
+export function formatNumber(n: number): string {
+  return Math.round(n)
+    .toString()
+    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+}
+
+/** The display name of an ending band (e.g. "legendary" -> "Legendary"). */
+export function bandLabel(band: string): string {
+  return (strings.bands as Record<string, string>)[band] ?? band;
+}

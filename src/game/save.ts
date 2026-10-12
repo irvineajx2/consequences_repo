@@ -2,6 +2,7 @@
 // option ids chosen so far and rebuilt by replaying them. Pure TypeScript.
 import type { Rules } from '../core';
 import * as session from './session';
+import { newRunId } from './runId';
 import type { Presentation, Session } from './session';
 
 export interface RunSave {
@@ -10,18 +11,23 @@ export interface RunSave {
   readonly choices: readonly string[];
   /** When the save was written (ISO); picks the most recently played reign. */
   readonly savedAt?: string;
+  /** The run's id, so its rewards are applied once (absent in saves from before rewards). */
+  readonly runId?: string;
 }
 
 export type ResumeResult =
   | { readonly ok: true; readonly session: Session }
+  /** The choices end the run: it finished but was not recorded (e.g. the app closed first). */
+  | { readonly ok: false; readonly reason: 'finished'; readonly session: Session }
   | { readonly ok: false; readonly reason: 'version' | 'invalid' };
 
 /** The save for a session's run so far. */
-export function saveOf(s: Pick<Session, 'rules' | 'run'>, savedAt?: string): RunSave {
+export function saveOf(s: Pick<Session, 'rules' | 'run'> & { runId?: string }, savedAt?: string): RunSave {
   return {
     rulesVersion: s.rules.version,
     choices: s.run.history.decisions.map((d) => d.option),
     ...(savedAt !== undefined ? { savedAt } : {}),
+    ...(s.runId !== undefined ? { runId: s.runId } : {}),
   };
 }
 
@@ -31,10 +37,15 @@ export function parseRunSave(json: string | null): RunSave | null {
   try {
     const value: unknown = JSON.parse(json);
     if (typeof value !== 'object' || value === null) return null;
-    const { rulesVersion, choices, savedAt } = value as Record<string, unknown>;
+    const { rulesVersion, choices, savedAt, runId } = value as Record<string, unknown>;
     if (typeof rulesVersion !== 'number' || !Array.isArray(choices)) return null;
     if (!choices.every((c) => typeof c === 'string')) return null;
-    return { rulesVersion, choices, ...(typeof savedAt === 'string' ? { savedAt } : {}) };
+    return {
+      rulesVersion,
+      choices,
+      ...(typeof savedAt === 'string' ? { savedAt } : {}),
+      ...(typeof runId === 'string' ? { runId } : {}),
+    };
   } catch {
     return null;
   }
@@ -54,13 +65,14 @@ export function resume(rules: Rules, save: RunSave, presentation: Presentation =
     return current;
   };
   try {
-    let s = passOver(session.start(rules, presentation));
+    let s = passOver(session.start(rules, presentation, save.runId ?? newRunId()));
     for (const choice of save.choices) {
       if (s.view.kind !== 'scene') return { ok: false, reason: 'invalid' };
       if (s.view.mode === 'choice') s = session.decide(s);
       s = passOver(session.choose(s, choice));
     }
-    if (s.view.kind !== 'scene' || s.run.outcome !== null) return { ok: false, reason: 'invalid' };
+    if (s.run.outcome !== null) return { ok: false, reason: 'finished', session: s };
+    if (s.view.kind !== 'scene') return { ok: false, reason: 'invalid' };
     return { ok: true, session: s };
   } catch {
     return { ok: false, reason: 'invalid' };
