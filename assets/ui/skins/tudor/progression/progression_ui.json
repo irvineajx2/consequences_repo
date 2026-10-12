@@ -1,0 +1,66 @@
+{
+ "coin": {
+  "heightPt": 22,
+  "aspect": 0.9891
+ },
+ "medallion": {
+  "heightPt": 48,
+  "aspect": 1.0292
+ },
+ "laurel": {
+  "heightPt": 140,
+  "aspect": 1.1158
+ },
+ "gem_common": {
+  "heightPt": 18,
+  "aspect": 0.9519
+ },
+ "gem_uncommon": {
+  "heightPt": 18,
+  "aspect": 0.9139
+ },
+ "gem_rare": {
+  "heightPt": 18,
+  "aspect": 0.9071
+ },
+ "gem_legendary": {
+  "heightPt": 18,
+  "aspect": 0.9179
+ },
+ "bar_left": {
+  "heightPt": 18,
+  "aspect": 0.9357
+ },
+ "bar_mid": {
+  "heightPt": 18,
+  "aspect": 0.2339
+ },
+ "bar_right": {
+  "heightPt": 18,
+  "aspect": 0.9298
+ },
+ "bar": {
+  "heightPt": 18,
+  "capLeftWidthPt": 16.84,
+  "capRightWidthPt": 16.74,
+  "fillInsetPt": {
+   "left": 10.95,
+   "right": 10.95,
+   "top": 5.16,
+   "bottom": 5.16
+  },
+  "note": "Three-slice: draw bar_left and bar_right at their natural width, stretch bar_mid between them. Draw the XP fill in code as a rounded rectangle (radius = half its height) inside the fill insets, under nothing, over the bar's navy interior."
+ },
+ "medallion_text": {
+  "centreX": 0.502,
+  "centreY": 0.502,
+  "interiorRadiusFraction": 0.323,
+  "note": "Centre the level number on this point; keep it within the interior radius (fractions of the image width)."
+ },
+ "gems": {
+  "common": "gem_common",
+  "uncommon": "gem_uncommon",
+  "rare": "gem_rare",
+  "legendary": "gem_legendary"
+ }
+}

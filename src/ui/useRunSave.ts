@@ -17,7 +17,7 @@ export function useRunSave(ruler: Ruler): RunSaveStatus {
       let cancelled = false;
       loadRun(appStorage, ruler.rules, ruler.ui).then((loaded) => {
         if (cancelled) return;
-        setStatus(loaded.status === 'resumed' ? 'saved' : loaded.status);
+        setStatus(loaded.status === 'resumed' ? 'saved' : loaded.status === 'discarded' ? 'discarded' : 'none');
       });
       return () => {
         cancelled = true;
@@ -35,13 +35,23 @@ export interface LatestSave {
   readonly loading: boolean;
 }
 
+/**
+ * Save checks run one at a time: a check may record a finished run, and two at once could both
+ * read it before either clears it.
+ */
+let checking: Promise<unknown> = Promise.resolve();
+
 /** Across all rulers, the reign in progress that was saved most recently. Rechecked on focus. */
 export function useLatestSave(rulers: readonly Ruler[]): LatestSave {
   const [latest, setLatest] = useState<LatestSave>({ ruler: null, discarded: false, loading: true });
   useFocusEffect(
     useCallback(() => {
       let cancelled = false;
-      Promise.all(rulers.map((r) => loadRun(appStorage, r.rules, r.ui).then((loaded) => ({ r, loaded })))).then(
+      const check = checking.then(() =>
+        Promise.all(rulers.map((r) => loadRun(appStorage, r.rules, r.ui).then((loaded) => ({ r, loaded })))),
+      );
+      checking = check.catch(() => {});
+      check.then(
         (results) => {
           if (cancelled) return;
           const saved = results.flatMap(({ r, loaded }) =>

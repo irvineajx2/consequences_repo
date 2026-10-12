@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
-import { finishRun, saveRun } from '../game/persistence';
+import { finishRun, resultOf, saveRun } from '../game/persistence';
+import type { RewardOutcome } from '../game/progression';
 import { saveOf } from '../game/save';
 import type { Session } from '../game/session';
 import type { KeyValueStorage } from '../game/storage';
@@ -7,14 +8,18 @@ import type { KeyValueStorage } from '../game/storage';
 export interface FinishedRun {
   /** Scenes this run discovered for the first time. */
   readonly newlyDiscovered: readonly string[];
+  /** What the run earned (zero if it had somehow been rewarded already). */
+  readonly rewards: RewardOutcome | null;
 }
 
 /**
- * Saves the run after every choice; when it ends, records it in the profile and deletes the save.
- * Returns the finished run's discoveries once recorded (null while playing or still saving).
+ * Saves the run after every choice. When it ends: saves it once more, complete (so if the app
+ * closes before the run is recorded, the next launch records it), then records it in the profile
+ * with its rewards, once per run id, and deletes the save. Returns the finished run's discoveries
+ * and rewards once recorded (null while playing or still saving).
  */
 export function useRunPersistence(storage: KeyValueStorage, session: Session): FinishedRun | null {
-  const { run, rules } = session;
+  const { run, rules, runId } = session;
   const decisions = run.history.decisions;
   const [finished, setFinished] = useState<{ decisions: unknown; result: FinishedRun } | null>(null);
   const recorded = useRef<unknown>(null);
@@ -22,24 +27,21 @@ export function useRunPersistence(storage: KeyValueStorage, session: Session): F
   // Save once per choice: the decisions list only changes when a choice is made.
   useEffect(() => {
     if (run.outcome !== null || decisions.length === 0) return;
-    saveRun(storage, rules, saveOf({ rules, run }, new Date().toISOString())).catch(() => {
+    saveRun(storage, rules, saveOf({ rules, run, runId }, new Date().toISOString())).catch(() => {
       // A failed save only loses resume; the game carries on.
     });
-  }, [decisions, run, rules, storage]);
+  }, [decisions, run, rules, runId, storage]);
 
   useEffect(() => {
-    const outcome = run.outcome;
-    if (outcome === null || recorded.current === decisions) return;
+    if (run.outcome === null || recorded.current === decisions) return;
     recorded.current = decisions;
-    finishRun(storage, rules, {
-      ending: outcome.ending,
-      score: outcome.score,
-      decisions,
-      finishedAt: new Date().toISOString(),
-    })
-      .then(({ newlyDiscovered }) => setFinished({ decisions, result: { newlyDiscovered } }))
-      .catch(() => setFinished({ decisions, result: { newlyDiscovered: [] } }));
-  }, [run.outcome, decisions, rules, storage]);
+    const now = new Date().toISOString();
+    saveRun(storage, rules, saveOf({ rules, run, runId }, now))
+      .catch(() => {})
+      .then(() => finishRun(storage, rules, resultOf({ run, runId }, now)))
+      .then(({ newlyDiscovered, rewards }) => setFinished({ decisions, result: { newlyDiscovered, rewards } }))
+      .catch(() => setFinished({ decisions, result: { newlyDiscovered: [], rewards: null } }));
+  }, [run, decisions, rules, runId, storage]);
 
   // Only report the finish for the run currently on screen (not one before "Play again").
   return finished !== null && finished.decisions === decisions ? finished.result : null;

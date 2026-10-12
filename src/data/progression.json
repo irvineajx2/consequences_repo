@@ -1,0 +1,91 @@
+{
+  "xp": {
+    "perDecision": 10,
+    "newEndingBonus": 100,
+    "note": "Run XP = (perDecision x decisions made + newEndingBonus if the ending is new) x ruler tier, rounded."
+  },
+  "rulerTier": {
+    "elizabeth-i": 1.0,
+    "julius-caesar": 1.25
+  },
+  "level": {
+    "base": 150,
+    "step": 75,
+    "note": "XP needed to go from level L to L+1 = base + step x (L - 1). base is the average XP of one typical run across the current rulers."
+  },
+  "currency": {
+    "name": "Gold",
+    "bands": {
+      "common": 20,
+      "uncommon": 40,
+      "rare": 80,
+      "legendary": 150
+    },
+    "note": "Awarded only the first time an ending is reached: band amount x ruler tier, rounded.",
+    "endings": {
+      "elizabeth-i": {
+        "gloriana": "rare",
+        "mistress": "legendary",
+        "pyrrhic": "common",
+        "invasion": "uncommon",
+        "bankrupt": "uncommon",
+        "deposed": "legendary",
+        "assassinated": "common",
+        "catholic_rising": "rare",
+        "protestant_revolt": "rare",
+        "habsburg_queen": "common",
+        "dudleys_wife": "common",
+        "scottish_succession": "common",
+        "french_match": "common"
+      },
+      "julius-caesar": {
+        "ides": "rare",
+        "pater_patriae": "legendary",
+        "uneasy_crown": "rare",
+        "ruined_debt": "common",
+        "mutiny": "legendary",
+        "mob": "legendary",
+        "enemy_state": "common",
+        "prosecuted": "common",
+        "defeated_gaul": "common",
+        "defeated_pharsalus": "common",
+        "daggers_dark": "uncommon",
+        "died_catiline": "uncommon",
+        "lost_britain": "uncommon",
+        "republic_endures": "common",
+        "lord_nile": "uncommon",
+        "second_sulla": "uncommon",
+        "king_rome": "uncommon"
+      }
+    }
+  },
+  "ranks": [
+    {
+      "fromLevel": 1,
+      "title": "Novice"
+    },
+    {
+      "fromLevel": 5,
+      "title": "Scribe"
+    },
+    {
+      "fromLevel": 10,
+      "title": "Chronicler"
+    },
+    {
+      "fromLevel": 15,
+      "title": "Historian"
+    },
+    {
+      "fromLevel": 20,
+      "title": "Sage"
+    },
+    {
+      "fromLevel": 30,
+      "title": "Keeper of Ages"
+    }
+  ],
+  "migration": {
+    "xpPerEarlierRun": 120
+  }
+}

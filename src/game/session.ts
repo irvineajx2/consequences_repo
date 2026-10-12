@@ -8,6 +8,7 @@ import {
   startRun,
   step,
 } from '../core';
+import { newRunId } from './runId';
 
 /** Every view carries the state its meters should display. */
 interface Displayed {
@@ -94,6 +95,8 @@ export interface Presentation {
 }
 
 export interface Session {
+  /** Identifies this run for its save and its one-time rewards. */
+  readonly runId: string;
   readonly rules: Rules;
   readonly presentation: Presentation;
   readonly run: Run;
@@ -180,9 +183,10 @@ function arrive(session: Session): Session {
 }
 
 /** A new run: the prologue (if any), then the first era card, then the first scene. */
-export function start(rules: Rules, presentation: Presentation = {}): Session {
+export function start(rules: Rules, presentation: Presentation = {}, runId: string = newRunId()): Session {
   const run = startRun(rules);
   const base: Session = {
+    runId,
     rules,
     presentation,
     run,

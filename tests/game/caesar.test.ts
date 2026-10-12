@@ -130,6 +130,7 @@ describe('profiles', () => {
     const storage = memoryStorage();
     const lizRun = elizabethCases.find((c) => c.name === 'historical_path')!;
     await finishRun(storage, elizabeth.rules, {
+      runId: 'run-1',
       ending: lizRun.expected.ending,
       score: lizRun.expected.score,
       decisions: lizRun.expected.decisions,
@@ -138,6 +139,7 @@ describe('profiles', () => {
     const before = rulerProfile(await loadProfile(storage), elizabeth.rules.ruler);
     const hist = byName('historical_path');
     await finishRun(storage, caesar.rules, {
+      runId: 'run-2',
       ending: hist.expected.ending,
       score: hist.expected.score,
       decisions: hist.expected.decisions,
@@ -149,7 +151,7 @@ describe('profiles', () => {
     expect(rulerProfile(after, caesar.rules.ruler).discovered).toHaveLength(22);
   });
 
-  it('migrate a version 1 profile to version 2 without losing anything', async () => {
+  it('migrate a version 1 profile to version 3 without losing anything, crediting its progress', async () => {
     const lizRun = elizabethCases.find((c) => c.name === 'historical_path')!;
     const v1Record = {
       discovered: lizRun.expected.decisions.map((d) => d.scene),
@@ -160,7 +162,12 @@ describe('profiles', () => {
       [storageKeys.legacyProfile]: JSON.stringify({ version: 1, rulers: { elizabeth_i: v1Record } }),
     });
     const profile = await loadProfile(storage);
-    expect(profile).toEqual({ version: 2, rulers: { elizabeth_i: { ...v1Record, uncharted: [] } } });
+    // Gloriana (rare, new-ending XP 100, 80 gold) and 5 earlier runs at 120 XP each.
+    expect(profile).toEqual({
+      version: 3,
+      rulers: { elizabeth_i: { ...v1Record, uncharted: [] } },
+      progression: { totalXp: 100 + 5 * 120, gold: 80, awardedRunIds: [] },
+    });
     // Saved under the new key; the old one is gone; reading again gives the same.
     expect(storage.contents.has(storageKeys.legacyProfile)).toBe(false);
     expect(JSON.parse(storage.contents.get(storageKeys.profile)!)).toEqual(profile);

@@ -1,6 +1,7 @@
 // The permanent record of a player's reigns: what they have discovered and which endings they have
 // reached. Pure TypeScript.
 import type { Decision } from '../core';
+import { emptyProgression, migrateProgression, type Progression } from './progression';
 
 export interface EndingRecord {
   /** When the ending was first reached (ISO timestamp from the run that reached it). */
@@ -21,16 +22,26 @@ export interface RulerProfile {
 }
 
 /**
- * The stored profile: one record per ruler, keyed by the rules file's `ruler` id. Version 2 adds
- * uncharted paths; a version 1 profile is migrated on reading, keeping everything it recorded.
+ * The stored profile: one record per ruler, keyed by the rules file's `ruler` id, plus the
+ * account-wide progression (XP and gold, shared across rulers). Version 2 added uncharted paths and
+ * version 3 progression; older profiles are migrated on reading, keeping everything they recorded.
  */
 export interface Profile {
-  readonly version: 2;
+  readonly version: 3;
   readonly rulers: Readonly<Record<string, RulerProfile>>;
+  readonly progression: Progression;
 }
 
 export const emptyRulerProfile: RulerProfile = { discovered: [], endings: {}, runsCompleted: 0, uncharted: [] };
-export const emptyProfile: Profile = { version: 2, rulers: {} };
+export const emptyProfile: Profile = { version: 3, rulers: {}, progression: emptyProgression };
+
+/**
+ * A profile key (the rules file's `ruler` id, e.g. "elizabeth_i") as a ruler id (its folder name,
+ * e.g. "elizabeth-i"). Registered rulers keep to this convention; a test checks it.
+ */
+export function rulerIdForProfileKey(key: string): string {
+  return key.replace(/_/g, '-');
+}
 
 /** What a finished run contributes to the profile. */
 export interface RunResult {
@@ -113,22 +124,39 @@ function parseRuler(value: unknown): RulerProfile | null {
   return { discovered, endings: parsed, runsCompleted, uncharted: paths };
 }
 
+function parseProgression(value: unknown): Progression | null {
+  if (!isRecord(value)) return null;
+  const { totalXp, gold, awardedRunIds } = value;
+  if (typeof totalXp !== 'number' || typeof gold !== 'number' || !Array.isArray(awardedRunIds)) return null;
+  if (!awardedRunIds.every((id) => typeof id === 'string')) return null;
+  return { totalXp, gold, awardedRunIds };
+}
+
 /**
- * Reads a stored profile, version 1 or 2, as version 2. Anything unreadable becomes an empty
- * profile rather than an error.
+ * Reads a stored profile, version 1, 2 or 3, as version 3. A profile from before progression is
+ * credited for what it already records (see `migrateProgression`). Anything unreadable becomes an
+ * empty profile rather than an error.
  */
 export function parseProfile(json: string | null): Profile {
   if (json === null) return emptyProfile;
   try {
     const value: unknown = JSON.parse(json);
-    const known = isRecord(value) && (value.version === 1 || value.version === 2);
-    if (!known || !isRecord(value.rulers)) return emptyProfile;
+    const version = isRecord(value) ? value.version : undefined;
+    if (!isRecord(value) || (version !== 1 && version !== 2 && version !== 3) || !isRecord(value.rulers)) {
+      return emptyProfile;
+    }
     const rulers: Record<string, RulerProfile> = {};
     for (const [id, r] of Object.entries(value.rulers)) {
       const parsed = parseRuler(r);
       if (parsed) rulers[id] = parsed;
     }
-    return { version: 2, rulers };
+    const stored = version === 3 ? parseProgression(value.progression) : null;
+    const progression =
+      stored ??
+      migrateProgression(
+        Object.fromEntries(Object.entries(rulers).map(([key, r]) => [rulerIdForProfileKey(key), r])),
+      );
+    return { version: 3, rulers, progression };
   } catch {
     return emptyProfile;
   }

@@ -5,7 +5,7 @@ import { textSizes } from '../../src/ui/theme';
 import { rulers } from '../../src/data/rulers';
 import { visibleMeters } from '../../src/game/meters';
 import { tudorSkin } from '../../src/ui/skin/tudor';
-import { isBalanceArt, meterImageNames, skinImageNames } from '../../src/ui/skin/types';
+import { isBalanceArt, meterImageNames, progressionImageMetrics, skinImageNames } from '../../src/ui/skin/types';
 
 const skinDir = path.join(__dirname, '../../assets/ui/skins/tudor');
 const tudorJson = JSON.parse(
@@ -27,9 +27,10 @@ describe('Tudor skin', () => {
   });
 
   it('matches the values in tudor.skin.json', () => {
-    const { images, meters, screen, ...values } = tudorSkin;
+    const { images, meters, screen, progression, ...values } = tudorSkin;
     const { note, ...json } = tudorJson;
     expect(images).toBeDefined();
+    expect(progression).toBeDefined();
     expect(meters).toBeDefined();
     expect(screen).toBeDefined();
     expect(note).toEqual(expect.any(String));
@@ -38,6 +39,49 @@ describe('Tudor skin', () => {
 
   it('uses only fonts that are loaded at startup', () => {
     for (const family of Object.values(tudorSkin.fonts)) expect(Object.keys(fontAssets)).toContain(family);
+  });
+});
+
+describe('Tudor progression art', () => {
+  const dir = path.join(skinDir, 'progression');
+  const layout = JSON.parse(fs.readFileSync(path.join(dir, 'progression_ui.json'), 'utf8'));
+  const art = fs
+    .readdirSync(dir)
+    .filter((f) => /^[a-z_]+\.png$/.test(f) && !f.startsWith('_'))
+    .map((f) => f.replace('.png', ''));
+
+  it('registers every progression image, at 1x, 2x and 3x, and not the preview', () => {
+    expect(Object.keys(tudorSkin.progression.images).sort()).toEqual(art.sort());
+    for (const name of art) {
+      for (const suffix of ['', '@2x', '@3x']) expect(fs.existsSync(path.join(dir, `${name}${suffix}.png`))).toBe(true);
+    }
+    expect(Object.keys(tudorSkin.progression.images)).not.toContain('_preview');
+  });
+
+  it('has every file progression_ui.json names, at @1x, @2x and @3x', () => {
+    const named = [...Object.keys(progressionImageMetrics(layout)), ...Object.values<string>(layout.gems)];
+    expect(new Set(named)).toEqual(
+      new Set(['coin', 'medallion', 'laurel', 'bar_left', 'bar_mid', 'bar_right', 'gem_common', 'gem_uncommon', 'gem_rare', 'gem_legendary']),
+    );
+    for (const name of named) {
+      for (const suffix of ['', '@2x', '@3x']) expect(fs.existsSync(path.join(dir, `${name}${suffix}.png`))).toBe(true);
+      expect(tudorSkin.progression.images[name]).toBeDefined();
+    }
+  });
+
+  it('does not bundle the preview', () => {
+    const source = fs.readFileSync(path.join(__dirname, '../../src/ui/skin/tudor.ts'), 'utf8');
+    expect(source).not.toMatch(/progression\/_preview/);
+  });
+
+  it('uses the layout from progression_ui.json', () => {
+    expect(tudorSkin.progression.layout).toEqual(layout);
+  });
+
+  it('has a gem for every ending band, registered as an image', () => {
+    for (const band of ['common', 'uncommon', 'rare', 'legendary']) {
+      expect(tudorSkin.progression.images[tudorSkin.progression.layout.gems[band]]).toBeDefined();
+    }
   });
 });
 
