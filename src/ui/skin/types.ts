@@ -88,7 +88,6 @@ export interface ProgressionSkin {
   readonly images: Readonly<Record<string, ImageSourcePropType>>;
   readonly layout: {
     readonly coin: { readonly heightPt: number; readonly aspect: number };
-    readonly medallion: { readonly heightPt: number; readonly aspect: number };
     readonly laurel: { readonly heightPt: number; readonly aspect: number };
     readonly bar: {
       readonly heightPt: number;
@@ -96,10 +95,11 @@ export interface ProgressionSkin {
       readonly capRightWidthPt: number;
       readonly fillInsetPt: { readonly left: number; readonly right: number; readonly top: number; readonly bottom: number };
     };
-    readonly medallion_text: { readonly centreX: number; readonly centreY: number; readonly interiorRadiusFraction: number };
     /** Gem image name per ending band. */
     readonly gems: Readonly<Record<string, string>>;
   };
+  /** rank_ui.json: a medallion tier for each rank, and the level-up laurels. */
+  readonly ranks: RankArt;
   readonly colors: {
     /** The XP fill inside the bar. */
     readonly xpFill: string;
@@ -108,6 +108,40 @@ export interface ProgressionSkin {
     readonly rank: string;
     readonly level: string;
     readonly gold: string;
+  };
+}
+
+/** One medallion colour: its image, size and where the level number sits. */
+export interface MedallionTier {
+  readonly image: string;
+  readonly heightPt: number;
+  readonly aspect: number;
+  /** The number's centre (fractions of the image size) and the radius it must stay within (of the width). */
+  readonly text: { readonly centreX: number; readonly centreY: number; readonly interiorRadiusFraction: number };
+  /** "dark" for ink on a light centre; anything else draws the number in parchment. */
+  readonly textColour: string;
+}
+
+export interface RankArt {
+  /** Medallion tiers by colour name. */
+  readonly tiers: Readonly<Record<string, MedallionTier>>;
+  /** The tier for each rank title in progression.json. */
+  readonly ranks: Readonly<Record<string, string>>;
+  /** Laurel images: `normal` for a level-up, `major` for reaching a new rank. */
+  readonly laurel: { readonly normal: string; readonly major: string; readonly heightPt: number };
+}
+
+/** The medallion tier for a rank title (the first tier if the rank has none). */
+export function medallionTier(ranks: RankArt, rank: string): MedallionTier {
+  return ranks.tiers[ranks.ranks[rank] ?? ''] ?? Object.values(ranks.tiers)[0];
+}
+
+/** The box every tier fits in at a scale, so the level plate never moves when the rank changes. */
+export function medallionBox(ranks: RankArt, scale = 1): { readonly width: number; readonly height: number } {
+  const tiers = Object.values(ranks.tiers);
+  return {
+    width: Math.max(...tiers.map((t) => t.heightPt * t.aspect)) * scale,
+    height: Math.max(...tiers.map((t) => t.heightPt)) * scale,
   };
 }
 

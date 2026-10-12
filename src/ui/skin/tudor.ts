@@ -1,12 +1,18 @@
 // The default skin: AJ's parchment panel and navy buttons. Panel, button, colour and font values
 // come from docs/skins/tudor/tudor.skin.json; the illustrated meters and their sizes from
 // assets/ui/skins/tudor/meters/.
+import caesarMeterFile from '../../../assets/ui/skins/tudor/meters/julius-caesar/meters.json';
 import meterFile from '../../../assets/ui/skins/tudor/meters/meters.json';
 import progressionLayout from '../../../assets/ui/skins/tudor/progression/progression_ui.json';
+import rankFile from '../../../assets/ui/skins/tudor/progression/rank_ui.json';
 import type { Skin } from './types';
 
 /** AJ's meter sizes, minus the file's note. */
-const { _note: _meterNote, ...meterMetrics } = meterFile;
+const { _note: _meterNote, ...elizabethMeterMetrics } = meterFile;
+const { _note: _caesarMeterNote, ...caesarMeterMetrics } = caesarMeterFile;
+const { _note: _rankNote, ...rankArt } = rankFile;
+// Image names are unique across rulers, so one table sizes them all.
+const meterMetrics = { ...elizabethMeterMetrics, ...caesarMeterMetrics };
 
 export const tudorSkin: Skin = {
   id: 'tudor',
@@ -67,7 +73,13 @@ export const tudorSkin: Skin = {
         succ: { full: 'succession', empty: 'succession_empty' },
         rel: { marker: 'religion_church', left: 'religion_keys', right: 'religion_bible' },
       },
-      // Julius Caesar's illustrated meters are still to come: placeholder medals until then.
+      'julius-caesar': {
+        fortune: { full: 'fortune', empty: 'fortune_empty' },
+        legions: { full: 'legions', empty: 'legions_empty' },
+        people: { full: 'people', empty: 'people_empty' },
+        senate: { full: 'senate', empty: 'senate_empty' },
+        glory: { full: 'glory', empty: 'glory_empty' },
+      },
     },
     metrics: meterMetrics,
     images: {
@@ -94,6 +106,27 @@ export const tudorSkin: Skin = {
       treasury_empty: require('../../../assets/ui/skins/tudor/meters/treasury_empty.png'),
       treasury_glow: require('../../../assets/ui/skins/tudor/meters/treasury_glow.png'),
       treasury_shadow: require('../../../assets/ui/skins/tudor/meters/treasury_shadow.png'),
+      // Julius Caesar
+      fortune: require('../../../assets/ui/skins/tudor/meters/julius-caesar/fortune.png'),
+      fortune_empty: require('../../../assets/ui/skins/tudor/meters/julius-caesar/fortune_empty.png'),
+      fortune_glow: require('../../../assets/ui/skins/tudor/meters/julius-caesar/fortune_glow.png'),
+      fortune_shadow: require('../../../assets/ui/skins/tudor/meters/julius-caesar/fortune_shadow.png'),
+      glory: require('../../../assets/ui/skins/tudor/meters/julius-caesar/glory.png'),
+      glory_empty: require('../../../assets/ui/skins/tudor/meters/julius-caesar/glory_empty.png'),
+      glory_glow: require('../../../assets/ui/skins/tudor/meters/julius-caesar/glory_glow.png'),
+      glory_shadow: require('../../../assets/ui/skins/tudor/meters/julius-caesar/glory_shadow.png'),
+      legions: require('../../../assets/ui/skins/tudor/meters/julius-caesar/legions.png'),
+      legions_empty: require('../../../assets/ui/skins/tudor/meters/julius-caesar/legions_empty.png'),
+      legions_glow: require('../../../assets/ui/skins/tudor/meters/julius-caesar/legions_glow.png'),
+      legions_shadow: require('../../../assets/ui/skins/tudor/meters/julius-caesar/legions_shadow.png'),
+      people: require('../../../assets/ui/skins/tudor/meters/julius-caesar/people.png'),
+      people_empty: require('../../../assets/ui/skins/tudor/meters/julius-caesar/people_empty.png'),
+      people_glow: require('../../../assets/ui/skins/tudor/meters/julius-caesar/people_glow.png'),
+      people_shadow: require('../../../assets/ui/skins/tudor/meters/julius-caesar/people_shadow.png'),
+      senate: require('../../../assets/ui/skins/tudor/meters/julius-caesar/senate.png'),
+      senate_empty: require('../../../assets/ui/skins/tudor/meters/julius-caesar/senate_empty.png'),
+      senate_glow: require('../../../assets/ui/skins/tudor/meters/julius-caesar/senate_glow.png'),
+      senate_shadow: require('../../../assets/ui/skins/tudor/meters/julius-caesar/senate_shadow.png'),
     },
     layout: { fillHeight: 40, balanceWidth: 130, gap: 9, margin: 12, shadowOffset: 2 },
     colors: {
@@ -120,9 +153,15 @@ export const tudorSkin: Skin = {
       gem_rare: require('../../../assets/ui/skins/tudor/progression/gem_rare.png'),
       gem_uncommon: require('../../../assets/ui/skins/tudor/progression/gem_uncommon.png'),
       laurel: require('../../../assets/ui/skins/tudor/progression/laurel.png'),
-      medallion: require('../../../assets/ui/skins/tudor/progression/medallion.png'),
+      laurel_major: require('../../../assets/ui/skins/tudor/progression/laurel_major.png'),
+      medallion_blue: require('../../../assets/ui/skins/tudor/progression/medallion_blue.png'),
+      medallion_gold: require('../../../assets/ui/skins/tudor/progression/medallion_gold.png'),
+      medallion_green: require('../../../assets/ui/skins/tudor/progression/medallion_green.png'),
+      medallion_purple: require('../../../assets/ui/skins/tudor/progression/medallion_purple.png'),
+      medallion_red: require('../../../assets/ui/skins/tudor/progression/medallion_red.png'),
     },
     layout: progressionLayout,
+    ranks: rankArt,
     colors: {
       xpFill: '#E2B54F',
       plate: 'rgba(14, 12, 16, 0.62)',

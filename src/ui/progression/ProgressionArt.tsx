@@ -1,9 +1,10 @@
-// The level plate's art: the XP bar, the level medallion, the gold coin and the ending-band gem.
+// The level plate's art: the XP bar, the rank-coloured level medallion, the gold coin and the ending-band gem.
 import { useEffect, useState } from 'react';
 import { Image, type LayoutChangeEvent, PixelRatio, StyleSheet, Text, View } from 'react-native';
 import Animated, { Easing, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import { useSkin } from '../skin/SkinProvider';
-import { progressionImageMetrics } from '../skin/types';
+import { rankTitle } from '../../game/progression';
+import { medallionBox, medallionTier, progressionImageMetrics } from '../skin/types';
 
 /** Rounds a length to whole device pixels. */
 const snap = (pt: number) => PixelRatio.roundToNearestPixel(pt);
@@ -80,34 +81,47 @@ export function XpBar({ fraction, durationMs = 0, scale = 1 }: { fraction: numbe
   );
 }
 
-/** The level medallion, with the level number centred inside its rim. */
-export function Medallion({ level, size }: { level: number; size?: number }) {
+/**
+ * The level medallion in its rank's colour, with the level number centred inside its rim. Higher
+ * ranks' medallions are larger; `scale` scales them all alike.
+ */
+export function Medallion({ level, scale = 1 }: { level: number; scale?: number }) {
   const skin = useSkin();
-  const { medallion, medallion_text: centre } = skin.progression.layout;
-  const height = size ?? medallion.heightPt;
-  const width = height * medallion.aspect;
-  const inner = width * centre.interiorRadiusFraction * 2;
+  const tier = medallionTier(skin.progression.ranks, rankTitle(level));
+  const height = tier.heightPt * scale;
+  const width = height * tier.aspect;
+  const inner = width * tier.text.interiorRadiusFraction * 2;
   const digits = String(level).length;
   return (
     <View style={{ width, height }} accessibilityRole="image" accessibilityLabel={`Level ${level}`}>
-      <Image source={skin.progression.images.medallion} resizeMode="contain" style={{ width, height }} />
+      <Image source={skin.progression.images[tier.image]} resizeMode="contain" style={{ width, height }} />
       <Text
         style={[
           styles.levelNumber,
           {
-            left: width * centre.centreX - inner / 2,
-            top: height * centre.centreY - inner / 2,
+            left: width * tier.text.centreX - inner / 2,
+            top: height * tier.text.centreY - inner / 2,
             width: inner,
             height: inner,
             lineHeight: inner,
-            fontSize: inner * (digits > 2 ? 0.48 : digits > 1 ? 0.62 : 0.8),
+            fontSize: inner * (digits > 2 ? 0.5 : digits > 1 ? 0.64 : 0.8),
             fontFamily: skin.fonts.caption,
-            color: skin.progression.colors.level,
+            color: tier.textColour === 'dark' ? skin.colors.panelText : skin.progression.colors.level,
           },
         ]}
       >
         {level}
       </Text>
+    </View>
+  );
+}
+
+/** A medallion in a box that fits every rank's, so what sits beside it never moves on rank-up. */
+export function MedallionSlot({ level, scale = 1 }: { level: number; scale?: number }) {
+  const { progression } = useSkin();
+  return (
+    <View style={[medallionBox(progression.ranks, scale), styles.centred]}>
+      <Medallion level={level} scale={scale} />
     </View>
   );
 }
@@ -142,4 +156,5 @@ const styles = StyleSheet.create({
   fill: { position: 'absolute' },
   passThrough: { pointerEvents: 'none' },
   levelNumber: { position: 'absolute', textAlign: 'center' },
+  centred: { alignItems: 'center', justifyContent: 'center' },
 });

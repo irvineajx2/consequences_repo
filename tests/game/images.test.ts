@@ -52,6 +52,14 @@ describe('image registry', () => {
     expect([...used].sort()).toEqual([...new Set(listed)].sort());
   });
 
+  it('has every image Caesar uses, so no placeholder shows in his game', () => {
+    const { rules, ui } = getRuler('julius-caesar');
+    const registry = imageRegistries['julius-caesar'];
+    const used = [...referencedImageIds(rules), ...uiImageIds(ui)];
+    expect(used.filter((id) => registry[id] === undefined)).toEqual([]);
+    expect(Object.keys(registry)).toHaveLength(59);
+  });
+
   it('shows the placeholder for an image a ruler does not have yet', () => {
     expect(getImage('julius-caesar', 'C01')).toBe(imageRegistries['julius-caesar']?.C01 ?? placeholderImage);
     expect(getImage('elizabeth-i', 'no-such-image')).toBe(placeholderImage);

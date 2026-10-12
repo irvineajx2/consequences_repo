@@ -54,16 +54,31 @@ describe('meterRowLayout', () => {
   });
 });
 
+describe("Caesar's meter row", () => {
+  const caesar = getRuler('julius-caesar');
+  const caesarSlots = meterSlots(visibleMeters(caesar.ui), tudorSkin.meters, 'julius-caesar');
+
+  it('gives his five illustrated fill meters 40 pt at their natural aspect, in order', () => {
+    expect(caesarSlots.map((s) => s.id)).toEqual(['fortune', 'legions', 'people', 'senate', 'glory']);
+    for (const slot of caesarSlots) {
+      expect(slot.width).toBeCloseTo(layout.fillHeight * tudorSkin.meters.metrics[slot.id].aspect, 9);
+    }
+  });
+
+  test.each([320, 375, 390, 430])('fits a %p pt screen at full size, centred', (width) => {
+    const row = meterRowLayout(width, caesarSlots, layout);
+    expect(row.scale).toBe(1);
+    expect(row.left).toBeGreaterThanOrEqual(12 - 1e-9);
+    expect(row.left).toBeCloseTo(width - (row.left + row.width), 9);
+  });
+});
+
 describe('meter row for a ruler without illustrated art', () => {
-  it("draws Caesar's five meters as placeholder medals, one fill-height circle each", () => {
+  it('falls back to placeholder medals, one fill-height circle each', () => {
     const caesar = getRuler('julius-caesar');
-    const medals = meterSlots(visibleMeters(caesar.ui), tudorSkin.meters, 'julius-caesar');
+    const medals = meterSlots(visibleMeters(caesar.ui), tudorSkin.meters, 'no-art-ruler');
     expect(medals).toEqual(
       ['fortune', 'legions', 'people', 'senate', 'glory'].map((id) => ({ id, width: layout.fillHeight })),
     );
-    for (const width of [320, 375, 390, 430]) {
-      const row = meterRowLayout(width, medals, layout);
-      expect(row.left).toBeGreaterThanOrEqual(12 - 1e-9);
-    }
   });
 });

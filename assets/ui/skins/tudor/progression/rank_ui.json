@@ -1,0 +1,73 @@
+{
+ "tiers": {
+  "blue": {
+   "image": "medallion_blue",
+   "heightPt": 48,
+   "aspect": 1.0024,
+   "text": {
+    "centreX": 0.5,
+    "centreY": 0.5,
+    "interiorRadiusFraction": 0.307
+   },
+   "textColour": "parchment"
+  },
+  "green": {
+   "image": "medallion_green",
+   "heightPt": 49,
+   "aspect": 0.9837,
+   "text": {
+    "centreX": 0.5,
+    "centreY": 0.5,
+    "interiorRadiusFraction": 0.322
+   },
+   "textColour": "parchment"
+  },
+  "red": {
+   "image": "medallion_red",
+   "heightPt": 51,
+   "aspect": 0.9273,
+   "text": {
+    "centreX": 0.5,
+    "centreY": 0.5,
+    "interiorRadiusFraction": 0.3
+   },
+   "textColour": "parchment"
+  },
+  "purple": {
+   "image": "medallion_purple",
+   "heightPt": 56,
+   "aspect": 0.8717,
+   "text": {
+    "centreX": 0.5,
+    "centreY": 0.499,
+    "interiorRadiusFraction": 0.25
+   },
+   "textColour": "parchment"
+  },
+  "gold": {
+   "image": "medallion_gold",
+   "heightPt": 57,
+   "aspect": 0.833,
+   "text": {
+    "centreX": 0.5,
+    "centreY": 0.499,
+    "interiorRadiusFraction": 0.272
+   },
+   "textColour": "dark"
+  }
+ },
+ "ranks": {
+  "Novice": "blue",
+  "Scribe": "green",
+  "Chronicler": "red",
+  "Historian": "purple",
+  "Sage": "gold",
+  "Keeper of Ages": "gold"
+ },
+ "laurel": {
+  "normal": "laurel",
+  "major": "laurel_major",
+  "heightPt": 140
+ },
+ "_note": "Medallions share one scale, so higher ranks are physically larger (ornaments grow, the inner ring stays the same size). Draw the level number centred on text.centreX/centreY, within interiorRadiusFraction of the image width; use dark ink on the gold tier's cream centre, parchment elsewhere."
+}

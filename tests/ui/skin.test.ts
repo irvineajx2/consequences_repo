@@ -4,6 +4,7 @@ import { fontAssets } from '../../src/ui/fonts';
 import { textSizes } from '../../src/ui/theme';
 import { rulers } from '../../src/data/rulers';
 import { visibleMeters } from '../../src/game/meters';
+import { progression as progressionConfig } from '../../src/game/progression';
 import { tudorSkin } from '../../src/ui/skin/tudor';
 import { isBalanceArt, meterImageNames, progressionImageMetrics, skinImageNames } from '../../src/ui/skin/types';
 
@@ -50,28 +51,52 @@ describe('Tudor progression art', () => {
     .filter((f) => /^[a-z_]+\.png$/.test(f) && !f.startsWith('_'))
     .map((f) => f.replace('.png', ''));
 
-  it('registers every progression image, at 1x, 2x and 3x, and not the preview', () => {
-    expect(Object.keys(tudorSkin.progression.images).sort()).toEqual(art.sort());
-    for (const name of art) {
-      for (const suffix of ['', '@2x', '@3x']) expect(fs.existsSync(path.join(dir, `${name}${suffix}.png`))).toBe(true);
-    }
-    expect(Object.keys(tudorSkin.progression.images)).not.toContain('_preview');
-  });
+  const ranks = JSON.parse(fs.readFileSync(path.join(dir, 'rank_ui.json'), 'utf8'));
+  const exists = (name: string) =>
+    ['', '@2x', '@3x'].every((suffix) => fs.existsSync(path.join(dir, `${name}${suffix}.png`)));
+  // The single medallion was replaced by the rank medallions; progression_ui.json still sizes it.
+  const superseded = ['medallion'];
+  const fromLayout = [...Object.keys(progressionImageMetrics(layout)), ...Object.values<string>(layout.gems)];
+  const fromRanks = [
+    ...Object.values<{ image: string }>(ranks.tiers).map((t) => t.image),
+    ranks.laurel.normal,
+    ranks.laurel.major,
+  ];
 
-  it('has every file progression_ui.json names, at @1x, @2x and @3x', () => {
-    const named = [...Object.keys(progressionImageMetrics(layout)), ...Object.values<string>(layout.gems)];
-    expect(new Set(named)).toEqual(
+  it('has every file progression_ui.json and rank_ui.json name, at @1x, @2x and @3x', () => {
+    expect(new Set(fromLayout)).toEqual(
       new Set(['coin', 'medallion', 'laurel', 'bar_left', 'bar_mid', 'bar_right', 'gem_common', 'gem_uncommon', 'gem_rare', 'gem_legendary']),
     );
-    for (const name of named) {
-      for (const suffix of ['', '@2x', '@3x']) expect(fs.existsSync(path.join(dir, `${name}${suffix}.png`))).toBe(true);
-      expect(tudorSkin.progression.images[name]).toBeDefined();
-    }
+    expect(new Set(fromRanks)).toEqual(
+      new Set(['medallion_blue', 'medallion_green', 'medallion_red', 'medallion_purple', 'medallion_gold', 'laurel', 'laurel_major']),
+    );
+    for (const name of [...fromLayout, ...fromRanks]) expect(exists(name)).toBe(true);
   });
 
-  it('does not bundle the preview', () => {
+  it('registers exactly the images in use: not the old medallion, nor the previews', () => {
+    const used = [...new Set([...fromLayout, ...fromRanks])].filter((n) => !superseded.includes(n));
+    expect(Object.keys(tudorSkin.progression.images).sort()).toEqual(used.sort());
+    expect(art.filter((n) => !used.includes(n))).toEqual(superseded);
+  });
+
+  it('does not bundle the previews', () => {
     const source = fs.readFileSync(path.join(__dirname, '../../src/ui/skin/tudor.ts'), 'utf8');
     expect(source).not.toMatch(/progression\/_preview/);
+    expect(fs.existsSync(path.join(dir, '_preview_ranks.png'))).toBe(true);
+  });
+
+  it('uses the rank art from rank_ui.json', () => {
+    const { _note, ...rankArt } = ranks;
+    expect(_note).toEqual(expect.any(String));
+    expect(tudorSkin.progression.ranks).toEqual(rankArt);
+  });
+
+  it('has a medallion for every rank in progression.json', () => {
+    for (const { title } of progressionConfig.ranks) {
+      const tier = tudorSkin.progression.ranks.ranks[title];
+      expect([title, tier && tudorSkin.progression.ranks.tiers[tier]?.image]).toEqual([title, expect.any(String)]);
+      expect(tudorSkin.progression.images[tudorSkin.progression.ranks.tiers[tier].image]).toBeDefined();
+    }
   });
 
   it('uses the layout from progression_ui.json', () => {
@@ -99,15 +124,34 @@ describe('Tudor meters', () => {
     });
   });
 
-  it('has every image it names, and every variant, at @1x, @2x and @3x', () => {
-    expect(names).toHaveLength(23);
-    for (const name of names) {
-      for (const density of ['', '@2x', '@3x']) {
-        expect(fs.existsSync(path.join(meterDir, `${name}${density}.png`))).toBe(true);
+  // Elizabeth's art sits at the top of meters/; later rulers' art in meters/<ruler-id>/.
+  const rulerMeterDir = (rulerId: string) =>
+    fs.existsSync(path.join(meterDir, rulerId)) ? path.join(meterDir, rulerId) : meterDir;
+
+  test.each(Object.keys(tudorSkin.meters.art))(
+    '%s: has every image it names, and every variant, at @1x, @2x and @3x',
+    (rulerId) => {
+      const dir = rulerMeterDir(rulerId);
+      for (const name of meterImageNames({ art: { [rulerId]: tudorSkin.meters.art[rulerId] } })) {
+        for (const density of ['', '@2x', '@3x']) {
+          expect(fs.existsSync(path.join(dir, `${name}${density}.png`))).toBe(true);
+        }
+        expect(tudorSkin.meters.images[name]).toBeDefined();
       }
-      expect(tudorSkin.meters.images[name]).toBeDefined();
-    }
+    },
+  );
+
+  it('registers exactly the meter images it names', () => {
+    expect(names).toHaveLength(23 + 20);
     expect(Object.keys(tudorSkin.meters.images).sort()).toEqual([...names].sort());
+  });
+
+  it("maps Caesar's five fill meters to their art, and sizes them from his meters.json", () => {
+    const caesarFile = JSON.parse(fs.readFileSync(path.join(meterDir, 'julius-caesar', 'meters.json'), 'utf8'));
+    for (const id of ['fortune', 'legions', 'people', 'senate', 'glory']) {
+      expect(tudorSkin.meters.art['julius-caesar'][id]).toEqual({ full: id, empty: `${id}_empty` });
+      expect(tudorSkin.meters.metrics[id]).toEqual(caesarFile[id]);
+    }
   });
 
   it('has a size for every icon, glowing marker and track end', () => {
@@ -121,18 +165,14 @@ describe('Tudor meters', () => {
     }
   });
 
-  it('has art for every visible meter of every ruler, or warns that a placeholder medal is drawn', () => {
+  it('has art for every visible meter of every ruler, so no placeholder medal is drawn', () => {
     const missing: string[] = [];
     for (const ruler of rulers) {
       for (const meter of visibleMeters(ruler.ui)) {
         if (!tudorSkin.meters.art[ruler.id]?.[meter.id]) missing.push(`${ruler.id}/${meter.id}`);
       }
     }
-    // Missing ruler art is a warning, not a failure: the meter draws as a placeholder medal.
-    if (missing.length > 0) {
-      console.warn(`Meter art still to come (placeholder medals): ${missing.join(', ')}`);
-    }
-    expect(missing.filter((m) => m.startsWith('elizabeth-i/'))).toEqual([]);
+    expect(missing).toEqual([]);
   });
 
   it('no longer uses placeholder vector icons', () => {

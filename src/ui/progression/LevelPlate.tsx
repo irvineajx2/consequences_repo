@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { levelFromTotalXp, type Progression, progression as config, rankTitle } from '../../game/progression';
 import { useSkin } from '../skin/SkinProvider';
 import { format, formatNumber, strings } from '../strings';
-import { Coin, Medallion, XpBar } from './ProgressionArt';
+import { Coin, MedallionSlot, XpBar } from './ProgressionArt';
 
 export function LevelPlate({ progression }: { progression: Progression }) {
   const skin = useSkin();
@@ -18,7 +18,7 @@ export function LevelPlate({ progression }: { progression: Progression }) {
         needed: formatNumber(xpForLevel),
       })}, ${formatNumber(progression.gold)} ${config.currency.name}`}
     >
-      <Medallion level={level} />
+      <MedallionSlot level={level} />
       <View style={styles.column}>
         <Text style={[styles.rank, { fontFamily: skin.fonts.caption, color: skin.progression.colors.rank }]} numberOfLines={1}>
           {rankTitle(level)}

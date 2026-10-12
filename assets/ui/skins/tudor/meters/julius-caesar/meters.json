@@ -1,0 +1,28 @@
+{
+ "fortune": {
+  "heightPt": 40,
+  "aspect": 1.2234,
+  "effectPadPt": 6
+ },
+ "legions": {
+  "heightPt": 40,
+  "aspect": 0.9407,
+  "effectPadPt": 6
+ },
+ "people": {
+  "heightPt": 40,
+  "aspect": 0.9033,
+  "effectPadPt": 6
+ },
+ "senate": {
+  "heightPt": 40,
+  "aspect": 0.5253,
+  "effectPadPt": 6
+ },
+ "glory": {
+  "heightPt": 40,
+  "aspect": 0.9735,
+  "effectPadPt": 6
+ },
+ "_note": "Icons are tight-cropped: fill level maps to the full image height. *_empty = drained state; *_shadow and *_glow are larger than the icon by effectPadPt on every side; centre them on the icon (offset the shadow 2pt down)."
+}
