@@ -1,5 +1,4 @@
 import Constants from 'expo-constants';
-import { Image as BackgroundImage } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
 import { Image, Pressable, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
@@ -7,12 +6,12 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { rulers } from '@/data/rulers';
 import { wordmark, wordmarkAspectRatio } from '@/ui/branding';
 import { GameButton } from '@/ui/GameButton';
-import { getImage } from '@/ui/images';
 import { LevelPlate } from '@/ui/progression/LevelPlate';
 import { format, strings } from '@/ui/strings';
 import { colors, spacing, type } from '@/ui/theme';
 import { useProfile, useUnlockAll } from '@/ui/useProfile';
 import { useLatestSave } from '@/ui/useRunSave';
+import { RulerImage } from '@/ui/RulerImage';
 
 /** Share of the screen width the wordmark spans. */
 const WORDMARK_WIDTH = 0.85;
@@ -35,7 +34,7 @@ export default function TitleScreen() {
   return (
     <View style={[styles.root, { paddingTop: insets.top + spacing.lg, paddingBottom: insets.bottom + spacing.sm }]}>
       {background !== undefined && (
-        <BackgroundImage source={getImage(featured.id, background)} style={StyleSheet.absoluteFill} contentFit="cover" />
+        <RulerImage rulerId={featured.id} imageId={background} style={StyleSheet.absoluteFill} contentFit="cover" />
       )}
       <LinearGradient
         colors={colors.titleScrim}

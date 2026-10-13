@@ -1,4 +1,3 @@
-import { Image } from 'expo-image';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
@@ -8,7 +7,6 @@ import { emptyProfile, rulerProfile } from '@/game/profile';
 import { endingBand, endingGold, progression } from '@/game/progression';
 import { endingText, type RulerText } from '@/game/text';
 import { GameButton } from '@/ui/GameButton';
-import { getImage, placeholderImage } from '@/ui/images';
 import { BandGem } from '@/ui/progression/ProgressionArt';
 import { RulerTabs } from '@/ui/screens/RulerTabs';
 import { ScreenScaffold } from '@/ui/screens/ScreenScaffold';
@@ -18,6 +16,7 @@ import { useSkinTextStyles } from '@/ui/skin/textStyles';
 import { bandLabel, categoryLabel, format, formatNumber, strings } from '@/ui/strings';
 import { spacing, textSizes } from '@/ui/theme';
 import { useProfile, useUnlockAll } from '@/ui/useProfile';
+import { RulerImage } from '@/ui/RulerImage';
 
 /** One tab per unlocked ruler: every ending, grouped by category; unreached ones show only their category. */
 export default function EndingsScreen() {
@@ -69,7 +68,7 @@ function EndingCard({ ending, text, rulerId }: { ending: GalleryEnding; text: Ru
     <SkinPanel style={styles.card}>
       <View style={styles.imageBox}>
         {/* A locked ending never shows its real image. */}
-        <Image source={record ? getImage(rulerId, ending.image) : placeholderImage} style={StyleSheet.absoluteFill} contentFit="cover" />
+        <RulerImage rulerId={rulerId} imageId={record ? ending.image : null} style={StyleSheet.absoluteFill} contentFit="cover" />
         {!record && <View style={[StyleSheet.absoluteFill, { backgroundColor: screen.lockedOverlay }]} />}
       </View>
       {record ? (
