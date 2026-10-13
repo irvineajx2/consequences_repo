@@ -104,7 +104,9 @@ export const tudorBadges: Readonly<Record<string, ImageSourcePropType>> = {${bad
 `,
 );
 const listFile = path.join(badgeDir, 'badges.json');
-const expected = fs.existsSync(listFile) ? JSON.parse(fs.readFileSync(listFile, 'utf8')).badges : [];
+// badges.json lists the badges as { id: { file, sourcePx } } (or, earlier, as a list of ids).
+const listed = fs.existsSync(listFile) ? JSON.parse(fs.readFileSync(listFile, 'utf8')).badges : [];
+const expected = Array.isArray(listed) ? listed : Object.keys(listed ?? {});
 const missingBadges = expected.filter((id) => !badgeIds.includes(id));
 console.log(`badges: ${badgeIds.length} image(s)${missingBadges.length ? `, ${missingBadges.length} missing (placeholder shown):` : ''}`);
 if (missingBadges.length) console.log(`  ${missingBadges.join(' ')}`);
