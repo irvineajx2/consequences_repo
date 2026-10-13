@@ -14,7 +14,7 @@ export interface PlacedSlot extends MeterSlot {
 }
 
 export interface MeterRowLayout {
-  /** 1 when the row fits at full size; smaller on narrow screens. */
+  /** What every icon size in the skin is multiplied by: `iconScale`, less any shrink to fit. */
   readonly scale: number;
   /** Left edge of the row, in screen points. */
   readonly left: number;
@@ -23,23 +23,24 @@ export interface MeterRowLayout {
 }
 
 /**
- * One centred row of slots separated by `gap`. On narrow screens the whole row (slots and gaps)
- * scales down proportionally so it keeps at least `margin` either side.
+ * One centred row of slots separated by `gap`, icons drawn at `iconScale`. On narrow screens the
+ * whole row (slots and gaps) scales down proportionally so it keeps at least `margin` either side.
  */
 export function meterRowLayout(
   screenWidth: number,
   slots: readonly MeterSlot[],
-  { gap, margin }: { readonly gap: number; readonly margin: number },
+  { gap, margin, iconScale }: { readonly gap: number; readonly margin: number; readonly iconScale: number },
 ): MeterRowLayout {
-  const natural = slots.reduce((sum, s) => sum + s.width, 0) + gap * Math.max(0, slots.length - 1);
+  const natural = slots.reduce((sum, s) => sum + s.width * iconScale, 0) + gap * Math.max(0, slots.length - 1);
   const available = Math.max(0, screenWidth - 2 * margin);
-  const scale = natural > 0 ? Math.min(1, available / natural) : 1;
-  const width = natural * scale;
+  const fit = natural > 0 ? Math.min(1, available / natural) : 1;
+  const scale = iconScale * fit;
+  const width = natural * fit;
   const left = (screenWidth - width) / 2;
   let x = left;
   const placed = slots.map((s) => {
     const slot = { id: s.id, width: s.width * scale, x };
-    x += slot.width + gap * scale;
+    x += slot.width + gap * fit;
     return slot;
   });
   return { scale, left, width, slots: placed };

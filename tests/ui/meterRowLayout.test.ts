@@ -6,7 +6,7 @@ import { tudorSkin } from '../../src/ui/skin/tudor';
 const { ui } = getRuler('elizabeth-i');
 const { layout } = tudorSkin.meters;
 const slots = meterSlots(visibleMeters(ui), tudorSkin.meters, 'elizabeth-i');
-const natural = slots.reduce((s, x) => s + x.width, 0) + layout.gap * (slots.length - 1);
+const natural = slots.reduce((s, x) => s + x.width * layout.iconScale, 0) + layout.gap * (slots.length - 1);
 
 describe('meter row slots', () => {
   it('are, in order, Treasury, Religion, Authority, Navy and Succession, without Spanish Hostility', () => {
@@ -31,26 +31,27 @@ describe('meterRowLayout', () => {
     row.slots.forEach((s, i) => {
       if (i > 0) {
         const prev = row.slots[i - 1];
-        expect(s.x - (prev.x + prev.width)).toBeCloseTo(layout.gap * row.scale, 9);
+        expect(s.x - (prev.x + prev.width)).toBeCloseTo((layout.gap * row.scale) / layout.iconScale, 9);
       }
     });
     const last = row.slots[row.slots.length - 1];
     expect(last.x + last.width).toBeCloseTo(row.left + row.width, 9);
   });
 
-  it('keeps full size where the row fits, and scales proportionally only where it does not', () => {
-    expect(natural).toBeGreaterThan(320 - 24);
-    expect(natural).toBeLessThanOrEqual(375 - 24);
-    for (const width of [375, 390, 430]) expect(meterRowLayout(width, slots, layout).scale).toBe(1);
+  it('draws every icon 20% larger, shrinking proportionally only where the row does not fit', () => {
+    expect(layout.iconScale).toBe(1.2);
+    expect(natural).toBeGreaterThan(390 - 24);
+    expect(natural).toBeLessThanOrEqual(430 - 24);
+    expect(meterRowLayout(430, slots, layout).scale).toBe(1.2);
     const small = meterRowLayout(320, slots, layout);
-    expect(small.scale).toBeCloseTo((320 - 24) / natural, 9);
+    expect(small.scale).toBeCloseTo((1.2 * (320 - 24)) / natural, 9);
     expect(small.left).toBeCloseTo(12, 9);
     // Everything shrinks by the same factor.
     small.slots.forEach((s, i) => expect(s.width).toBeCloseTo(slots[i].width * small.scale, 9));
   });
 
   it('handles an empty row', () => {
-    expect(meterRowLayout(390, [], layout)).toEqual({ scale: 1, left: 195, width: 0, slots: [] });
+    expect(meterRowLayout(390, [], layout)).toEqual({ scale: 1.2, left: 195, width: 0, slots: [] });
   });
 });
 
@@ -65,9 +66,9 @@ describe("Caesar's meter row", () => {
     }
   });
 
-  test.each([320, 375, 390, 430])('fits a %p pt screen at full size, centred', (width) => {
+  test.each([320, 375, 390, 430])('fits a %p pt screen at full (1.2x) size, centred', (width) => {
     const row = meterRowLayout(width, caesarSlots, layout);
-    expect(row.scale).toBe(1);
+    expect(row.scale).toBe(1.2);
     expect(row.left).toBeGreaterThanOrEqual(12 - 1e-9);
     expect(row.left).toBeCloseTo(width - (row.left + row.width), 9);
   });
