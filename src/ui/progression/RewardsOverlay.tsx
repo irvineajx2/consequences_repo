@@ -22,7 +22,16 @@ const NEW_RANK_HOLD = 1.5;
 /** Whether reaching `level` crosses into a new rank. */
 const reachesNewRank = (level: number) => rankTitle(level) !== rankTitle(level - 1);
 
-export function RewardsOverlay({ rewards, onDone }: { rewards: RewardOutcome; onDone: () => void }) {
+export function RewardsOverlay({
+  rewards,
+  achievements = [],
+  onDone,
+}: {
+  rewards: RewardOutcome;
+  /** Titles of achievements this run earned. */
+  achievements?: readonly string[];
+  onDone: () => void;
+}) {
   const skin = useSkin();
   const text = useSkinTextStyles();
   const { breakdown } = rewards;
@@ -139,6 +148,12 @@ export function RewardsOverlay({ rewards, onDone }: { rewards: RewardOutcome; on
         ) : (
           <Text style={[text.muted, styles.centre]}>{format(strings.goldRule, { currency: config.currency.name })}</Text>
         )}
+
+        {achievements.map((title) => (
+          <Text key={title} style={[text.body, styles.centre, { color: skin.colors.panelCaption }]}>
+            {format(strings.achievementEarned, { title })}
+          </Text>
+        ))}
 
         <View style={styles.button}>
           <GameButton label={strings.continue} onPress={onDone} />

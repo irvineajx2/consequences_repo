@@ -1,0 +1,27 @@
+{
+  "heightPt": 48,
+  "effectPadPt": 6,
+  "pieces": {
+    "treasury": {
+      "aspect": 0.9417
+    },
+    "parliament": {
+      "aspect": 0.6492
+    },
+    "army": {
+      "aspect": 0.9908
+    },
+    "majesty": {
+      "aspect": 0.8621
+    },
+    "church_marker": {
+      "aspect": 0.6692
+    },
+    "church_puritan": {
+      "aspect": 0.9272
+    },
+    "church_high": {
+      "aspect": 0.6398
+    }
+  }
+}

@@ -28,10 +28,11 @@ describe('Tudor skin', () => {
   });
 
   it('matches the values in tudor.skin.json', () => {
-    const { images, meters, screen, progression, ...values } = tudorSkin;
+    const { images, meters, screen, progression, profile, ...values } = tudorSkin;
     const { note, ...json } = tudorJson;
     expect(images).toBeDefined();
     expect(progression).toBeDefined();
+    expect(profile).toBeDefined();
     expect(meters).toBeDefined();
     expect(screen).toBeDefined();
     expect(note).toEqual(expect.any(String));
@@ -124,9 +125,12 @@ describe('Tudor meters', () => {
     });
   });
 
-  // Elizabeth's art sits at the top of meters/; later rulers' art in meters/<ruler-id>/.
+  // Elizabeth's art sits at the top of meters/; later rulers' art in meters/<ruler-id>/. A ruler's
+  // image names may carry its prefix (charles_treasury) where a bare name would clash; the file
+  // doesn't.
   const rulerMeterDir = (rulerId: string) =>
     fs.existsSync(path.join(meterDir, rulerId)) ? path.join(meterDir, rulerId) : meterDir;
+  const fileFor = (rulerId: string, name: string) => name.replace(new RegExp(`^${rulerId.split('-')[0]}_`), '');
 
   test.each(Object.keys(tudorSkin.meters.art))(
     '%s: has every image it names, and every variant, at @1x, @2x and @3x',
@@ -134,7 +138,7 @@ describe('Tudor meters', () => {
       const dir = rulerMeterDir(rulerId);
       for (const name of meterImageNames({ art: { [rulerId]: tudorSkin.meters.art[rulerId] } })) {
         for (const density of ['', '@2x', '@3x']) {
-          expect(fs.existsSync(path.join(dir, `${name}${density}.png`))).toBe(true);
+          expect(fs.existsSync(path.join(dir, `${fileFor(rulerId, name)}${density}.png`))).toBe(true);
         }
         expect(tudorSkin.meters.images[name]).toBeDefined();
       }
@@ -142,7 +146,7 @@ describe('Tudor meters', () => {
   );
 
   it('registers exactly the meter images it names', () => {
-    expect(names).toHaveLength(23 + 20);
+    expect(names).toHaveLength(23 + 20 + 23);
     expect(Object.keys(tudorSkin.meters.images).sort()).toEqual([...names].sort());
   });
 
@@ -165,39 +169,42 @@ describe('Tudor meters', () => {
     }
   });
 
-  it('has art for every visible meter of every ruler, or art planned for it (drawn as placeholder medals)', () => {
+  it('has art for every visible meter of every ruler, so no placeholder medal is drawn, and none pending', () => {
     const missing: string[] = [];
     for (const ruler of rulers) {
       for (const meter of visibleMeters(ruler.ui)) {
-        const planned = tudorSkin.meters.pending?.[ruler.id]?.[meter.id];
-        if (!tudorSkin.meters.art[ruler.id]?.[meter.id] && !planned) missing.push(`${ruler.id}/${meter.id}`);
+        if (!tudorSkin.meters.art[ruler.id]?.[meter.id]) missing.push(`${ruler.id}/${meter.id}`);
       }
     }
     expect(missing).toEqual([]);
+    expect(Object.keys(tudorSkin.meters.pending ?? {})).toEqual([]);
   });
 
-  it("plans Charles I's 7-piece sheet: chest, mace, lobster-tail helmet, crown; church, plain book, mitre", () => {
-    const planned = tudorSkin.meters.pending?.['charles-i'];
-    expect(planned).toEqual({
-      treasury: { full: 'chest', empty: 'chest_empty' },
-      parliament: { full: 'mace', empty: 'mace_empty' },
-      church: { marker: 'church', left: 'plain_book', right: 'mitre' },
-      army: { full: 'lobster_helmet', empty: 'lobster_helmet_empty' },
-      majesty: { full: 'crown', empty: 'crown_empty' },
+  it("maps Charles I's 7-piece sheet: chest, mace, lobster-tail helmet, crown; plain book, church, mitre", () => {
+    expect(tudorSkin.meters.art['charles-i']).toEqual({
+      treasury: { full: 'charles_treasury', empty: 'charles_treasury_empty' },
+      parliament: { full: 'charles_parliament', empty: 'charles_parliament_empty' },
+      church: { marker: 'charles_church_marker', left: 'charles_church_puritan', right: 'charles_church_high' },
+      army: { full: 'charles_army', empty: 'charles_army_empty' },
+      majesty: { full: 'charles_majesty', empty: 'charles_majesty_empty' },
     });
     // The Church gauge's art is a balance meter, as its display is.
     expect(getRuler('charles-i').ui.meters.find((m) => m.id === 'church')?.style).toBe('balance');
   });
 
-  test.each(Object.keys(tudorSkin.meters.pending ?? {}))(
-    '%s: planned art has not arrived yet (once it has, move it from pending into art)',
-    (rulerId) => {
-      const names = meterImageNames({ art: { [rulerId]: tudorSkin.meters.pending![rulerId] } });
-      const arrived = names.filter((n) => fs.existsSync(path.join(rulerMeterDir(rulerId), `${n}.png`)));
-      expect(arrived).toEqual([]);
-      expect(tudorSkin.meters.art[rulerId]).toBeUndefined();
-    },
-  );
+  it("sizes Charles's pieces from his meters.json, his gauge at Elizabeth's proportions", () => {
+    const file = JSON.parse(fs.readFileSync(path.join(meterDir, 'charles-i', 'meters.json'), 'utf8'));
+    for (const piece of ['treasury', 'parliament', 'army', 'majesty']) {
+      expect(tudorSkin.meters.metrics[`charles_${piece}`]).toEqual({ heightPt: 48, aspect: file.pieces[piece].aspect, effectPadPt: 6 });
+    }
+    const m = tudorSkin.meters.metrics;
+    expect([m.charles_church_puritan.heightPt, m.charles_church_high.heightPt, m.charles_church_marker.heightPt]).toEqual([
+      m.religion_keys.heightPt,
+      m.religion_bible.heightPt,
+      m.religion_church.heightPt,
+    ]);
+    expect(m.charles_church_marker).toEqual({ heightPt: 30, aspect: file.pieces.church_marker.aspect, effectPadPt: 3.75 });
+  });
 
   it('no longer uses placeholder vector icons', () => {
     expect(JSON.stringify(tudorSkin.meters)).not.toMatch(/treasure-chest|circle-outline|iconSize/);

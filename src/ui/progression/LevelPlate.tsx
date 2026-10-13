@@ -1,22 +1,26 @@
 // The title screen's level plate: medallion, rank, XP bar, XP towards the next level and gold.
-import { StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { levelFromTotalXp, type Progression, progression as config, rankTitle } from '../../game/progression';
 import { useSkin } from '../skin/SkinProvider';
 import { format, formatNumber, strings } from '../strings';
 import { Coin, MedallionSlot, XpBar } from './ProgressionArt';
 
-export function LevelPlate({ progression }: { progression: Progression }) {
+/** Tapping the plate (its medallion included) calls `onPress`, which opens the profile. */
+export function LevelPlate({ progression, onPress }: { progression: Progression; onPress?: () => void }) {
   const skin = useSkin();
   const { level, xpIntoLevel, xpForLevel } = levelFromTotalXp(progression.totalXp);
   const small = { fontFamily: skin.fonts.body, color: skin.progression.colors.level };
   return (
-    <View
+    <Pressable
+      onPress={onPress}
+      disabled={onPress === undefined}
       style={[styles.plate, { backgroundColor: skin.progression.colors.plate }]}
       accessible
+      accessibilityRole={onPress ? 'button' : undefined}
       accessibilityLabel={`${format(strings.levelLabel, { level })}, ${rankTitle(level)}, ${format(strings.xpProgress, {
         into: formatNumber(xpIntoLevel),
         needed: formatNumber(xpForLevel),
-      })}, ${formatNumber(progression.gold)} ${config.currency.name}`}
+      })}, ${formatNumber(progression.gold)} ${config.currency.name}${onPress ? `. ${strings.openProfile}` : ''}`}
     >
       <MedallionSlot level={level} />
       <View style={styles.column}>
@@ -36,7 +40,7 @@ export function LevelPlate({ progression }: { progression: Progression }) {
           </View>
         </View>
       </View>
-    </View>
+    </Pressable>
   );
 }
 

@@ -47,6 +47,7 @@
     "lint": "expo lint",
     "test": "jest",
     "images": "node scripts/build-image-registry.js",
+    "rarity": "python tools/rarity.py",
     "text": "node scripts/generate-text.js"
   },
   "private": true,

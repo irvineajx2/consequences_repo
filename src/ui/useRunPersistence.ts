@@ -1,15 +1,19 @@
 import { useEffect, useRef, useState } from 'react';
-import { finishRun, resultOf, saveRun } from '../game/persistence';
+import type { Achievement } from '../game/achievements';
+import { finishRun, recordAchievements, resultOf, saveRun } from '../game/persistence';
 import type { RewardOutcome } from '../game/progression';
 import { saveOf } from '../game/save';
 import type { Session } from '../game/session';
 import type { KeyValueStorage } from '../game/storage';
+import { allRulerFacts } from './profile/rulerFacts';
 
 export interface FinishedRun {
   /** Scenes this run discovered for the first time. */
   readonly newlyDiscovered: readonly string[];
   /** What the run earned (zero if it had somehow been rewarded already). */
   readonly rewards: RewardOutcome | null;
+  /** Achievements this run earned. */
+  readonly achievements: readonly Achievement[];
 }
 
 /**
@@ -39,8 +43,11 @@ export function useRunPersistence(storage: KeyValueStorage, session: Session): F
     saveRun(storage, rules, saveOf({ rules, run, runId }, now))
       .catch(() => {})
       .then(() => finishRun(storage, rules, resultOf({ run, runId }, now)))
-      .then(({ newlyDiscovered, rewards }) => setFinished({ decisions, result: { newlyDiscovered, rewards } }))
-      .catch(() => setFinished({ decisions, result: { newlyDiscovered: [], rewards: null } }));
+      .then(async ({ newlyDiscovered, rewards }) => {
+        const achievements = await recordAchievements(storage, allRulerFacts, now).catch(() => []);
+        setFinished({ decisions, result: { newlyDiscovered, rewards, achievements } });
+      })
+      .catch(() => setFinished({ decisions, result: { newlyDiscovered: [], rewards: null, achievements: [] } }));
   }, [run, decisions, rules, runId, storage]);
 
   // Only report the finish for the run currently on screen (not one before "Play again").

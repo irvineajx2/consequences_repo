@@ -42,14 +42,19 @@ const styleOf = (tree: ReactTestRenderer, source: ImageSourcePropType) =>
   flatStyle(tree.root.findAll((n) => n.type === Image && n.props.source === source)[0]?.props.style);
 
 describe('meter icons at 1.2x', () => {
-  it.each([['elizabeth-i', 'tr', 'treasury'], ['julius-caesar', 'fortune', 'fortune']])(
+  it.each([
+    ['elizabeth-i', 'tr', 'treasury'],
+    ['julius-caesar', 'fortune', 'fortune'],
+    ['charles-i', 'treasury', 'charles_treasury'],
+  ])(
     '%s: the %s icon is 20%% larger, with its drained copy, shadow and glow still aligned',
     (rulerId, _meter, name) => {
       const tree = render(getRuler(rulerId));
       const m = skin.metrics[name];
       const height = skin.layout.fillHeight * 1.2;
       const width = height * m.aspect;
-      const pad = m.effectPadPt * 1.2;
+      // The glow and shadow padding scales with the drawn icon.
+      const pad = m.effectPadPt * (height / m.heightPt);
       // On a wide phone nothing shrinks: exactly 1.2x the skin's size.
       expect(styleOf(tree, skin.images[`${name}_empty`])).toMatchObject({ left: 0, top: 0, width, height });
       expect(styleOf(tree, skin.images[name])).toMatchObject({ left: 0, bottom: 0, width, height });
@@ -64,8 +69,10 @@ describe('meter icons at 1.2x', () => {
     },
   );
 
-  it("draws Charles's placeholder medals 20% larger too", () => {
-    const tree = render(getRuler('charles-i'));
+  it('draws a placeholder medal, 20% larger too, for a meter without art', () => {
+    const charles = getRuler('charles-i');
+    const noArt = { ...charles, id: 'no-art-ruler' };
+    const tree = render(noArt);
     const slots = tree.root.findAll((n) => typeof n.type !== 'string' && n.props.accessibilityRole === 'button' && 'onPress' in n.props);
     expect(slots).toHaveLength(5);
     for (const slot of slots) expect(flatStyle(slot.props.style).height).toBeCloseTo(skin.layout.fillHeight * 1.2, 9);

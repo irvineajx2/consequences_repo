@@ -26,9 +26,11 @@ export interface Progression {
   readonly gold: number;
   /** The last run ids rewarded (most recent last), so a run is never rewarded twice. */
   readonly awardedRunIds: readonly string[];
+  /** Achievements earned, by id: when each was first earned (ISO timestamp). Recorded once. */
+  readonly achievements: Readonly<Record<string, string>>;
 }
 
-export const emptyProgression: Progression = { totalXp: 0, gold: 0, awardedRunIds: [] };
+export const emptyProgression: Progression = { totalXp: 0, gold: 0, awardedRunIds: [], achievements: {} };
 
 /** How many awarded run ids are remembered. */
 export const AWARDED_RUN_MEMORY = 100;
@@ -159,6 +161,7 @@ export function applyRunRewards(
         totalXp: current.totalXp + breakdown.totalXp,
         gold: current.gold + breakdown.gold,
         awardedRunIds: [...current.awardedRunIds, runId].slice(-AWARDED_RUN_MEMORY),
+        achievements: current.achievements,
       };
   const levelAfter = levelFromTotalXp(next.totalXp, cfg).level;
   return {
@@ -192,7 +195,7 @@ export function migrateProgression(
     }
     totalXp += record.runsCompleted * cfg.migration.xpPerEarlierRun;
   }
-  return { totalXp, gold, awardedRunIds: [] };
+  return { totalXp, gold, awardedRunIds: [], achievements: {} };
 }
 
 /** One stretch of the XP bar animation: within one level, from one fill to another. */

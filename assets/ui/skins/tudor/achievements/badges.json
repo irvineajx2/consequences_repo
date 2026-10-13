@@ -1,0 +1,78 @@
+{
+  "sizePt": 56,
+  "scales": [
+    1,
+    2,
+    3
+  ],
+  "badges": {
+    "first_reign": {
+      "file": "first_reign.png",
+      "sourcePx": 406
+    },
+    "uncharted": {
+      "file": "uncharted.png",
+      "sourcePx": 406
+    },
+    "off_the_map": {
+      "file": "off_the_map.png",
+      "sourcePx": 406
+    },
+    "faithful_copy": {
+      "file": "faithful_copy.png",
+      "sourcePx": 406
+    },
+    "legendary": {
+      "file": "legendary.png",
+      "sourcePx": 406
+    },
+    "rank_chronicler": {
+      "file": "rank_chronicler.png",
+      "sourcePx": 406
+    },
+    "rank_sage": {
+      "file": "rank_sage.png",
+      "sourcePx": 406
+    },
+    "badge_base": {
+      "file": "badge_base.png",
+      "sourcePx": 406
+    },
+    "elizabeth_history": {
+      "file": "elizabeth_history.png",
+      "sourcePx": 397
+    },
+    "elizabeth_outdone": {
+      "file": "elizabeth_outdone.png",
+      "sourcePx": 397
+    },
+    "elizabeth_every_road": {
+      "file": "elizabeth_every_road.png",
+      "sourcePx": 397
+    },
+    "caesar_history": {
+      "file": "caesar_history.png",
+      "sourcePx": 397
+    },
+    "caesar_outdone": {
+      "file": "caesar_outdone.png",
+      "sourcePx": 397
+    },
+    "caesar_every_road": {
+      "file": "caesar_every_road.png",
+      "sourcePx": 397
+    },
+    "charles_history": {
+      "file": "charles_history.png",
+      "sourcePx": 397
+    },
+    "charles_outdone": {
+      "file": "charles_outdone.png",
+      "sourcePx": 397
+    },
+    "charles_every_road": {
+      "file": "charles_every_road.png",
+      "sourcePx": 397
+    }
+  }
+}

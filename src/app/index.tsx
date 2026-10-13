@@ -9,6 +9,7 @@ import { GameButton } from '@/ui/GameButton';
 import { LevelPlate } from '@/ui/progression/LevelPlate';
 import { format, strings } from '@/ui/strings';
 import { colors, spacing, type } from '@/ui/theme';
+import { useAchievementCheck } from '@/ui/profile/useAchievementCheck';
 import { useProfile, useUnlockAll } from '@/ui/useProfile';
 import { useLatestSave } from '@/ui/useRunSave';
 import { RulerImage } from '@/ui/RulerImage';
@@ -23,8 +24,12 @@ export default function TitleScreen() {
   const insets = useSafeAreaInsets();
   const { width } = useWindowDimensions();
   const save = useLatestSave(rulers);
-  // Reloaded once the saves are checked: that may record a run finished before the app closed.
-  const profile = useProfile(save.loading);
+  // Once the saves are checked (which may record a run finished before the app closed), award any
+  // achievements now earned; the profile reloads after each step.
+  const achievements = useAchievementCheck(!save.loading);
+  const profile = useProfile(`${save.loading}/${achievements.checked}`);
+  const earned = achievements.newlyEarned;
+  const openProfile = () => router.push('/profile');
   const [unlockAll, toggleUnlockAll] = useUnlockAll();
   const wordmarkWidth = Math.round(width * WORDMARK_WIDTH);
   const background = featured.ui.title?.background;
@@ -54,8 +59,18 @@ export default function TitleScreen() {
       <View>
         {profile !== null && (
           <View style={styles.plate}>
-            <LevelPlate progression={profile.progression} />
+            <LevelPlate progression={profile.progression} onPress={openProfile} />
           </View>
+        )}
+        {earned.length > 0 && (
+          // One notice for everything just earned (an existing save's backfill included).
+          <Pressable onPress={openProfile} accessibilityRole="button">
+            <Text style={[type.muted, styles.notice, styles.achievements]}>
+              {earned.length === 1
+                ? format(strings.achievementEarnedNotice, { title: earned[0].title })
+                : format(strings.achievementsEarnedNotice, { count: earned.length })}
+            </Text>
+          </Pressable>
         )}
         {save.discarded && <Text style={[type.muted, styles.notice]}>{strings.restoreFailed}</Text>}
         {save.ruler !== null && (
@@ -73,6 +88,9 @@ export default function TitleScreen() {
           </View>
           <View style={styles.half}>
             <GameButton label={strings.endings} onPress={() => router.push({ pathname: '/endings', params })} />
+          </View>
+          <View style={styles.half}>
+            <GameButton label={strings.profile} onPress={openProfile} />
           </View>
         </View>
         {version !== undefined && (
@@ -96,6 +114,7 @@ const styles = StyleSheet.create({
   spacer: { flexGrow: 1, minHeight: spacing.xl },
   plate: { marginBottom: spacing.md },
   notice: { textAlign: 'center', marginBottom: spacing.xs },
+  achievements: { color: colors.gold },
   pair: { flexDirection: 'row', gap: spacing.sm },
   half: { flex: 1 },
   version: { textAlign: 'center', fontSize: 11, lineHeight: 15, marginTop: spacing.sm, opacity: 0.7 },

@@ -178,6 +178,22 @@ export function progressionImageMetrics(layout: ProgressionSkin['layout']): Read
   return metrics;
 }
 
+/** The profile screen's colours, and its badge art (generated from the skin's achievements folder). */
+export interface ProfileSkin {
+  /** Marker colour for each ending rarity tier (common, uncommon, rare, epic, legendary). */
+  readonly rarity: Readonly<Record<string, string>>;
+  /** The avatar plinth's tint for each rank medallion colour (rank_ui.json tiers). */
+  readonly rankTint: Readonly<Record<string, string>>;
+  readonly avatarFrame: string;
+  readonly avatarFill: string;
+  readonly avatarSilhouette: string;
+  /** The placeholder badge until an achievement's art exists. */
+  readonly badgeFill: string;
+  readonly badgeText: string;
+  /** Badge images by achievement id, plus `badge_base` (the empty badge). */
+  readonly badges: Readonly<Record<string, ImageSourcePropType>>;
+}
+
 /** Colours for screens drawn on the dark background (chronicle, endings, title). */
 export interface ScreenSkin {
   readonly text: string;
@@ -245,6 +261,7 @@ export interface Skin {
   readonly meters: MeterSkin;
   readonly screen: ScreenSkin;
   readonly progression: ProgressionSkin;
+  readonly profile: ProfileSkin;
 }
 
 export const SLICE_NAMES = ['tl', 't', 'tr', 'l', 'r', 'bl', 'b', 'br'] as const;
