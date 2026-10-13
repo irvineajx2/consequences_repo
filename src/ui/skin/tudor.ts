@@ -2,6 +2,7 @@
 // come from docs/skins/tudor/tudor.skin.json; the illustrated meters and their sizes from
 // assets/ui/skins/tudor/meters/.
 import caesarMeterFile from '../../../assets/ui/skins/tudor/meters/julius-caesar/meters.json';
+import charlesMeterFile from '../../../assets/ui/skins/tudor/meters/charles-i/meters.json';
 import meterFile from '../../../assets/ui/skins/tudor/meters/meters.json';
 import progressionLayout from '../../../assets/ui/skins/tudor/progression/progression_ui.json';
 import rankFile from '../../../assets/ui/skins/tudor/progression/rank_ui.json';
@@ -12,8 +13,21 @@ import type { Skin } from './types';
 const { _note: _meterNote, ...elizabethMeterMetrics } = meterFile;
 const { _note: _caesarMeterNote, ...caesarMeterMetrics } = caesarMeterFile;
 const { _note: _rankNote, ...rankArt } = rankFile;
+// Charles's sheet gives every piece one height (48 pt, the art drawn for the 1.2x icon scale) and
+// its aspect. His names would clash with Elizabeth's (both have a treasury), so his pieces are
+// registered as charles_<piece>. His Church gauge is drawn at Elizabeth's Religion gauge's
+// proportions: ends 24 pt and marker 30 pt before scaling, padding in proportion.
+const CHARLES = 'charles_';
+const charlesGaugeHeights: Readonly<Record<string, number>> = { church_puritan: 24, church_high: 24, church_marker: 30 };
+const charlesMeterMetrics = Object.fromEntries(
+  Object.entries(charlesMeterFile.pieces).map(([piece, { aspect }]) => {
+    const heightPt = charlesGaugeHeights[piece] ?? charlesMeterFile.heightPt;
+    const effectPadPt = (charlesMeterFile.effectPadPt * heightPt) / charlesMeterFile.heightPt;
+    return [`${CHARLES}${piece}`, { heightPt, aspect, effectPadPt }];
+  }),
+);
 // Image names are unique across rulers, so one table sizes them all.
-const meterMetrics = { ...elizabethMeterMetrics, ...caesarMeterMetrics };
+const meterMetrics = { ...elizabethMeterMetrics, ...caesarMeterMetrics, ...charlesMeterMetrics };
 
 export const tudorSkin: Skin = {
   id: 'tudor',
@@ -81,15 +95,13 @@ export const tudorSkin: Skin = {
         senate: { full: 'senate', empty: 'senate_empty' },
         glory: { full: 'glory', empty: 'glory_empty' },
       },
-    },
-    pending: {
-      // Charles I's 7-piece sheet is still to come: placeholder medals until then.
+      // Charles I's sheet: chest, mace, lobster-tail helmet, crown; plain book, church, mitre.
       'charles-i': {
-        treasury: { full: 'chest', empty: 'chest_empty' },
-        parliament: { full: 'mace', empty: 'mace_empty' },
-        church: { marker: 'church', left: 'plain_book', right: 'mitre' },
-        army: { full: 'lobster_helmet', empty: 'lobster_helmet_empty' },
-        majesty: { full: 'crown', empty: 'crown_empty' },
+        treasury: { full: 'charles_treasury', empty: 'charles_treasury_empty' },
+        parliament: { full: 'charles_parliament', empty: 'charles_parliament_empty' },
+        church: { marker: 'charles_church_marker', left: 'charles_church_puritan', right: 'charles_church_high' },
+        army: { full: 'charles_army', empty: 'charles_army_empty' },
+        majesty: { full: 'charles_majesty', empty: 'charles_majesty_empty' },
       },
     },
     metrics: meterMetrics,
@@ -138,6 +150,30 @@ export const tudorSkin: Skin = {
       senate_empty: require('../../../assets/ui/skins/tudor/meters/julius-caesar/senate_empty.png'),
       senate_glow: require('../../../assets/ui/skins/tudor/meters/julius-caesar/senate_glow.png'),
       senate_shadow: require('../../../assets/ui/skins/tudor/meters/julius-caesar/senate_shadow.png'),
+      // Charles I (files named without the charles_ prefix)
+      charles_army: require('../../../assets/ui/skins/tudor/meters/charles-i/army.png'),
+      charles_army_empty: require('../../../assets/ui/skins/tudor/meters/charles-i/army_empty.png'),
+      charles_army_glow: require('../../../assets/ui/skins/tudor/meters/charles-i/army_glow.png'),
+      charles_army_shadow: require('../../../assets/ui/skins/tudor/meters/charles-i/army_shadow.png'),
+      charles_majesty: require('../../../assets/ui/skins/tudor/meters/charles-i/majesty.png'),
+      charles_majesty_empty: require('../../../assets/ui/skins/tudor/meters/charles-i/majesty_empty.png'),
+      charles_majesty_glow: require('../../../assets/ui/skins/tudor/meters/charles-i/majesty_glow.png'),
+      charles_majesty_shadow: require('../../../assets/ui/skins/tudor/meters/charles-i/majesty_shadow.png'),
+      charles_parliament: require('../../../assets/ui/skins/tudor/meters/charles-i/parliament.png'),
+      charles_parliament_empty: require('../../../assets/ui/skins/tudor/meters/charles-i/parliament_empty.png'),
+      charles_parliament_glow: require('../../../assets/ui/skins/tudor/meters/charles-i/parliament_glow.png'),
+      charles_parliament_shadow: require('../../../assets/ui/skins/tudor/meters/charles-i/parliament_shadow.png'),
+      charles_treasury: require('../../../assets/ui/skins/tudor/meters/charles-i/treasury.png'),
+      charles_treasury_empty: require('../../../assets/ui/skins/tudor/meters/charles-i/treasury_empty.png'),
+      charles_treasury_glow: require('../../../assets/ui/skins/tudor/meters/charles-i/treasury_glow.png'),
+      charles_treasury_shadow: require('../../../assets/ui/skins/tudor/meters/charles-i/treasury_shadow.png'),
+      charles_church_high: require('../../../assets/ui/skins/tudor/meters/charles-i/church_high.png'),
+      charles_church_high_shadow: require('../../../assets/ui/skins/tudor/meters/charles-i/church_high_shadow.png'),
+      charles_church_marker: require('../../../assets/ui/skins/tudor/meters/charles-i/church_marker.png'),
+      charles_church_marker_glow: require('../../../assets/ui/skins/tudor/meters/charles-i/church_marker_glow.png'),
+      charles_church_marker_shadow: require('../../../assets/ui/skins/tudor/meters/charles-i/church_marker_shadow.png'),
+      charles_church_puritan: require('../../../assets/ui/skins/tudor/meters/charles-i/church_puritan.png'),
+      charles_church_puritan_shadow: require('../../../assets/ui/skins/tudor/meters/charles-i/church_puritan_shadow.png'),
     },
     layout: { iconScale: 1.2, fillHeight: 40, balanceWidth: 130, gap: 9, margin: 12, shadowOffset: 2 },
     colors: {

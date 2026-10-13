@@ -5,13 +5,7 @@ import { tudorSkin } from '../../src/ui/skin/tudor';
 
 const { layout } = tudorSkin.meters;
 const slotsFor = (rulerId: string) => meterSlots(visibleMeters(getRuler(rulerId).ui), tudorSkin.meters, rulerId);
-// Charles as he will be once his planned art arrives (his Church gauge then takes two units).
-const charlesWithArt = meterSlots(visibleMeters(getRuler('charles-i').ui), { ...tudorSkin.meters, art: { ...tudorSkin.meters.pending } }, 'charles-i');
-
-const ROWS: [string, MeterSlot[]][] = [
-  ...rulers.map((r) => [r.id, slotsFor(r.id)] as [string, MeterSlot[]]),
-  ['charles-i (planned art)', charlesWithArt],
-];
+const ROWS: [string, MeterSlot[]][] = rulers.map((r) => [r.id, slotsFor(r.id)] as [string, MeterSlot[]]);
 const SE = 320;
 const WIDE = 430;
 const centre = (s: { x: number; width: number }) => s.x + s.width / 2;
@@ -35,8 +29,7 @@ describe('meter row slots', () => {
   it('give fill icons and placeholders one unit and two-sided gauges two', () => {
     expect(slotsFor('elizabeth-i').map((s) => s.units)).toEqual([1, 2, 1, 1, 1]);
     expect(slotsFor('julius-caesar').map((s) => s.units)).toEqual([1, 1, 1, 1, 1]);
-    expect(slotsFor('charles-i').map((s) => s.units)).toEqual([1, 1, 1, 1, 1]);
-    expect(charlesWithArt.map((s) => [s.id, s.units])).toEqual([
+    expect(slotsFor('charles-i').map((s) => [s.id, s.units])).toEqual([
       ['treasury', 1],
       ['parliament', 1],
       ['church', 2],
@@ -84,8 +77,8 @@ describe('the meter row, the same for every ruler', () => {
     });
   });
 
-  it('spaces neighbouring centres equally when every meter takes one unit (Caesar, Charles today)', () => {
-    for (const rulerId of ['julius-caesar', 'charles-i']) {
+  it('spaces neighbouring centres equally when every meter takes one unit (Caesar)', () => {
+    for (const rulerId of ['julius-caesar']) {
       for (const width of [SE, WIDE]) {
         const row = meterRowLayout(width, slotsFor(rulerId), layout);
         const gaps = row.slots.slice(1).map((s, i) => centre(s) - centre(row.slots[i]));
@@ -99,10 +92,12 @@ describe('the meter row, the same for every ruler', () => {
       for (const width of [390, WIDE]) expect(meterRowLayout(width, slotsFor(rulerId), layout).scale).toBeCloseTo(1.2, 9);
     }
     expect(meterRowLayout(375, slotsFor('elizabeth-i'), layout).scale).toBeGreaterThan(1.15);
-    // Before: Elizabeth's row shrank to 0.906 on an iPhone SE; Caesar's and Charles's drew at 1.
+    // Before: Elizabeth's row shrank to 0.906 on an iPhone SE; Caesar's drew at 1. Charles, with a
+    // two-sided gauge like Elizabeth's, is just above 1 there.
     expect(meterRowLayout(SE, slotsFor('elizabeth-i'), layout).scale).toBeGreaterThan(0.906);
     expect(meterRowLayout(SE, slotsFor('julius-caesar'), layout).scale).toBeGreaterThan(1.1);
-    expect(meterRowLayout(SE, slotsFor('charles-i'), layout).scale).toBeCloseTo(1.2, 9);
+    expect(meterRowLayout(SE, slotsFor('charles-i'), layout).scale).toBeGreaterThan(1);
+    expect(meterRowLayout(375, slotsFor('charles-i'), layout).scale).toBeCloseTo(1.2, 9);
   });
 
   it("keeps Elizabeth's Religion gauge about as wide as before (130 pt), within its double slot", () => {
