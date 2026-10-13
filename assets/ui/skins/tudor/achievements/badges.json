@@ -1,0 +1,23 @@
+{
+  "_note": "Achievement badges: square transparent PNGs named by achievement id, for a 56 pt badge, at @1x (56 px), @2x and @3x. badge_base is the empty badge, drawn darkened for unearned achievements. Per-ruler badges follow <ruler>_history, <ruler>_outdone and <ruler>_every_road. `npm run images` registers whatever is here; a missing badge shows the placeholder.",
+  "sizePt": 56,
+  "badges": [
+    "badge_base",
+    "first_reign",
+    "uncharted",
+    "off_the_map",
+    "faithful_copy",
+    "elizabeth_history",
+    "caesar_history",
+    "charles_history",
+    "elizabeth_outdone",
+    "caesar_outdone",
+    "charles_outdone",
+    "elizabeth_every_road",
+    "caesar_every_road",
+    "charles_every_road",
+    "legendary",
+    "rank_chronicler",
+    "rank_sage"
+  ]
+}

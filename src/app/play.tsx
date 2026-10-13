@@ -107,7 +107,13 @@ function PlayRun({ ruler, initial }: { ruler: Ruler; initial: Session }) {
         scenes, consequences, beats and era cards; hidden on the prologue and the ending.
       */}
       {view.kind !== 'prologue' && view.kind !== 'ending' && <MeterStrip state={view.state} />}
-      {showRewards && <RewardsOverlay rewards={rewards} onDone={() => setRewardsDone(session.runId)} />}
+      {showRewards && (
+        <RewardsOverlay
+          rewards={rewards}
+          achievements={finished?.achievements.map((a) => a.title) ?? []}
+          onDone={() => setRewardsDone(session.runId)}
+        />
+      )}
     </View>
   );
 }

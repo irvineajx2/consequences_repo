@@ -199,6 +199,7 @@ describe('migration to version 3', () => {
       totalXp: 2 * 100 + 3 * 120 + 125 + 120,
       gold: 80 + 20 + 100,
       awardedRunIds: [],
+      achievements: {},
     });
     expect(profile.rulers).toEqual(v2.rulers);
     // A sensible level straight away: 805 XP is level 4.
@@ -208,9 +209,32 @@ describe('migration to version 3', () => {
     expect((await loadProfile(storage)).progression).toEqual(profile.progression);
   });
 
-  it('keeps a version 3 profile as stored', () => {
+  it("keeps a version 3 profile's progress, as version 4 with no achievements and the default identity", () => {
     const v3 = { version: 3, rulers: {}, progression: { totalXp: 999, gold: 5, awardedRunIds: ['x'] } };
-    expect(parseProfile(JSON.stringify(v3))).toEqual(v3);
+    expect(parseProfile(JSON.stringify(v3))).toEqual({
+      version: 4,
+      rulers: {},
+      progression: { ...v3.progression, achievements: {} },
+      identity: { nickname: 'Chronicler' },
+    });
+  });
+
+  it('keeps a version 4 profile as stored, best match, achievements and identity included', () => {
+    const v4 = {
+      version: 4,
+      rulers: {
+        elizabeth_i: {
+          discovered: ['s01'],
+          endings: { gloriana: { firstReached: AT, timesReached: 1 } },
+          runsCompleted: 2,
+          uncharted: [],
+          bestMatch: { matched: 17, finishedAt: AT },
+        },
+      },
+      progression: { totalXp: 999, gold: 5, awardedRunIds: ['x'], achievements: { first_reign: AT } },
+      identity: { nickname: 'Gloriana', featuredAchievementId: 'first_reign' },
+    };
+    expect(parseProfile(JSON.stringify(v4))).toEqual(v4);
   });
 
   it('gives an empty profile nothing', () => {

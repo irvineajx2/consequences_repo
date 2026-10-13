@@ -25,3 +25,22 @@ export function formatNumber(n: number): string {
 export function bandLabel(band: string): string {
   return (strings.bands as Record<string, string>)[band] ?? band;
 }
+
+/** A date as "12 Oct 2026", the same on every platform (from an ISO timestamp). */
+export function formatDate(iso: string): string {
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return '';
+  return `${d.getUTCDate()} ${strings.months[d.getUTCMonth()]} ${d.getUTCFullYear()}`;
+}
+
+/** The display name of an ending rarity tier. */
+export function rarityLabel(tier: string): string {
+  return (strings.rarityTiers as Record<string, string>)[tier] ?? tier;
+}
+
+/** A share (0..1) as a short percentage: "3%", "0.4%", "0.02%". */
+export function formatShare(share: number): string {
+  const pct = share * 100;
+  const digits = pct >= 10 ? 0 : pct >= 1 ? 1 : pct >= 0.1 ? 2 : 3;
+  return `${Number(pct.toFixed(digits))}%`;
+}

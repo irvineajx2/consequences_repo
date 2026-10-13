@@ -5,6 +5,7 @@ import caesarMeterFile from '../../../assets/ui/skins/tudor/meters/julius-caesar
 import meterFile from '../../../assets/ui/skins/tudor/meters/meters.json';
 import progressionLayout from '../../../assets/ui/skins/tudor/progression/progression_ui.json';
 import rankFile from '../../../assets/ui/skins/tudor/progression/rank_ui.json';
+import { tudorBadges } from './tudorBadges';
 import type { Skin } from './types';
 
 /** AJ's meter sizes, minus the file's note. */
@@ -179,6 +180,16 @@ export const tudorSkin: Skin = {
       level: '#F4E7C8',
       gold: '#F4E7C8',
     },
+  },
+  profile: {
+    rarity: { common: '#E8D9B0', uncommon: '#5E9A55', rare: '#4A7CC4', epic: '#8A5BC0', legendary: '#E2B54F' },
+    rankTint: { blue: '#2B4C7E', green: '#2F6B45', red: '#8E2B2B', purple: '#5E3A82', gold: '#B8862B' },
+    avatarFrame: '#C9A045',
+    avatarFill: '#E9DBBB',
+    avatarSilhouette: 'rgba(122, 82, 35, 0.28)',
+    badgeFill: '#C9A045',
+    badgeText: '#2A1D10',
+    badges: tudorBadges,
   },
   screen: {
     text: '#F1E2BF',

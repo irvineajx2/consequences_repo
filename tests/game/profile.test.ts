@@ -94,6 +94,11 @@ describe('parseProfile', () => {
   it('drops a malformed ruler record but keeps the rest', () => {
     const good = applyRunResult(emptyRulerProfile, resultOf('historical_path')).profile;
     const json = JSON.stringify({ version: 1, rulers: { a: good, b: { discovered: 'nope' } } });
-    expect(parseProfile(json)).toEqual({ version: 3, rulers: { a: good }, progression: migrateProgression({ a: good }) });
+    expect(parseProfile(json)).toEqual({
+      version: 4,
+      rulers: { a: good },
+      progression: migrateProgression({ a: good }),
+      identity: { nickname: 'Chronicler' },
+    });
   });
 });
