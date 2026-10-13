@@ -42,12 +42,18 @@ export interface MeterSkin {
   /** Every meter image by name, variants included. */
   readonly images: Readonly<Record<string, ImageSourcePropType>>;
   readonly layout: {
+    /**
+     * Every meter icon's size (fill icons, gauge pieces, placeholders, with their shadow, glow and
+     * padding) is multiplied by this. One place to tune the meters' size for every ruler.
+     */
+    readonly iconScale: number;
     /** Height of a fill icon in the row, before scaling. */
     readonly fillHeight: number;
     /** Width of a balance meter's slot, before scaling. */
     readonly balanceWidth: number;
+    /** The least space between neighbouring icons. */
     readonly gap: number;
-    /** Minimum space either side of the row. */
+    /** Space either side of the row, inside the safe area. */
     readonly margin: number;
     /** How far the soft shadow sits below its icon. */
     readonly shadowOffset: number;

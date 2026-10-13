@@ -1,5 +1,4 @@
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
-import { Image } from 'expo-image';
 import { router } from 'expo-router';
 import { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
@@ -8,7 +7,6 @@ import { chronicleBook } from '@/game/chronicle';
 import { type Profile, rulerProfile } from '@/game/profile';
 import { ConfirmNewReign } from '@/ui/ConfirmNewReign';
 import { GameButton } from '@/ui/GameButton';
-import { getImage } from '@/ui/images';
 import { ScreenScaffold } from '@/ui/screens/ScreenScaffold';
 import { SkinPanel } from '@/ui/skin/SkinPanel';
 import { useSkin } from '@/ui/skin/SkinProvider';
@@ -17,6 +15,7 @@ import { format, strings } from '@/ui/strings';
 import { spacing } from '@/ui/theme';
 import { useProfile, useUnlockAll } from '@/ui/useProfile';
 import { useRunSave } from '@/ui/useRunSave';
+import { RulerImage } from '@/ui/RulerImage';
 
 /**
  * Every registered ruler, locked or open, then a card promising more. Adding a ruler adds a card
@@ -62,7 +61,7 @@ function RulerCard({ ruler, profile, unlocked }: { ruler: Ruler; profile: Profil
       <View style={styles.cardBody}>
         {portrait !== undefined && (
           <View style={[styles.portraitFrame, { borderColor: unlocked ? screen.highlight : screen.mutedText }]}>
-            <Image source={getImage(ruler.id, portrait)} style={StyleSheet.absoluteFill} contentFit="cover" />
+            <RulerImage rulerId={ruler.id} imageId={portrait} style={StyleSheet.absoluteFill} contentFit="cover" />
             {/* Locked: the portrait is darkened. */}
             {!unlocked && <View style={[StyleSheet.absoluteFill, { backgroundColor: screen.lockedOverlay }]} />}
           </View>

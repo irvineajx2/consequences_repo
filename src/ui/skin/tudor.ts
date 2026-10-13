@@ -138,7 +138,7 @@ export const tudorSkin: Skin = {
       senate_glow: require('../../../assets/ui/skins/tudor/meters/julius-caesar/senate_glow.png'),
       senate_shadow: require('../../../assets/ui/skins/tudor/meters/julius-caesar/senate_shadow.png'),
     },
-    layout: { fillHeight: 40, balanceWidth: 130, gap: 9, margin: 12, shadowOffset: 2 },
+    layout: { iconScale: 1.2, fillHeight: 40, balanceWidth: 130, gap: 9, margin: 12, shadowOffset: 2 },
     colors: {
       trackBacking: 'rgba(20, 16, 12, 0.9)',
       trackSafe: '#C9A045',

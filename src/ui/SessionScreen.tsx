@@ -36,6 +36,8 @@ export interface SessionHandlers {
 }
 
 interface Props extends SessionHandlers {
+  /** The ruler of the run being played: every image is looked up under it. */
+  readonly rulerId: string;
   readonly view: SessionView;
   readonly text: RulerText;
   /** The finished run has been recorded, so its chronicle can be shown. */
@@ -43,24 +45,24 @@ interface Props extends SessionHandlers {
 }
 
 /** Renders whichever view the session is on. */
-export function SessionScreen({ view, text, chronicleReady = false, ...handlers }: Props) {
+export function SessionScreen({ rulerId, view, text, chronicleReady = false, ...handlers }: Props) {
   switch (view.kind) {
     case 'prologue':
-      return <PrologueView view={view} text={text} {...handlers} />;
+      return <PrologueView rulerId={rulerId} view={view} text={text} {...handlers} />;
     case 'era':
-      return <EraView view={view} text={text} {...handlers} />;
+      return <EraView rulerId={rulerId} view={view} text={text} {...handlers} />;
     case 'scene':
       return view.mode === 'choice' ? (
-        <ChoiceSceneView view={view} text={text} {...handlers} />
+        <ChoiceSceneView rulerId={rulerId} view={view} text={text} {...handlers} />
       ) : (
-        <AutoSceneView view={view} text={text} {...handlers} />
+        <AutoSceneView rulerId={rulerId} view={view} text={text} {...handlers} />
       );
     case 'consequence':
-      return <ConsequenceView view={view} text={text} {...handlers} />;
+      return <ConsequenceView rulerId={rulerId} view={view} text={text} {...handlers} />;
     case 'beat':
-      return <BeatView view={view} text={text} {...handlers} />;
+      return <BeatView rulerId={rulerId} view={view} text={text} {...handlers} />;
     case 'ending':
-      return <EndingView view={view} text={text} chronicleReady={chronicleReady} {...handlers} />;
+      return <EndingView rulerId={rulerId} view={view} text={text} chronicleReady={chronicleReady} {...handlers} />;
   }
 }
 
@@ -74,17 +76,19 @@ function Footer({ children }: { children: ReactNode }) {
  * unless a small screen needs the decide phase to grow.
  */
 function ChoiceSceneView({
+  rulerId,
   view,
   text,
   onDecide,
   onChoose,
-}: { view: SceneViewModel; text: RulerText } & SessionHandlers) {
+}: { view: SceneViewModel; text: RulerText; rulerId: string } & SessionHandlers) {
   const type = useSkinTextStyles();
   const layout = useDecidePanelLayout(view.options.length);
   const { caption, narration } = sceneText(text, view.sceneId, view.variant);
   const deciding = view.phase === 'decide';
   return (
     <SceneFrame
+      rulerId={rulerId}
       image={view.image}
       panelHeight={deciding ? layout.decidePanelHeight : layout.readPanelHeight}
       scrollToEnd={deciding}
@@ -112,10 +116,11 @@ function ChoiceSceneView({
   );
 }
 
-function PrologueView({ view, text, onContinue }: { view: PrologueViewModel; text: RulerText } & SessionHandlers) {
+function PrologueView({ rulerId, view, text, onContinue }: { view: PrologueViewModel; text: RulerText; rulerId: string } & SessionHandlers) {
   const type = useSkinTextStyles();
   return (
     <SceneFrame
+      rulerId={rulerId}
       image={view.image}
       footer={
         <Footer>
@@ -130,11 +135,12 @@ function PrologueView({ view, text, onContinue }: { view: PrologueViewModel; tex
 }
 
 /** An era's title (in the caption font), its years, then its text. The meters animate the drift here. */
-function EraView({ view, text, onContinue }: { view: EraViewModel; text: RulerText } & SessionHandlers) {
+function EraView({ rulerId, view, text, onContinue }: { view: EraViewModel; text: RulerText; rulerId: string } & SessionHandlers) {
   const type = useSkinTextStyles();
   const era = eraText(text, view.eraId);
   return (
     <SceneFrame
+      rulerId={rulerId}
       image={view.image}
       footer={
         <Footer>
@@ -149,12 +155,13 @@ function EraView({ view, text, onContinue }: { view: EraViewModel; text: RulerTe
   );
 }
 
-function AutoSceneView({ view, text, onChoose }: { view: SceneViewModel; text: RulerText } & SessionHandlers) {
+function AutoSceneView({ rulerId, view, text, onChoose }: { view: SceneViewModel; text: RulerText; rulerId: string } & SessionHandlers) {
   const type = useSkinTextStyles();
   const { caption } = sceneText(text, view.sceneId);
   const option = view.options[0];
   return (
     <SceneFrame
+      rulerId={rulerId}
       image={view.image}
       footer={
         <Footer>
@@ -171,10 +178,11 @@ function AutoSceneView({ view, text, onChoose }: { view: SceneViewModel; text: R
 }
 
 function ConsequenceView({
+  rulerId,
   view,
   text,
   onContinue,
-}: { view: ConsequenceViewModel; text: RulerText } & SessionHandlers) {
+}: { view: ConsequenceViewModel; text: RulerText; rulerId: string } & SessionHandlers) {
   const type = useSkinTextStyles();
   const { caption } = sceneText(text, view.sceneId);
   // An option that always ends the run may have no consequence text: show the decision itself.
@@ -183,6 +191,7 @@ function ConsequenceView({
     optionText(text, view.sceneId, view.variant, view.optionId);
   return (
     <SceneFrame
+      rulerId={rulerId}
       image={view.image}
       footer={
         <Footer>
@@ -196,11 +205,12 @@ function ConsequenceView({
   );
 }
 
-function BeatView({ view, text, onContinue }: { view: BeatViewModel; text: RulerText } & SessionHandlers) {
+function BeatView({ rulerId, view, text, onContinue }: { view: BeatViewModel; text: RulerText; rulerId: string } & SessionHandlers) {
   const type = useSkinTextStyles();
   const beat = beatText(text, view.beatId);
   return (
     <SceneFrame
+      rulerId={rulerId}
       image={view.image}
       footer={
         <Footer>
@@ -215,17 +225,19 @@ function BeatView({ view, text, onContinue }: { view: BeatViewModel; text: Ruler
 }
 
 function EndingView({
+  rulerId,
   view,
   text,
   chronicleReady,
   onPlayAgain,
   onChronicle,
   onBackToTitle,
-}: { view: EndingViewModel; text: RulerText; chronicleReady: boolean } & SessionHandlers) {
+}: { view: EndingViewModel; text: RulerText; chronicleReady: boolean; rulerId: string } & SessionHandlers) {
   const type = useSkinTextStyles();
   const ending = endingText(text, view.ending);
   return (
     <SceneFrame
+      rulerId={rulerId}
       image={view.image}
       footer={
         <Footer>

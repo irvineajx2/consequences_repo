@@ -91,6 +91,7 @@ function PlayRun({ ruler, initial }: { ruler: Ruler; initial: Session }) {
   return (
     <View style={styles.root}>
       <SessionScreen
+        rulerId={ruler.id}
         view={view}
         text={ruler.text}
         chronicleReady={finished !== null}

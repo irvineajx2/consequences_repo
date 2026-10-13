@@ -1,14 +1,14 @@
-import { Image } from 'expo-image';
 import { type ReactNode, useRef } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { getImage } from './images';
-import { useRuler } from './RulerContext';
+import { RulerImage } from './RulerImage';
 import { SkinPanel } from './skin/SkinPanel';
 import { useSkin } from './skin/SkinProvider';
 import { panelMaxScreenShare, spacing } from './theme';
 
 interface Props {
+  /** The ruler whose run this is (never a remembered or default ruler). */
+  readonly rulerId: string;
   readonly image: string;
   /** Text that scrolls when it does not fit. */
   readonly children: ReactNode;
@@ -26,15 +26,14 @@ interface Props {
 }
 
 /** A full-screen image with the skin's panel over its lower part. The image never shrinks. */
-export function SceneFrame({ image, children, footer, panelHeight, scrollToEnd, scrollKey }: Props) {
+export function SceneFrame({ rulerId, image, children, footer, panelHeight, scrollToEnd, scrollKey }: Props) {
   const insets = useSafeAreaInsets();
   const skin = useSkin();
-  const ruler = useRuler();
   const scroll = useRef<ScrollView>(null);
   const fixed = panelHeight !== undefined;
   return (
     <View style={[styles.root, { backgroundColor: skin.colors.screenBackground }]}>
-      <Image source={getImage(ruler.id, image)} style={StyleSheet.absoluteFill} contentFit="cover" transition={250} />
+      <RulerImage rulerId={rulerId} imageId={image} style={StyleSheet.absoluteFill} contentFit="cover" transition={250} />
       <View
         style={[
           styles.panelArea,
