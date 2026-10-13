@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { fontAssets } from '../../src/ui/fonts';
 import { textSizes } from '../../src/ui/theme';
-import { rulers } from '../../src/data/rulers';
+import { getRuler, rulers } from '../../src/data/rulers';
 import { visibleMeters } from '../../src/game/meters';
 import { progression as progressionConfig } from '../../src/game/progression';
 import { tudorSkin } from '../../src/ui/skin/tudor';
@@ -165,15 +165,39 @@ describe('Tudor meters', () => {
     }
   });
 
-  it('has art for every visible meter of every ruler, so no placeholder medal is drawn', () => {
+  it('has art for every visible meter of every ruler, or art planned for it (drawn as placeholder medals)', () => {
     const missing: string[] = [];
     for (const ruler of rulers) {
       for (const meter of visibleMeters(ruler.ui)) {
-        if (!tudorSkin.meters.art[ruler.id]?.[meter.id]) missing.push(`${ruler.id}/${meter.id}`);
+        const planned = tudorSkin.meters.pending?.[ruler.id]?.[meter.id];
+        if (!tudorSkin.meters.art[ruler.id]?.[meter.id] && !planned) missing.push(`${ruler.id}/${meter.id}`);
       }
     }
     expect(missing).toEqual([]);
   });
+
+  it("plans Charles I's 7-piece sheet: chest, mace, lobster-tail helmet, crown; church, plain book, mitre", () => {
+    const planned = tudorSkin.meters.pending?.['charles-i'];
+    expect(planned).toEqual({
+      treasury: { full: 'chest', empty: 'chest_empty' },
+      parliament: { full: 'mace', empty: 'mace_empty' },
+      church: { marker: 'church', left: 'plain_book', right: 'mitre' },
+      army: { full: 'lobster_helmet', empty: 'lobster_helmet_empty' },
+      majesty: { full: 'crown', empty: 'crown_empty' },
+    });
+    // The Church gauge's art is a balance meter, as its display is.
+    expect(getRuler('charles-i').ui.meters.find((m) => m.id === 'church')?.style).toBe('balance');
+  });
+
+  test.each(Object.keys(tudorSkin.meters.pending ?? {}))(
+    '%s: planned art has not arrived yet (once it has, move it from pending into art)',
+    (rulerId) => {
+      const names = meterImageNames({ art: { [rulerId]: tudorSkin.meters.pending![rulerId] } });
+      const arrived = names.filter((n) => fs.existsSync(path.join(rulerMeterDir(rulerId), `${n}.png`)));
+      expect(arrived).toEqual([]);
+      expect(tudorSkin.meters.art[rulerId]).toBeUndefined();
+    },
+  );
 
   it('no longer uses placeholder vector icons', () => {
     expect(JSON.stringify(tudorSkin.meters)).not.toMatch(/treasure-chest|circle-outline|iconSize/);

@@ -2,12 +2,14 @@
 import {
   currentScene,
   type Decision,
+  matches,
   type GameState,
   type Rules,
   type Run,
   startRun,
   step,
 } from '../core';
+import type { Era } from './rulerUi';
 import { newRunId } from './runId';
 
 /** Every view carries the state its meters should display. */
@@ -91,7 +93,13 @@ export type SessionView =
 export interface Presentation {
   readonly prologue?: { readonly image: string };
   /** In scene order. A scene belongs to the last era whose `startsAt` is at or before it. */
-  readonly eras?: readonly { readonly id: string; readonly startsAt: string; readonly image: string }[];
+  readonly eras?: readonly Era[];
+}
+
+/** The card for an era as the run stands: its first variant whose condition holds, or the era itself. */
+export function eraCard(era: Era, state: GameState): { readonly id: string; readonly image: string } {
+  const variant = (era.variants ?? []).find((v) => matches(state, v.if));
+  return variant ? { id: variant.id, image: variant.image } : { id: era.id, image: era.image };
 }
 
 export interface Session {
@@ -161,9 +169,10 @@ function eraIndexOf(session: Session, sceneIndex: number): number {
 function showEra(session: Session, queue: readonly number[]): Session {
   const [index, ...rest] = queue;
   const era = (session.presentation.eras ?? [])[index];
+  const card = eraCard(era, session.run.state);
   return {
     ...session,
-    view: { kind: 'era', eraId: era.id, image: era.image, state: session.run.state },
+    view: { kind: 'era', eraId: card.id, image: card.image, state: session.run.state },
     pendingEras: rest,
     lastEra: index,
   };

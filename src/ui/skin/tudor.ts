@@ -81,6 +81,16 @@ export const tudorSkin: Skin = {
         glory: { full: 'glory', empty: 'glory_empty' },
       },
     },
+    pending: {
+      // Charles I's 7-piece sheet is still to come: placeholder medals until then.
+      'charles-i': {
+        treasury: { full: 'chest', empty: 'chest_empty' },
+        parliament: { full: 'mace', empty: 'mace_empty' },
+        church: { marker: 'church', left: 'plain_book', right: 'mitre' },
+        army: { full: 'lobster_helmet', empty: 'lobster_helmet_empty' },
+        majesty: { full: 'crown', empty: 'crown_empty' },
+      },
+    },
     metrics: meterMetrics,
     images: {
       authority: require('../../../assets/ui/skins/tudor/meters/authority.png'),

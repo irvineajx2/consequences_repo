@@ -3,6 +3,7 @@ import type { ImageSourcePropType } from 'react-native';
 
 /** For each ruler folder, its images by id. */
 export const imageRegistries: Readonly<Record<string, Readonly<Record<string, ImageSourcePropType>>>> = {
+  "charles-i": {},
   "elizabeth-i": {
     "01": require("../../assets/rulers/elizabeth-i/images/01.webp"),
     "02": require("../../assets/rulers/elizabeth-i/images/02.webp"),

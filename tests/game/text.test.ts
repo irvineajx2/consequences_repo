@@ -156,10 +156,26 @@ describe.each(rulers.map((r) => [r.id, r] as const))('%s text', (_id, ruler) => 
       expect(t.endings[id]?.title).toEqual(expect.any(String));
       expect(t.endings[id]?.text).toEqual(expect.any(String));
     }
-    for (const era of u.eras ?? []) expect(t.eras[era.id]?.title).toEqual(expect.any(String));
+    for (const era of u.eras ?? []) {
+      for (const id of [era.id, ...(era.variants ?? []).map((v) => v.id)]) {
+        expect(t.eras[id]?.title).toEqual(expect.any(String));
+        expect(t.eras[id]?.text).toEqual(expect.any(String));
+      }
+    }
     if (u.prologue) expect(t.prologue.text).toEqual(expect.any(String));
     for (const key of ['name', 'short_name', 'subtitle', 'tagline'] as const) {
       expect(t.ruler[key]).toEqual(expect.any(String));
+    }
+  });
+
+  it('gives variant narration only to variants that exist and show options', () => {
+    for (const scene of r.scenes) {
+      for (const [index, v] of Object.entries(t.scenes[scene.id]?.variants ?? {})) {
+        if (v.narration === undefined) continue;
+        const variant = scene.variants?.[Number(index)];
+        expect([scene.id, index, variant?.skip ?? false]).toEqual([scene.id, index, false]);
+        expect(variant?.options?.length).toBeGreaterThan(0);
+      }
     }
   });
 

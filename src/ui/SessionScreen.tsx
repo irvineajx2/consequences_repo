@@ -81,7 +81,7 @@ function ChoiceSceneView({
 }: { view: SceneViewModel; text: RulerText } & SessionHandlers) {
   const type = useSkinTextStyles();
   const layout = useDecidePanelLayout(view.options.length);
-  const { caption, narration } = sceneText(text, view.sceneId);
+  const { caption, narration } = sceneText(text, view.sceneId, view.variant);
   const deciding = view.phase === 'decide';
   return (
     <SceneFrame

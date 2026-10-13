@@ -60,6 +60,20 @@ describe('image registry', () => {
     expect(Object.keys(registry)).toHaveLength(59);
   });
 
+  it("refers to exactly Charles I's 76 image ids, and runs with any of them missing", () => {
+    const { rules, ui } = getRuler('charles-i');
+    const range = (prefix: string, from: number, to: number, pad = 0) =>
+      Array.from({ length: to - from + 1 }, (_, i) => `${prefix}${String(from + i).padStart(pad, '0')}`);
+    const expected = [
+      ...range('K', 1, 22, 2), 'K19B',
+      ...range('KB', 1, 7), ...range('KA', 1, 4), ...range('KL', 1, 3), ...range('KI', 1, 2), ...range('KC', 1, 3), ...range('KE', 1, 3),
+      ...range('KT', 1, 7), ...range('KX', 1, 17, 2), 'KP1', ...range('KERA', 1, 5), 'KR1',
+    ];
+    const used = new Set([...referencedImageIds(rules), ...uiImageIds(ui)]);
+    expect([...used].sort()).toEqual([...expected].sort());
+    for (const id of used) expect(getImage('charles-i', id)).toBe(imageRegistries['charles-i']?.[id] ?? placeholderImage);
+  });
+
   it('shows the placeholder for an image a ruler does not have yet', () => {
     expect(getImage('julius-caesar', 'C01')).toBe(imageRegistries['julius-caesar']?.C01 ?? placeholderImage);
     expect(getImage('elizabeth-i', 'no-such-image')).toBe(placeholderImage);

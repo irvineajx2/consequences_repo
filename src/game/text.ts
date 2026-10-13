@@ -11,8 +11,14 @@ export interface SceneText extends OptionTexts {
   readonly narration: string;
   /** Shown instead of `narration` when the scene plays in auto mode (no player choice). */
   readonly auto_narration?: string;
-  /** Overrides for options whose text differs in a particular variant, keyed by variant index. */
-  readonly variants?: Readonly<Record<string, Partial<OptionTexts>>>;
+  /** Overrides for a particular variant (keyed by variant index): its narration, and options whose text differs. */
+  readonly variants?: Readonly<Record<string, VariantText>>;
+}
+
+/** Text that differs in one variant of a scene. */
+export interface VariantText extends Partial<OptionTexts> {
+  /** Shown instead of the scene's `narration` when this variant plays. */
+  readonly narration?: string;
 }
 
 export interface BeatText {
@@ -30,6 +36,8 @@ export interface MeterText {
   /** For balance meters: what the low and high ends stand for. */
   readonly left?: string;
   readonly right?: string;
+  /** What the meter means, in a sentence (not yet shown). */
+  readonly desc?: string;
 }
 
 export interface EraText {
@@ -97,7 +105,7 @@ export function normaliseText(raw: RawRulerText, rules: Rules): RulerText {
     if (!written) continue;
     const variants = scene.variants ?? [{ options: scene.options }];
     const base: Record<string, string> = {};
-    const overrides: Record<string, Partial<OptionTexts>> = {};
+    const overrides: Record<string, VariantText> = {};
     variants.forEach((variant, index) => {
       for (const option of variant.options ?? []) {
         if (base[option.id] === undefined) base[option.id] = option.label;
@@ -110,6 +118,7 @@ export function normaliseText(raw: RawRulerText, rules: Rules): RulerText {
     // Written text wins over rules labels, for the base and for each variant.
     for (const [index, v] of Object.entries(written.variants ?? {})) {
       overrides[index] = {
+        ...(v.narration !== undefined ? { narration: v.narration } : {}),
         options: { ...overrides[index]?.options, ...v.options },
         consequences: { ...overrides[index]?.consequences, ...v.consequences },
       };
@@ -149,9 +158,12 @@ function lookup(
 
 const missing = (what: string): string => `[Missing text: ${what}]`;
 
-export function sceneText(text: RulerText, sceneId: string): Pick<SceneText, 'caption' | 'narration'> {
+/** A scene's caption and narration; with a variant, that variant's own narration where it has one. */
+export function sceneText(text: RulerText, sceneId: string, variant?: number): Pick<SceneText, 'caption' | 'narration'> {
   const scene = text.scenes[sceneId];
-  return scene ?? { caption: missing(sceneId), narration: '' };
+  if (!scene) return { caption: missing(sceneId), narration: '' };
+  const own = variant === undefined ? undefined : scene.variants?.[String(variant)]?.narration;
+  return { caption: scene.caption, narration: own ?? scene.narration };
 }
 
 /** Text for a scene playing in auto mode: its auto narration, or the auto option's own text. */
