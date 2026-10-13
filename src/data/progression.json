@@ -6,7 +6,8 @@
   },
   "rulerTier": {
     "elizabeth-i": 1.0,
-    "julius-caesar": 1.25
+    "julius-caesar": 1.25,
+    "charles-i": 1.5
   },
   "level": {
     "base": 150,
@@ -56,6 +57,25 @@
         "lord_nile": "uncommon",
         "second_sulla": "uncommon",
         "king_rome": "uncommon"
+      },
+      "charles-i": {
+        "axe": "rare",
+        "long_live": "legendary",
+        "crowned_figurehead": "common",
+        "bankrupt": "common",
+        "set_aside": "common",
+        "no_popery": "uncommon",
+        "saints_rule": "common",
+        "army_melts": "common",
+        "scots_gates": "rare",
+        "ireland_ablaze": "legendary",
+        "beaten_by_scots": "common",
+        "broken_turnham": "common",
+        "over_water": "common",
+        "king_returns": "uncommon",
+        "king_in_north": "uncommon",
+        "abdication": "uncommon",
+        "absolute_king": "uncommon"
       }
     }
   },

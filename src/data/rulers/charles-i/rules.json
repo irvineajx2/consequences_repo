@@ -1,0 +1,3707 @@
+{
+  "ruler": "charles_i",
+  "version": 2,
+  "meter_range": [
+    0,
+    100
+  ],
+  "meters": {
+    "treasury": 40,
+    "parliament": 55,
+    "church": 55,
+    "army": 35,
+    "majesty": 55,
+    "scotland": 20,
+    "ireland": 30,
+    "distrust": 10
+  },
+  "flags": {
+    "path": "main",
+    "buck": false,
+    "personal": false,
+    "laud": false,
+    "shipmoney": false,
+    "bw": false,
+    "war": false,
+    "straffordsigned": false,
+    "scotsparl": false,
+    "irishdeal": false,
+    "mm": false,
+    "nb": false,
+    "warwon": false,
+    "lostnaseby": false,
+    "withscots": false,
+    "engaged": false,
+    "lied": false
+  },
+  "failures": [
+    {
+      "if": [
+        [
+          "treasury",
+          "<=",
+          0
+        ]
+      ],
+      "end": "bankrupt"
+    },
+    {
+      "if": [
+        [
+          "parliament",
+          "<=",
+          0
+        ],
+        [
+          "path",
+          "in",
+          [
+            "peace",
+            "london",
+            "settled"
+          ]
+        ]
+      ],
+      "end": "set_aside"
+    },
+    {
+      "if": [
+        [
+          "parliament",
+          "<=",
+          0
+        ],
+        [
+          "path",
+          "==",
+          "main"
+        ],
+        [
+          "personal",
+          "!=",
+          true
+        ],
+        [
+          "war",
+          "!=",
+          true
+        ]
+      ],
+      "end": "set_aside"
+    },
+    {
+      "if": [
+        [
+          "church",
+          ">=",
+          90
+        ]
+      ],
+      "end": "no_popery"
+    },
+    {
+      "if": [
+        [
+          "church",
+          "<=",
+          10
+        ]
+      ],
+      "end": "saints_rule"
+    },
+    {
+      "if": [
+        [
+          "army",
+          "<=",
+          0
+        ],
+        [
+          "war",
+          "==",
+          true
+        ]
+      ],
+      "end": "army_melts"
+    },
+    {
+      "if": [
+        [
+          "scotland",
+          ">=",
+          100
+        ]
+      ],
+      "end": "scots_gates"
+    },
+    {
+      "if": [
+        [
+          "ireland",
+          ">=",
+          100
+        ]
+      ],
+      "end": "ireland_ablaze"
+    }
+  ],
+  "drift": [
+    {
+      "if": [
+        [
+          "lied",
+          "==",
+          false
+        ]
+      ],
+      "then": {
+        "add": {
+          "distrust": -10
+        }
+      }
+    },
+    {
+      "then": {
+        "set": {
+          "lied": false
+        }
+      }
+    },
+    {
+      "if": [
+        [
+          "personal",
+          "==",
+          true
+        ]
+      ],
+      "then": {
+        "add": {
+          "treasury": -10
+        }
+      }
+    },
+    {
+      "if": [
+        [
+          "shipmoney",
+          "==",
+          true
+        ]
+      ],
+      "then": {
+        "add": {
+          "treasury": 5,
+          "parliament": -5
+        }
+      }
+    },
+    {
+      "if": [
+        [
+          "church",
+          ">=",
+          65
+        ]
+      ],
+      "then": {
+        "add": {
+          "scotland": 5
+        }
+      }
+    },
+    {
+      "if": [
+        [
+          "church",
+          ">=",
+          75
+        ],
+        [
+          "laud",
+          "==",
+          true
+        ],
+        [
+          "scotland",
+          ">=",
+          60
+        ],
+        [
+          "war",
+          "!=",
+          true
+        ]
+      ],
+      "then": {
+        "add": {
+          "scotland": 15
+        }
+      }
+    },
+    {
+      "if": [
+        [
+          "war",
+          "==",
+          true
+        ],
+        [
+          "treasury",
+          "<",
+          30
+        ]
+      ],
+      "then": {
+        "add": {
+          "army": -15
+        }
+      }
+    },
+    {
+      "if": [
+        [
+          "war",
+          "==",
+          true
+        ]
+      ],
+      "then": {
+        "add": {
+          "treasury": -10
+        }
+      }
+    }
+  ],
+  "events": {
+    "felton": {
+      "branches": [
+        {
+          "if": [
+            [
+              "buck",
+              "==",
+              true
+            ]
+          ],
+          "beat": "KT1",
+          "then": {
+            "add": {
+              "parliament": 10
+            },
+            "set": {
+              "buck": false
+            }
+          }
+        },
+        {
+          "then": {}
+        }
+      ]
+    },
+    "hampden": {
+      "branches": [
+        {
+          "if": [
+            [
+              "shipmoney",
+              "==",
+              true
+            ]
+          ],
+          "beat": "KT2",
+          "then": {
+            "add": {
+              "parliament": -5
+            }
+          }
+        },
+        {
+          "then": {}
+        }
+      ]
+    },
+    "stgiles": {
+      "branches": [
+        {
+          "if": [
+            [
+              "scotland",
+              ">=",
+              50
+            ]
+          ],
+          "beat": "KT3",
+          "then": {}
+        },
+        {
+          "then": {}
+        }
+      ]
+    },
+    "bishopswar": {
+      "branches": [
+        {
+          "if": [
+            [
+              "bw",
+              "==",
+              true
+            ]
+          ],
+          "score": {
+            "terms": [
+              {
+                "var": "army",
+                "mult": 1
+              },
+              {
+                "var": "treasury",
+                "mult": 0.5
+              },
+              {
+                "var": "scotland",
+                "mult": -1
+              }
+            ],
+            "at_least": 35
+          },
+          "then": {
+            "add": {
+              "scotland": -30,
+              "majesty": 10,
+              "army": -5
+            },
+            "set": {
+              "bw": false
+            }
+          }
+        },
+        {
+          "if": [
+            [
+              "bw",
+              "==",
+              true
+            ]
+          ],
+          "then": {
+            "add": {
+              "army": -10,
+              "treasury": -15,
+              "majesty": -10,
+              "scotland": -10
+            },
+            "set": {
+              "bw": false
+            }
+          }
+        },
+        {
+          "then": {}
+        }
+      ]
+    },
+    "strafford_beat": {
+      "branches": [
+        {
+          "if": [
+            [
+              "straffordsigned",
+              "==",
+              true
+            ]
+          ],
+          "beat": "KT4",
+          "then": {}
+        },
+        {
+          "then": {}
+        }
+      ]
+    },
+    "birds": {
+      "branches": [
+        {
+          "if": [
+            [
+              "parliament",
+              "<",
+              35
+            ]
+          ],
+          "beat": "KT5",
+          "then": {}
+        },
+        {
+          "then": {}
+        }
+      ]
+    },
+    "solemnleague": {
+      "branches": [
+        {
+          "if": [
+            [
+              "scotland",
+              ">=",
+              40
+            ],
+            [
+              "path",
+              "in",
+              [
+                "main",
+                "irish"
+              ]
+            ]
+          ],
+          "then": {
+            "set": {
+              "scotsparl": true
+            }
+          }
+        },
+        {
+          "then": {}
+        }
+      ]
+    },
+    "marston": {
+      "branches": [
+        {
+          "if": [
+            [
+              "mm",
+              "==",
+              true
+            ]
+          ],
+          "score": {
+            "terms": [
+              {
+                "var": "army",
+                "mult": 1
+              },
+              {
+                "var": "majesty",
+                "mult": 0.5
+              },
+              {
+                "if": [
+                  [
+                    "scotsparl",
+                    "==",
+                    true
+                  ]
+                ],
+                "add": -20
+              }
+            ],
+            "at_least": 95
+          },
+          "then": {
+            "add": {
+              "majesty": 10,
+              "army": -5
+            },
+            "set": {
+              "mm": false
+            }
+          }
+        },
+        {
+          "if": [
+            [
+              "mm",
+              "==",
+              true
+            ]
+          ],
+          "then": {
+            "add": {
+              "army": -20,
+              "majesty": -10
+            },
+            "set": {
+              "mm": false
+            }
+          }
+        },
+        {
+          "then": {}
+        }
+      ]
+    },
+    "naseby": {
+      "branches": [
+        {
+          "if": [
+            [
+              "nb",
+              "==",
+              true
+            ]
+          ],
+          "score": {
+            "terms": [
+              {
+                "var": "army",
+                "mult": 1
+              },
+              {
+                "var": "majesty",
+                "mult": 0.5
+              },
+              {
+                "var": "treasury",
+                "mult": 0.25
+              },
+              {
+                "if": [
+                  [
+                    "scotsparl",
+                    "==",
+                    true
+                  ]
+                ],
+                "add": -25
+              },
+              {
+                "if": [
+                  [
+                    "irishdeal",
+                    "==",
+                    true
+                  ]
+                ],
+                "add": 10
+              }
+            ],
+            "at_least": 105
+          },
+          "then": {
+            "add": {
+              "majesty": 15,
+              "army": -10
+            },
+            "set": {
+              "nb": false,
+              "warwon": true
+            }
+          }
+        },
+        {
+          "if": [
+            [
+              "nb",
+              "==",
+              true
+            ]
+          ],
+          "then": {
+            "add": {
+              "army": -35,
+              "majesty": -20
+            },
+            "set": {
+              "nb": false,
+              "lostnaseby": true
+            }
+          }
+        },
+        {
+          "then": {}
+        }
+      ]
+    },
+    "cabinet": {
+      "branches": [
+        {
+          "if": [
+            [
+              "lostnaseby",
+              "==",
+              true
+            ],
+            [
+              "distrust",
+              ">=",
+              30
+            ]
+          ],
+          "beat": "KT6",
+          "then": {
+            "add": {
+              "distrust": 10,
+              "parliament": -10
+            }
+          }
+        },
+        {
+          "then": {}
+        }
+      ]
+    },
+    "secondwar": {
+      "branches": [
+        {
+          "if": [
+            [
+              "engaged",
+              "==",
+              true
+            ]
+          ],
+          "score": {
+            "terms": [
+              {
+                "var": "army",
+                "mult": 1
+              },
+              {
+                "var": "majesty",
+                "mult": 0.5
+              },
+              {
+                "var": "scotland",
+                "mult": -0.5
+              }
+            ],
+            "at_least": 60
+          },
+          "then": {
+            "set": {
+              "path": "settled",
+              "engaged": false,
+              "war": false,
+              "personal": false
+            }
+          }
+        },
+        {
+          "if": [
+            [
+              "engaged",
+              "==",
+              true
+            ]
+          ],
+          "then": {
+            "add": {
+              "distrust": 10
+            },
+            "set": {
+              "engaged": false
+            }
+          }
+        },
+        {
+          "then": {}
+        }
+      ]
+    },
+    "pride": {
+      "branches": [
+        {
+          "if": [
+            [
+              "path",
+              "==",
+              "main"
+            ]
+          ],
+          "beat": "KT7",
+          "then": {
+            "add": {
+              "parliament": -30
+            }
+          }
+        },
+        {
+          "then": {}
+        }
+      ]
+    }
+  },
+  "beats": {
+    "KT1": {
+      "image": "KT1"
+    },
+    "KT2": {
+      "image": "KT2"
+    },
+    "KT3": {
+      "image": "KT3"
+    },
+    "KT4": {
+      "image": "KT4"
+    },
+    "KT5": {
+      "image": "KT5"
+    },
+    "KT6": {
+      "image": "KT6"
+    },
+    "KT7": {
+      "image": "KT7"
+    }
+  },
+  "early_finale": null,
+  "finale": {
+    "terms": [
+      {
+        "var": "parliament",
+        "mult": 1
+      },
+      {
+        "var": "majesty",
+        "mult": 0.5
+      },
+      {
+        "var": "distrust",
+        "mult": -1.5
+      },
+      {
+        "if": [
+          [
+            "church",
+            ">=",
+            35
+          ],
+          [
+            "church",
+            "<=",
+            65
+          ]
+        ],
+        "add": 20
+      },
+      {
+        "if": [
+          [
+            "scotland",
+            "<=",
+            50
+          ],
+          [
+            "ireland",
+            "<=",
+            60
+          ]
+        ],
+        "add": 15
+      },
+      {
+        "var": "scotland",
+        "over": 50,
+        "mult": -1
+      },
+      {
+        "var": "ireland",
+        "over": 60,
+        "mult": -1
+      }
+    ],
+    "outcomes": [
+      {
+        "if": [
+          [
+            "distrust",
+            "<=",
+            10
+          ],
+          [
+            "church",
+            ">=",
+            45
+          ],
+          [
+            "church",
+            "<=",
+            60
+          ],
+          [
+            "scotland",
+            "<=",
+            55
+          ],
+          [
+            "ireland",
+            "<=",
+            60
+          ],
+          [
+            "parliament",
+            ">=",
+            75
+          ],
+          [
+            "majesty",
+            ">=",
+            40
+          ]
+        ],
+        "end": "long_live"
+      },
+      {
+        "end": "crowned_figurehead"
+      }
+    ],
+    "beats": []
+  },
+  "endings": {
+    "axe": {
+      "category": "historical",
+      "image": "KX01"
+    },
+    "long_live": {
+      "category": "outperformed",
+      "image": "KX02"
+    },
+    "crowned_figurehead": {
+      "category": "fallen_short",
+      "image": "KX03"
+    },
+    "bankrupt": {
+      "category": "fallen",
+      "image": "KX04"
+    },
+    "set_aside": {
+      "category": "fallen",
+      "image": "KX05"
+    },
+    "no_popery": {
+      "category": "fallen",
+      "image": "KX06"
+    },
+    "saints_rule": {
+      "category": "fallen",
+      "image": "KX07"
+    },
+    "army_melts": {
+      "category": "fallen",
+      "image": "KX08"
+    },
+    "scots_gates": {
+      "category": "fallen",
+      "image": "KX09"
+    },
+    "ireland_ablaze": {
+      "category": "fallen",
+      "image": "KX10"
+    },
+    "beaten_by_scots": {
+      "category": "fallen",
+      "image": "KX11"
+    },
+    "broken_turnham": {
+      "category": "fallen",
+      "image": "KX12"
+    },
+    "over_water": {
+      "category": "alternate",
+      "image": "KX13"
+    },
+    "abdication": {
+      "category": "alternate",
+      "image": "KX16"
+    },
+    "absolute_king": {
+      "category": "alternate",
+      "image": "KX17"
+    },
+    "king_returns": {
+      "category": "alternate",
+      "image": "KX14"
+    },
+    "king_in_north": {
+      "category": "alternate",
+      "image": "KX15"
+    }
+  },
+  "scenes": [
+    {
+      "id": "K01",
+      "title": "The Favourite",
+      "year": "1625",
+      "image": "K01",
+      "variants": [
+        {
+          "if": [
+            [
+              "path",
+              "==",
+              "main"
+            ]
+          ],
+          "options": [
+            {
+              "id": "keep",
+              "label": "Keep Buckingham and back his war with Spain",
+              "historical": true,
+              "add": {
+                "treasury": -5,
+                "parliament": -10,
+                "majesty": 5
+              },
+              "set": {
+                "buck": true
+              }
+            },
+            {
+              "id": "council",
+              "label": "Share power with the Council",
+              "add": {
+                "parliament": 5,
+                "majesty": -5,
+                "distrust": -5
+              },
+              "historical": false
+            },
+            {
+              "id": "dismiss",
+              "label": "Dismiss Buckingham to win Parliament",
+              "add": {
+                "parliament": 15,
+                "majesty": -10,
+                "army": -5,
+                "distrust": -5
+              },
+              "historical": false
+            }
+          ]
+        },
+        {
+          "skip": true
+        }
+      ]
+    },
+    {
+      "id": "K02",
+      "title": "The Forced Loan",
+      "year": "1626-27",
+      "image": "K02",
+      "variants": [
+        {
+          "if": [
+            [
+              "path",
+              "==",
+              "main"
+            ]
+          ],
+          "options": [
+            {
+              "id": "loan",
+              "label": "Dissolve Parliament and raise a forced loan",
+              "historical": true,
+              "add": {
+                "treasury": 15,
+                "parliament": -15,
+                "distrust": 5
+              }
+            },
+            {
+              "id": "grant",
+              "label": "Give Parliament what it asks for a grant of taxes",
+              "add": {
+                "treasury": 10,
+                "parliament": 10,
+                "majesty": -10
+              },
+              "set": {
+                "buck": false
+              },
+              "historical": false
+            },
+            {
+              "id": "peace",
+              "label": "Make peace and cut the war",
+              "add": {
+                "treasury": 5,
+                "parliament": 5,
+                "majesty": -10
+              },
+              "historical": false
+            },
+            {
+              "id": "re",
+              "label": "Lead the expedition to Ré yourself",
+              "add": {
+                "army": 5,
+                "treasury": -5
+              },
+              "set": {
+                "path": "re"
+              },
+              "historical": false
+            }
+          ]
+        },
+        {
+          "skip": true
+        }
+      ]
+    },
+    {
+      "id": "KB1",
+      "title": "The citadel of Ré",
+      "year": "1627",
+      "image": "KB1",
+      "variants": [
+        {
+          "if": [
+            [
+              "path",
+              "==",
+              "re"
+            ]
+          ],
+          "options": [
+            {
+              "id": "storm",
+              "label": "Storm the citadel",
+              "cond": [
+                {
+                  "if": [
+                    [
+                      "army",
+                      ">=",
+                      40
+                    ],
+                    [
+                      "treasury",
+                      ">=",
+                      35
+                    ]
+                  ],
+                  "then": {
+                    "add": {
+                      "majesty": 15,
+                      "army": 5,
+                      "parliament": 5
+                    },
+                    "set": {
+                      "path": "main"
+                    }
+                  },
+                  "else": {
+                    "add": {
+                      "army": -20,
+                      "treasury": -15,
+                      "majesty": -15
+                    },
+                    "set": {
+                      "path": "main"
+                    }
+                  }
+                }
+              ],
+              "historical": false
+            },
+            {
+              "id": "withdraw",
+              "label": "Withdraw to England",
+              "add": {
+                "majesty": -10
+              },
+              "set": {
+                "path": "main"
+              },
+              "historical": false
+            }
+          ]
+        },
+        {
+          "skip": true
+        }
+      ],
+      "branch": true
+    },
+    {
+      "id": "K03",
+      "title": "The Petition of Right",
+      "year": "1628",
+      "image": "K03",
+      "variants": [
+        {
+          "if": [
+            [
+              "path",
+              "==",
+              "main"
+            ]
+          ],
+          "options": [
+            {
+              "id": "ignore",
+              "label": "Grant it, then keep collecting customs regardless",
+              "historical": true,
+              "add": {
+                "treasury": 10,
+                "parliament": 5,
+                "distrust": 15
+              },
+              "set": {
+                "lied": true
+              }
+            },
+            {
+              "id": "keep",
+              "label": "Grant it and keep to it",
+              "add": {
+                "parliament": 15,
+                "treasury": -10,
+                "majesty": -5,
+                "distrust": -10
+              },
+              "historical": false
+            },
+            {
+              "id": "refuse",
+              "label": "Refuse it",
+              "add": {
+                "parliament": -20,
+                "majesty": 5
+              },
+              "historical": false
+            }
+          ]
+        },
+        {
+          "skip": true
+        }
+      ],
+      "after": [
+        "felton"
+      ]
+    },
+    {
+      "id": "K04",
+      "title": "The Three Resolutions",
+      "year": "1629",
+      "image": "K04",
+      "variants": [
+        {
+          "if": [
+            [
+              "path",
+              "==",
+              "main"
+            ]
+          ],
+          "options": [
+            {
+              "id": "dissolve",
+              "label": "Dissolve Parliament and rule alone",
+              "historical": true,
+              "add": {
+                "parliament": -15,
+                "majesty": 5
+              },
+              "set": {
+                "personal": true
+              }
+            },
+            {
+              "id": "recall",
+              "label": "Call a new Parliament",
+              "add": {
+                "parliament": 5,
+                "treasury": 5,
+                "majesty": -5
+              },
+              "historical": false
+            },
+            {
+              "id": "accept",
+              "label": "Accept its resolutions",
+              "add": {
+                "parliament": 15,
+                "majesty": -15,
+                "church": -10
+              },
+              "historical": false
+            }
+          ]
+        },
+        {
+          "skip": true
+        }
+      ],
+      "drift_after": true
+    },
+    {
+      "id": "K05",
+      "title": "Thorough",
+      "year": "1633",
+      "image": "K05",
+      "variants": [
+        {
+          "if": [
+            [
+              "path",
+              "==",
+              "main"
+            ]
+          ],
+          "options": [
+            {
+              "id": "wentworth",
+              "label": "Send Wentworth to rule Ireland with a free hand",
+              "historical": true,
+              "add": {
+                "treasury": 10,
+                "ireland": 20,
+                "army": 5
+              }
+            },
+            {
+              "id": "gentle",
+              "label": "Rule Ireland gently through its own lords",
+              "add": {
+                "ireland": -10,
+                "treasury": -5
+              },
+              "historical": false
+            },
+            {
+              "id": "leave",
+              "label": "Leave Ireland alone",
+              "add": {
+                "ireland": 5
+              },
+              "historical": false
+            }
+          ]
+        },
+        {
+          "skip": true
+        }
+      ]
+    },
+    {
+      "id": "K06",
+      "title": "Laud",
+      "year": "1633",
+      "image": "K06",
+      "variants": [
+        {
+          "if": [
+            [
+              "path",
+              "==",
+              "main"
+            ]
+          ],
+          "options": [
+            {
+              "id": "laud",
+              "label": "Make Laud archbishop and enforce ceremony",
+              "historical": true,
+              "add": {
+                "church": 15,
+                "scotland": 10,
+                "parliament": -5
+              },
+              "set": {
+                "laud": true
+              }
+            },
+            {
+              "id": "moderate",
+              "label": "Choose a moderate archbishop",
+              "add": {
+                "church": -5,
+                "parliament": 5
+              },
+              "historical": false
+            },
+            {
+              "id": "puritans",
+              "label": "Leave the Puritans in peace",
+              "add": {
+                "church": -15,
+                "majesty": -5,
+                "parliament": 10
+              },
+              "historical": false
+            }
+          ]
+        },
+        {
+          "skip": true
+        }
+      ]
+    },
+    {
+      "id": "K07",
+      "title": "Ship Money",
+      "year": "1635",
+      "image": "K07",
+      "variants": [
+        {
+          "if": [
+            [
+              "path",
+              "==",
+              "main"
+            ]
+          ],
+          "options": [
+            {
+              "id": "extend",
+              "label": "Extend Ship Money to the whole kingdom",
+              "historical": true,
+              "add": {
+                "treasury": 10,
+                "parliament": -5,
+                "army": 5
+              },
+              "set": {
+                "shipmoney": true
+              }
+            },
+            {
+              "id": "ports",
+              "label": "Keep it to the ports",
+              "add": {
+                "treasury": 8,
+                "parliament": -3
+              },
+              "historical": false
+            },
+            {
+              "id": "callparl",
+              "label": "Call Parliament for a proper grant",
+              "cond": [
+                {
+                  "if": [
+                    [
+                      "parliament",
+                      ">=",
+                      50
+                    ]
+                  ],
+                  "then": {
+                    "add": {
+                      "treasury": 15,
+                      "parliament": -5,
+                      "distrust": -5
+                    }
+                  },
+                  "else": {
+                    "add": {
+                      "parliament": -10,
+                      "majesty": -5,
+                      "distrust": -5
+                    }
+                  }
+                }
+              ],
+              "historical": false
+            }
+          ]
+        },
+        {
+          "skip": true
+        }
+      ],
+      "after": [
+        "hampden"
+      ]
+    },
+    {
+      "id": "K08",
+      "title": "The Prayer Book",
+      "year": "1637",
+      "image": "K08",
+      "variants": [
+        {
+          "if": [
+            [
+              "path",
+              "==",
+              "main"
+            ]
+          ],
+          "options": [
+            {
+              "id": "impose",
+              "label": "Impose the new Prayer Book on Scotland",
+              "historical": true,
+              "add": {
+                "scotland": 30,
+                "church": 10
+              }
+            },
+            {
+              "id": "ownbook",
+              "label": "Let the Scots write their own",
+              "add": {
+                "scotland": -10,
+                "church": -5,
+                "majesty": -5
+              },
+              "historical": false
+            },
+            {
+              "id": "drop",
+              "label": "Drop it",
+              "add": {
+                "scotland": -5,
+                "majesty": -5
+              },
+              "historical": false
+            }
+          ]
+        },
+        {
+          "skip": true
+        }
+      ],
+      "after": [
+        "stgiles"
+      ]
+    },
+    {
+      "id": "K09",
+      "title": "The Covenant",
+      "year": "1638-39",
+      "image": "K09",
+      "variants": [
+        {
+          "if": [
+            [
+              "path",
+              "==",
+              "main"
+            ]
+          ],
+          "options": [
+            {
+              "id": "march",
+              "label": "March north against the Covenanters",
+              "historical": true,
+              "set": {
+                "bw": true
+              }
+            },
+            {
+              "id": "assembly",
+              "label": "Grant a free General Assembly",
+              "add": {
+                "scotland": -15,
+                "church": -10,
+                "majesty": -5
+              },
+              "historical": false
+            },
+            {
+              "id": "concede",
+              "label": "Concede everything",
+              "add": {
+                "scotland": -30,
+                "church": -15,
+                "majesty": -15
+              },
+              "historical": false
+            },
+            {
+              "id": "irisharmy",
+              "label": "Bring Wentworth's Irish army",
+              "add": {
+                "ireland": 15,
+                "distrust": 10
+              },
+              "set": {
+                "path": "irisharmy"
+              },
+              "historical": false
+            }
+          ]
+        },
+        {
+          "skip": true
+        }
+      ],
+      "after": [
+        "bishopswar"
+      ]
+    },
+    {
+      "id": "KB2",
+      "title": "The Irish army lands",
+      "year": "1640",
+      "image": "KB2",
+      "variants": [
+        {
+          "if": [
+            [
+              "path",
+              "==",
+              "irisharmy"
+            ]
+          ],
+          "options": [
+            {
+              "id": "fight",
+              "label": "Fight the Covenanters",
+              "cond": [
+                {
+                  "if": [
+                    [
+                      "army",
+                      ">=",
+                      45
+                    ],
+                    [
+                      "treasury",
+                      ">=",
+                      30
+                    ]
+                  ],
+                  "then": {
+                    "add": {
+                      "scotland": -40,
+                      "parliament": -15,
+                      "ireland": 10,
+                      "majesty": 10
+                    },
+                    "set": {
+                      "path": "main"
+                    }
+                  },
+                  "else": {
+                    "end": "beaten_by_scots"
+                  }
+                }
+              ],
+              "historical": false
+            },
+            {
+              "id": "threat",
+              "label": "Hold it as a threat",
+              "add": {
+                "ireland": 10,
+                "parliament": -15,
+                "scotland": 5
+              },
+              "set": {
+                "path": "main"
+              },
+              "historical": false
+            }
+          ]
+        },
+        {
+          "skip": true
+        }
+      ],
+      "branch": true
+    },
+    {
+      "id": "K10",
+      "title": "The Short Parliament",
+      "year": "1640",
+      "image": "K10",
+      "variants": [
+        {
+          "if": [
+            [
+              "path",
+              "==",
+              "main"
+            ]
+          ],
+          "options": [
+            {
+              "id": "money",
+              "label": "Demand money first, then dissolve",
+              "historical": true,
+              "add": {
+                "parliament": -10,
+                "distrust": 5
+              }
+            },
+            {
+              "id": "grievances",
+              "label": "Hear grievances first",
+              "cond": [
+                {
+                  "if": [
+                    [
+                      "distrust",
+                      ">=",
+                      30
+                    ]
+                  ],
+                  "then": {
+                    "add": {
+                      "parliament": 5,
+                      "treasury": 5,
+                      "distrust": -5,
+                      "church": -10,
+                      "scotland": -5
+                    }
+                  },
+                  "else": {
+                    "add": {
+                      "parliament": 10,
+                      "treasury": 10,
+                      "distrust": -10,
+                      "church": -10,
+                      "scotland": -5
+                    }
+                  }
+                }
+              ],
+              "historical": false
+            },
+            {
+              "id": "scotspeace",
+              "label": "Make peace with the Scots instead",
+              "add": {
+                "scotland": -20,
+                "majesty": -10,
+                "treasury": 5,
+                "distrust": -5,
+                "parliament": 5,
+                "church": -5
+              },
+              "historical": false
+            }
+          ]
+        },
+        {
+          "skip": true
+        }
+      ],
+      "drift_after": true
+    },
+    {
+      "id": "K11",
+      "title": "Strafford",
+      "year": "1641",
+      "image": "K11",
+      "variants": [
+        {
+          "if": [
+            [
+              "path",
+              "==",
+              "main"
+            ]
+          ],
+          "options": [
+            {
+              "id": "sign",
+              "label": "Sign his death warrant",
+              "historical": true,
+              "add": {
+                "parliament": 15,
+                "distrust": 15,
+                "army": -5,
+                "majesty": -10
+              },
+              "set": {
+                "straffordsigned": true
+              }
+            },
+            {
+              "id": "refuse",
+              "label": "Refuse, and defy Parliament",
+              "add": {
+                "parliament": -20,
+                "majesty": 5,
+                "distrust": -10
+              },
+              "historical": false
+            },
+            {
+              "id": "free",
+              "label": "Free him from the Tower by force",
+              "set": {
+                "path": "armyplot"
+              },
+              "historical": false
+            }
+          ]
+        },
+        {
+          "skip": true
+        }
+      ],
+      "after": [
+        "strafford_beat"
+      ]
+    },
+    {
+      "id": "KB3",
+      "title": "The Army Plot",
+      "year": "1641",
+      "image": "KB3",
+      "variants": [
+        {
+          "if": [
+            [
+              "path",
+              "==",
+              "armyplot"
+            ]
+          ],
+          "options": [
+            {
+              "id": "go",
+              "label": "Storm the Tower",
+              "cond": [
+                {
+                  "if": [
+                    [
+                      "army",
+                      ">=",
+                      45
+                    ]
+                  ],
+                  "then": {
+                    "add": {
+                      "majesty": 10,
+                      "parliament": -25,
+                      "distrust": 20,
+                      "army": 5
+                    },
+                    "set": {
+                      "path": "main",
+                      "lied": true
+                    }
+                  },
+                  "else": {
+                    "add": {
+                      "parliament": -30,
+                      "distrust": 25,
+                      "majesty": -15
+                    },
+                    "set": {
+                      "path": "main",
+                      "lied": true
+                    }
+                  }
+                }
+              ],
+              "historical": false
+            },
+            {
+              "id": "calloff",
+              "label": "Call it off",
+              "add": {
+                "distrust": 10,
+                "parliament": -5
+              },
+              "set": {
+                "path": "main"
+              },
+              "historical": false
+            }
+          ]
+        },
+        {
+          "skip": true
+        }
+      ],
+      "branch": true
+    },
+    {
+      "id": "K12",
+      "title": "The Irish Rising",
+      "year": "1641",
+      "image": "K12",
+      "variants": [
+        {
+          "if": [
+            [
+              "path",
+              "==",
+              "main"
+            ]
+          ],
+          "options": [
+            {
+              "id": "command",
+              "label": "Insist that command of any army stays with the king",
+              "historical": true,
+              "add": {
+                "parliament": -10,
+                "majesty": 5
+              }
+            },
+            {
+              "id": "parlcmd",
+              "label": "Let Parliament name the commanders",
+              "add": {
+                "parliament": 10,
+                "majesty": -15,
+                "army": -10,
+                "distrust": -5
+              },
+              "historical": false
+            },
+            {
+              "id": "irishlords",
+              "label": "Negotiate with the Irish lords",
+              "add": {
+                "ireland": -20,
+                "church": 10,
+                "parliament": -15,
+                "distrust": 5
+              },
+              "historical": false
+            }
+          ]
+        },
+        {
+          "skip": true
+        }
+      ],
+      "scene_cond": [
+        {
+          "if": [
+            [
+              "ireland",
+              ">=",
+              60
+            ]
+          ],
+          "then": {
+            "add": {
+              "parliament": -10
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "K13",
+      "title": "The Five Members",
+      "year": "1642",
+      "image": "K13",
+      "variants": [
+        {
+          "if": [
+            [
+              "path",
+              "==",
+              "main"
+            ]
+          ],
+          "options": [
+            {
+              "id": "arrest",
+              "label": "Go to the Commons yourself, with soldiers",
+              "historical": true,
+              "add": {
+                "parliament": -25,
+                "majesty": -10,
+                "distrust": 10
+              },
+              "set": {
+                "lied": true
+              }
+            },
+            {
+              "id": "impeach",
+              "label": "Impeach them through the courts",
+              "add": {
+                "parliament": -5,
+                "distrust": -5
+              },
+              "historical": false
+            },
+            {
+              "id": "concede",
+              "label": "Drop it and offer concessions",
+              "add": {
+                "parliament": 10,
+                "majesty": -10,
+                "distrust": -5
+              },
+              "historical": false
+            }
+          ]
+        },
+        {
+          "skip": true
+        }
+      ],
+      "after": [
+        "birds"
+      ]
+    },
+    {
+      "id": "K14",
+      "title": "Nottingham",
+      "year": "1642",
+      "image": "K14",
+      "variants": [
+        {
+          "if": [
+            [
+              "path",
+              "==",
+              "main"
+            ]
+          ],
+          "options": [
+            {
+              "id": "standard",
+              "label": "Raise the royal standard",
+              "historical": true,
+              "add": {
+                "army": 20,
+                "majesty": 5
+              },
+              "set": {
+                "war": true
+              }
+            },
+            {
+              "id": "nineteen",
+              "label": "Accept Parliament's Nineteen Propositions",
+              "set": {
+                "path": "nineteen"
+              },
+              "historical": false
+            },
+            {
+              "id": "settle",
+              "label": "Settle with Parliament",
+              "cond": [
+                {
+                  "if": [
+                    [
+                      "parliament",
+                      ">=",
+                      50
+                    ],
+                    [
+                      "distrust",
+                      "<=",
+                      20
+                    ],
+                    [
+                      "church",
+                      ">=",
+                      35
+                    ],
+                    [
+                      "church",
+                      "<=",
+                      65
+                    ]
+                  ],
+                  "then": {
+                    "set": {
+                      "path": "peace",
+                      "war": false,
+                      "personal": false
+                    }
+                  },
+                  "else": {
+                    "set": {
+                      "path": "nineteen"
+                    }
+                  }
+                }
+              ],
+              "historical": false
+            }
+          ]
+        },
+        {
+          "skip": true
+        }
+      ],
+      "drift_after": true
+    },
+    {
+      "id": "KB4",
+      "title": "The king in council",
+      "year": "1642",
+      "image": "KB4",
+      "variants": [
+        {
+          "if": [
+            [
+              "path",
+              "==",
+              "nineteen"
+            ]
+          ],
+          "options": [
+            {
+              "id": "agree",
+              "label": "Agree to abolish the bishops",
+              "end": "crowned_figurehead",
+              "historical": false
+            },
+            {
+              "id": "tear",
+              "label": "Tear up the deal and raise the standard",
+              "add": {
+                "army": 10,
+                "majesty": -10
+              },
+              "set": {
+                "war": true,
+                "path": "main"
+              },
+              "historical": false
+            }
+          ]
+        },
+        {
+          "skip": true
+        }
+      ],
+      "branch": true
+    },
+    {
+      "id": "KA1",
+      "title": "The Militia",
+      "year": "1642",
+      "image": "KA1",
+      "variants": [
+        {
+          "if": [
+            [
+              "path",
+              "==",
+              "peace"
+            ]
+          ],
+          "options": [
+            {
+              "id": "share",
+              "label": "Share command of the militia",
+              "add": {
+                "parliament": 5,
+                "army": -5,
+                "distrust": -5
+              },
+              "historical": false
+            },
+            {
+              "id": "give",
+              "label": "Give Parliament the militia",
+              "add": {
+                "parliament": 15,
+                "majesty": -15,
+                "army": -15
+              },
+              "historical": false
+            },
+            {
+              "id": "keepm",
+              "label": "Keep the militia",
+              "add": {
+                "parliament": -20,
+                "majesty": 5
+              },
+              "cond": [
+                {
+                  "if": [
+                    [
+                      "parliament",
+                      "<",
+                      40
+                    ]
+                  ],
+                  "then": {
+                    "add": {
+                      "army": 15
+                    },
+                    "set": {
+                      "war": true,
+                      "path": "main"
+                    }
+                  }
+                }
+              ],
+              "historical": false
+            }
+          ]
+        },
+        {
+          "skip": true
+        }
+      ],
+      "branch": true
+    },
+    {
+      "id": "KA2",
+      "title": "Root and Branch",
+      "year": "1643",
+      "image": "KA2",
+      "variants": [
+        {
+          "if": [
+            [
+              "path",
+              "==",
+              "peace"
+            ]
+          ],
+          "options": [
+            {
+              "id": "reduced",
+              "label": "Offer bishops bound by councils of clergy",
+              "add": {
+                "church": -10,
+                "scotland": -10,
+                "parliament": 10
+              },
+              "historical": false
+            },
+            {
+              "id": "abolish",
+              "label": "Abolish the bishops",
+              "add": {
+                "church": -30,
+                "scotland": -20,
+                "majesty": -15
+              },
+              "historical": false
+            },
+            {
+              "id": "keepb",
+              "label": "Keep the bishops as they are",
+              "add": {
+                "church": 10,
+                "parliament": -15,
+                "scotland": 10
+              },
+              "historical": false
+            }
+          ]
+        },
+        {
+          "skip": true
+        }
+      ],
+      "branch": true
+    },
+    {
+      "id": "KA3",
+      "title": "Reconquering Ireland",
+      "year": "1643",
+      "image": "KA3",
+      "variants": [
+        {
+          "if": [
+            [
+              "path",
+              "==",
+              "peace"
+            ]
+          ],
+          "options": [
+            {
+              "id": "lead",
+              "label": "Lead the army to Ireland yourself",
+              "add": {
+                "ireland": -20,
+                "army": 10,
+                "majesty": 15,
+                "treasury": -15
+              },
+              "historical": false
+            },
+            {
+              "id": "adventurers",
+              "label": "Let Parliament conquer it for land",
+              "add": {
+                "ireland": 25,
+                "parliament": 10
+              },
+              "historical": false
+            },
+            {
+              "id": "toleration",
+              "label": "Offer the Irish Catholics toleration",
+              "add": {
+                "ireland": -30,
+                "church": 10,
+                "parliament": -15,
+                "distrust": 5
+              },
+              "historical": false
+            }
+          ]
+        },
+        {
+          "skip": true
+        }
+      ],
+      "branch": true
+    },
+    {
+      "id": "KA4",
+      "title": "The Prince's education",
+      "year": "1644",
+      "image": "KA4",
+      "variants": [
+        {
+          "if": [
+            [
+              "path",
+              "==",
+              "peace"
+            ]
+          ],
+          "options": [
+            {
+              "id": "protestant",
+              "label": "Raise the Prince of Wales under Parliament's tutors",
+              "add": {
+                "parliament": 10,
+                "distrust": -10,
+                "majesty": -5
+              },
+              "historical": false
+            },
+            {
+              "id": "queenkeeps",
+              "label": "Leave him with the queen",
+              "add": {
+                "parliament": -10,
+                "church": 5
+              },
+              "historical": false
+            },
+            {
+              "id": "sendqueen",
+              "label": "Send the queen to France",
+              "add": {
+                "parliament": 15,
+                "majesty": -5,
+                "distrust": -5
+              },
+              "historical": false
+            }
+          ]
+        },
+        {
+          "skip": true
+        }
+      ],
+      "branch": true
+    },
+    {
+      "id": "K15",
+      "title": "Edgehill",
+      "year": "1642",
+      "image": "K15",
+      "variants": [
+        {
+          "if": [
+            [
+              "path",
+              "==",
+              "main"
+            ]
+          ],
+          "options": [
+            {
+              "id": "oxford",
+              "label": "Advance slowly and make Oxford your capital",
+              "historical": true,
+              "add": {
+                "army": 5
+              }
+            },
+            {
+              "id": "london",
+              "label": "March hard on London",
+              "set": {
+                "path": "turnham"
+              },
+              "historical": false
+            },
+            {
+              "id": "terms",
+              "label": "Offer terms",
+              "cond": [
+                {
+                  "if": [
+                    [
+                      "distrust",
+                      "<=",
+                      25
+                    ],
+                    [
+                      "parliament",
+                      ">=",
+                      45
+                    ]
+                  ],
+                  "then": {
+                    "add": {
+                      "majesty": -10
+                    },
+                    "set": {
+                      "path": "settled",
+                      "war": false,
+                      "personal": false
+                    }
+                  },
+                  "else": {
+                    "add": {
+                      "majesty": -10,
+                      "distrust": 5
+                    }
+                  }
+                }
+              ],
+              "historical": false
+            }
+          ]
+        },
+        {
+          "skip": true
+        }
+      ]
+    },
+    {
+      "id": "KB5",
+      "title": "Turnham Green",
+      "year": "1642",
+      "image": "KB5",
+      "variants": [
+        {
+          "if": [
+            [
+              "path",
+              "==",
+              "turnham"
+            ]
+          ],
+          "options": [
+            {
+              "id": "attack",
+              "label": "Attack the trained bands",
+              "cond": [
+                {
+                  "if": [
+                    [
+                      "army",
+                      ">=",
+                      50
+                    ],
+                    [
+                      "majesty",
+                      ">=",
+                      45
+                    ]
+                  ],
+                  "then": {
+                    "add": {
+                      "parliament": -10,
+                      "majesty": 10
+                    },
+                    "set": {
+                      "path": "london"
+                    }
+                  },
+                  "else": {
+                    "end": "broken_turnham"
+                  }
+                }
+              ],
+              "historical": false
+            },
+            {
+              "id": "turnback",
+              "label": "Turn back to Oxford",
+              "add": {
+                "majesty": -5
+              },
+              "set": {
+                "path": "main"
+              },
+              "historical": false
+            }
+          ]
+        },
+        {
+          "skip": true
+        }
+      ],
+      "branch": true
+    },
+    {
+      "id": "KL1",
+      "title": "The City",
+      "year": "1642",
+      "image": "KL1",
+      "variants": [
+        {
+          "if": [
+            [
+              "path",
+              "==",
+              "london"
+            ]
+          ],
+          "options": [
+            {
+              "id": "trials",
+              "label": "Try Parliament's leaders for treason",
+              "add": {
+                "parliament": -20,
+                "majesty": 10,
+                "distrust": 5
+              },
+              "historical": false
+            },
+            {
+              "id": "pardon",
+              "label": "Proclaim a general pardon",
+              "add": {
+                "parliament": 15,
+                "distrust": -10
+              },
+              "historical": false
+            },
+            {
+              "id": "exile",
+              "label": "Let them flee abroad",
+              "add": {
+                "parliament": -5
+              },
+              "historical": false
+            }
+          ]
+        },
+        {
+          "skip": true
+        }
+      ],
+      "branch": true
+    },
+    {
+      "id": "KL2",
+      "title": "The Scots cross the Tweed",
+      "year": "1644",
+      "image": "KL2",
+      "variants": [
+        {
+          "if": [
+            [
+              "path",
+              "==",
+              "london"
+            ]
+          ],
+          "options": [
+            {
+              "id": "fight",
+              "label": "Meet them in battle",
+              "cond": [
+                {
+                  "if": [
+                    [
+                      "army",
+                      ">=",
+                      50
+                    ]
+                  ],
+                  "then": {
+                    "add": {
+                      "scotland": -30,
+                      "majesty": 10,
+                      "army": -10
+                    }
+                  },
+                  "else": {
+                    "add": {
+                      "army": -25,
+                      "scotland": 10,
+                      "majesty": -10
+                    }
+                  }
+                }
+              ],
+              "historical": false
+            },
+            {
+              "id": "buyoff",
+              "label": "Buy them off with a Presbyterian church",
+              "add": {
+                "church": -20,
+                "scotland": -30,
+                "majesty": -10
+              },
+              "historical": false
+            },
+            {
+              "id": "talk",
+              "label": "Negotiate a truce",
+              "add": {
+                "scotland": -10,
+                "treasury": -10
+              },
+              "historical": false
+            }
+          ]
+        },
+        {
+          "skip": true
+        }
+      ],
+      "branch": true
+    },
+    {
+      "id": "KL3",
+      "title": "A new Parliament",
+      "year": "1645",
+      "image": "KL3",
+      "variants": [
+        {
+          "if": [
+            [
+              "path",
+              "==",
+              "london"
+            ]
+          ],
+          "options": [
+            {
+              "id": "free",
+              "label": "Call free elections",
+              "add": {
+                "parliament": 20,
+                "majesty": -5,
+                "distrust": -5
+              },
+              "set": {
+                "war": false,
+                "personal": false
+              },
+              "historical": false
+            },
+            {
+              "id": "packed",
+              "label": "Pack it with your supporters",
+              "add": {
+                "parliament": -10,
+                "distrust": 15,
+                "majesty": 5
+              },
+              "set": {
+                "lied": true,
+                "war": false,
+                "personal": false
+              },
+              "historical": false
+            },
+            {
+              "id": "none",
+              "label": "Rule without Parliament",
+              "end": "absolute_king",
+              "historical": false
+            }
+          ]
+        },
+        {
+          "skip": true
+        }
+      ],
+      "branch": true
+    },
+    {
+      "id": "K16",
+      "title": "The Cessation",
+      "year": "1643",
+      "image": "K16",
+      "variants": [
+        {
+          "if": [
+            [
+              "path",
+              "==",
+              "main"
+            ]
+          ],
+          "options": [
+            {
+              "id": "truce",
+              "label": "Make a truce in Ireland and bring Irish troops",
+              "historical": true,
+              "add": {
+                "ireland": -10,
+                "army": 10,
+                "parliament": -10,
+                "distrust": 5
+              }
+            },
+            {
+              "id": "english",
+              "label": "Fight on with English troops only",
+              "add": {
+                "army": -5
+              },
+              "historical": false
+            },
+            {
+              "id": "courtscots",
+              "label": "Court the Scots before Parliament does",
+              "cond": [
+                {
+                  "if": [
+                    [
+                      "scotland",
+                      "<=",
+                      40
+                    ]
+                  ],
+                  "then": {
+                    "add": {
+                      "scotland": -20,
+                      "majesty": -5
+                    }
+                  },
+                  "else": {
+                    "add": {
+                      "majesty": -5
+                    }
+                  }
+                }
+              ],
+              "historical": false
+            },
+            {
+              "id": "glamorgan",
+              "label": "Promise the Irish Catholics toleration for an army",
+              "set": {
+                "path": "irish"
+              },
+              "historical": false
+            }
+          ]
+        },
+        {
+          "skip": true
+        }
+      ],
+      "after": [
+        "solemnleague"
+      ]
+    },
+    {
+      "id": "KI1",
+      "title": "The Glamorgan treaty",
+      "year": "1645",
+      "image": "KI1",
+      "variants": [
+        {
+          "if": [
+            [
+              "path",
+              "==",
+              "irish"
+            ]
+          ],
+          "options": [
+            {
+              "id": "sign",
+              "label": "Sign it in secret",
+              "add": {
+                "ireland": -30,
+                "distrust": 15,
+                "church": 10
+              },
+              "set": {
+                "irishdeal": true,
+                "lied": true
+              },
+              "historical": false
+            },
+            {
+              "id": "refuse",
+              "label": "Refuse their terms",
+              "add": {
+                "majesty": -5
+              },
+              "set": {
+                "path": "main"
+              },
+              "historical": false
+            }
+          ]
+        },
+        {
+          "skip": true
+        }
+      ],
+      "branch": true
+    },
+    {
+      "id": "KI2",
+      "title": "Chester",
+      "year": "1645",
+      "image": "KI2",
+      "variants": [
+        {
+          "if": [
+            [
+              "path",
+              "==",
+              "irish"
+            ]
+          ],
+          "options": [
+            {
+              "id": "land",
+              "label": "Land the Irish army",
+              "cond": [
+                {
+                  "if": [
+                    [
+                      "army",
+                      ">=",
+                      35
+                    ]
+                  ],
+                  "then": {
+                    "add": {
+                      "army": 30,
+                      "parliament": -15,
+                      "church": 5
+                    },
+                    "set": {
+                      "path": "main"
+                    }
+                  },
+                  "else": {
+                    "add": {
+                      "army": -10,
+                      "distrust": 10
+                    },
+                    "set": {
+                      "path": "main"
+                    }
+                  }
+                }
+              ],
+              "historical": false
+            },
+            {
+              "id": "hold",
+              "label": "Keep them in Ireland",
+              "add": {
+                "ireland": -5
+              },
+              "set": {
+                "path": "main"
+              },
+              "historical": false
+            }
+          ]
+        },
+        {
+          "skip": true
+        }
+      ],
+      "branch": true
+    },
+    {
+      "id": "K17",
+      "title": "Marston Moor",
+      "year": "1644",
+      "image": "K17",
+      "variants": [
+        {
+          "if": [
+            [
+              "path",
+              "==",
+              "main"
+            ]
+          ],
+          "options": [
+            {
+              "id": "fight",
+              "label": "Order Rupert to relieve York and fight",
+              "historical": true,
+              "set": {
+                "mm": true
+              }
+            },
+            {
+              "id": "avoid",
+              "label": "Order him to save York and avoid battle",
+              "add": {
+                "army": -5,
+                "treasury": -5
+              },
+              "historical": false
+            },
+            {
+              "id": "abandon",
+              "label": "Abandon the North",
+              "add": {
+                "majesty": -10,
+                "army": 5
+              },
+              "historical": false
+            }
+          ]
+        },
+        {
+          "skip": true
+        }
+      ],
+      "after": [
+        "marston"
+      ]
+    },
+    {
+      "id": "K18",
+      "title": "Naseby",
+      "year": "1645",
+      "image": "K18",
+      "variants": [
+        {
+          "if": [
+            [
+              "path",
+              "==",
+              "main"
+            ]
+          ],
+          "options": [
+            {
+              "id": "battle",
+              "label": "Give battle to the New Model Army",
+              "historical": true,
+              "set": {
+                "nb": true
+              }
+            },
+            {
+              "id": "retreat",
+              "label": "Retreat west to join your other army",
+              "add": {
+                "army": -10,
+                "treasury": -5
+              },
+              "historical": false
+            },
+            {
+              "id": "hold",
+              "label": "Hold Oxford and wait",
+              "add": {
+                "army": -15,
+                "majesty": -5
+              },
+              "historical": false
+            }
+          ]
+        },
+        {
+          "skip": true
+        }
+      ],
+      "after": [
+        "naseby",
+        "cabinet"
+      ]
+    },
+    {
+      "id": "K19",
+      "title": "Surrender",
+      "year": "1646",
+      "image": "K19",
+      "variants": [
+        {
+          "if": [
+            [
+              "path",
+              "==",
+              "main"
+            ],
+            [
+              "warwon",
+              "==",
+              true
+            ]
+          ],
+          "options": [
+            {
+              "id": "pardonwin",
+              "label": "Pardon your enemies and settle",
+              "add": {
+                "parliament": 35,
+                "distrust": -15
+              },
+              "set": {
+                "path": "settled",
+                "war": false,
+                "personal": false
+              },
+              "historical": false
+            },
+            {
+              "id": "crush",
+              "label": "Crush Parliament for ever",
+              "end": "absolute_king",
+              "historical": false
+            }
+          ]
+        },
+        {
+          "if": [
+            [
+              "path",
+              "==",
+              "main"
+            ]
+          ],
+          "options": [
+            {
+              "id": "scots",
+              "label": "Slip out of Oxford and give yourself up to the Scots",
+              "historical": true,
+              "set": {
+                "withscots": true
+              }
+            },
+            {
+              "id": "parl",
+              "label": "Surrender to Parliament",
+              "add": {
+                "parliament": 5
+              },
+              "historical": false
+            },
+            {
+              "id": "france",
+              "label": "Escape to the queen in France",
+              "set": {
+                "path": "exile"
+              },
+              "historical": false
+            }
+          ]
+        },
+        {
+          "skip": true
+        }
+      ],
+      "drift_after": true
+    },
+    {
+      "id": "K19B",
+      "title": "Newcastle",
+      "year": "1646",
+      "image": "K19B",
+      "variants": [
+        {
+          "if": [
+            [
+              "path",
+              "==",
+              "main"
+            ],
+            [
+              "withscots",
+              "==",
+              true
+            ]
+          ],
+          "options": [
+            {
+              "id": "refusecov",
+              "label": "Refuse to take the Covenant",
+              "historical": true,
+              "add": {
+                "scotland": 5
+              }
+            },
+            {
+              "id": "takecov",
+              "label": "Take the Covenant",
+              "add": {
+                "church": -25,
+                "scotland": -30,
+                "majesty": -5,
+                "distrust": -10
+              },
+              "set": {
+                "path": "covenant"
+              },
+              "historical": false
+            }
+          ]
+        },
+        {
+          "skip": true
+        }
+      ]
+    },
+    {
+      "id": "KC1",
+      "title": "King in Edinburgh",
+      "year": "1647",
+      "image": "KC1",
+      "variants": [
+        {
+          "if": [
+            [
+              "path",
+              "==",
+              "covenant"
+            ]
+          ],
+          "options": [
+            {
+              "id": "kirk",
+              "label": "Rule with the strict Kirk party",
+              "add": {
+                "church": -15,
+                "scotland": -10,
+                "majesty": -10,
+                "distrust": -20
+              },
+              "historical": false
+            },
+            {
+              "id": "engagers",
+              "label": "Ally with Hamilton's moderates",
+              "add": {
+                "scotland": 5,
+                "army": 15
+              },
+              "historical": false
+            }
+          ]
+        },
+        {
+          "skip": true
+        }
+      ],
+      "branch": true
+    },
+    {
+      "id": "KC2",
+      "title": "Preston",
+      "year": "1648",
+      "image": "KC2",
+      "variants": [
+        {
+          "if": [
+            [
+              "path",
+              "==",
+              "covenant"
+            ]
+          ],
+          "options": [
+            {
+              "id": "invade",
+              "label": "Invade England with the Scots army",
+              "cond": [
+                {
+                  "if": [
+                    [
+                      "army",
+                      ">=",
+                      45
+                    ],
+                    [
+                      "majesty",
+                      ">=",
+                      35
+                    ]
+                  ],
+                  "then": {
+                    "add": {
+                      "majesty": 20,
+                      "parliament": 10
+                    }
+                  },
+                  "else": {
+                    "end": "king_in_north"
+                  }
+                }
+              ],
+              "historical": false
+            },
+            {
+              "id": "stay",
+              "label": "Stay king in Scotland",
+              "end": "king_in_north",
+              "historical": false
+            }
+          ]
+        },
+        {
+          "skip": true
+        }
+      ],
+      "branch": true
+    },
+    {
+      "id": "KC3",
+      "title": "London",
+      "year": "1648",
+      "image": "KC3",
+      "variants": [
+        {
+          "if": [
+            [
+              "path",
+              "==",
+              "covenant"
+            ]
+          ],
+          "options": [
+            {
+              "id": "trial3",
+              "label": "Offer Presbyterian church government for three years",
+              "add": {
+                "church": 15,
+                "parliament": 40,
+                "distrust": -15
+              },
+              "set": {
+                "path": "settled",
+                "war": false,
+                "personal": false
+              },
+              "historical": false
+            },
+            {
+              "id": "imposekirk",
+              "label": "Impose the Kirk on England",
+              "add": {
+                "church": -30,
+                "scotland": -10
+              },
+              "set": {
+                "path": "settled",
+                "war": false,
+                "personal": false
+              },
+              "historical": false
+            }
+          ]
+        },
+        {
+          "skip": true
+        }
+      ],
+      "branch": true
+    },
+    {
+      "id": "KE1",
+      "title": "Saint-Germain",
+      "year": "1646",
+      "image": "KE1",
+      "variants": [
+        {
+          "if": [
+            [
+              "path",
+              "==",
+              "exile"
+            ]
+          ],
+          "options": [
+            {
+              "id": "french",
+              "label": "Seek a French army",
+              "add": {
+                "treasury": 10,
+                "distrust": 10
+              },
+              "historical": false
+            },
+            {
+              "id": "wait1",
+              "label": "Wait and write to your supporters",
+              "add": {
+                "majesty": -5
+              },
+              "historical": false
+            },
+            {
+              "id": "ormond",
+              "label": "Go to Ireland to join Ormond",
+              "add": {
+                "ireland": -15,
+                "army": 15,
+                "church": 5
+              },
+              "historical": false
+            }
+          ]
+        },
+        {
+          "skip": true
+        }
+      ],
+      "branch": true
+    },
+    {
+      "id": "KE2",
+      "title": "The Fronde",
+      "year": "1648",
+      "image": "KE2",
+      "variants": [
+        {
+          "if": [
+            [
+              "path",
+              "==",
+              "exile"
+            ]
+          ],
+          "options": [
+            {
+              "id": "mazarin",
+              "label": "Side with Cardinal Mazarin",
+              "add": {
+                "majesty": 5,
+                "treasury": 10
+              },
+              "historical": false
+            },
+            {
+              "id": "orange",
+              "label": "Go to your son-in-law in Holland",
+              "add": {
+                "army": 10
+              },
+              "historical": false
+            },
+            {
+              "id": "frondeurs",
+              "label": "Side with the rebels against the French crown",
+              "add": {
+                "majesty": -10,
+                "distrust": 10
+              },
+              "historical": false
+            }
+          ]
+        },
+        {
+          "skip": true
+        }
+      ],
+      "branch": true
+    },
+    {
+      "id": "KE3",
+      "title": "The long exile",
+      "year": "1649-1658",
+      "image": "KE3",
+      "variants": [
+        {
+          "if": [
+            [
+              "path",
+              "==",
+              "exile"
+            ]
+          ],
+          "options": [
+            {
+              "id": "invade",
+              "label": "Invade with Dutch and Irish help",
+              "cond": [
+                {
+                  "if": [
+                    [
+                      "army",
+                      ">=",
+                      45
+                    ],
+                    [
+                      "majesty",
+                      ">=",
+                      45
+                    ]
+                  ],
+                  "then": {
+                    "end": "king_returns"
+                  },
+                  "else": {
+                    "end": "over_water"
+                  }
+                }
+              ],
+              "historical": false
+            },
+            {
+              "id": "waitfall",
+              "label": "Wait for the Commonwealth to fall",
+              "cond": [
+                {
+                  "if": [
+                    [
+                      "distrust",
+                      "<=",
+                      35
+                    ]
+                  ],
+                  "then": {
+                    "end": "king_returns"
+                  },
+                  "else": {
+                    "end": "over_water"
+                  }
+                }
+              ],
+              "historical": false
+            }
+          ]
+        },
+        {
+          "skip": true
+        }
+      ],
+      "branch": true
+    },
+    {
+      "id": "K20",
+      "title": "The Heads of Proposals",
+      "year": "1647",
+      "image": "K20",
+      "variants": [
+        {
+          "if": [
+            [
+              "path",
+              "==",
+              "main"
+            ]
+          ],
+          "options": [
+            {
+              "id": "play",
+              "label": "Play the Army, Parliament and the Scots against each other",
+              "historical": true,
+              "add": {
+                "distrust": 15,
+                "parliament": -10
+              },
+              "set": {
+                "lied": true
+              }
+            },
+            {
+              "id": "acceptheads",
+              "label": "Accept the Army's terms",
+              "cond": [
+                {
+                  "if": [
+                    [
+                      "distrust",
+                      "<=",
+                      45
+                    ]
+                  ],
+                  "then": {
+                    "add": {
+                      "majesty": -5,
+                      "distrust": -15,
+                      "parliament": 35
+                    },
+                    "set": {
+                      "path": "settled",
+                      "war": false,
+                      "personal": false
+                    }
+                  },
+                  "else": {
+                    "add": {
+                      "distrust": 5,
+                      "majesty": -5
+                    }
+                  }
+                }
+              ],
+              "historical": false
+            },
+            {
+              "id": "holdout",
+              "label": "Hold out for full restoration",
+              "add": {
+                "majesty": 5,
+                "parliament": -15
+              },
+              "historical": false
+            }
+          ]
+        },
+        {
+          "skip": true
+        }
+      ]
+    },
+    {
+      "id": "K21",
+      "title": "The Engagement",
+      "year": "1647-48",
+      "image": "K21",
+      "variants": [
+        {
+          "if": [
+            [
+              "path",
+              "==",
+              "main"
+            ]
+          ],
+          "options": [
+            {
+              "id": "engage",
+              "label": "Sign a secret treaty with the Scots",
+              "historical": true,
+              "add": {
+                "distrust": 20,
+                "scotland": -10
+              },
+              "set": {
+                "engaged": true,
+                "lied": true
+              }
+            },
+            {
+              "id": "newport",
+              "label": "Negotiate honestly at Newport",
+              "cond": [
+                {
+                  "if": [
+                    [
+                      "distrust",
+                      "<=",
+                      45
+                    ]
+                  ],
+                  "then": {
+                    "add": {
+                      "distrust": -10,
+                      "parliament": 25
+                    },
+                    "set": {
+                      "path": "settled",
+                      "war": false,
+                      "personal": false
+                    }
+                  },
+                  "else": {
+                    "add": {
+                      "parliament": 5,
+                      "distrust": -5
+                    }
+                  }
+                }
+              ],
+              "historical": false
+            },
+            {
+              "id": "escape",
+              "label": "Escape from Carisbrooke",
+              "set": {
+                "path": "carisbrooke"
+              },
+              "historical": false
+            }
+          ]
+        },
+        {
+          "skip": true
+        }
+      ],
+      "after": [
+        "secondwar",
+        "pride"
+      ]
+    },
+    {
+      "id": "KB6",
+      "title": "The window at Carisbrooke",
+      "year": "1648",
+      "image": "KB6",
+      "variants": [
+        {
+          "if": [
+            [
+              "path",
+              "==",
+              "carisbrooke"
+            ]
+          ],
+          "options": [
+            {
+              "id": "window",
+              "label": "Squeeze through the window bars",
+              "add": {
+                "majesty": -5
+              },
+              "set": {
+                "path": "main"
+              },
+              "historical": false
+            },
+            {
+              "id": "bribe",
+              "label": "Bribe the guards",
+              "cond": [
+                {
+                  "if": [
+                    [
+                      "treasury",
+                      ">=",
+                      30
+                    ]
+                  ],
+                  "then": {
+                    "end": "over_water"
+                  },
+                  "else": {
+                    "add": {
+                      "distrust": 5
+                    },
+                    "set": {
+                      "path": "main"
+                    }
+                  }
+                }
+              ],
+              "historical": false
+            }
+          ]
+        },
+        {
+          "skip": true
+        }
+      ],
+      "branch": true,
+      "after": [
+        "pride"
+      ]
+    },
+    {
+      "id": "K22",
+      "title": "The Trial",
+      "year": "1649",
+      "image": "K22",
+      "variants": [
+        {
+          "if": [
+            [
+              "path",
+              "==",
+              "main"
+            ]
+          ],
+          "options": [
+            {
+              "id": "noplea",
+              "label": "Refuse to plead and deny the court",
+              "historical": true,
+              "end": "axe"
+            },
+            {
+              "id": "plead",
+              "label": "Plead, and offer terms",
+              "set": {
+                "path": "plea"
+              },
+              "historical": false
+            }
+          ]
+        },
+        {
+          "skip": true
+        }
+      ]
+    },
+    {
+      "id": "KB7",
+      "title": "The plea",
+      "year": "1649",
+      "image": "KB7",
+      "variants": [
+        {
+          "if": [
+            [
+              "path",
+              "==",
+              "plea"
+            ]
+          ],
+          "options": [
+            {
+              "id": "abdicate",
+              "label": "Abdicate for your youngest son",
+              "cond": [
+                {
+                  "if": [
+                    [
+                      "distrust",
+                      "<=",
+                      50
+                    ]
+                  ],
+                  "then": {
+                    "end": "abdication"
+                  },
+                  "else": {
+                    "end": "axe"
+                  }
+                }
+              ],
+              "historical": false
+            },
+            {
+              "id": "defend",
+              "label": "Defend your reign",
+              "cond": [
+                {
+                  "if": [
+                    [
+                      "distrust",
+                      "<=",
+                      25
+                    ],
+                    [
+                      "parliament",
+                      ">=",
+                      40
+                    ]
+                  ],
+                  "then": {
+                    "end": "crowned_figurehead"
+                  },
+                  "else": {
+                    "end": "axe"
+                  }
+                }
+              ],
+              "historical": false
+            }
+          ]
+        },
+        {
+          "skip": true
+        }
+      ],
+      "branch": true
+    }
+  ]
+}

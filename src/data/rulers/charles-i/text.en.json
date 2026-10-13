@@ -1,0 +1,661 @@
+{
+  "prologue": {
+    "caption": "London, March 1625",
+    "text": "King James is dead. His son Charles, twenty-four, shy and stammering, inherits three kingdoms with three different churches, an empty treasury and a war his father's favourite wants to fight. He believes his crown comes from God alone. Can he rule like it?"
+  },
+  "eras": {
+    "era1": {
+      "title": "The Favourite",
+      "years": "1625–1629",
+      "text": "A glittering new court, a dazzling favourite, and a Parliament that wants to be heard before it pays."
+    },
+    "era2": {
+      "title": "The Personal Rule",
+      "years": "1629–1640",
+      "text": "Eleven years without Parliament. Peace, order and fine paintings on the surface. Underneath, the bill is mounting."
+    },
+    "era3": {
+      "title": "The Breaking",
+      "years": "1640–1642",
+      "text": "Scotland in arms, Ireland in flames, London in the streets. The king must bargain, or break."
+    },
+    "era4": {
+      "title": "Civil War",
+      "years": "1642–1646",
+      "text": "Englishman against Englishman, and both sides praying to the same God for victory."
+    },
+    "era5": {
+      "title": "The Captive King",
+      "years": "1646–1649",
+      "text": "Defeated but still king. Every side wants him; none of them trusts him."
+    },
+    "era4_peace": {
+      "title": "The Uneasy Peace",
+      "years": "1642–1645",
+      "text": "War averted, for now. King and Parliament must learn to share a kingdom neither trusts the other to rule."
+    },
+    "era5_exile": {
+      "title": "The King Over the Water",
+      "years": "1646–1658",
+      "text": "A king without a kingdom, in a France that is tearing itself apart. Patience, or one last throw?"
+    }
+  },
+  "ruler": {
+    "name": "Charles I",
+    "subtitle": "King of England, Scotland and Ireland, 1625–1649",
+    "tagline": "Three kingdoms, one stubborn king. Can you keep his crown, and his head?",
+    "short_name": "Charles"
+  },
+  "meters": {
+    "treasury": {
+      "name": "Treasury",
+      "desc": "The crown's money without Parliament's taxes. At nothing, the crown is bankrupt."
+    },
+    "parliament": {
+      "name": "Parliament",
+      "desc": "The goodwill of the Commons and the political nation."
+    },
+    "church": {
+      "name": "Church",
+      "desc": "From Puritan to high church. Stray too far either way and the kingdom rises.",
+      "left": "Puritan",
+      "right": "High church"
+    },
+    "army": {
+      "name": "Army",
+      "desc": "Your military strength. If it melts away in wartime, so does the war."
+    },
+    "majesty": {
+      "name": "Majesty",
+      "desc": "The awe of the crown. It wins recruits and battles."
+    }
+  },
+  "scenes": {
+    "K01": {
+      "caption": "Whitehall, 1625",
+      "narration": "Your father's favourite, the Duke of Buckingham, is now yours: handsome, brilliant, and hated by half the court. He wants war with Spain and Parliament wants him gone. Your father called him Steenie. What will you call him?",
+      "consequences": {
+        "keep": "Buckingham stays at your side, and plans his war. Parliament grumbles about the cost and the man.",
+        "council": "You spread power across the Council. Buckingham sulks, and Parliament notices the change.",
+        "dismiss": "Buckingham leaves court in a fury. Parliament cheers you, but some of your friends are wary."
+      }
+    },
+    "K02": {
+      "caption": "Westminster, 1626",
+      "narration": "The war goes badly. Parliament will grant taxes only if you let it impeach Buckingham. Without money, the fleet rots. You could dissolve Parliament and simply demand loans from your richer subjects. What will you do?",
+      "consequences": {
+        "loan": "Parliament is sent home. Your commissioners demand loans, and gentlemen who refuse go to prison.",
+        "grant": "Parliament gets its way and votes the money. The court whispers that you have been tamed.",
+        "peace": "You wind the war down. The treasury breathes, but Spain and France both laugh at England.",
+        "re": "You announce that you will lead the next expedition yourself, to the island of Ré off the French coast."
+      },
+      "options": {
+        "grant": "Give Parliament its way for a grant of taxes"
+      }
+    },
+    "KB1": {
+      "caption": "Île de Ré, 1627",
+      "narration": "Your army is ashore on Ré, but the French citadel of Saint-Martin still stands. Supplies are running low, the walls are high, and the autumn gales are coming. Storm it now, or sail home?",
+      "consequences": {
+        "storm": "Your men run at the walls with their ladders. Whatever happens, the news will be back in London within the week.",
+        "withdraw": "You re-embark and sail for home. England remembers a king who went to war, then came back."
+      }
+    },
+    "K03": {
+      "caption": "Westminster, 1628",
+      "narration": "Parliament has drawn up a Petition of Right: no taxes without its consent, no prison without a charge. Grant it and the money flows. But a king who signs it is bound by it. Will you be bound?",
+      "consequences": {
+        "ignore": "You grant it in proper form, and Parliament rings the bells. Your officers keep collecting the customs anyway.",
+        "keep": "You grant it and keep to it. Parliament is delighted; your treasurers are not.",
+        "refuse": "You refuse. Parliament is outraged, but your prerogative is untouched."
+      },
+      "options": {
+        "ignore": "Grant it, then keep collecting customs anyway"
+      }
+    },
+    "K04": {
+      "caption": "Westminster, 1629",
+      "narration": "Two members are holding the Speaker in his chair while the Commons passes resolutions against your taxes and your bishops. Your messenger is hammering on the locked door. How do you answer the House?",
+      "consequences": {
+        "dissolve": "Parliament is dissolved and its leaders sent to the Tower. You will rule alone now.",
+        "recall": "You dissolve this Parliament but promise another. The Commons doubts you, but waits to see.",
+        "accept": "You accept the resolutions. Parliament has won a famous victory, and everyone knows it."
+      }
+    },
+    "K05": {
+      "caption": "Whitehall, 1633",
+      "narration": "Ireland is poor, divided and expensive. Thomas Wentworth, hard and brilliant, promises to make it pay, by any means. He calls his method \"Thorough\". Will you give Ireland to Wentworth?",
+      "consequences": {
+        "wentworth": "Wentworth sails for Dublin. Money soon flows back, and so do complaints from every faction in Ireland.",
+        "gentle": "You rule through Ireland's own lords. It costs you money, but Ireland stays quiet.",
+        "leave": "You leave Ireland to look after itself. Nobody is pleased; nobody is furious."
+      },
+      "options": {
+        "wentworth": "Send Wentworth to rule Ireland with a free hand"
+      }
+    },
+    "K06": {
+      "caption": "Lambeth, 1633",
+      "narration": "The Archbishop of Canterbury is dead. William Laud wants churches made beautiful again: altars railed, candles lit, ceremony restored. Puritans call it popery. Who will lead your Church?",
+      "consequences": {
+        "laud": "Laud becomes archbishop. Altar rails go up across England, and the Puritans start keeping lists.",
+        "moderate": "A moderate archbishop keeps the peace. Laud is disappointed; most parishes don't notice.",
+        "puritans": "You let the Puritans worship as they like. They are grateful, and your bishops are alarmed."
+      }
+    },
+    "K07": {
+      "caption": "Woolwich, 1635",
+      "narration": "Without Parliament, money is short. An old law lets the king demand Ship Money from the ports in time of danger. It could be extended to every county in England, every year. Will you?",
+      "consequences": {
+        "extend": "Ship Money is levied on the whole kingdom. The fleet grows, and so does the grumbling.",
+        "ports": "Ship Money stays with the ports. A little money, and only a little resentment.",
+        "callparl": "You summon a Parliament to ask for money. Its members bring a long list of complaints with them."
+      }
+    },
+    "K08": {
+      "caption": "Whitehall, 1637",
+      "narration": "Scotland's church has no bishops' prayer book like England's. Laud and the Scottish bishops have written one. The Scots have not been asked. Should your Scottish subjects pray as you think fit?",
+      "consequences": {
+        "impose": "The new Prayer Book is sent north, to be read in every Scottish church from this summer.",
+        "ownbook": "The Scots are invited to write their own prayers. They are suspicious, but grateful.",
+        "drop": "The book is quietly shelved. Laud is disappointed; the Scots never knew how close it came."
+      }
+    },
+    "K09": {
+      "caption": "Edinburgh, 1638",
+      "narration": "Thousands of Scots have signed a National Covenant, swearing to defend their church against all innovation, including yours. In Edinburgh, the Covenanters are drilling. How will you answer them?",
+      "consequences": {
+        "march": "You summon the northern militia and march for the border. Everything now depends on this campaign.",
+        "assembly": "You allow a free General Assembly of the Scottish church. It promptly abolishes your bishops.",
+        "concede": "You give the Scots everything they asked for. Peace returns, and your authority goes with it.",
+        "irisharmy": "Wentworth will bring an Irish army across the sea to strike the Covenanters from the west."
+      },
+      "options": {
+        "irisharmy": "Bring Wentworth's Irish army"
+      }
+    },
+    "KB2": {
+      "caption": "Galloway, 1640",
+      "narration": "Wentworth's Irish army has landed on the Scottish coast. Covenanter horsemen gather on the hills, and in England, people are asking why Irish Catholics are marching for their king. Fight, or hold back?",
+      "consequences": {
+        "fight": "The Irish army advances inland to meet the Covenanters.",
+        "threat": "You keep the army on the coast as a threat. Scotland is wary; England is horrified."
+      }
+    },
+    "K10": {
+      "caption": "Westminster, 1640",
+      "narration": "For the first time in eleven years, you need a Parliament: the Scots war has emptied the treasury. The Commons wants its grievances heard first. You want money first. Who goes first?",
+      "consequences": {
+        "money": "You demand money first. After three weeks of argument, you send them home again with nothing.",
+        "grievances": "You let the Commons air its grievances. Laud's innovations are rolled back, and the money starts to come.",
+        "scotspeace": "You make peace with the Scots instead. Parliament is relieved; your pride is not."
+      }
+    },
+    "K11": {
+      "caption": "Whitehall, 1641",
+      "narration": "Parliament has condemned Wentworth, now Earl of Strafford, to death. A mob fills the palace yard. You promised him, on the word of a king, that he would not suffer. Strafford has written releasing you from that promise. Will you sign?",
+      "consequences": {
+        "sign": "You sign the warrant. The crowds go home. Strafford, told the news, says only: put not your trust in princes.",
+        "refuse": "You refuse to sign. Parliament is furious; your servants see that you keep your word.",
+        "free": "Some of your officers have a plan to take the Tower by force and free him."
+      }
+    },
+    "KB3": {
+      "caption": "London, 1641",
+      "narration": "The officers are ready. A few hundred men could seize the Tower before dawn. If it works, Strafford walks free. If anyone talks, Parliament will say the king plotted war against it. Go ahead?",
+      "consequences": {
+        "go": "The officers march on the Tower. By morning, all London will know who sent them.",
+        "calloff": "You call it off, but too many people already know. The rumours reach Parliament anyway."
+      }
+    },
+    "K12": {
+      "caption": "Leith, 1641",
+      "narration": "A messenger brings terrible news: Ireland has risen, and Protestant settlers are being killed. An army must be raised. Parliament says it cannot trust you to command it. Who will?",
+      "consequences": {
+        "command": "You insist that any army belongs to the king. Parliament begins to plan for one of its own.",
+        "parlcmd": "Parliament names the commanders. You have kept the peace, but given away the sword.",
+        "irishlords": "You open talks with the Irish lords. Some praise your wisdom; others say you are behind the rising."
+      },
+      "options": {
+        "command": "Keep command of any army yourself"
+      }
+    },
+    "K13": {
+      "caption": "Whitehall, 1642",
+      "narration": "Five members of the Commons lead the attacks on you, and you believe they plotted with the Scots. The queen urges you to go and arrest them yourself. Armed gentlemen wait for your word. Will you go?",
+      "consequences": {
+        "arrest": "You march into the Commons with soldiers at your back. Nothing like it has ever happened before.",
+        "impeach": "You charge the five through the courts. The Commons protects its members, but no one can call it tyranny.",
+        "concede": "You drop the matter and offer concessions. London relaxes a little."
+      }
+    },
+    "K14": {
+      "caption": "Nottingham, 1642",
+      "narration": "Parliament has sent you Nineteen Propositions: it would choose your ministers, command your army and reform your church. Accept them, try for a settlement, or raise your standard and fight?",
+      "consequences": {
+        "standard": "The royal standard goes up on Castle Hill in the wind and rain. Men begin to gather to it.",
+        "nineteen": "You open talks on the Nineteen Propositions. Parliament's commissioners arrive with more demands.",
+        "settle": "You offer Parliament a settlement in person, if it will trust you enough to accept."
+      }
+    },
+    "KB4": {
+      "caption": "Whitehall, 1642",
+      "narration": "Parliament's terms are on the table, and the last of them is the hardest: abolish the bishops. Sign, and you will keep your crown and your peace. Refuse, and it is war after all. Will you sign?",
+      "consequences": {
+        "tear": "You tear up the terms and ride north to raise your standard. Late, and with fewer friends."
+      }
+    },
+    "KA1": {
+      "caption": "Westminster, 1642",
+      "narration": "War has been averted, for now. The first test is the militia: whoever controls it controls the kingdom. Parliament wants it. You want it. Can you share it?",
+      "consequences": {
+        "share": "A joint council commands the militia. Neither side likes it, and both can live with it.",
+        "give": "Parliament takes the militia. The peace holds, but your crown is lighter.",
+        "keepm": "You keep the militia. Parliament fears you are preparing for war."
+      }
+    },
+    "KA2": {
+      "caption": "Whitehall, 1643",
+      "narration": "Puritans in Parliament want bishops pulled up root and branch. Archbishop Ussher offers a compromise: bishops who govern alongside councils of ordinary clergy. What will your church be?",
+      "consequences": {
+        "reduced": "Bishops stay, bound by councils of clergy. Neither side gets its way, which may be the point.",
+        "abolish": "The bishops go. Puritans rejoice; many of your friends feel betrayed.",
+        "keepb": "The bishops stay as they are. Parliament's Puritans begin to mutter again."
+      },
+      "options": {
+        "reduced": "Bind the bishops to councils of clergy"
+      }
+    },
+    "KA3": {
+      "caption": "Dublin, 1643",
+      "narration": "Ireland is still in rebellion. Parliament would pay for its reconquest with the rebels' land. Leading the army yourself would make you a hero, or a Catholic king, depending on who tells it. How will you win Ireland back?",
+      "consequences": {
+        "lead": "You sail for Dublin at the head of your army. A king at war is a king admired.",
+        "adventurers": "Parliament's investors pay for the army and expect Irish land in return.",
+        "toleration": "You offer the Irish Catholics freedom of worship. Fighting stops; whispering starts."
+      }
+    },
+    "KA4": {
+      "caption": "Whitehall, 1644",
+      "narration": "Parliament fears the Prince of Wales will be raised a Catholic by his mother. They want him taught by their own tutors. The queen will not let him go. Who will shape the next king?",
+      "consequences": {
+        "protestant": "The prince studies with Parliament's tutors. The queen does not forgive you quickly.",
+        "queenkeeps": "The prince stays with his mother. Parliament grows suspicious again.",
+        "sendqueen": "The queen sails for France, furious. Parliament breathes easier."
+      },
+      "options": {
+        "protestant": "Give the prince Parliament's tutors"
+      }
+    },
+    "K15": {
+      "caption": "Edgehill, 1642",
+      "narration": "The first great battle is over, and neither side won. The road to London lies open, and Rupert begs you to take it at once. Your council wants a slow, safe advance. Or you could offer terms now. Which?",
+      "consequences": {
+        "oxford": "You advance slowly, and make Oxford your capital for the war.",
+        "london": "You march hard for London. At Turnham Green, the city's trained bands block the road.",
+        "terms": "You send Parliament an offer of peace."
+      },
+      "options": {
+        "oxford": "Advance slowly and make Oxford your capital"
+      }
+    },
+    "KB5": {
+      "caption": "Turnham Green, 1642",
+      "narration": "Twenty-four thousand Londoners stand in your path: apprentices, shopkeepers, citizens with pikes, their wives bringing them dinner. Your army is smaller, but it is an army. Attack, or turn back?",
+      "consequences": {
+        "attack": "Your cavalry charges the trained bands.",
+        "turnback": "You turn back towards Oxford. London will never be this close again."
+      }
+    },
+    "KL1": {
+      "caption": "London, 1642",
+      "narration": "London is yours. Parliament's leaders are hiding or fleeing to the coast. The City has handed over its keys. What will you do with the men who led the rebellion?",
+      "consequences": {
+        "trials": "The leaders are tried for treason. Your enemies fear you; your waverers worry.",
+        "pardon": "You proclaim a general pardon. Even some old enemies kneel.",
+        "exile": "You let them flee abroad. Out of sight, but not out of mind."
+      }
+    },
+    "KL2": {
+      "caption": "Berwick, 1644",
+      "narration": "The Scots have crossed the Tweed to fight for what is left of Parliament's cause. Their price for going home is a Presbyterian church in England. Fight, pay, or talk?",
+      "consequences": {
+        "fight": "You march north to meet the Scots.",
+        "buyoff": "You promise a Presbyterian church. The Scots go home; your bishops despair.",
+        "talk": "You open talks and pay the Scots to wait. Your treasury pays too."
+      }
+    },
+    "KL3": {
+      "caption": "Westminster, 1645",
+      "narration": "The war is won. England needs a Parliament again, if only to vote taxes. Free elections might bring back your enemies. You could fill it with friends, or not call one at all. Which?",
+      "consequences": {
+        "free": "The elections are free. The new Parliament is wary, but it is a Parliament.",
+        "packed": "Your officials make sure the right men are elected. Nobody is fooled."
+      }
+    },
+    "K16": {
+      "caption": "Oxford, 1643",
+      "narration": "The war is costing more than either side expected. In Ireland, a truce would free your army there to fight in England. The Scots are talking to Parliament. Where will you find more men?",
+      "consequences": {
+        "truce": "A truce is signed in Ireland, and your Irish regiments sail for England.",
+        "english": "You fight on with English troops alone, and your enemies cannot call you a friend of rebels.",
+        "courtscots": "You send envoys to Scotland, hoping to win the Scots before Parliament does.",
+        "glamorgan": "You give the Earl of Glamorgan a secret commission to deal with the Irish Catholics."
+      },
+      "options": {
+        "truce": "Make a truce and bring Irish troops home",
+        "glamorgan": "Trade Irish toleration for an Irish army"
+      }
+    },
+    "KI1": {
+      "caption": "Oxford, 1645",
+      "narration": "The Irish Catholics will send ten thousand men, if you promise them freedom of worship. It must stay secret: in England, it would be called treason against your own church. Will you sign?",
+      "consequences": {
+        "sign": "You sign in secret. Glamorgan carries your promise to Ireland. Now it must stay hidden.",
+        "refuse": "You refuse their terms. Glamorgan comes home empty-handed."
+      }
+    },
+    "KI2": {
+      "caption": "Chester, 1645",
+      "narration": "The Irish army is ready to sail for Chester. If it lands, you may win the war. If it lands, Parliament will say you invaded England with Catholics. Will you bring them over?",
+      "consequences": {
+        "land": "Irish soldiers march through Chester's gates. Whatever they achieve, England will remember it.",
+        "hold": "You keep the Irish army at home. Your secret stays a secret, for now."
+      }
+    },
+    "K17": {
+      "caption": "Marston Moor, 1644",
+      "narration": "York is besieged by Parliament and the Scots together. Rupert can relieve it. Your letter to him could order him to fight, or to save York and avoid battle. Rupert will do exactly what you write. What will you write?",
+      "consequences": {
+        "fight": "Rupert reads your letter as an order to fight, and leads his army onto the moor.",
+        "avoid": "Rupert relieves York and slips away without a battle. The North holds, for now.",
+        "abandon": "You give up the North. Rupert's army comes south intact."
+      }
+    },
+    "K18": {
+      "caption": "Naseby, 1645",
+      "narration": "Parliament's New Model Army is in front of you, bigger and better paid. Your officers are divided. Your other army is far away in the west. Fight here, or fall back?",
+      "consequences": {
+        "battle": "You give battle. The two armies close across the valley at Naseby.",
+        "retreat": "You march west to join your other army. You lose men on the way, but not the war.",
+        "hold": "You fall back on Oxford and wait. Your army shrinks a little every week."
+      }
+    },
+    "K19": {
+      "caption": "Oxford, 1646",
+      "narration": "Oxford is surrounded and the war is lost. You could give yourself up to the Scots, who might yet take your side, or to Parliament. Or you could slip away to France. Where will you go?",
+      "consequences": {
+        "scots": "You cut your hair, dress as a servant and ride out of Oxford by night, to the Scots.",
+        "parl": "You surrender to Parliament's commanders and wait to hear their terms.",
+        "france": "You slip away to the coast and take ship for France.",
+        "pardonwin": "You pardon your enemies. Parliament is summoned again, and the war is over."
+      },
+      "options": {
+        "scots": "Slip out of Oxford to the Scots"
+      },
+      "variants": {
+        "0": {
+          "narration": "The war is won. Parliament's armies are broken and its leaders are at your mercy. You could pardon them and rule with a new Parliament, or crush them so they never rise again. Which?"
+        }
+      }
+    },
+    "K19B": {
+      "caption": "Newcastle, 1646",
+      "narration": "The Scots hold you at Newcastle. They will fight for you, if you take their Covenant and give England a Presbyterian church. If you refuse, Parliament is offering to pay them to go home. Will you take it?",
+      "consequences": {
+        "refusecov": "You refuse the Covenant. The Scots begin to count Parliament's money.",
+        "takecov": "You swear the Covenant. Scotland's ministers and lords gather to your side."
+      }
+    },
+    "KC1": {
+      "caption": "Edinburgh, 1647",
+      "narration": "You are a Covenanted king in Edinburgh. The strict Kirk party wants a godly kingdom; the Duke of Hamilton's moderates want an army to restore you. Whose king will you be?",
+      "consequences": {
+        "kirk": "You rule with the Kirk. The ministers trust you; the soldiers are less keen.",
+        "engagers": "Hamilton raises an army for you. The Kirk preaches against it from every pulpit."
+      }
+    },
+    "KC2": {
+      "caption": "Preston, 1648",
+      "narration": "A Scottish army is ready to march into England for you. Cromwell is waiting in Lancashire. Invade, or stay king in Scotland?",
+      "consequences": {
+        "invade": "The Scots cross the border and march south, with you at their head."
+      }
+    },
+    "KC3": {
+      "caption": "London, 1648",
+      "narration": "You are back in London with a Scottish army behind you. Parliament wants a Presbyterian church. You once offered one for three years. Will you offer it now, or impose the Kirk on England for good?",
+      "consequences": {
+        "trial3": "Presbyterian church government, for three years. Most of England is willing to try it.",
+        "imposekirk": "The Kirk is imposed on England. Scotland is delighted; most of England is not."
+      },
+      "options": {
+        "trial3": "Offer a Presbyterian church for three years"
+      }
+    },
+    "KE1": {
+      "caption": "Saint-Germain, 1646",
+      "narration": "You are safe with the queen in France, a king without a kingdom. The French might lend you an army. In Ireland, the Marquess of Ormond still fights for you. What will you do with your freedom?",
+      "consequences": {
+        "french": "You ask the French for an army. They promise much, and send little.",
+        "wait1": "You wait and write to your supporters. They are many, and patient.",
+        "ormond": "You sail for Ireland to join Ormond. Irish Royalists flock to you."
+      }
+    },
+    "KE2": {
+      "caption": "Paris, 1648",
+      "narration": "France itself is in revolt. Paris is barricaded against the boy king's ministers. Cardinal Mazarin needs friends; so do the rebels. Your son-in-law in Holland offers you a home. Which way?",
+      "consequences": {
+        "mazarin": "You stand by Mazarin. The French crown will remember it.",
+        "orange": "You leave for Holland, where Dutch ships and money may help you.",
+        "frondeurs": "You side with the rebels. The French crown will remember that, too."
+      },
+      "options": {
+        "frondeurs": "Side with the rebels against the French crown"
+      }
+    },
+    "KE3": {
+      "caption": "The Hague, 1650s",
+      "narration": "Years have passed. England is ruled by Parliament and its army, and they are quarrelling. Your friends say the time is coming. Invade now, or wait for England to call you home?",
+      "consequences": {},
+      "options": {
+        "waitfall": "Wait for Parliament's rule to fall"
+      }
+    },
+    "K20": {
+      "caption": "Hampton Court, 1647",
+      "narration": "The Army holds you now, and its officers have offered terms: you keep your bishops, Parliament meets every two years, and there is freedom of worship. Parliament and the Scots are bidding too. Will you choose?",
+      "consequences": {
+        "play": "You thank everyone and accept no one, playing the Army, Parliament and the Scots against each other.",
+        "acceptheads": "You accept the Army's terms.",
+        "holdout": "You refuse all terms short of full restoration. The Army's patience thins."
+      },
+      "options": {
+        "play": "Play your enemies against each other"
+      }
+    },
+    "K21": {
+      "caption": "Carisbrooke, 1647",
+      "narration": "You are on the Isle of Wight, guarded. Scottish envoys have come secretly: they will invade to restore you if you sign their treaty. Parliament's commissioners want to negotiate in the open. Which will you choose?",
+      "consequences": {
+        "engage": "You sign the Scots' treaty in secret, and it is buried in the castle garden in a lead box. War will come again.",
+        "newport": "You negotiate honestly with Parliament's commissioners.",
+        "escape": "A loyal servant has a plan to get you out of the castle and onto a ship."
+      }
+    },
+    "KB6": {
+      "caption": "Carisbrooke, 1648",
+      "narration": "A ship waits off the island. Your servant is below the window with a rope and a horse. You could squeeze through the window bars, or bribe the guards to look away. Which?",
+      "consequences": {
+        "window": "You push your head and shoulders through the bars, and stick fast. You struggle back in before dawn.",
+        "bribe": "Gold changes hands with the guards."
+      }
+    },
+    "K22": {
+      "caption": "Westminster Hall, 1649",
+      "narration": "A court of Parliament's choosing is trying you for treason against your own kingdom. You do not believe any court can try a king. If you plead, you accept its authority. Will you plead?",
+      "consequences": {
+        "plead": "You stand, take off your hat, and begin to answer the charge."
+      }
+    },
+    "KB7": {
+      "caption": "Westminster Hall, 1649",
+      "narration": "The court is listening. You could offer to abdicate for your youngest son, Henry, who is eight. Or you could defend your reign, every year of it. What will you say?",
+      "consequences": {}
+    }
+  },
+  "beats": {
+    "KT1": {
+      "caption": "Portsmouth, August 1628",
+      "text": "Buckingham is stabbed to death at an inn in Portsmouth by John Felton, a soldier with a grievance. London lights bonfires. You lock yourself away to grieve."
+    },
+    "KT2": {
+      "caption": "Westminster, 1638",
+      "text": "John Hampden refuses to pay his Ship Money, and the judges find for you by just seven to five. Ship Money is legal, and now everyone knows how unpopular."
+    },
+    "KT3": {
+      "caption": "Edinburgh, July 1637",
+      "text": "When the new Prayer Book is read in St Giles', a market woman hurls her stool at the dean's head. The church erupts, and so does Scotland."
+    },
+    "KT4": {
+      "caption": "Tower Hill, May 1641",
+      "text": "Strafford dies on Tower Hill before a vast crowd. From his cell window, Archbishop Laud raises his hand to bless him as he passes."
+    },
+    "KT5": {
+      "caption": "The House of Commons, January 1642",
+      "text": "The five members have fled by boat. You stand by the Speaker's chair and look at the empty benches. \"I see all the birds are flown.\""
+    },
+    "KT6": {
+      "caption": "London, 1645",
+      "text": "Your letters, captured at Naseby, are printed and sold in the streets. Everyone can now read your plans for Irish and foreign troops."
+    },
+    "KT7": {
+      "caption": "Westminster, December 1648",
+      "text": "Colonel Pride stands at the door of the Commons with a list. Every member willing to make terms with you is turned away. Only a Rump remains."
+    }
+  },
+  "endings": {
+    "axe": {
+      "text": "On a freezing January afternoon, you step out of a window of the Banqueting House onto the scaffold. You die as you lived: calm, dignified, and certain you were right. A groan goes up from the crowd."
+    },
+    "long_live": {
+      "text": "You die in your bed, a king at peace with his Parliament, his church and his three kingdoms. Your son inherits a throne, not a quarrel. You have outdone history."
+    },
+    "crowned_figurehead": {
+      "text": "You keep your crown, and little else. Parliament chooses your ministers, commands your army and sets your church. You sign what they send you."
+    },
+    "bankrupt": {
+      "text": "The money is gone. Your silver, your paintings, even the crown jewels are pawned to pay your debts. A king without money is a king without power."
+    },
+    "set_aside": {
+      "text": "Parliament has had enough. It offers the crown to your nephew, the Elector Palatine, and you are quietly set aside, alive and powerless."
+    },
+    "no_popery": {
+      "text": "\"No popery!\" The mobs burn altar rails in the streets and march on Whitehall. The kingdom is convinced you mean to make it Catholic, and rises against you."
+    },
+    "saints_rule": {
+      "text": "The Puritans have the church, and soon the kingdom. Bishops are abolished, the Prayer Book banned, and the godly rule in your name, but not on your behalf."
+    },
+    "army_melts": {
+      "text": "Unpaid and unfed, your army simply walks away. Without soldiers, the war is over, and so is your reign."
+    },
+    "scots_gates": {
+      "text": "Scotland has had enough of English bishops. A Covenanter army marches south, takes York and dictates terms to its king."
+    },
+    "ireland_ablaze": {
+      "text": "Ireland is lost, every county in rebellion. In England, Parliament blames you for all of it, and the kingdom turns against you."
+    },
+    "beaten_by_scots": {
+      "text": "Your Irish army is beaten back to its ships. Scotland is lost, England is horrified, and Wentworth carries the blame you share."
+    },
+    "broken_turnham": {
+      "text": "Your cavalry breaks on London's pikes and runs. You have lost the war in a single afternoon, beaten by shopkeepers."
+    },
+    "over_water": {
+      "text": "You live out your days abroad, a king over the water. Your supporters drink your health; your kingdom forgets your face."
+    },
+    "abdication": {
+      "text": "You give up the crown to your son Henry, a boy of eight, and keep your life. You never rule again, but you live to see him crowned."
+    },
+    "absolute_king": {
+      "text": "You have won, and Parliament will never meet again. You rule England as the kings of France rule theirs: alone, unchallenged, and feared."
+    },
+    "king_returns": {
+      "text": "After years of exile, England calls you home. You land at Dover to cheering crowds and church bells, and ride to London a king again."
+    },
+    "king_in_north": {
+      "text": "You remain king in Scotland, a Covenanted king of a godly nation. England goes its own way without you."
+    }
+  },
+  "chronicle": {
+    "K01": {
+      "note": "Charles kept Buckingham, his father's \"Steenie\", as chief minister. His expedition to Cádiz in 1625 failed when the soldiers found the town's wine stores and got drunk."
+    },
+    "K02": {
+      "note": "Charles dissolved Parliament to save Buckingham and raised a Forced Loan in 1626. Over seventy gentlemen who refused to pay were imprisoned without trial."
+    },
+    "K03": {
+      "note": "Charles granted the Petition of Right in June 1628, then argued it did not cover customs duties and kept collecting them. Parliament never forgot."
+    },
+    "K04": {
+      "note": "Charles dissolved Parliament and imprisoned its leaders. Sir John Eliot died in the Tower in 1632; Charles refused to let his son take the body home to Cornwall."
+    },
+    "K05": {
+      "note": "Wentworth's \"Thorough\" made Ireland pay for itself for the first time, and made enemies of Catholics and Protestants alike. Many of them later testified against him."
+    },
+    "K06": {
+      "note": "Charles made Laud Archbishop of Canterbury in 1633. Laud railed off altars, and his courts had the Puritan writer William Prynne's ears cut off for criticising the queen."
+    },
+    "K07": {
+      "note": "Charles extended Ship Money to the whole kingdom in 1635. It paid for the Sovereign of the Seas, the most richly gilded warship England had ever built."
+    },
+    "K08": {
+      "note": "Charles imposed a new Prayer Book on Scotland in 1637 without consulting its Parliament or its church. It was first read in St Giles' Cathedral on 23 July."
+    },
+    "K09": {
+      "note": "Charles fought the Scots twice, in the Bishops' Wars. In 1640 they beat his army at Newburn, took Newcastle, and made him pay them £850 a day to stay."
+    },
+    "K10": {
+      "note": "Charles's Short Parliament of 1640 lasted just three weeks. The Long Parliament that followed in November would sit, in one form or another, for twenty years."
+    },
+    "K11": {
+      "note": "Charles signed Strafford's death warrant on 10 May 1641, having promised \"upon the word of a king\" that he would not suffer. He regretted it for the rest of his life."
+    },
+    "K12": {
+      "note": "Tradition says Charles heard of the Irish rising while playing golf at Leith. Pamphlets claimed 200,000 Protestants had been killed; the real number was far smaller."
+    },
+    "K13": {
+      "note": "On 4 January 1642, Charles entered the Commons with soldiers to arrest five members. No monarch has entered the chamber since. He left London a week later."
+    },
+    "K14": {
+      "note": "Charles raised his standard at Nottingham on 22 August 1642. It blew down in a gale a few days later, and many took it as an omen."
+    },
+    "K15": {
+      "note": "After Edgehill, Charles advanced slowly. At Turnham Green, 24,000 Londoners faced his army, and he turned back. Oxford became his capital for the rest of the war."
+    },
+    "K16": {
+      "note": "Charles agreed a truce with the Irish Confederates in 1643 to bring troops to England. That same month, Parliament allied with the Scots in the Solemn League and Covenant."
+    },
+    "K17": {
+      "note": "Rupert read Charles's letter as an order to fight at Marston Moor, the largest battle ever fought on English soil. He lost, along with his dog, Boy, and kept the letter all his life."
+    },
+    "K18": {
+      "note": "At Naseby, a Scottish lord seized Charles's bridle, crying \"Will you go upon your death?\", and turned him away from a last charge. His letters were captured with his baggage."
+    },
+    "K19": {
+      "note": "Charles slipped out of Oxford on 27 April 1646, his hair and beard cut short, disguised as a servant. He gave himself up to the Scots at Southwell."
+    },
+    "K19B": {
+      "note": "Charles refused to take the Covenant. In January 1647 the Scots handed him to Parliament, which paid them the first £200,000 of their arrears. Critics said they had sold their king."
+    },
+    "K20": {
+      "note": "Charles rejected the Army's Heads of Proposals, the most generous terms he would ever be offered, and in November escaped from Hampton Court to the Isle of Wight."
+    },
+    "K21": {
+      "note": "Charles signed the Engagement with the Scots in December 1647. It was wrapped in lead and buried in Carisbrooke's garden. The Second Civil War ended with defeat at Preston."
+    },
+    "K22": {
+      "note": "Charles refused to plead, asking by what lawful authority he was brought there. On 30 January 1649 he wore two shirts to the scaffold, so no one would think he shivered from fear."
+    }
+  }
+}

@@ -32,6 +32,12 @@ export interface MeterImageMetrics {
 export interface MeterSkin {
   /** Art by ruler, then meter id. A meter without art is drawn as a placeholder medal. */
   readonly art: Readonly<Record<string, Readonly<Record<string, MeterArt>>>>;
+  /**
+   * Art planned but not yet made, in the same shape as `art`: these meters draw as placeholder
+   * medals. When the images arrive in meters/<ruler-id>/, move the ruler's entry into `art` and
+   * register its images (a test fails once the files exist, as a reminder).
+   */
+  readonly pending?: Readonly<Record<string, Readonly<Record<string, MeterArt>>>>;
   readonly metrics: Readonly<Record<string, MeterImageMetrics>>;
   /** Every meter image by name, variants included. */
   readonly images: Readonly<Record<string, ImageSourcePropType>>;

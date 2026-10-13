@@ -1,4 +1,5 @@
 // Display maths for meters. Pure TypeScript: values are shown visually, never as numbers.
+import { type Condition, type GameState, matches } from '../core';
 
 export type MeterStyle = 'fill' | 'balance';
 
@@ -9,6 +10,15 @@ export interface MeterDisplay {
   readonly style?: MeterStyle;
   readonly warnBelow?: number;
   readonly warnAbove?: number;
+  /** The warnings apply only while this holds (e.g. an army that can only fail in wartime). */
+  readonly warnIf?: Condition;
+}
+
+/** The meter as it should show for the run's state: without its warnings while `warnIf` fails. */
+export function meterForState(meter: MeterDisplay, state: GameState): MeterDisplay {
+  if (meter.warnIf === undefined || matches(state, meter.warnIf)) return meter;
+  const { warnBelow: _below, warnAbove: _above, ...rest } = meter;
+  return rest;
 }
 
 /** Meters to show, in display order. Hidden meters are never shown. */

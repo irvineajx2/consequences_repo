@@ -28,6 +28,7 @@ import {
   chevronCount,
   fillFraction,
   isWarning,
+  meterForState,
   type MeterDisplay,
   trackSegments,
   visibleMeters,
@@ -84,9 +85,10 @@ export function MeterStrip({ state }: Props) {
     <View pointerEvents="box-none" style={[styles.wrap, { top: insets.top + spacing.xs }]}>
       <View pointerEvents="box-none" style={{ height: rowHeight }}>
         {layout.slots.map((slot) => {
-          const meter = meters.find((m) => m.id === slot.id);
+          const listed = meters.find((m) => m.id === slot.id);
           const art = skin.art[ruler.id]?.[slot.id];
-          if (!meter) return null;
+          if (!listed) return null;
+          const meter = meterForState(listed, state);
           const name = text.meters[meter.id]?.name ?? meter.id;
           const value = state.meters[meter.id] ?? range[0];
           const label = format(strings.meterLabel, {
