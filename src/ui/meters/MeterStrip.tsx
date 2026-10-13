@@ -67,7 +67,7 @@ export function MeterStrip({ state }: Props) {
   const { text, ui } = ruler;
   const range = ruler.rules.meter_range;
   const meters = visibleMeters(ui);
-  const layout = meterRowLayout(screenWidth, meterSlots(meters, skin, ruler.id), skin.layout);
+  const layout = meterRowLayout(screenWidth, meterSlots(meters, skin, ruler.id), skin.layout, insets);
   const rowHeight = skin.layout.fillHeight * layout.scale;
   const [tooltip, setTooltip] = useState<string | null>(null);
 
@@ -120,7 +120,7 @@ export function MeterStrip({ state }: Props) {
                   range={range}
                   skin={skin}
                   scale={layout.scale}
-                  width={slot.width}
+                  width={slot.iconWidth}
                 />
               ) : (
                 <FillMeter meter={meter} art={art} value={value} range={range} skin={skin} scale={layout.scale} />

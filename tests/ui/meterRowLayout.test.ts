@@ -1,76 +1,126 @@
-import { getRuler } from '../../src/data/rulers';
+import { getRuler, rulers } from '../../src/data/rulers';
 import { visibleMeters } from '../../src/game/meters';
-import { meterRowLayout, meterSlots } from '../../src/ui/meters/meterRowLayout';
+import { meterRowLayout, meterSlots, type MeterRowLayout, type MeterSlot } from '../../src/ui/meters/meterRowLayout';
 import { tudorSkin } from '../../src/ui/skin/tudor';
 
-const { ui } = getRuler('elizabeth-i');
 const { layout } = tudorSkin.meters;
-const slots = meterSlots(visibleMeters(ui), tudorSkin.meters, 'elizabeth-i');
-const natural = slots.reduce((s, x) => s + x.width * layout.iconScale, 0) + layout.gap * (slots.length - 1);
+const slotsFor = (rulerId: string) => meterSlots(visibleMeters(getRuler(rulerId).ui), tudorSkin.meters, rulerId);
+// Charles as he will be once his planned art arrives (his Church gauge then takes two units).
+const charlesWithArt = meterSlots(visibleMeters(getRuler('charles-i').ui), { ...tudorSkin.meters, art: { ...tudorSkin.meters.pending } }, 'charles-i');
+
+const ROWS: [string, MeterSlot[]][] = [
+  ...rulers.map((r) => [r.id, slotsFor(r.id)] as [string, MeterSlot[]]),
+  ['charles-i (planned art)', charlesWithArt],
+];
+const SE = 320;
+const WIDE = 430;
+const centre = (s: { x: number; width: number }) => s.x + s.width / 2;
+
+/** Where a slot's centre should be: the middle of its units on an even grid across the row. */
+function expectOnUnitGrid(row: MeterRowLayout, slots: readonly MeterSlot[]) {
+  const units = slots.reduce((n, s) => n + s.units, 0);
+  const unit = row.width / units;
+  let used = 0;
+  row.slots.forEach((placed, i) => {
+    expect(centre(placed)).toBeCloseTo(row.left + (used + slots[i].units / 2) * unit, 9);
+    used += slots[i].units;
+  });
+}
 
 describe('meter row slots', () => {
-  it('are, in order, Treasury, Religion, Authority, Navy and Succession, without Spanish Hostility', () => {
-    expect(slots.map((s) => s.id)).toEqual(['tr', 'rel', 'auth', 'navy', 'succ']);
+  it("are Elizabeth's Treasury, Religion, Authority, Navy and Succession, without Spanish Hostility", () => {
+    expect(slotsFor('elizabeth-i').map((s) => s.id)).toEqual(['tr', 'rel', 'auth', 'navy', 'succ']);
   });
 
-  it('give fill icons 40 pt at their natural aspect and Religion a 130 pt slot', () => {
-    const metrics = tudorSkin.meters.metrics;
-    expect(slots.find((s) => s.id === 'rel')?.width).toBe(130);
-    expect(slots.find((s) => s.id === 'tr')?.width).toBeCloseTo(40 * metrics.treasury.aspect, 9);
-    expect(slots.find((s) => s.id === 'auth')?.width).toBeCloseTo(40 * metrics.authority.aspect, 9);
+  it('give fill icons and placeholders one unit and two-sided gauges two', () => {
+    expect(slotsFor('elizabeth-i').map((s) => s.units)).toEqual([1, 2, 1, 1, 1]);
+    expect(slotsFor('julius-caesar').map((s) => s.units)).toEqual([1, 1, 1, 1, 1]);
+    expect(slotsFor('charles-i').map((s) => s.units)).toEqual([1, 1, 1, 1, 1]);
+    expect(charlesWithArt.map((s) => [s.id, s.units])).toEqual([
+      ['treasury', 1],
+      ['parliament', 1],
+      ['church', 2],
+      ['army', 1],
+      ['majesty', 1],
+    ]);
   });
 });
 
-describe('meterRowLayout', () => {
-  test.each([320, 375, 390, 430])('fits a %p pt screen with at least 12 pt margins, centred', (width) => {
-    const row = meterRowLayout(width, slots, layout);
-    expect(row.left).toBeGreaterThanOrEqual(12 - 1e-9);
-    expect(row.left + row.width).toBeLessThanOrEqual(width - 12 + 1e-9);
-    expect(row.left).toBeCloseTo(width - (row.left + row.width), 9);
-    // Slots in order, separated by the scaled gap, spanning the row exactly.
-    row.slots.forEach((s, i) => {
-      if (i > 0) {
+describe('the meter row, the same for every ruler', () => {
+  describe.each(ROWS)('%s', (_name, slots) => {
+    test.each([SE, 375, 390, WIDE])('spans a %p pt screen inside the margins, centres evenly spaced', (width) => {
+      const row = meterRowLayout(width, slots, layout);
+      expect(row.left).toBeCloseTo(layout.margin, 9);
+      expect(row.left + row.width).toBeCloseTo(width - layout.margin, 9);
+      // Slots tile the row exactly, in order.
+      expect(row.slots[0].x).toBeCloseTo(row.left, 9);
+      const last = row.slots[row.slots.length - 1];
+      expect(last.x + last.width).toBeCloseTo(row.left + row.width, 9);
+      expectOnUnitGrid(row, slots);
+      // The first and last meters sit the same distance from their screen edges.
+      expect(centre(row.slots[0])).toBeCloseTo(width - centre(last), 9);
+    });
+
+    test.each([SE, WIDE])('keeps at least the gap between neighbouring icons on a %p pt screen', (width) => {
+      const row = meterRowLayout(width, slots, layout);
+      row.slots.forEach((s, i) => {
+        if (i === 0) return;
         const prev = row.slots[i - 1];
-        expect(s.x - (prev.x + prev.width)).toBeCloseTo((layout.gap * row.scale) / layout.iconScale, 9);
+        const space = centre(s) - centre(prev) - (s.iconWidth + prev.iconWidth) / 2;
+        expect(space).toBeGreaterThanOrEqual(layout.gap - 1e-9);
+      });
+    });
+
+    it('draws icons at 1.2x where they fit, every icon shrinking by the same factor where not', () => {
+      const wide = meterRowLayout(WIDE, slots, layout);
+      const small = meterRowLayout(SE, slots, layout);
+      expect(small.scale).toBeLessThanOrEqual(wide.scale);
+      expect(wide.scale).toBeLessThanOrEqual(layout.iconScale);
+      for (const row of [wide, small]) {
+        row.slots.forEach((s, i) => {
+          if (slots[i].units === 1) expect(s.iconWidth).toBeCloseTo(slots[i].width * row.scale, 9);
+        });
       }
     });
-    const last = row.slots[row.slots.length - 1];
-    expect(last.x + last.width).toBeCloseTo(row.left + row.width, 9);
   });
 
-  it('draws every icon 20% larger, shrinking proportionally only where the row does not fit', () => {
-    expect(layout.iconScale).toBe(1.2);
-    expect(natural).toBeGreaterThan(390 - 24);
-    expect(natural).toBeLessThanOrEqual(430 - 24);
-    expect(meterRowLayout(430, slots, layout).scale).toBe(1.2);
-    const small = meterRowLayout(320, slots, layout);
-    expect(small.scale).toBeCloseTo((1.2 * (320 - 24)) / natural, 9);
-    expect(small.left).toBeCloseTo(12, 9);
-    // Everything shrinks by the same factor.
-    small.slots.forEach((s, i) => expect(s.width).toBeCloseTo(slots[i].width * small.scale, 9));
-  });
-
-  it('handles an empty row', () => {
-    expect(meterRowLayout(390, [], layout)).toEqual({ scale: 1.2, left: 195, width: 0, slots: [] });
-  });
-});
-
-describe("Caesar's meter row", () => {
-  const caesar = getRuler('julius-caesar');
-  const caesarSlots = meterSlots(visibleMeters(caesar.ui), tudorSkin.meters, 'julius-caesar');
-
-  it('gives his five illustrated fill meters 40 pt at their natural aspect, in order', () => {
-    expect(caesarSlots.map((s) => s.id)).toEqual(['fortune', 'legions', 'people', 'senate', 'glory']);
-    for (const slot of caesarSlots) {
-      expect(slot.width).toBeCloseTo(layout.fillHeight * tudorSkin.meters.metrics[slot.id].aspect, 9);
+  it('spaces neighbouring centres equally when every meter takes one unit (Caesar, Charles today)', () => {
+    for (const rulerId of ['julius-caesar', 'charles-i']) {
+      for (const width of [SE, WIDE]) {
+        const row = meterRowLayout(width, slotsFor(rulerId), layout);
+        const gaps = row.slots.slice(1).map((s, i) => centre(s) - centre(row.slots[i]));
+        for (const g of gaps) expect(g).toBeCloseTo(gaps[0], 9);
+      }
     }
   });
 
-  test.each([320, 375, 390, 430])('fits a %p pt screen at full (1.2x) size, centred', (width) => {
-    const row = meterRowLayout(width, caesarSlots, layout);
-    expect(row.scale).toBe(1.2);
-    expect(row.left).toBeGreaterThanOrEqual(12 - 1e-9);
-    expect(row.left).toBeCloseTo(width - (row.left + row.width), 9);
+  it('draws the full 1.2x on 390 pt phones and up, and on smaller ones still larger than before', () => {
+    for (const rulerId of ['elizabeth-i', 'julius-caesar', 'charles-i']) {
+      for (const width of [390, WIDE]) expect(meterRowLayout(width, slotsFor(rulerId), layout).scale).toBeCloseTo(1.2, 9);
+    }
+    expect(meterRowLayout(375, slotsFor('elizabeth-i'), layout).scale).toBeGreaterThan(1.15);
+    // Before: Elizabeth's row shrank to 0.906 on an iPhone SE; Caesar's and Charles's drew at 1.
+    expect(meterRowLayout(SE, slotsFor('elizabeth-i'), layout).scale).toBeGreaterThan(0.906);
+    expect(meterRowLayout(SE, slotsFor('julius-caesar'), layout).scale).toBeGreaterThan(1.1);
+    expect(meterRowLayout(SE, slotsFor('charles-i'), layout).scale).toBeCloseTo(1.2, 9);
+  });
+
+  it("keeps Elizabeth's Religion gauge about as wide as before (130 pt), within its double slot", () => {
+    for (const width of [375, 390, WIDE]) {
+      const rel = meterRowLayout(width, slotsFor('elizabeth-i'), layout).slots[1];
+      expect(rel.iconWidth).toBeGreaterThan(100);
+      expect(rel.iconWidth).toBeLessThanOrEqual(rel.width - layout.gap + 1e-9);
+    }
+  });
+
+  it('stays inside the safe area', () => {
+    const row = meterRowLayout(844, slotsFor('julius-caesar'), layout, { left: 47, right: 47 });
+    expect(row.left).toBeCloseTo(47 + layout.margin, 9);
+    expect(row.left + row.width).toBeCloseTo(844 - 47 - layout.margin, 9);
+  });
+
+  it('handles an empty row', () => {
+    expect(meterRowLayout(390, [], layout)).toEqual({ scale: 1.2, left: layout.margin, width: 390 - 2 * layout.margin, slots: [] });
   });
 });
 
@@ -79,7 +129,7 @@ describe('meter row for a ruler without illustrated art', () => {
     const caesar = getRuler('julius-caesar');
     const medals = meterSlots(visibleMeters(caesar.ui), tudorSkin.meters, 'no-art-ruler');
     expect(medals).toEqual(
-      ['fortune', 'legions', 'people', 'senate', 'glory'].map((id) => ({ id, width: layout.fillHeight })),
+      ['fortune', 'legions', 'people', 'senate', 'glory'].map((id) => ({ id, width: layout.fillHeight, units: 1 })),
     );
   });
 });
