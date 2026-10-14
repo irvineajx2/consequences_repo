@@ -169,16 +169,35 @@ describe('Tudor meters', () => {
     }
   });
 
-  it('has art for every visible meter of every ruler, so no placeholder medal is drawn, and none pending', () => {
+  it('has art for every visible meter of every ruler, or art planned for it (drawn as placeholder medals)', () => {
     const missing: string[] = [];
     for (const ruler of rulers) {
       for (const meter of visibleMeters(ruler.ui)) {
-        if (!tudorSkin.meters.art[ruler.id]?.[meter.id]) missing.push(`${ruler.id}/${meter.id}`);
+        const planned = tudorSkin.meters.pending?.[ruler.id]?.[meter.id];
+        if (!tudorSkin.meters.art[ruler.id]?.[meter.id] && !planned) missing.push(`${ruler.id}/${meter.id}`);
       }
     }
     expect(missing).toEqual([]);
-    expect(Object.keys(tudorSkin.meters.pending ?? {})).toEqual([]);
+    expect(Object.keys(tudorSkin.meters.pending ?? {})).toEqual(['cleopatra']);
   });
+
+  it("plans Cleopatra's five fill meters, named by meter like Charles's sheet", () => {
+    expect(tudorSkin.meters.pending?.cleopatra).toEqual(
+      Object.fromEntries(
+        ['treasury', 'alexandria', 'divinity', 'fleet', 'rome'].map((m) => [m, { full: `cleopatra_${m}`, empty: `cleopatra_${m}_empty` }]),
+      ),
+    );
+  });
+
+  test.each(Object.keys(tudorSkin.meters.pending ?? {}))(
+    '%s: planned art has not arrived yet (once it has, move it from pending into art and register it)',
+    (rulerId) => {
+      const names = meterImageNames({ art: { [rulerId]: tudorSkin.meters.pending![rulerId] } });
+      const arrived = names.filter((n) => fs.existsSync(path.join(meterDir, rulerId, `${fileFor(rulerId, n)}.png`)));
+      expect(arrived).toEqual([]);
+      expect(tudorSkin.meters.art[rulerId]).toBeUndefined();
+    },
+  );
 
   it("maps Charles I's 7-piece sheet: chest, mace, lobster-tail helmet, crown; plain book, church, mitre", () => {
     expect(tudorSkin.meters.art['charles-i']).toEqual({

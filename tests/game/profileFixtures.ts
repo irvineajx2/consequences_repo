@@ -41,7 +41,7 @@ export const midGame: Profile = withAchievements({
 export const completionist: Profile = withAchievements({
   ...emptyProfile,
   rulers: Object.fromEntries(
-    ['elizabeth-i', 'julius-caesar', 'charles-i'].map((id) => {
+    ['elizabeth-i', 'julius-caesar', 'charles-i', 'cleopatra'].map((id) => {
       const ruler = getRuler(id);
       const record: RulerProfile = {
         discovered: mainScenes(id),

@@ -104,6 +104,17 @@ export const tudorSkin: Skin = {
         majesty: { full: 'charles_majesty', empty: 'charles_majesty_empty' },
       },
     },
+    pending: {
+      // Cleopatra's 5-piece sheet (grain jar, Pharos, Isis crown, galley prow, Roman helmet) is still
+      // to come, as meters/cleopatra/<meter>.png like Charles's: placeholder medals until then.
+      cleopatra: {
+        treasury: { full: 'cleopatra_treasury', empty: 'cleopatra_treasury_empty' },
+        alexandria: { full: 'cleopatra_alexandria', empty: 'cleopatra_alexandria_empty' },
+        divinity: { full: 'cleopatra_divinity', empty: 'cleopatra_divinity_empty' },
+        fleet: { full: 'cleopatra_fleet', empty: 'cleopatra_fleet_empty' },
+        rome: { full: 'cleopatra_rome', empty: 'cleopatra_rome_empty' },
+      },
+    },
     metrics: meterMetrics,
     images: {
       authority: require('../../../assets/ui/skins/tudor/meters/authority.png'),

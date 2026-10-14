@@ -28,7 +28,10 @@ function referencedIds(ruler) {
   const ui = read('ui.json');
   const ids = new Set();
   if (rules) {
-    for (const scene of rules.scenes ?? []) ids.add(scene.image);
+    for (const scene of rules.scenes ?? []) {
+      ids.add(scene.image);
+      for (const v of scene.variants ?? []) if (v.image) ids.add(v.image);
+    }
     for (const beat of Object.values(rules.beats ?? {})) ids.add(beat.image);
     for (const ending of Object.values(rules.endings ?? {})) ids.add(ending.image);
   }

@@ -12,7 +12,9 @@ export type AchievementCondition =
   | { readonly type: 'endingCategory'; readonly category: string }
   | { readonly type: 'everyEnding' }
   | { readonly type: 'endingRarity'; readonly tier: RarityTier }
-  | { readonly type: 'rank'; readonly title: string };
+  | { readonly type: 'rank'; readonly title: string }
+  /** Endings from several rulers, reached in any runs and any order: one of each group's `anyOf`. */
+  | { readonly type: 'endingsReached'; readonly all: readonly { readonly ruler: string; readonly anyOf: readonly string[] }[] };
 
 export interface Achievement {
   readonly id: string;
@@ -105,6 +107,11 @@ export function isMet(a: Achievement, profile: Profile, rulers: readonly RulerFa
       const from = progressionConfig.ranks.find((r) => r.title === c.title)?.fromLevel;
       return from !== undefined && levelFromTotalXp(profile.progression.totalXp).level >= from;
     }
+    case 'endingsReached':
+      return c.all.every((group) => {
+        const x = records.find((r) => r.facts.id === group.ruler);
+        return x !== undefined && group.anyOf.some((e) => x.record.endings[e] !== undefined);
+      });
   }
 }
 

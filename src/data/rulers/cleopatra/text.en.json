@@ -1,0 +1,586 @@
+{
+  "prologue": {
+    "caption": "Alexandria, 51 BC",
+    "text": "Ptolemy XII is dead. His daughter Cleopatra, eighteen, Greek by blood, the first of her line to speak Egyptian, inherits the richest kingdom on earth and a brother-husband of ten. Rome lends Egypt its freedom. Can she keep it?"
+  },
+  "eras": {
+    "era1": {
+      "title": "Daughter of the Nile",
+      "years": "51–48 BC",
+      "text": "A young queen, a younger brother, a low Nile and a court that would rather rule without her."
+    },
+    "era2": {
+      "title": "Caesar",
+      "years": "48–44 BC",
+      "text": "The most powerful man in the world comes to Alexandria. Egypt's fate now walks beside him."
+    },
+    "era3": {
+      "title": "Between Romans",
+      "years": "44–41 BC",
+      "text": "Caesar is dead and Rome is at war with itself. Every faction wants Egypt's ships and grain."
+    },
+    "era4": {
+      "title": "Antony",
+      "years": "41–32 BC",
+      "text": "A new Roman, a new alliance, and a dream of an empire in the East."
+    },
+    "era4_octavian": {
+      "title": "Octavian's Friend",
+      "years": "41–32 BC",
+      "text": "You have chosen Caesar's heir. He is cold, patient and watching you closely."
+    },
+    "era5": {
+      "title": "Actium",
+      "years": "32–30 BC",
+      "text": "Rome will have one master. Egypt must decide which side of the sea it stands on."
+    }
+  },
+  "ruler": {
+    "name": "Cleopatra VII",
+    "subtitle": "Queen of Egypt, 51–30 BC",
+    "tagline": "The last pharaoh. Can you keep Egypt free of Rome?",
+    "short_name": "Cleopatra"
+  },
+  "meters": {
+    "treasury": {
+      "name": "Treasury",
+      "desc": "Egypt's grain and gold. At nothing, the granaries are empty."
+    },
+    "alexandria": {
+      "name": "Alexandria",
+      "desc": "The capital's crowds and the palace court. If they turn, they rise."
+    },
+    "divinity": {
+      "name": "Divinity",
+      "desc": "Your standing as pharaoh and the living Isis, with the priests and the Nile."
+    },
+    "fleet": {
+      "name": "Fleet",
+      "desc": "Egypt's ships and soldiers. They win the battles that decide everything."
+    },
+    "rome": {
+      "name": "Rome",
+      "desc": "The favour of whichever Roman holds power. Lose it, and Egypt is annexed."
+    }
+  },
+  "scenes": {
+    "Q01": {
+      "caption": "Alexandria, 51 BC",
+      "narration": "Your father is dead and his will makes you queen beside your brother Ptolemy, a boy of ten ruled by the eunuch Pothinus. The decrees will bear whichever names you choose. How will you reign?",
+      "consequences": {
+        "alone": "Your brother's name vanishes from the decrees and the coins. The court notices, and so does Pothinus.",
+        "share": "Two names on every decree. The court is calmer; the priests wonder which of you is pharaoh.",
+        "council": "Pothinus's council runs the kingdom in your name. The treasury fills; your voice is quieter."
+      }
+    },
+    "Q02": {
+      "caption": "Alexandria, 50 BC",
+      "narration": "The Nile has risen too little. There will not be grain enough for both the villages and the city. Alexandria can riot; the villages can starve. Who eats?",
+      "consequences": {
+        "alexgrain": "Every barge sails for Alexandria. The city is fed. Up the river, the villages remember who was not.",
+        "country": "The grain stays in the villages of the Nile. The priests bless you; the capital grumbles.",
+        "sell": "Your merchants sell the surplus abroad at famine prices. The treasury swells; nobody else is pleased."
+      }
+    },
+    "Q03": {
+      "caption": "Alexandria, 49 BC",
+      "narration": "Rome is at war with itself. Pompey's son has come to Alexandria asking for ships and grain against Caesar. Pompey was your father's friend. Will you help his son?",
+      "consequences": {
+        "ships": "Sixty ships and a cargo of grain sail for Pompey's war.",
+        "refuse": "You send Pompey's son away empty-handed. His friends call you ungrateful.",
+        "token": "You send a polite gift and a few ships. No one is delighted; no one is insulted."
+      }
+    },
+    "Q04": {
+      "caption": "Pelusium, 48 BC",
+      "narration": "Pothinus has turned the court against you. You have fled Alexandria with your sister Arsinoe still inside the palace. Your brother's army holds the frontier. What now?",
+      "consequences": {
+        "syria": "You raise an army in Syria and march back to the edge of Egypt.",
+        "pothinus": "You send word to Pothinus that you would rather reign under him than not at all.",
+        "appeal": "You write to Rome begging for help. Rome has troubles of its own."
+      }
+    },
+    "QB1": {
+      "caption": "Alexandria, 48 BC",
+      "narration": "Pothinus lets you return, a queen in name beside your brother. Every servant reports to him. You could reign quietly in his shadow, or start turning his own people against him. Which?",
+      "consequences": {
+        "coreign": "You reign in Pothinus's shadow. You are safe, for now, and almost powerless.",
+        "plot": "One by one, Pothinus's people begin to take your gold. The palace is yours again."
+      },
+      "options": {
+        "plot": "Plot against Pothinus inside the palace"
+      }
+    },
+    "Q05": {
+      "caption": "Alexandria, 48 BC",
+      "narration": "Caesar has arrived in Alexandria, chasing Pompey, and taken up residence in your palace. Your brother's army stands between you and him. You must reach Caesar before Pothinus turns him. How?",
+      "consequences": {
+        "bedsack": "Rolled in a bedsack, you are carried past the guards and set down at Caesar's feet.",
+        "pelusium": "You march your army against your brother's at Pelusium.",
+        "envoys": "You send envoys to Caesar and wait for an answer that may never come."
+      }
+    },
+    "QB2": {
+      "caption": "Pelusium, 48 BC",
+      "narration": "Your brother's army is dug in at Pelusium, on the road to Alexandria. Beat it, and you arrive before Caesar as a conqueror. Lose, and you will not arrive at all. Attack?",
+      "consequences": {
+        "attack": "Your army storms your brother's lines at Pelusium. You enter Alexandria a victor.",
+        "withdraw": "You pull back and wait for Caesar to send for you. He takes his time."
+      }
+    },
+    "Q06": {
+      "caption": "Alexandria, 48 BC",
+      "narration": "Your brother's army has Caesar trapped in the palace quarter, and Arsinoe has joined them. Caesar's legion is small. Your enemies offer terms if you abandon him. Will you stand with Caesar?",
+      "consequences": {
+        "siege": "You stay inside the palace walls with Caesar, while Alexandria fights to get in.",
+        "negotiate": "You open talks with your brother's commanders. Caesar notices.",
+        "slip": "You slip out of the city by boat to wait for the war to end."
+      }
+    },
+    "Q07": {
+      "caption": "Alexandria, 47 BC",
+      "narration": "The war is won and your brother drowned in the Nile. Your sister Arsinoe, who fought against you, is Caesar's prisoner. Caesar asks what you want done with her. What will you say?",
+      "consequences": {
+        "parade": "Arsinoe sails for Rome in chains, to walk in Caesar's triumph.",
+        "execute": "Arsinoe is executed. A rival is gone; a sister's blood is on your hands.",
+        "hostage": "Arsinoe stays in Alexandria under guard. Alive, close and resentful."
+      }
+    },
+    "Q08": {
+      "caption": "The Nile, 47 BC",
+      "narration": "Caesar has stayed in Egypt longer than Rome would like. A royal barge waits to carry you both up the Nile, past the temples and the pyramids. Rome is calling him home. What will you do?",
+      "consequences": {
+        "cruise": "Four hundred ships follow your barge up the Nile. Egypt sees its queen beside Rome's master.",
+        "stay": "You ask Caesar to stay in Egypt with you. He does not say no.",
+        "sendback": "You send Caesar back to Rome with your blessing. Rome is grateful; Egypt is puzzled."
+      }
+    },
+    "QN1": {
+      "caption": "Alexandria, 47 BC",
+      "narration": "Caesar has stayed. Rome waits for him to come home, and grows angry when he doesn't. In Alexandria he is yours to present. Pharaoh's consort, or Rome's general in Egypt?",
+      "consequences": {
+        "consort": "Caesar is crowned beside you. Egypt has two gods on earth; Rome has a scandal.",
+        "general": "Caesar commands Egypt's armies as Rome's general. Rome is wary but not yet furious."
+      }
+    },
+    "QN2": {
+      "caption": "Alexandria, 46 BC",
+      "narration": "The Senate has declared Caesar a public enemy and given his provinces away. His legions want paying; his friends want bribing. Or you could send him home before it is too late. Which?",
+      "consequences": {
+        "pay": "Egyptian gold pays Caesar's legions. They will fight for you now.",
+        "bribe": "Your gold buys friends in the Senate. The decree is softened, but not withdrawn.",
+        "home": "Caesar sails for Rome, sadly. Rome forgives him faster than it forgives you."
+      }
+    },
+    "QN3": {
+      "caption": "Pharos, 45 BC",
+      "narration": "A Roman fleet lies off the Pharos lighthouse, sent to bring Caesar home and Egypt to heel. Caesar's legions and your ships are ready. Fight, or treat with the Senate's admiral?",
+      "consequences": {}
+    },
+    "Q09": {
+      "caption": "Alexandria, 47 BC",
+      "narration": "You have given birth to a son. Alexandria already calls him Caesarion, little Caesar. Rome is watching what you call him; so are the priests. Whose son will you say he is?",
+      "consequences": {
+        "name": "You present Caesarion as Caesar's son. Rome's eyes, and Caesar's heir's, turn to Egypt.",
+        "unnamed": "You name no father. Caesarion is simply Egypt's prince.",
+        "amun": "The priests proclaim Caesarion a son of the god Amun. Egypt rejoices; Rome frowns."
+      },
+      "options": {
+        "amun": "Proclaim him a son of Amun"
+      }
+    },
+    "Q10": {
+      "caption": "Rome, 46 BC",
+      "narration": "Caesar invites you to Rome for his triumph. He offers you his villa across the Tiber, and a golden statue in his new temple. Romans dislike foreign queens. Will you go?",
+      "consequences": {
+        "villa": "You settle in Caesar's villa across the Tiber. Rome's great men call; Cicero sulks.",
+        "alexandria": "You stay in Alexandria. Caesar is disappointed; Egypt is glad to have its queen.",
+        "triumph": "You come for the triumph and sail home before Rome tires of you."
+      }
+    },
+    "Q11": {
+      "caption": "Rome, 44 BC",
+      "narration": "There are whispers in Rome. Senators meet at night; Caesar's friends warn him of the Ides of March, and he laughs. You are a foreign queen, and Rome will not thank you for meddling. What will you do?",
+      "consequences": {
+        "flee": "You pack your household and sail for Egypt with Caesarion.",
+        "warn": "You send word to Caesar of the plot.",
+        "claim": "You stay in Rome to press Caesarion's claim as Caesar's son. Rome turns cold."
+      }
+    },
+    "QW1": {
+      "caption": "Rome, 44 BC",
+      "narration": "It is the morning of the Ides. You have warned Caesar, and he has listened, for once. The Senate meets this afternoon. How will you keep him alive?",
+      "consequences": {
+        "guard": "Caesar's Spanish guard closes around him. The Senate meeting passes without a drop of blood.",
+        "names": "You name the conspirators. Caesar summons them, one by one, and they are disarmed."
+      },
+      "options": {
+        "guard": "Beg him to keep his guard"
+      }
+    },
+    "QW2": {
+      "caption": "Rome, 44 BC",
+      "narration": "Caesar lives, and Rome knows who saved him. They call you the Egyptian, and not kindly. Caesar wants you near. How will you live in Rome?",
+      "consequences": {
+        "quiet": "You live quietly across the Tiber, a guest, not a queen. Rome begins to forget to hate you.",
+        "beside": "You appear beside Caesar in his processions, crowned. Rome is scandalised.",
+        "egypt": "You sail home to Egypt, Caesar's ally and his friend."
+      }
+    },
+    "QW3": {
+      "caption": "Rome, 43 BC",
+      "narration": "Caesar must name his heir: his great-nephew Octavian, or his only son, Caesarion. He asks you. Your son's future, and perhaps your life, depend on the answer. What will you say?",
+      "consequences": {},
+      "options": {
+        "split": "Rome for Octavian, Egypt for Caesarion"
+      }
+    },
+    "Q12": {
+      "caption": "Alexandria, 44 BC",
+      "narration": "Your younger brother, Ptolemy XIV, is your husband and co-ruler in name. Caesarion is three. Your brother will soon be old enough to want power of his own. What will you do?",
+      "consequences": {
+        "remove": "Your brother falls sick and dies. Caesarion is crowned your co-ruler. Nobody asks questions aloud.",
+        "keep": "Your brother stays on the throne beside you, and grows older every year.",
+        "exile": "You send your brother away from Egypt. Away is not the same as gone."
+      },
+      "options": {
+        "remove": "Remove him; make Caesarion co-ruler"
+      }
+    },
+    "Q13": {
+      "caption": "Alexandria, 43 BC",
+      "narration": "Caesar's murderers, Brutus and Cassius, hold the East. His avengers, Antony and Octavian, hold Rome. Both demand your fleet. Cassius is closer. Whom will you help?",
+      "consequences": {
+        "triumvirs": "Your fleet sails to join Caesar's avengers.",
+        "cassius": "Ships and grain go to Cassius. Caesar's friends will not forgive you.",
+        "neutral": "You plead famine and plague, and send no one anything."
+      }
+    },
+    "Q14": {
+      "caption": "Alexandria, 42 BC",
+      "narration": "The Nile has failed again, and plague follows famine. The royal granaries are full. The Roman armies would pay well for grain; the people of Egypt cannot pay at all. What will you do?",
+      "consequences": {
+        "granaries": "The royal granaries are opened. Egypt eats, and remembers.",
+        "alexonly": "Alexandria is fed; the villages are left to the Nile and the gods.",
+        "sellrome": "Your grain feeds Rome's armies at a good price. Egypt goes hungry."
+      }
+    },
+    "Q15": {
+      "caption": "Tarsus, 41 BC",
+      "narration": "Antony, master of the East, has summoned you to Tarsus to explain why you helped his enemies. You can go as a defendant, go as a goddess, or turn instead to his rival, Octavian. Which?",
+      "consequences": {
+        "barge": "You sail up the river on a golden barge with purple sails, dressed as Aphrodite. Antony comes to you.",
+        "humble": "You arrive quietly and explain yourself. Antony is satisfied, and a little disappointed.",
+        "octavian": "You send no answer to Antony, and your envoys sail for Octavian in Rome instead."
+      },
+      "options": {
+        "barge": "Arrive on a golden barge as Aphrodite"
+      }
+    },
+    "Q16": {
+      "caption": "Ephesus, 41 BC",
+      "narration": "Your sister Arsinoe lives in sanctuary at the Temple of Artemis in Ephesus. She is young, royal and popular, and Rome's enemies would crown her. Your Roman offers to deal with her. Will he?",
+      "consequences": {
+        "kill": "Arsinoe is dragged from the temple steps and killed. You have no sisters left.",
+        "live": "Arsinoe lives on at Ephesus, waiting.",
+        "home": "Arsinoe comes home to Alexandria under guard."
+      }
+    },
+    "Q17": {
+      "caption": "Alexandria, 41 BC",
+      "narration": "Antony has followed you to Alexandria for the winter. Feasts, hunts, games: the city has never seen a Roman so happy. Rome wants him back. Will you keep him?",
+      "consequences": {
+        "keep": "Antony stays the winter, and the next. Alexandria loves him; Rome does not.",
+        "send": "You send Antony home to Rome to mend his quarrels. He goes, and promises to return.",
+        "partner": "You plan the future of the East together, as equals.",
+        "grain": "Egyptian grain feeds Rome. Octavian is pleased, in his quiet way.",
+        "refuse": "You keep your grain. Octavian makes a note of it.",
+        "both": "Grain goes to Rome, and secretly to Antony too."
+      },
+      "variants": {
+        "0": {
+          "narration": "Octavian is grateful for your friendship, and his gratitude has a price: Rome is hungry, and Egypt is full of grain. Antony, his rival, has asked for grain too. What will you send?"
+        }
+      }
+    },
+    "Q18": {
+      "caption": "Syria, 36 BC",
+      "narration": "Antony is marching on Parthia, Rome's great enemy in the East. He wants your money, and he would like you at his side. What will you give him?",
+      "consequences": {
+        "fund": "Egyptian gold pays for Antony's war. You wait in Alexandria for news.",
+        "ride": "You ride east with Antony's army.",
+        "nofund": "You refuse to pay for Antony's war. He goes anyway, and remembers.",
+        "payoff": "Antony takes your gold and looks elsewhere.",
+        "borders": "Your troops guard Egypt's borders. Antony takes the hint.",
+        "secret": "Your letters to Antony are warm and secret. Too secret to stay that way."
+      },
+      "variants": {
+        "0": {
+          "narration": "Antony rules the East, and he has not forgotten that you chose Octavian. His legions are a few days' march from your border. How will you deal with him?"
+        }
+      }
+    },
+    "QB3": {
+      "caption": "Armenia, 36 BC",
+      "narration": "Antony's army is deep in the mountains, harried by Parthian horsemen and running short of food. Winter is coming. You could lead from the front beside him, or turn back while you still can. Which?",
+      "consequences": {
+        "front": "You ride at the head of the army through the mountain passes.",
+        "turn": "You turn back at Armenia. Antony's war goes on without you."
+      }
+    },
+    "Q19": {
+      "caption": "Alexandria, 34 BC",
+      "narration": "Antony has returned in triumph, and the East is his to give away. He wants to crown your children in the great gymnasium of Alexandria. Rome will hear of it. What will you crown?",
+      "consequences": {
+        "crown": "Your children are crowned kings and queens of the East. Caesarion is King of Kings.",
+        "egyptonly": "Only Caesarion is crowned, king of Egypt beside you. Rome shrugs.",
+        "refuse": "You refuse the titles. Antony is hurt; Octavian has nothing to point at.",
+        "hide": "You let it be said that Caesarion's father was a nobody. Octavian relaxes.",
+        "proclaim": "You proclaim Caesarion the son of Julius Caesar, rival to Caesar's heir.",
+        "hostage": "Caesarion sails for Rome to be raised in Octavian's household."
+      },
+      "options": {
+        "crown": "Crown your children rulers of the East"
+      },
+      "variants": {
+        "0": {
+          "narration": "Caesarion is thirteen and looks more like Caesar every year. Octavian, Caesar's adopted heir, has begun to ask questions about him. What will you say?"
+        }
+      }
+    },
+    "Q20": {
+      "caption": "Alexandria, 32 BC",
+      "narration": "Octavian has declared war, not on Antony, but on you. Antony must choose between Rome and Egypt, and so must you. Where will you be when the fleets meet?",
+      "consequences": {
+        "sail": "You sail with the fleet. Antony's officers mutter that a queen does not belong in a war.",
+        "stayhome": "You send the fleet with Antony and stay in Alexandria.",
+        "abandon": "You make peace with Octavian, and leave Antony to face him alone.",
+        "sendfleet": "Your fleet sails to join Octavian's.",
+        "neutral": "Egypt stays out of the war. Both sides take note.",
+        "switch": "You change sides and join Antony. Octavian will not forgive it."
+      },
+      "variants": {
+        "0": {
+          "narration": "Octavian and Antony are at war at last. Octavian expects your fleet; Antony expects your heart. What will Egypt do?"
+        }
+      }
+    },
+    "Q21": {
+      "caption": "Actium, 31 BC",
+      "narration": "Octavian's fleet has trapped Antony's at Actium. The battle has begun badly. Your sixty ships carry Egypt's treasure. What will you do?",
+      "consequences": {
+        "breakout": "Your sails go up and your ships break through the line, carrying Egypt's treasure home. Antony follows you.",
+        "fight": "You hold your ships in the line.",
+        "surrender": "You surrender your fleet to Octavian.",
+        "handover": "Antony is handed over to Octavian's men. Egypt keeps its peace.",
+        "shelter": "Antony is sheltered in Alexandria. Octavian's war now comes to you.",
+        "pass": "Antony passes through Egypt and is gone. Octavian is satisfied, just."
+      },
+      "variants": {
+        "0": {
+          "narration": "Octavian has won at Actium. Antony has fled to Egypt and begs you for shelter. Octavian's ships will follow him. What will you do?"
+        }
+      }
+    },
+    "QB4": {
+      "caption": "Actium, 31 BC",
+      "narration": "The line is breaking around you. Octavian's admiral, Agrippa, is pressing hard. Egypt's whole fleet is here. How will you fight?",
+      "consequences": {
+        "line": "Your ships hold. Agrippa's line buckles, and breaks.",
+        "fireships": "Burning ships drift into Agrippa's line. His fleet scatters."
+      },
+      "options": {
+        "line": "Hold the line with every ship"
+      }
+    },
+    "Q22": {
+      "caption": "Alexandria, 30 BC",
+      "narration": "Octavian's army is at the gates of Alexandria. Antony is dead. Octavian wants you alive for his triumph in Rome. You have one choice left. What will it be?",
+      "consequences": {
+        "redsea": "You order your ships hauled across the desert to the Red Sea.",
+        "peace": "Caesarion is crowned, and you sue for peace with Rome as a victor.",
+        "freedom": "You ask Octavian for Egypt's freedom, with Caesarion as its king."
+      },
+      "variants": {
+        "0": {
+          "narration": "Actium is won and Octavian has fled to Italy. The East is yours and Antony's. You could rule it together, or make peace with Rome from strength. Which?"
+        },
+        "1": {
+          "narration": "Octavian is master of Rome, and you are his friend. He asks what reward you would like. You could stay his ally, or ask for something no Roman wants to give. Which?"
+        }
+      }
+    },
+    "QE1": {
+      "caption": "The Red Sea, 30 BC",
+      "narration": "Your ships must reach the Red Sea, across a narrow neck of desert. Beyond it lie Arabia, and India. You could drag your own fleet across the sand, or buy new ships on the far shore. How?",
+      "consequences": {
+        "drag": "Your ships creak across the desert on rollers. It is slow, and very expensive.",
+        "buy": "You buy every ship in Berenice. Egypt's treasure is draining away."
+      }
+    },
+    "QE2": {
+      "caption": "The Red Sea, 30 BC",
+      "narration": "Malichus, king of the Nabataean Arabs, holds the shore, and Octavian has promised him a reward for stopping you. His men are watching your ships. Pay him, or fight your way through?",
+      "consequences": {
+        "payoff": "Malichus takes your gold and looks the other way.",
+        "fight": "Your ships fight their way past the Nabataeans' fireboats."
+      }
+    },
+    "QE3": {
+      "caption": "The Indian Ocean, 30 BC",
+      "narration": "The Red Sea is behind you and India lies ahead. Caesarion, seventeen, is at your side. You could sail on together, or send him ahead alone and go back to face Octavian. Which?",
+      "consequences": {}
+    }
+  },
+  "beats": {
+    "QT1": {
+      "caption": "Alexandria, 48 BC",
+      "text": "Pompey, fleeing Caesar, lands in Egypt and is stabbed on the shore by Pothinus's men. When Caesar arrives, he is handed Pompey's head, and weeps."
+    },
+    "QT2": {
+      "caption": "Alexandria, 48–47 BC",
+      "text": "Caesar sets fire to the ships in the harbour. The fire spreads to the warehouses by the docks, and some say to the Library's scrolls."
+    },
+    "QT3": {
+      "caption": "Rome, 46 BC",
+      "text": "Arsinoe walks in chains in Caesar's triumph. The Roman crowd, moved by the young princess, pities her. Caesar spares her life."
+    },
+    "QT4": {
+      "caption": "Rome, March 44 BC",
+      "text": "Caesar is stabbed to death in the Senate on the Ides of March. His will names his great-nephew Octavian as his heir, not your son."
+    },
+    "QT5": {
+      "caption": "Off Africa, 42 BC",
+      "text": "A storm wrecks your fleet on its way to join Caesar's avengers. You are sick on board, and come home with nothing to show."
+    },
+    "QT6": {
+      "caption": "Alexandria, 30 BC",
+      "text": "Told falsely that you are dead, Antony falls on his sword. He is carried to your tomb and dies in your arms."
+    },
+    "QT7": {
+      "caption": "Rome, 32 BC",
+      "text": "Your sister Arsinoe reaches Octavian. Rome now has a Ptolemy of its own, ready to sit on your throne."
+    }
+  },
+  "endings": {
+    "asp": {
+      "text": "You dress in your royal robes and take the asp to your breast rather than walk in Octavian's triumph. Egypt becomes a Roman province. You were the last pharaoh."
+    },
+    "queen_of_kings": {
+      "text": "Egypt stays free. Caesarion reigns after you as pharaoh and King of Kings, and the house of Ptolemy endures. You have outdone history."
+    },
+    "client_queen": {
+      "text": "You keep your throne, as Rome's client. Roman officials read your letters and Roman legions guard your borders. Egypt is yours, on loan."
+    },
+    "empty_granaries": {
+      "text": "The granaries are empty and the gold is gone. Hungry Alexandria turns on its queen, and Rome steps in to restore order, and stays."
+    },
+    "alexandrian_mob": {
+      "text": "The Alexandrian mob storms the palace, as it once drove out your father. You flee your own city, and never return."
+    },
+    "priests_turn": {
+      "text": "The priests of Egypt proclaim that the gods have abandoned you. The Nile country rises, and the throne slips from your hands."
+    },
+    "annexed": {
+      "text": "Rome has lost patience with Egypt. A Roman governor arrives at the Pharos, and the kingdom of the Ptolemies becomes a province."
+    },
+    "arsinoe_throne": {
+      "text": "Your enemies at court crown your sister Arsinoe. You are hunted from your own palace, a queen with no kingdom."
+    },
+    "paraded_chains": {
+      "text": "You are taken alive. In Rome, you walk in chains behind Octavian's chariot while the crowd jeers at the Egyptian queen."
+    },
+    "exiled_forever": {
+      "text": "Your brother's army wins. You live out your days in exile, a queen remembered only by those who drove you out."
+    },
+    "murdered_in_rome": {
+      "text": "You have made too many enemies in Rome. One night, the knives come for you, as they once came for Caesar."
+    },
+    "lost_at_sea": {
+      "text": "Your fleet is broken at Actium. Your flagship goes down in the fighting, and the queen of Egypt is lost at sea."
+    },
+    "nile_pact": {
+      "text": "Caesar never goes back to Rome. You rule Egypt together, two gods on earth, and the Roman Republic has to manage without him."
+    },
+    "two_worlds": {
+      "text": "Caesar lives, and so does your alliance. Your son and Caesar's heir share the world between them: Egypt for one, Rome for the other."
+    },
+    "eastern_empire": {
+      "text": "Actium is won. You and Antony rule the East from Alexandria, an empire to rival Rome's, with your children on its thrones."
+    },
+    "octavians_ally": {
+      "text": "You stand by Octavian to the end. He rewards his friend with her throne, under Rome's watchful eye."
+    },
+    "queen_indies": {
+      "text": "Your ships reach India. Beyond Rome's reach at last, you and Caesarion begin again, at the edge of the known world."
+    }
+  },
+  "chronicle": {
+    "Q01": {
+      "note": "Cleopatra became queen at 18, beside her brother Ptolemy XIII, about ten. Within months her name appeared alone on decrees and coins, and her brother's court never forgave it."
+    },
+    "Q02": {
+      "note": "During the low Niles of 50 BC, a royal decree ordered all grain from Middle Egypt to be shipped to Alexandria, on pain of death. The capital was kept from rioting."
+    },
+    "Q03": {
+      "note": "In 49 BC Pompey's son Gnaeus came to Alexandria for help against Caesar. Cleopatra and her brother sent him sixty ships and grain."
+    },
+    "Q04": {
+      "note": "Driven out by Pothinus in 48 BC, Cleopatra raised an army in Syria and camped on the Egyptian frontier at Pelusium, facing her brother's forces."
+    },
+    "Q05": {
+      "note": "According to Plutarch, Cleopatra was carried into the palace by a Sicilian servant, Apollodorus, rolled in a bedsack. The famous carpet is a later invention."
+    },
+    "Q06": {
+      "note": "Caesar was besieged in Alexandria for months. In 47 BC his reinforcements won the Battle of the Nile, and Ptolemy XIII drowned in the river as he fled."
+    },
+    "Q07": {
+      "note": "Arsinoe was paraded in Caesar's triumph in 46 BC. The crowd pitied her, and Caesar spared her, sending her to the Temple of Artemis at Ephesus."
+    },
+    "Q08": {
+      "note": "In 47 BC Cleopatra and Caesar cruised up the Nile, followed, one historian says, by four hundred ships."
+    },
+    "Q09": {
+      "note": "Caesarion was born in 47 BC. Caesar never officially acknowledged him, though Cleopatra always presented him as Caesar's son."
+    },
+    "Q10": {
+      "note": "Cleopatra lived in Caesar's villa across the Tiber from 46 to 44 BC. Caesar placed a golden statue of her in his new Temple of Venus. Cicero wrote that he hated the queen."
+    },
+    "Q11": {
+      "note": "Cleopatra left Rome soon after the Ides of March. Caesar's will named Octavian as his heir; Caesarion was not mentioned."
+    },
+    "Q12": {
+      "note": "Ptolemy XIV died in 44 BC, probably poisoned on his sister's orders. Caesarion, aged three, became her co-ruler."
+    },
+    "Q13": {
+      "note": "Cleopatra's fleet sailed to help Caesar's avengers in 42 BC, but a storm off Africa wrecked it before it could fight."
+    },
+    "Q14": {
+      "note": "Famine and plague struck Egypt in the 40s BC. Cleopatra opened the royal granaries and cut taxes to see the country through."
+    },
+    "Q15": {
+      "note": "At Tarsus in 41 BC, Plutarch says, she sailed upriver on a barge with a gilded stern, purple sails and silver oars, dressed as Aphrodite."
+    },
+    "Q16": {
+      "note": "In 41 BC, at Cleopatra's request, Antony had Arsinoe killed on the steps of the Temple of Artemis at Ephesus."
+    },
+    "Q17": {
+      "note": "Antony spent the winter of 41–40 BC in Alexandria, where he and Cleopatra founded a drinking club called the Inimitable Livers. Their twins were born in 40 BC."
+    },
+    "Q18": {
+      "note": "Antony's Parthian campaign of 36 BC ended in a disastrous winter retreat. Cleopatra met the survivors on the Syrian coast with clothes, food and money."
+    },
+    "Q19": {
+      "note": "At the Donations of Alexandria in 34 BC, Cleopatra was hailed Queen of Kings and Caesarion King of Kings, and her younger children were given kingdoms across the East."
+    },
+    "Q20": {
+      "note": "In 32 BC Octavian had the Senate declare war on Cleopatra alone, not on Antony, so the civil war could be presented as a war against a foreign queen."
+    },
+    "Q21": {
+      "note": "At Actium on 2 September 31 BC, Cleopatra's sixty ships broke through the fighting and sailed for Egypt with the treasure. Antony followed her."
+    },
+    "Q22": {
+      "note": "Octavian took Alexandria in August 30 BC. Cleopatra died soon after; tradition says by the bite of an asp. Caesarion was hunted down and killed. \"Too many Caesars is not good.\""
+    }
+  }
+}

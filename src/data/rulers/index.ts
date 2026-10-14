@@ -21,6 +21,10 @@ import charlesRarity from './charles-i/rarity.json';
 import charlesRules from './charles-i/rules.json';
 import charlesText from './charles-i/text.en.json';
 import charlesUi from './charles-i/ui.json';
+import cleopatraRarity from './cleopatra/rarity.json';
+import cleopatraRules from './cleopatra/rules.json';
+import cleopatraText from './cleopatra/text.en.json';
+import cleopatraUi from './cleopatra/ui.json';
 
 export interface Ruler {
   /** Folder name under src/data/rulers and assets/rulers. */
@@ -61,6 +65,7 @@ export const rulers: readonly Ruler[] = [
   defineRuler('elizabeth-i', elizabethRules, elizabethText, elizabethUi, elizabethRarity),
   defineRuler('julius-caesar', caesarRules, caesarText, caesarUi, caesarRarity, 'elizabeth-i'),
   defineRuler('charles-i', charlesRules, charlesText, charlesUi, charlesRarity, 'julius-caesar'),
+  defineRuler('cleopatra', cleopatraRules, cleopatraText, cleopatraUi, cleopatraRarity, 'charles-i'),
 ];
 
 export function getRuler(id: string | undefined): Ruler {

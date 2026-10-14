@@ -143,6 +143,7 @@ export function loadRules(json: unknown): Rules {
     });
     for (const v of scene.variants ?? []) {
       checkCondition(v.if, `${where} variant`);
+      if (v.image !== undefined && typeof v.image !== 'string') throw new RulesError(`${where} has a variant with a bad image`);
       if (!v.skip && (!v.options || v.options.length === 0)) {
         throw new RulesError(`${where} has a variant with no options`);
       }

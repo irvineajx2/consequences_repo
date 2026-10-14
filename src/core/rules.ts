@@ -53,6 +53,8 @@ export interface Variant {
   readonly skip?: boolean;
   readonly auto?: boolean;
   readonly options?: readonly Option[];
+  /** Presentation only: the scene's image when this variant plays, instead of the scene's own. */
+  readonly image?: string;
 }
 
 export interface SceneCondition {

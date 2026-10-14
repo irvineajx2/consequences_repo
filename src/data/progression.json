@@ -7,7 +7,8 @@
   "rulerTier": {
     "elizabeth-i": 1.0,
     "julius-caesar": 1.25,
-    "charles-i": 1.5
+    "charles-i": 1.5,
+    "cleopatra": 1.25
   },
   "level": {
     "base": 150,
@@ -76,6 +77,25 @@
         "king_in_north": "uncommon",
         "abdication": "uncommon",
         "absolute_king": "uncommon"
+      },
+      "cleopatra": {
+        "asp": "rare",
+        "queen_of_kings": "legendary",
+        "client_queen": "common",
+        "empty_granaries": "uncommon",
+        "alexandrian_mob": "uncommon",
+        "priests_turn": "common",
+        "annexed": "common",
+        "arsinoe_throne": "uncommon",
+        "paraded_chains": "common",
+        "exiled_forever": "common",
+        "murdered_in_rome": "uncommon",
+        "lost_at_sea": "uncommon",
+        "nile_pact": "common",
+        "two_worlds": "common",
+        "eastern_empire": "rare",
+        "octavians_ally": "uncommon",
+        "queen_indies": "uncommon"
       }
     }
   },

@@ -81,6 +81,7 @@ export const imageRegistries: Readonly<Record<string, Readonly<Record<string, Im
     "KX16": require("../../assets/rulers/charles-i/images/KX16.webp"),
     "KX17": require("../../assets/rulers/charles-i/images/KX17.webp"),
   },
+  "cleopatra": {},
   "elizabeth-i": {
     "01": require("../../assets/rulers/elizabeth-i/images/01.webp"),
     "02": require("../../assets/rulers/elizabeth-i/images/02.webp"),

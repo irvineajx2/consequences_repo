@@ -14,25 +14,26 @@ describe('profile selectors', () => {
     expect(v.identity).toEqual({ nickname: 'Chronicler', level: 1, rank: 'Novice', xpIntoLevel: 0, xpForLevel: 150, gold: 0 });
     expect(v.summary).toEqual({
       endingsReached: 0,
-      endingsTotal: 47,
+      endingsTotal: 64,
       matchedHistory: 0,
       outdidHistory: 0,
-      rulers: 3,
+      rulers: 4,
       achievementsEarned: 0,
-      achievementsTotal: 16,
+      achievementsTotal: 21,
     });
     expect(v.featured).toBeNull();
     expect(v.rarity.map((r) => [r.tier, r.reached, r.total])).toEqual([
-      ['common', 0, 20],
-      ['uncommon', 0, 12],
-      ['rare', 0, 10],
-      ['epic', 0, 3],
+      ['common', 0, 28],
+      ['uncommon', 0, 17],
+      ['rare', 0, 13],
+      ['epic', 0, 4],
       ['legendary', 0, 2],
     ]);
     expect(v.rulers.map((r) => [r.rulerId, r.unlocked, r.unlockedByName ?? null])).toEqual([
       ['elizabeth-i', true, null],
       ['julius-caesar', false, 'Elizabeth I'],
       ['charles-i', false, 'Julius Caesar'],
+      ['cleopatra', false, 'Charles I'],
     ]);
     expect(v.rulers[0]).toMatchObject({ runs: 0, bestMatched: null, bestResult: null, endingsReached: 0, chroniclePercent: 0 });
   });
@@ -42,22 +43,22 @@ describe('profile selectors', () => {
     expect(v.identity).toMatchObject({ level: 4, rank: 'Novice', xpIntoLevel: 1000 - 675, xpForLevel: 375, gold: 140 });
     expect(v.summary).toEqual({
       endingsReached: 3,
-      endingsTotal: 47,
+      endingsTotal: 64,
       matchedHistory: 1,
       outdidHistory: 0,
-      rulers: 3,
+      rulers: 4,
       achievementsEarned: 3,
-      achievementsTotal: 16,
+      achievementsTotal: 21,
     });
     expect(v.achievements.filter((a) => a.earned).map((a) => a.id)).toEqual(['first_reign', 'faithful_copy', 'elizabeth_history']);
     expect(v.rarity.map((r) => [r.tier, r.reached, r.total])).toEqual([
-      ['common', 2, 20],
-      ['uncommon', 1, 12],
-      ['rare', 0, 10],
-      ['epic', 0, 3],
+      ['common', 2, 28],
+      ['uncommon', 1, 17],
+      ['rare', 0, 13],
+      ['epic', 0, 4],
       ['legendary', 0, 2],
     ]);
-    const [liz, caesar, charles] = v.rulers;
+    const [liz, caesar, charles, cleopatra] = v.rulers;
     expect(liz).toMatchObject({
       runs: 6,
       bestMatched: 17,
@@ -71,6 +72,7 @@ describe('profile selectors', () => {
     });
     expect(caesar).toMatchObject({ unlocked: true, runs: 0, bestMatched: null, bestResult: null, endingsTotal: 17, branchTotal: 8 });
     expect(charles).toMatchObject({ unlocked: false, unlockedByName: 'Julius Caesar' });
+    expect(cleopatra).toMatchObject({ unlocked: false, unlockedByName: 'Charles I' });
     // The rarest earned achievement stands in until the player features one: matching every
     // decision (about 3 in 100,000 history-leaning reigns) beats Gloriana (3%) and a first reign.
     expect(v.featured).toMatchObject({ kind: 'rarest', achievement: { id: 'faithful_copy' }, earnedAt: AT });
@@ -80,20 +82,20 @@ describe('profile selectors', () => {
     const v = viewOf(completionist);
     expect(v.identity).toMatchObject({ level: 30, rank: 'Keeper of Ages' });
     expect(v.summary).toEqual({
-      endingsReached: 47,
-      endingsTotal: 47,
-      matchedHistory: 3,
-      outdidHistory: 3,
-      rulers: 3,
-      achievementsEarned: 16,
-      achievementsTotal: 16,
+      endingsReached: 64,
+      endingsTotal: 64,
+      matchedHistory: 4,
+      outdidHistory: 4,
+      rulers: 4,
+      achievementsEarned: 21,
+      achievementsTotal: 21,
     });
     for (const row of v.rarity) expect(row.reached).toBe(row.total);
     for (const r of v.rulers) {
       expect(r).toMatchObject({ unlocked: true, runs: 40, bestMatched: r.mainScenes, bestResult: 'outperformed', chroniclePercent: 100 });
       expect([r.endingsReached, r.branchVisited]).toEqual([r.endingsTotal, r.branchTotal]);
     }
-    expect(v.rulers.map((r) => [r.branchTotal])).toEqual([[0], [8], [22]]);
+    expect(v.rulers.map((r) => [r.branchTotal])).toEqual([[0], [8], [22], [13]]);
   });
 
   it('remembers its last view for the same profile', () => {
@@ -138,10 +140,10 @@ describe('a new ruler', () => {
     const v = profileView(midGame, input);
     expect(v.rulers.map((r) => r.rulerId)).toContain('test-ruler');
     expect(v.rarity.find((r) => r.tier === 'uncommon')!.byRuler.map((g) => g.rulerId)).toContain('test-ruler');
-    expect(v.summary.endingsTotal).toBe(49);
+    expect(v.summary.endingsTotal).toBe(66);
     const ids = achievementList([...allRulerFacts, facts]).map((a) => a.id);
     expect(ids).toEqual(expect.arrayContaining(['tester_history', 'tester_outdone', 'tester_every_road']));
-    expect(v.summary.achievementsTotal).toBe(19);
+    expect(v.summary.achievementsTotal).toBe(24);
   });
 
   it('every registered ruler is on the profile', () => {

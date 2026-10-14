@@ -147,7 +147,8 @@ function viewFor(rules: Rules, run: Run): SceneViewModel | EndingViewModel {
     sceneIndex: run.sceneIndex,
     sceneId: sceneData.id,
     variant: scene.variant,
-    image: sceneData.image,
+    // A variant may show its own image (e.g. the same moment on another road).
+    image: sceneData.variants?.[scene.variant]?.image ?? sceneData.image,
     mode: scene.mode,
     phase: 'read',
     options: scene.options.map((o) => o.id),
