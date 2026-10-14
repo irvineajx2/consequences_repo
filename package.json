@@ -8,6 +8,7 @@
     "@expo/ui": "~57.0.22",
     "@expo/vector-icons": "^15.0.2",
     "@react-native-async-storage/async-storage": "2.2.0",
+    "@shopify/react-native-skia": "2.6.2",
     "expo": "~57.0.27",
     "expo-constants": "~57.0.21",
     "expo-device": "~57.0.2",
@@ -48,10 +49,17 @@
     "test": "jest",
     "images": "node scripts/build-image-registry.js",
     "rarity": "python tools/rarity.py",
+    "check-avatar": "node scripts/check-avatar.js",
     "text": "node scripts/generate-text.js"
   },
   "private": true,
   "jest": {
-    "preset": "jest-expo"
+    "preset": "jest-expo",
+    "setupFiles": [
+      "<rootDir>/tests/setup/nativeModules.js"
+    ]
+  },
+  "allowScripts": {
+    "@shopify/react-native-skia@2.6.2": true
   }
 }

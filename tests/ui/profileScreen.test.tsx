@@ -6,6 +6,7 @@ jest.mock('expo-router', () => ({
   router: { push: jest.fn(), back: jest.fn(), replace: jest.fn(), canGoBack: () => true },
   useFocusEffect: (cb: () => void) => require('react').useEffect(cb, [cb]),
   useLocalSearchParams: () => ({}),
+  useIsFocused: () => true,
 }));
 
 let mockData: { profile: unknown; view: unknown; update: jest.Mock } = { profile: null, view: null, update: jest.fn() };

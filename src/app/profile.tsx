@@ -1,6 +1,7 @@
 import { router } from 'expo-router';
 import { useState } from 'react';
 import { setFeatured } from '@/game/achievements';
+import { ShareCardDialog } from '@/ui/avatar/ShareCard';
 import { GameButton } from '@/ui/GameButton';
 import {
   AchievementDialog,
@@ -18,6 +19,7 @@ import { allRulerFacts } from '@/ui/profile/rulerFacts';
 import { useProfileData } from '@/ui/profile/useProfileData';
 import { ScreenScaffold } from '@/ui/screens/ScreenScaffold';
 import { strings } from '@/ui/strings';
+import { StyleSheet, View } from 'react-native';
 
 /**
  * Everything the player has achieved, on one scrolling screen. Works offline; nothing unreached is
@@ -27,6 +29,7 @@ export default function ProfileScreen() {
   const { view, update } = useProfileData();
   const [editing, setEditing] = useState(false);
   const [openAchievement, setOpenAchievement] = useState<string | null>(null);
+  const [sharing, setSharing] = useState(false);
   const shown = view?.achievements.find((a) => a.id === openAchievement) ?? null;
 
   return (
@@ -37,6 +40,14 @@ export default function ProfileScreen() {
       {view && (
         <>
           <ProfileHeader view={view} onEditNickname={() => setEditing(true)} />
+          <View style={styles.pair}>
+            <View style={styles.half}>
+              <GameButton label={strings.dressingRoom} onPress={() => router.push('/dressing-room')} />
+            </View>
+            <View style={styles.half}>
+              <GameButton label={strings.shareCard} onPress={() => setSharing(true)} />
+            </View>
+          </View>
           <FeaturedBanner featured={view.featured} rulers={allRulerFacts} onPress={setOpenAchievement} />
           <SummaryTiles view={view} />
           <SectionTitle>{strings.sectionRarity}</SectionTitle>
@@ -56,6 +67,7 @@ export default function ProfileScreen() {
               setEditing(false);
             }}
           />
+          <ShareCardDialog view={view} visible={sharing} onClose={() => setSharing(false)} />
           <AchievementDialog
             achievement={shown}
             onClose={() => setOpenAchievement(null)}
@@ -66,3 +78,8 @@ export default function ProfileScreen() {
     </ScreenScaffold>
   );
 }
+
+const styles = StyleSheet.create({
+  pair: { flexDirection: 'row', gap: 8 },
+  half: { flex: 1 },
+});

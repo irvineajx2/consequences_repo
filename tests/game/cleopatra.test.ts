@@ -158,6 +158,9 @@ describe('cross-ruler secret achievements', () => {
     for (const id of ['love_older_than_rome', 'beware_the_ides']) {
       expect(view.achievements.find((a) => a.id === id)).toMatchObject({ title: LOCKED, description: LOCKED, earned: false });
     }
-    expect(achievementList(allRulerFacts).filter((a) => a.condition.type === 'endingsReached').every((a) => a.hidden)).toBe(true);
+    // Every cross-ruler achievement (endings from more than one ruler) is secret.
+    const crossRuler = achievementList(allRulerFacts).filter((a) => a.condition.type === 'endingsReached' && a.condition.all.length > 1);
+    expect(crossRuler.map((a) => a.id)).toEqual(['love_older_than_rome', 'beware_the_ides']);
+    expect(crossRuler.every((a) => a.hidden)).toBe(true);
   });
 });

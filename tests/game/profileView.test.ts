@@ -19,7 +19,7 @@ describe('profile selectors', () => {
       outdidHistory: 0,
       rulers: 4,
       achievementsEarned: 0,
-      achievementsTotal: 21,
+      achievementsTotal: 23,
     });
     expect(v.featured).toBeNull();
     expect(v.rarity.map((r) => [r.tier, r.reached, r.total])).toEqual([
@@ -47,10 +47,10 @@ describe('profile selectors', () => {
       matchedHistory: 1,
       outdidHistory: 0,
       rulers: 4,
-      achievementsEarned: 3,
-      achievementsTotal: 21,
+      achievementsEarned: 4,
+      achievementsTotal: 23,
     });
-    expect(v.achievements.filter((a) => a.earned).map((a) => a.id)).toEqual(['first_reign', 'faithful_copy', 'elizabeth_history']);
+    expect(v.achievements.filter((a) => a.earned).map((a) => a.id)).toEqual(['first_reign', 'faithful_copy', 'elizabeth_history', 'sea_dog']);
     expect(v.rarity.map((r) => [r.tier, r.reached, r.total])).toEqual([
       ['common', 2, 28],
       ['uncommon', 1, 17],
@@ -87,8 +87,8 @@ describe('profile selectors', () => {
       matchedHistory: 4,
       outdidHistory: 4,
       rulers: 4,
-      achievementsEarned: 21,
-      achievementsTotal: 21,
+      achievementsEarned: 23,
+      achievementsTotal: 23,
     });
     for (const row of v.rarity) expect(row.reached).toBe(row.total);
     for (const r of v.rulers) {
@@ -143,7 +143,7 @@ describe('a new ruler', () => {
     expect(v.summary.endingsTotal).toBe(66);
     const ids = achievementList([...allRulerFacts, facts]).map((a) => a.id);
     expect(ids).toEqual(expect.arrayContaining(['tester_history', 'tester_outdone', 'tester_every_road']));
-    expect(v.summary.achievementsTotal).toBe(24);
+    expect(v.summary.achievementsTotal).toBe(26);
   });
 
   it('every registered ruler is on the profile', () => {

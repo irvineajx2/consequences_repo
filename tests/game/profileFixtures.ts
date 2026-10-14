@@ -34,7 +34,7 @@ export const midGame: Profile = withAchievements({
       bestMatch: { matched: 17, finishedAt: AT },
     },
   },
-  progression: { totalXp: 1000, gold: 140, awardedRunIds: [], achievements: {} },
+  progression: { totalXp: 1000, gold: 140, awardedRunIds: [], achievements: {}, wardrobe: {} },
 });
 
 /** Every ending, branch scene and chronicle entry of every ruler; level 30. */
@@ -53,5 +53,5 @@ export const completionist: Profile = withAchievements({
       return [ruler.rules.ruler, record];
     }),
   ),
-  progression: { totalXp: xpAtLevel(30), gold: 2000, awardedRunIds: [], achievements: {} },
+  progression: { totalXp: xpAtLevel(30), gold: 2000, awardedRunIds: [], achievements: {}, wardrobe: {} },
 });

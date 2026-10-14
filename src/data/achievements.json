@@ -97,6 +97,40 @@
       }
     },
     {
+      "id": "sea_dog",
+      "title": "Sea Dog",
+      "description": "Reach an Elizabeth ending at sea.",
+      "condition": {
+        "type": "endingsReached",
+        "all": [
+          {
+            "ruler": "elizabeth-i",
+            "anyOf": [
+              "gloriana",
+              "mistress",
+              "pyrrhic"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "royalist_victory",
+      "title": "Royalist Victory",
+      "description": "Win a battle as Charles.",
+      "condition": {
+        "type": "endingsReached",
+        "all": [
+          {
+            "ruler": "charles-i",
+            "anyOf": [
+              "absolute_king"
+            ]
+          }
+        ]
+      }
+    },
+    {
       "id": "love_older_than_rome",
       "title": "A Love Older Than Rome",
       "description": "Reach Caesar's Lord of the Nile and Cleopatra's Nile pact.",

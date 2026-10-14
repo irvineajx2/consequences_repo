@@ -1,0 +1,57 @@
+{
+ "01_b1_cavalier": {
+  "base": "b1",
+  "top": "cavalier",
+  "bottoms": "cavalier",
+  "head": "cavalier"
+ },
+ "02_b2_courtlady": {
+  "base": "b2",
+  "top": "courtlady",
+  "bottoms": "courtlady",
+  "head": "courtlady"
+ },
+ "03_b6_trooper_top_courtlady_skirt": {
+  "base": "b6",
+  "top": "trooper",
+  "bottoms": "courtlady",
+  "head": "trooper"
+ },
+ "04_b5_courtlady_top_trooper_legs": {
+  "base": "b5",
+  "top": "courtlady",
+  "bottoms": "trooper"
+ },
+ "05_b4_starter_top_legionary_legs": {
+  "base": "b4",
+  "top": "starter",
+  "bottoms": "legionary",
+  "head": "legionary"
+ },
+ "06_b3_senator": {
+  "base": "b3",
+  "top": "senator",
+  "head": "senator"
+ },
+ "07_b6_mariner": {
+  "base": "b6",
+  "top": "mariner",
+  "bottoms": "mariner",
+  "head": "mariner"
+ },
+ "08_b1_cavalier_top_courtlady_skirt": {
+  "base": "b1",
+  "top": "cavalier",
+  "bottoms": "courtlady"
+ },
+ "09_b2_courtier_eyes_closed": {
+  "base": "b2",
+  "top": "courtier",
+  "bottoms": "courtier",
+  "head": "courtier",
+  "eyesClosed": true
+ },
+ "10_b5_bare": {
+  "base": "b5"
+ }
+}

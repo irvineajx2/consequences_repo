@@ -1,3 +1,4 @@
+import { defaultIdentity } from '../../src/game/profile';
 import {
   applyRunResult,
   emptyProfile,
@@ -95,10 +96,10 @@ describe('parseProfile', () => {
     const good = applyRunResult(emptyRulerProfile, resultOf('historical_path')).profile;
     const json = JSON.stringify({ version: 1, rulers: { a: good, b: { discovered: 'nope' } } });
     expect(parseProfile(json)).toEqual({
-      version: 4,
+      version: 5,
       rulers: { a: good },
       progression: migrateProgression({ a: good }),
-      identity: { nickname: 'Chronicler' },
+      identity: defaultIdentity,
     });
   });
 });

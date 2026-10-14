@@ -1,6 +1,7 @@
 // The title screen's level plate: medallion, rank, XP bar, XP towards the next level and gold.
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { levelFromTotalXp, type Progression, progression as config, rankTitle } from '../../game/progression';
+import { AvatarView } from '../profile/AvatarView';
 import { useSkin } from '../skin/SkinProvider';
 import { format, formatNumber, strings } from '../strings';
 import { Coin, MedallionSlot, XpBar } from './ProgressionArt';
@@ -22,6 +23,8 @@ export function LevelPlate({ progression, onPress }: { progression: Progression;
         needed: formatNumber(xpForLevel),
       })}, ${formatNumber(progression.gold)} ${config.currency.name}${onPress ? `. ${strings.openProfile}` : ''}`}
     >
+      {/* The avatar's bust beside the level medallion. */}
+      <AvatarView size={38} variant="bust" />
       <MedallionSlot level={level} />
       <View style={styles.column}>
         <Text style={[styles.rank, { fontFamily: skin.fonts.caption, color: skin.progression.colors.rank }]} numberOfLines={1}>
