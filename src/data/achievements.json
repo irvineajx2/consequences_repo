@@ -1,36 +1,50 @@
 {
-  "_note": "Achievements, in display order. A 'forEachRuler' entry is repeated for every ruler: {key} is the ruler's short name in lower case (elizabeth_history), {name} the short name itself. Conditions read only what the profile already records.",
+  "_note": "Achievements, in display order. A 'forEachRuler' entry is repeated for every ruler: {key} is the ruler's short name in lower case (elizabeth_history), {name} the short name itself. Conditions read only what the profile already records. Cross-ruler achievements ('endingsReached') need endings from several rulers, reached in any runs and any order.",
   "achievements": [
     {
       "id": "first_reign",
       "title": "First Reign",
       "description": "Finish any reign.",
-      "condition": { "type": "runsCompleted", "atLeast": 1 }
+      "condition": {
+        "type": "runsCompleted",
+        "atLeast": 1
+      }
     },
     {
       "id": "uncharted",
       "title": "Uncharted",
       "description": "Visit a branch scene for the first time.",
-      "condition": { "type": "branchScenesVisited", "atLeast": 1 }
+      "condition": {
+        "type": "branchScenesVisited",
+        "atLeast": 1
+      }
     },
     {
       "id": "off_the_map",
       "title": "Off the Map",
       "description": "Visit 10 different branch scenes across all rulers.",
-      "condition": { "type": "branchScenesVisited", "atLeast": 10 }
+      "condition": {
+        "type": "branchScenesVisited",
+        "atLeast": 10
+      }
     },
     {
       "id": "faithful_copy",
       "title": "Faithful Copy",
       "description": "Match every decision in a single reign.",
-      "condition": { "type": "everyDecisionMatched" }
+      "condition": {
+        "type": "everyDecisionMatched"
+      }
     },
     {
       "forEachRuler": {
         "id": "{key}_history",
         "title": "In Their Footsteps: {name}",
         "description": "Reach {name}'s historical ending.",
-        "condition": { "type": "endingCategory", "category": "historical" }
+        "condition": {
+          "type": "endingCategory",
+          "category": "historical"
+        }
       }
     },
     {
@@ -39,7 +53,10 @@
         "title": "Better Than History: {name}",
         "description": "Reach {name}'s outperform ending.",
         "hidden": true,
-        "condition": { "type": "endingCategory", "category": "outperformed" }
+        "condition": {
+          "type": "endingCategory",
+          "category": "outperformed"
+        }
       }
     },
     {
@@ -47,26 +64,85 @@
         "id": "{key}_every_road",
         "title": "Every Road: {name}",
         "description": "Reach every one of {name}'s endings.",
-        "condition": { "type": "everyEnding" }
+        "condition": {
+          "type": "everyEnding"
+        }
       }
     },
     {
       "id": "legendary",
       "title": "Against All Odds",
       "description": "Reach any Legendary ending.",
-      "condition": { "type": "endingRarity", "tier": "legendary" }
+      "condition": {
+        "type": "endingRarity",
+        "tier": "legendary"
+      }
     },
     {
       "id": "rank_chronicler",
       "title": "Chronicler",
       "description": "Reach the rank of Chronicler.",
-      "condition": { "type": "rank", "title": "Chronicler" }
+      "condition": {
+        "type": "rank",
+        "title": "Chronicler"
+      }
     },
     {
       "id": "rank_sage",
       "title": "Sage",
       "description": "Reach the rank of Sage.",
-      "condition": { "type": "rank", "title": "Sage" }
+      "condition": {
+        "type": "rank",
+        "title": "Sage"
+      }
+    },
+    {
+      "id": "love_older_than_rome",
+      "title": "A Love Older Than Rome",
+      "description": "Reach Caesar's Lord of the Nile and Cleopatra's Nile pact.",
+      "hidden": true,
+      "condition": {
+        "type": "endingsReached",
+        "all": [
+          {
+            "ruler": "julius-caesar",
+            "anyOf": [
+              "lord_nile"
+            ]
+          },
+          {
+            "ruler": "cleopatra",
+            "anyOf": [
+              "nile_pact"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "beware_the_ides",
+      "title": "Beware the Ides",
+      "description": "Keep Caesar alive past the Ides of March, as Caesar and as Cleopatra.",
+      "hidden": true,
+      "condition": {
+        "type": "endingsReached",
+        "all": [
+          {
+            "ruler": "julius-caesar",
+            "anyOf": [
+              "pater_patriae",
+              "uneasy_crown",
+              "second_sulla"
+            ]
+          },
+          {
+            "ruler": "cleopatra",
+            "anyOf": [
+              "two_worlds"
+            ]
+          }
+        ]
+      }
     }
   ]
 }

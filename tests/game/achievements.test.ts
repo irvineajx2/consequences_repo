@@ -20,7 +20,7 @@ const ids = list.map((a) => a.id);
 const earnedIds = (p: Profile) => Object.keys(p.progression.achievements).sort();
 
 describe('the achievement list', () => {
-  it('has the first set of 16, in order, with three per ruler generated from the ruler list', () => {
+  it('has the first set, in order, with three per ruler generated from the ruler list, then the cross-ruler two', () => {
     expect(ids).toEqual([
       'first_reign',
       'uncharted',
@@ -29,18 +29,30 @@ describe('the achievement list', () => {
       'elizabeth_history',
       'caesar_history',
       'charles_history',
+      'cleopatra_history',
       'elizabeth_outdone',
       'caesar_outdone',
       'charles_outdone',
+      'cleopatra_outdone',
       'elizabeth_every_road',
       'caesar_every_road',
       'charles_every_road',
+      'cleopatra_every_road',
       'legendary',
       'rank_chronicler',
       'rank_sage',
+      'love_older_than_rome',
+      'beware_the_ides',
     ]);
     expect(list.find((a) => a.id === 'caesar_history')!.title).toBe('In Their Footsteps: Caesar');
-    expect(list.filter((a) => a.hidden).map((a) => a.id)).toEqual(['elizabeth_outdone', 'caesar_outdone', 'charles_outdone']);
+    expect(list.filter((a) => a.hidden).map((a) => a.id)).toEqual([
+      'elizabeth_outdone',
+      'caesar_outdone',
+      'charles_outdone',
+      'cleopatra_outdone',
+      'love_older_than_rome',
+      'beware_the_ides',
+    ]);
   });
 
   it("uses rank names that exist in progression.json", () => {

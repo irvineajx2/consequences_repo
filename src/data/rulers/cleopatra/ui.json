@@ -1,0 +1,87 @@
+{
+  "meters": [
+    {
+      "id": "treasury",
+      "visible": true,
+      "style": "fill",
+      "warnBelow": 20
+    },
+    {
+      "id": "alexandria",
+      "visible": true,
+      "style": "fill",
+      "warnBelow": 20
+    },
+    {
+      "id": "divinity",
+      "visible": true,
+      "style": "fill",
+      "warnBelow": 20
+    },
+    {
+      "id": "fleet",
+      "visible": true,
+      "style": "fill"
+    },
+    {
+      "id": "rome",
+      "visible": true,
+      "style": "fill",
+      "warnBelow": 20
+    },
+    {
+      "id": "octavian",
+      "visible": false
+    },
+    {
+      "id": "rivals",
+      "visible": false
+    }
+  ],
+  "prologue": {
+    "image": "QP1"
+  },
+  "eras": [
+    {
+      "id": "era1",
+      "startsAt": "Q01",
+      "image": "QERA1"
+    },
+    {
+      "id": "era2",
+      "startsAt": "Q05",
+      "image": "QERA2"
+    },
+    {
+      "id": "era3",
+      "startsAt": "Q12",
+      "image": "QERA3"
+    },
+    {
+      "id": "era4",
+      "startsAt": "Q16",
+      "image": "QERA4",
+      "variants": [
+        {
+          "id": "era4_octavian",
+          "if": [
+            [
+              "patron",
+              "==",
+              "octavian"
+            ]
+          ],
+          "image": "QO1"
+        }
+      ]
+    },
+    {
+      "id": "era5",
+      "startsAt": "Q20",
+      "image": "QERA5"
+    }
+  ],
+  "rulerCard": {
+    "image": "QR1"
+  }
+}

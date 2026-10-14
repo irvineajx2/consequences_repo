@@ -109,7 +109,8 @@ describe('era card images', () => {
           // Registered for this ruler (or not drawn yet: the placeholder), never another ruler's file.
           expect(source).toBe(own(ruler, id));
           expect(others).not.toContain(source);
-          if (ruler.id !== 'charles-i') expect(imageRegistries[ruler.id][id]).toBeDefined();
+          // Rulers whose art is in have every era card drawn.
+          if (Object.keys(imageRegistries[ruler.id] ?? {}).length > 0) expect(imageRegistries[ruler.id][id]).toBeDefined();
         }
       }
     },

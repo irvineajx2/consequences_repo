@@ -72,7 +72,7 @@ describe('the profile screen', () => {
 
   it('shows every section for a mid-game player', () => {
     const text = everything(showProfile(midGame));
-    for (const part of ['Chronicler', 'Novice', 'Rarest achievement', 'Faithful Copy', 'Endings: 3 of 47 reached', 'Common endings: 2 of 20 reached', 'Elizabeth I', 'Julius Caesar', 'Charles I', 'Complete a reign as Julius Caesar to unlock', 'Weekly history quiz: coming soon', 'Avatar']) {
+    for (const part of ['Chronicler', 'Novice', 'Rarest achievement', 'Faithful Copy', 'Endings: 3 of 64 reached', 'Common endings: 2 of 28 reached', 'Elizabeth I', 'Julius Caesar', 'Charles I', 'Complete a reign as Julius Caesar to unlock', 'Complete a reign as Charles I to unlock', 'Cleopatra VII', 'Weekly history quiz: coming soon', 'Avatar']) {
       expect(text).toContain(part);
     }
   });
