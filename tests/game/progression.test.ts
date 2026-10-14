@@ -1,3 +1,5 @@
+import { DEFAULT_OUTFIT } from '../../src/game/avatar';
+import { defaultIdentity } from '../../src/game/profile';
 import { getRuler, rulers } from '../../src/data/rulers';
 import { finishRun, loadProfile, loadRun, saveRun } from '../../src/game/persistence';
 import { applyRunResult, emptyRulerProfile, parseProfile, rulerIdForProfileKey, rulerProfile } from '../../src/game/profile';
@@ -200,6 +202,7 @@ describe('migration to version 3', () => {
       gold: 80 + 20 + 100,
       awardedRunIds: [],
       achievements: {},
+      wardrobe: {},
     });
     expect(profile.rulers).toEqual(v2.rulers);
     // A sensible level straight away: 805 XP is level 4.
@@ -209,13 +212,13 @@ describe('migration to version 3', () => {
     expect((await loadProfile(storage)).progression).toEqual(profile.progression);
   });
 
-  it("keeps a version 3 profile's progress, as version 4 with no achievements and the default identity", () => {
+  it("keeps a version 3 profile's progress, as version 5 with no achievements and the default identity", () => {
     const v3 = { version: 3, rulers: {}, progression: { totalXp: 999, gold: 5, awardedRunIds: ['x'] } };
     expect(parseProfile(JSON.stringify(v3))).toEqual({
-      version: 4,
+      version: 5,
       rulers: {},
-      progression: { ...v3.progression, achievements: {} },
-      identity: { nickname: 'Chronicler' },
+      progression: { ...v3.progression, achievements: {}, wardrobe: {} },
+      identity: defaultIdentity,
     });
   });
 
@@ -234,7 +237,29 @@ describe('migration to version 3', () => {
       progression: { totalXp: 999, gold: 5, awardedRunIds: ['x'], achievements: { first_reign: AT } },
       identity: { nickname: 'Gloriana', featuredAchievementId: 'first_reign' },
     };
-    expect(parseProfile(JSON.stringify(v4))).toEqual(v4);
+    // As version 5: no wardrobe yet, the default avatar.
+    expect(parseProfile(JSON.stringify(v4))).toEqual({
+      ...v4,
+      version: 5,
+      progression: { ...v4.progression, wardrobe: {} },
+      identity: { ...v4.identity, avatar: DEFAULT_OUTFIT },
+    });
+  });
+
+  it('keeps a version 5 profile as stored, avatar and wardrobe included', () => {
+    const v5 = {
+      version: 5,
+      rulers: {},
+      progression: {
+        totalXp: 999,
+        gold: 5,
+        awardedRunIds: ['x'],
+        achievements: { sea_dog: AT },
+        wardrobe: { mariner: { at: AT, by: 'achievement' }, puritan: { at: AT, by: 'gold', price: 25 } },
+      },
+      identity: { nickname: 'Gloriana', avatar: { base: 'b2', head: 'mariner', top: 'mariner', bottoms: 'puritan' } },
+    };
+    expect(parseProfile(JSON.stringify(v5))).toEqual(v5);
   });
 
   it('gives an empty profile nothing', () => {

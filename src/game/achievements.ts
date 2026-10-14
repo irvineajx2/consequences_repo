@@ -162,6 +162,12 @@ export function achievementShare(a: Achievement, rulers: readonly RulerFacts[]):
         .reduce((sum, [e]) => sum + (own.rarity[e]?.share ?? 0), 0);
     case 'endingRarity':
       return best((r) => Object.values(r.rarity).filter((x) => x.tier === c.tier).reduce((s, x) => s + x.share, 0));
+    case 'endingsReached': {
+      // One ruler's endings: one run can earn it. Several rulers' (cross-ruler): it takes many runs.
+      if (c.all.length !== 1) return undefined;
+      const facts = rulers.find((r) => r.id === c.all[0].ruler);
+      return facts ? c.all[0].anyOf.reduce((sum, e) => sum + (facts.rarity[e]?.share ?? 0), 0) : undefined;
+    }
     default:
       return undefined;
   }

@@ -28,9 +28,19 @@ export interface Progression {
   readonly awardedRunIds: readonly string[];
   /** Achievements earned, by id: when each was first earned (ISO timestamp). Recorded once. */
   readonly achievements: Readonly<Record<string, string>>;
+  /** Avatar items owned, by id: bought with gold or unlocked by an achievement, recorded once. */
+  readonly wardrobe: Readonly<Record<string, WardrobeEntry>>;
 }
 
-export const emptyProgression: Progression = { totalXp: 0, gold: 0, awardedRunIds: [], achievements: {} };
+export interface WardrobeEntry {
+  /** When it was bought or unlocked (ISO timestamp). */
+  readonly at: string;
+  readonly by: 'gold' | 'achievement';
+  /** Gold paid, for a purchase. */
+  readonly price?: number;
+}
+
+export const emptyProgression: Progression = { totalXp: 0, gold: 0, awardedRunIds: [], achievements: {}, wardrobe: {} };
 
 /** How many awarded run ids are remembered. */
 export const AWARDED_RUN_MEMORY = 100;
@@ -162,6 +172,7 @@ export function applyRunRewards(
         gold: current.gold + breakdown.gold,
         awardedRunIds: [...current.awardedRunIds, runId].slice(-AWARDED_RUN_MEMORY),
         achievements: current.achievements,
+        wardrobe: current.wardrobe,
       };
   const levelAfter = levelFromTotalXp(next.totalXp, cfg).level;
   return {
@@ -195,7 +206,7 @@ export function migrateProgression(
     }
     totalXp += record.runsCompleted * cfg.migration.xpPerEarlierRun;
   }
-  return { totalXp, gold, awardedRunIds: [], achievements: {} };
+  return { totalXp, gold, awardedRunIds: [], achievements: {}, wardrobe: {} };
 }
 
 /** One stretch of the XP bar animation: within one level, from one fill to another. */

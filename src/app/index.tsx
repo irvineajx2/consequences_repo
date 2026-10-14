@@ -89,10 +89,9 @@ export default function TitleScreen() {
           <View style={styles.half}>
             <GameButton label={strings.endings} onPress={() => router.push({ pathname: '/endings', params })} />
           </View>
-          <View style={styles.half}>
-            <GameButton label={strings.profile} onPress={openProfile} />
-          </View>
         </View>
+        {/* Its own row: three skinned buttons across don't fit their labels on a phone. */}
+        <GameButton label={strings.profile} onPress={openProfile} />
         {version !== undefined && (
           // Long-press: the hidden testing switch that unlocks every ruler.
           <Pressable onLongPress={toggleUnlockAll} delayLongPress={800} accessible={false}>

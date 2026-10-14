@@ -1,7 +1,8 @@
 // The permanent record of a player's reigns: what they have discovered and which endings they have
 // reached. Pure TypeScript.
 import type { Decision } from '../core';
-import { emptyProgression, migrateProgression, type Progression } from './progression';
+import { DEFAULT_OUTFIT, type Outfit } from './avatar';
+import { emptyProgression, migrateProgression, type Progression, type WardrobeEntry } from './progression';
 
 export interface EndingRecord {
   /** When the ending was first reached (ISO timestamp from the run that reached it). */
@@ -36,27 +37,29 @@ export interface Identity {
   readonly nickname: string;
   /** The earned achievement the player chose to feature; absent until they choose. */
   readonly featuredAchievementId?: string;
+  /** The avatar: its base and the items worn. */
+  readonly avatar: Outfit;
 }
 
 export const DEFAULT_NICKNAME = 'Chronicler';
-export const defaultIdentity: Identity = { nickname: DEFAULT_NICKNAME };
+export const defaultIdentity: Identity = { nickname: DEFAULT_NICKNAME, avatar: DEFAULT_OUTFIT };
 
 /**
  * The stored profile: one record per ruler, keyed by the rules file's `ruler` id, plus the
  * account-wide progression (XP, gold and achievements, shared across rulers) and the player's
  * identity. Version 2 added uncharted paths, version 3 progression, version 4 each ruler's best
- * match, achievements and identity; older profiles are migrated on reading, keeping everything
- * they recorded.
+ * match, achievements and identity, version 5 the avatar and its wardrobe; older profiles are
+ * migrated on reading, keeping everything they recorded.
  */
 export interface Profile {
-  readonly version: 4;
+  readonly version: 5;
   readonly rulers: Readonly<Record<string, RulerProfile>>;
   readonly progression: Progression;
   readonly identity: Identity;
 }
 
 export const emptyRulerProfile: RulerProfile = { discovered: [], endings: {}, runsCompleted: 0, uncharted: [] };
-export const emptyProfile: Profile = { version: 4, rulers: {}, progression: emptyProgression, identity: defaultIdentity };
+export const emptyProfile: Profile = { version: 5, rulers: {}, progression: emptyProgression, identity: defaultIdentity };
 
 /**
  * A profile key (the rules file's `ruler` id, e.g. "elizabeth_i") as a ruler id (its folder name,
@@ -168,7 +171,21 @@ function parseProgression(value: unknown): Progression | null {
   if (isRecord(value.achievements)) {
     for (const [id, at] of Object.entries(value.achievements)) if (typeof at === 'string') achievements[id] = at;
   }
-  return { totalXp, gold, awardedRunIds, achievements };
+  // Ledgers before version 5 have no wardrobe yet.
+  const wardrobe: Record<string, WardrobeEntry> = {};
+  if (isRecord(value.wardrobe)) {
+    for (const [id, w] of Object.entries(value.wardrobe)) {
+      if (!isRecord(w) || typeof w.at !== 'string' || (w.by !== 'gold' && w.by !== 'achievement')) continue;
+      wardrobe[id] = { at: w.at, by: w.by, ...(typeof w.price === 'number' ? { price: w.price } : {}) };
+    }
+  }
+  return { totalXp, gold, awardedRunIds, achievements, wardrobe };
+}
+
+function parseOutfit(value: unknown): Outfit {
+  if (!isRecord(value) || typeof value.base !== 'string') return DEFAULT_OUTFIT;
+  const slot = (k: string) => (typeof value[k] === 'string' ? { [k]: value[k] as string } : {});
+  return { base: value.base, ...slot('head'), ...slot('top'), ...slot('bottoms') };
 }
 
 function parseIdentity(value: unknown): Identity {
@@ -176,11 +193,13 @@ function parseIdentity(value: unknown): Identity {
   return {
     nickname: value.nickname,
     ...(typeof value.featuredAchievementId === 'string' ? { featuredAchievementId: value.featuredAchievementId } : {}),
+    // Profiles before version 5 have no avatar: they get the default.
+    avatar: parseOutfit(value.avatar),
   };
 }
 
 /**
- * Reads a stored profile, versions 1 to 4, as version 4. A profile from before progression is
+ * Reads a stored profile, versions 1 to 5, as version 5. A profile from before progression is
  * credited for what it already records (see `migrateProgression`); one from before version 4 gets
  * the default identity and no achievements yet (they are checked against its records on load).
  * Anything unreadable becomes an empty profile rather than an error.
@@ -190,7 +209,7 @@ export function parseProfile(json: string | null): Profile {
   try {
     const value: unknown = JSON.parse(json);
     const version = isRecord(value) ? value.version : undefined;
-    if (!isRecord(value) || ![1, 2, 3, 4].includes(version as number) || !isRecord(value.rulers)) {
+    if (!isRecord(value) || ![1, 2, 3, 4, 5].includes(version as number) || !isRecord(value.rulers)) {
       return emptyProfile;
     }
     const rulers: Record<string, RulerProfile> = {};
@@ -198,13 +217,13 @@ export function parseProfile(json: string | null): Profile {
       const parsed = parseRuler(r);
       if (parsed) rulers[id] = parsed;
     }
-    const stored = version === 3 || version === 4 ? parseProgression(value.progression) : null;
+    const stored = version === 3 || version === 4 || version === 5 ? parseProgression(value.progression) : null;
     const progression =
       stored ??
       migrateProgression(
         Object.fromEntries(Object.entries(rulers).map(([key, r]) => [rulerIdForProfileKey(key), r])),
       );
-    return { version: 4, rulers, progression, identity: parseIdentity(value.identity) };
+    return { version: 5, rulers, progression, identity: parseIdentity(value.identity) };
   } catch {
     return emptyProfile;
   }

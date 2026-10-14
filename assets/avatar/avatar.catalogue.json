@@ -1,0 +1,1368 @@
+{
+ "version": 2,
+ "canvas": [
+  1024,
+  1536
+ ],
+ "eyeBlinkPatch": "eyes_closed",
+ "layers": null,
+ "bases": {
+  "b1": {
+   "thighs": {
+    "piece": "b1_thighs",
+    "layer": -1
+   },
+   "body": {
+    "piece": "b1_body",
+    "layer": 0
+   },
+   "eyesClosed": {
+    "piece": "b1_eyes_closed",
+    "layer": 1
+   },
+   "arms": {
+    "piece": "b1_arms",
+    "layer": 65
+   },
+   "hands": {
+    "piece": "b1_hands",
+    "layer": 90
+   },
+   "bandHideMask": "b1_bandhide",
+   "label": "Light skin, short wavy chestnut hair"
+  },
+  "b2": {
+   "thighs": {
+    "piece": "b2_thighs",
+    "layer": -1
+   },
+   "body": {
+    "piece": "b2_body",
+    "layer": 0
+   },
+   "eyesClosed": {
+    "piece": "b2_eyes_closed",
+    "layer": 1
+   },
+   "arms": {
+    "piece": "b2_arms",
+    "layer": 65
+   },
+   "hands": {
+    "piece": "b2_hands",
+    "layer": 90
+   },
+   "frontHair": {
+    "piece": "b2_front_hair",
+    "layer": 80
+   },
+   "bandHideMask": "b2_bandhide",
+   "label": "Light skin, long auburn waves"
+  },
+  "b3": {
+   "thighs": {
+    "piece": "b3_thighs",
+    "layer": -1
+   },
+   "body": {
+    "piece": "b3_body",
+    "layer": 0
+   },
+   "eyesClosed": {
+    "piece": "b3_eyes_closed",
+    "layer": 1
+   },
+   "arms": {
+    "piece": "b3_arms",
+    "layer": 65
+   },
+   "hands": {
+    "piece": "b3_hands",
+    "layer": 90
+   },
+   "frontHair": {
+    "piece": "b3_front_hair",
+    "layer": 80
+   },
+   "bandHideMask": "b3_bandhide",
+   "label": "Olive-brown skin, short black curls"
+  },
+  "b4": {
+   "thighs": {
+    "piece": "b4_thighs",
+    "layer": -1
+   },
+   "body": {
+    "piece": "b4_body",
+    "layer": 0
+   },
+   "eyesClosed": {
+    "piece": "b4_eyes_closed",
+    "layer": 1
+   },
+   "arms": {
+    "piece": "b4_arms",
+    "layer": 65
+   },
+   "hands": {
+    "piece": "b4_hands",
+    "layer": 90
+   },
+   "frontHair": {
+    "piece": "b4_front_hair",
+    "layer": 80
+   },
+   "bandHideMask": "b4_bandhide",
+   "label": "Olive-brown skin, dark hair in a low bun"
+  },
+  "b5": {
+   "thighs": {
+    "piece": "b5_thighs",
+    "layer": -1
+   },
+   "body": {
+    "piece": "b5_body",
+    "layer": 0
+   },
+   "eyesClosed": {
+    "piece": "b5_eyes_closed",
+    "layer": 1
+   },
+   "arms": {
+    "piece": "b5_arms",
+    "layer": 65
+   },
+   "hands": {
+    "piece": "b5_hands",
+    "layer": 90
+   },
+   "frontHair": {
+    "piece": "b5_front_hair",
+    "layer": 80
+   },
+   "bandHideMask": "b5_bandhide",
+   "label": "Deep brown skin, close-cropped black hair"
+  },
+  "b6": {
+   "thighs": {
+    "piece": "b6_thighs",
+    "layer": -1
+   },
+   "body": {
+    "piece": "b6_body",
+    "layer": 0
+   },
+   "eyesClosed": {
+    "piece": "b6_eyes_closed",
+    "layer": 1
+   },
+   "arms": {
+    "piece": "b6_arms",
+    "layer": 65
+   },
+   "hands": {
+    "piece": "b6_hands",
+    "layer": 90
+   },
+   "frontHair": {
+    "piece": "b6_front_hair",
+    "layer": 80
+   },
+   "bandHideMask": "b6_bandhide",
+   "label": "Deep brown skin, long black curls"
+  }
+ },
+ "items": {
+  "starter": {
+   "name": "Starter",
+   "waist": 705,
+   "pieces": {
+    "top": {
+     "piece": "starter_top",
+     "layer": 20
+    },
+    "topExtension": {
+     "piece": "starter_top_ext",
+     "layer": 19
+    },
+    "sleeves": {
+     "piece": "starter_sleeves",
+     "layer": 70
+    },
+    "bottoms": {
+     "piece": "starter_bottoms",
+     "layer": 30
+    },
+    "shirtStrip": {
+     "piece": "starter_shirtstrip",
+     "layer": 10
+    }
+   },
+   "slot": "set",
+   "topBodyHide": "starter_top_bodyhide",
+   "topArmsHide": "starter_top_armshide",
+   "bottomsBodyHide": "starter_bottoms_bodyhide",
+   "bottomsArmsHide": "starter_bottoms_armshide",
+   "unlock": {
+    "type": "free"
+   },
+   "note": "Plain linen shirt and wool breeches: what most people wore, in most centuries.",
+   "rulerSet": null,
+   "slots": [
+    "top",
+    "bottoms"
+   ]
+  },
+  "cavalier": {
+   "name": "Cavalier",
+   "waist": 692,
+   "pieces": {
+    "head": {
+     "piece": "cavalier_head",
+     "layer": -5
+    },
+    "top": {
+     "piece": "cavalier_top",
+     "layer": 40
+    },
+    "topExtension": {
+     "piece": "cavalier_top_ext",
+     "layer": 39
+    },
+    "sleeves": {
+     "piece": "cavalier_sleeves",
+     "layer": 70
+    },
+    "overlay": {
+     "piece": "cavalier_overlay",
+     "layer": 75
+    },
+    "bottoms": {
+     "piece": "cavalier_bottoms",
+     "layer": 30
+    },
+    "shirtStrip": {
+     "piece": "cavalier_shirtstrip",
+     "layer": 10
+    }
+   },
+   "slot": "set",
+   "overlayTop": 668,
+   "topBodyHide": "cavalier_top_bodyhide",
+   "topArmsHide": "cavalier_top_armshide",
+   "bottomsBodyHide": "cavalier_bottoms_bodyhide",
+   "bottomsArmsHide": "cavalier_bottoms_armshide",
+   "unlock": {
+    "type": "gold",
+    "price": null
+   },
+   "note": "Satin doublet, falling lace collar and bucket-top boots: the Royalist look of the 1640s.",
+   "rulerSet": "charles-i",
+   "slots": [
+    "head",
+    "top",
+    "bottoms"
+   ]
+  },
+  "courtlady": {
+   "name": "Elizabethan court lady",
+   "waist": 658,
+   "pieces": {
+    "head": {
+     "piece": "courtlady_head",
+     "layer": -5
+    },
+    "top": {
+     "piece": "courtlady_top",
+     "layer": 20
+    },
+    "topExtension": {
+     "piece": "courtlady_top_ext",
+     "layer": 19
+    },
+    "sleeves": {
+     "piece": "courtlady_sleeves",
+     "layer": 70
+    },
+    "bottoms": {
+     "piece": "courtlady_bottoms",
+     "layer": 60
+    },
+    "shirtStrip": {
+     "piece": "courtlady_shirtstrip",
+     "layer": 10
+    }
+   },
+   "slot": "set",
+   "topBodyHide": "courtlady_top_bodyhide",
+   "topArmsHide": "courtlady_top_armshide",
+   "bottomsBodyHide": "courtlady_bottoms_bodyhide",
+   "bottomsArmsHide": "courtlady_bottoms_armshide",
+   "unlock": {
+    "type": "gold",
+    "price": null
+   },
+   "note": "A velvet gown over a farthingale, with a ruff and a jewelled hood. Sumptuary laws limited who could wear crimson velvet.",
+   "rulerSet": "elizabeth-i",
+   "slots": [
+    "head",
+    "top",
+    "bottoms"
+   ]
+  },
+  "courtier": {
+   "name": "Elizabethan courtier",
+   "waist": 695,
+   "pieces": {
+    "head": {
+     "piece": "courtier_head",
+     "layer": 85
+    },
+    "top": {
+     "piece": "courtier_top",
+     "layer": 40
+    },
+    "topExtension": {
+     "piece": "courtier_top_ext",
+     "layer": 39
+    },
+    "sleeves": {
+     "piece": "courtier_sleeves",
+     "layer": 70
+    },
+    "bottoms": {
+     "piece": "courtier_bottoms",
+     "layer": 30
+    },
+    "shirtStrip": {
+     "piece": "courtier_shirtstrip",
+     "layer": 10
+    }
+   },
+   "hairHide": {
+    "b1": "courtier_hairhide_b1",
+    "b2": "courtier_hairhide_b2",
+    "b3": "courtier_hairhide_b3",
+    "b4": "courtier_hairhide_b4",
+    "b5": null,
+    "b6": "courtier_hairhide_b6"
+   },
+   "slot": "set",
+   "topBodyHide": "courtier_top_bodyhide",
+   "topArmsHide": "courtier_top_armshide",
+   "bottomsBodyHide": "courtier_bottoms_bodyhide",
+   "bottomsArmsHide": "courtier_bottoms_armshide",
+   "unlock": {
+    "type": "gold",
+    "price": null
+   },
+   "note": "A padded doublet, starched ruff and paned trunk hose: the height of court fashion in the 1580s.",
+   "rulerSet": "elizabeth-i",
+   "slots": [
+    "head",
+    "top",
+    "bottoms"
+   ]
+  },
+  "mariner": {
+   "name": "Mariner of the Golden Hind",
+   "waist": 697,
+   "pieces": {
+    "head": {
+     "piece": "mariner_head",
+     "layer": 85
+    },
+    "top": {
+     "piece": "mariner_top",
+     "layer": 40
+    },
+    "topExtension": {
+     "piece": "mariner_top_ext",
+     "layer": 39
+    },
+    "sleeves": {
+     "piece": "mariner_sleeves",
+     "layer": 70
+    },
+    "bottoms": {
+     "piece": "mariner_bottoms",
+     "layer": 30
+    },
+    "shirtStrip": {
+     "piece": "mariner_shirtstrip",
+     "layer": 10
+    }
+   },
+   "hairHide": {
+    "b1": "mariner_hairhide_b1",
+    "b2": "mariner_hairhide_b2",
+    "b3": "mariner_hairhide_b3",
+    "b4": "mariner_hairhide_b4",
+    "b5": "mariner_hairhide_b5",
+    "b6": "mariner_hairhide_b6"
+   },
+   "slot": "set",
+   "topBodyHide": "mariner_top_bodyhide",
+   "topArmsHide": "mariner_top_armshide",
+   "bottomsBodyHide": "mariner_bottoms_bodyhide",
+   "bottomsArmsHide": "mariner_bottoms_armshide",
+   "unlock": {
+    "type": "achievement",
+    "rule": "Reach an Elizabeth ending at sea"
+   },
+   "note": "Leather jerkin, wide canvas slops and a knitted Monmouth cap, as worn by Drake's crew on the voyage of 1577 to 1580.",
+   "rulerSet": "elizabeth-i",
+   "slots": [
+    "head",
+    "top",
+    "bottoms"
+   ]
+  },
+  "puritan": {
+   "name": "Puritan",
+   "waist": 702,
+   "pieces": {
+    "head": {
+     "piece": "puritan_head",
+     "layer": -5
+    },
+    "top": {
+     "piece": "puritan_top",
+     "layer": 40
+    },
+    "topExtension": {
+     "piece": "puritan_top_ext",
+     "layer": 39
+    },
+    "sleeves": {
+     "piece": "puritan_sleeves",
+     "layer": 70
+    },
+    "bottoms": {
+     "piece": "puritan_bottoms",
+     "layer": 30
+    },
+    "shirtStrip": {
+     "piece": "puritan_shirtstrip",
+     "layer": 10
+    }
+   },
+   "slot": "set",
+   "topBodyHide": "puritan_top_bodyhide",
+   "topArmsHide": "puritan_top_armshide",
+   "bottomsBodyHide": "puritan_bottoms_bodyhide",
+   "bottomsArmsHide": "puritan_bottoms_armshide",
+   "unlock": {
+    "type": "gold",
+    "price": null
+   },
+   "note": "A plain dark suit, white falling band and tall hat, with no lace and no buckles.",
+   "rulerSet": "charles-i",
+   "slots": [
+    "head",
+    "top",
+    "bottoms"
+   ]
+  },
+  "trooper": {
+   "name": "Trooper",
+   "waist": 719,
+   "pieces": {
+    "head": {
+     "piece": "trooper_head",
+     "layer": 85
+    },
+    "top": {
+     "piece": "trooper_top",
+     "layer": 45
+    },
+    "topExtension": {
+     "piece": "trooper_top_ext",
+     "layer": 44
+    },
+    "sleeves": {
+     "piece": "trooper_sleeves",
+     "layer": 70
+    },
+    "bottoms": {
+     "piece": "trooper_bottoms",
+     "layer": 30
+    },
+    "shirtStrip": {
+     "piece": "trooper_shirtstrip",
+     "layer": 10
+    }
+   },
+   "hairHide": {
+    "b1": "trooper_hairhide_b1",
+    "b2": "trooper_hairhide_b2",
+    "b3": "trooper_hairhide_b3",
+    "b4": "trooper_hairhide_b4",
+    "b5": "trooper_hairhide_b5",
+    "b6": "trooper_hairhide_b6"
+   },
+   "slot": "set",
+   "topBodyHide": "trooper_top_bodyhide",
+   "topArmsHide": "trooper_top_armshide",
+   "bottomsBodyHide": "trooper_bottoms_bodyhide",
+   "bottomsArmsHide": "trooper_bottoms_armshide",
+   "unlock": {
+    "type": "achievement",
+    "rule": "Win a battle as Charles"
+   },
+   "note": "Buff leather coat, breastplate and lobster-tail helmet: Civil War cavalry kit.",
+   "rulerSet": "charles-i",
+   "slots": [
+    "head",
+    "top",
+    "bottoms"
+   ]
+  },
+  "legionary": {
+   "name": "Roman legionary",
+   "waist": 871,
+   "pieces": {
+    "head": {
+     "piece": "legionary_head",
+     "layer": 85
+    },
+    "top": {
+     "piece": "legionary_top",
+     "layer": 45
+    },
+    "topExtension": {
+     "piece": "legionary_top_ext",
+     "layer": 44
+    },
+    "sleeves": {
+     "piece": "legionary_sleeves",
+     "layer": 70
+    },
+    "back": {
+     "piece": "legionary_cloak",
+     "layer": -5
+    },
+    "bottoms": {
+     "piece": "legionary_bottoms",
+     "layer": 30
+    },
+    "shirtStrip": {
+     "piece": null,
+     "layer": 10
+    }
+   },
+   "hairHide": {
+    "b1": "legionary_hairhide_b1",
+    "b2": "legionary_hairhide_b2",
+    "b3": "legionary_hairhide_b3",
+    "b4": "legionary_hairhide_b4",
+    "b5": "legionary_hairhide_b5",
+    "b6": "legionary_hairhide_b6"
+   },
+   "slot": "set",
+   "topBodyHide": "legionary_top_bodyhide",
+   "topArmsHide": "legionary_top_armshide",
+   "bottomsBodyHide": "legionary_bottoms_bodyhide",
+   "bottomsArmsHide": "legionary_bottoms_armshide",
+   "unlock": {
+    "type": "gold",
+    "price": null
+   },
+   "note": "Mail shirt, red tunic, cloak and hobnailed sandals: a soldier of Caesar's legions, around 50 BC.",
+   "rulerSet": "julius-caesar",
+   "slots": [
+    "head",
+    "top",
+    "bottoms"
+   ]
+  },
+  "senator": {
+   "name": "Roman senator",
+   "waist": null,
+   "pieces": {
+    "head": {
+     "piece": "senator_head",
+     "layer": 85
+    },
+    "full": {
+     "piece": "senator_full",
+     "layer": 50
+    }
+   },
+   "slot": "full",
+   "topBodyHide": "senator_top_bodyhide",
+   "topArmsHide": "senator_top_armshide",
+   "unlock": {
+    "type": "gold",
+    "price": null
+   },
+   "note": "A white wool toga over a tunic with the broad purple stripe that marked a senator.",
+   "rulerSet": "julius-caesar",
+   "slots": [
+    "head",
+    "full"
+   ]
+  }
+ },
+ "files": {
+  "b1_thighs": {
+   "file": "pieces/b1_thighs.png",
+   "x": 409,
+   "y": 878
+  },
+  "b1_body": {
+   "file": "pieces/b1_body.png",
+   "x": 297,
+   "y": 244
+  },
+  "b1_eyes_closed": {
+   "file": "pieces/b1_eyes_closed.png",
+   "x": 449,
+   "y": 359
+  },
+  "b1_arms": {
+   "file": "pieces/b1_arms.png",
+   "x": 305,
+   "y": 496
+  },
+  "b1_hands": {
+   "file": "pieces/b1_hands.png",
+   "x": 297,
+   "y": 847
+  },
+  "b1_bandhide": {
+   "file": "masks/b1_bandhide.png",
+   "x": 375,
+   "y": 861
+  },
+  "b2_thighs": {
+   "file": "pieces/b2_thighs.png",
+   "x": 409,
+   "y": 878
+  },
+  "b2_body": {
+   "file": "pieces/b2_body.png",
+   "x": 297,
+   "y": 252
+  },
+  "b2_eyes_closed": {
+   "file": "pieces/b2_eyes_closed.png",
+   "x": 449,
+   "y": 359
+  },
+  "b2_arms": {
+   "file": "pieces/b2_arms.png",
+   "x": 305,
+   "y": 491
+  },
+  "b2_hands": {
+   "file": "pieces/b2_hands.png",
+   "x": 299,
+   "y": 847
+  },
+  "b2_front_hair": {
+   "file": "pieces/b2_front_hair.png",
+   "x": 392,
+   "y": 470
+  },
+  "b2_bandhide": {
+   "file": "masks/b2_bandhide.png",
+   "x": 375,
+   "y": 861
+  },
+  "b3_thighs": {
+   "file": "pieces/b3_thighs.png",
+   "x": 409,
+   "y": 878
+  },
+  "b3_body": {
+   "file": "pieces/b3_body.png",
+   "x": 296,
+   "y": 251
+  },
+  "b3_eyes_closed": {
+   "file": "pieces/b3_eyes_closed.png",
+   "x": 449,
+   "y": 359
+  },
+  "b3_arms": {
+   "file": "pieces/b3_arms.png",
+   "x": 306,
+   "y": 497
+  },
+  "b3_hands": {
+   "file": "pieces/b3_hands.png",
+   "x": 297,
+   "y": 847
+  },
+  "b3_front_hair": {
+   "file": "pieces/b3_front_hair.png",
+   "x": 415,
+   "y": 599
+  },
+  "b3_bandhide": {
+   "file": "masks/b3_bandhide.png",
+   "x": 375,
+   "y": 861
+  },
+  "b4_thighs": {
+   "file": "pieces/b4_thighs.png",
+   "x": 410,
+   "y": 878
+  },
+  "b4_body": {
+   "file": "pieces/b4_body.png",
+   "x": 296,
+   "y": 258
+  },
+  "b4_eyes_closed": {
+   "file": "pieces/b4_eyes_closed.png",
+   "x": 449,
+   "y": 359
+  },
+  "b4_arms": {
+   "file": "pieces/b4_arms.png",
+   "x": 306,
+   "y": 497
+  },
+  "b4_hands": {
+   "file": "pieces/b4_hands.png",
+   "x": 297,
+   "y": 847
+  },
+  "b4_front_hair": {
+   "file": "pieces/b4_front_hair.png",
+   "x": 412,
+   "y": 569
+  },
+  "b4_bandhide": {
+   "file": "masks/b4_bandhide.png",
+   "x": 375,
+   "y": 861
+  },
+  "b5_thighs": {
+   "file": "pieces/b5_thighs.png",
+   "x": 410,
+   "y": 878
+  },
+  "b5_body": {
+   "file": "pieces/b5_body.png",
+   "x": 295,
+   "y": 265
+  },
+  "b5_eyes_closed": {
+   "file": "pieces/b5_eyes_closed.png",
+   "x": 449,
+   "y": 359
+  },
+  "b5_arms": {
+   "file": "pieces/b5_arms.png",
+   "x": 305,
+   "y": 496
+  },
+  "b5_hands": {
+   "file": "pieces/b5_hands.png",
+   "x": 297,
+   "y": 847
+  },
+  "b5_front_hair": {
+   "file": "pieces/b5_front_hair.png",
+   "x": 415,
+   "y": 569
+  },
+  "b5_bandhide": {
+   "file": "masks/b5_bandhide.png",
+   "x": 375,
+   "y": 861
+  },
+  "b6_thighs": {
+   "file": "pieces/b6_thighs.png",
+   "x": 409,
+   "y": 878
+  },
+  "b6_body": {
+   "file": "pieces/b6_body.png",
+   "x": 295,
+   "y": 246
+  },
+  "b6_eyes_closed": {
+   "file": "pieces/b6_eyes_closed.png",
+   "x": 449,
+   "y": 359
+  },
+  "b6_arms": {
+   "file": "pieces/b6_arms.png",
+   "x": 305,
+   "y": 496
+  },
+  "b6_hands": {
+   "file": "pieces/b6_hands.png",
+   "x": 296,
+   "y": 847
+  },
+  "b6_front_hair": {
+   "file": "pieces/b6_front_hair.png",
+   "x": 391,
+   "y": 470
+  },
+  "b6_bandhide": {
+   "file": "masks/b6_bandhide.png",
+   "x": 375,
+   "y": 861
+  },
+  "starter_top": {
+   "file": "pieces/starter_top.png",
+   "x": 381,
+   "y": 473
+  },
+  "starter_top_ext": {
+   "file": "pieces/starter_top_ext.png",
+   "x": 427,
+   "y": 695
+  },
+  "starter_sleeves": {
+   "file": "pieces/starter_sleeves.png",
+   "x": 296,
+   "y": 503
+  },
+  "starter_bottoms": {
+   "file": "pieces/starter_bottoms.png",
+   "x": 306,
+   "y": 701
+  },
+  "starter_shirtstrip": {
+   "file": "pieces/starter_shirtstrip.png",
+   "x": 424,
+   "y": 658
+  },
+  "starter_top_bodyhide": {
+   "file": "masks/starter_top_bodyhide.png",
+   "x": 367,
+   "y": 474
+  },
+  "starter_top_armshide": {
+   "file": "masks/starter_top_armshide.png",
+   "x": 292,
+   "y": 474
+  },
+  "starter_bottoms_bodyhide": {
+   "file": "masks/starter_bottoms_bodyhide.png",
+   "x": 372,
+   "y": 685
+  },
+  "starter_bottoms_armshide": {
+   "file": "masks/starter_bottoms_armshide.png",
+   "x": 372,
+   "y": 685
+  },
+  "cavalier_head": {
+   "file": "pieces/cavalier_head.png",
+   "x": 353,
+   "y": 170
+  },
+  "cavalier_top": {
+   "file": "pieces/cavalier_top.png",
+   "x": 382,
+   "y": 467
+  },
+  "cavalier_top_ext": {
+   "file": "pieces/cavalier_top_ext.png",
+   "x": 573,
+   "y": 682
+  },
+  "cavalier_sleeves": {
+   "file": "pieces/cavalier_sleeves.png",
+   "x": 289,
+   "y": 494
+  },
+  "cavalier_overlay": {
+   "file": "pieces/cavalier_overlay.png",
+   "x": 419,
+   "y": 658
+  },
+  "cavalier_bottoms": {
+   "file": "pieces/cavalier_bottoms.png",
+   "x": 350,
+   "y": 688
+  },
+  "cavalier_shirtstrip": {
+   "file": "pieces/cavalier_shirtstrip.png",
+   "x": 420,
+   "y": 645
+  },
+  "cavalier_top_bodyhide": {
+   "file": "masks/cavalier_top_bodyhide.png",
+   "x": 368,
+   "y": 474
+  },
+  "cavalier_top_armshide": {
+   "file": "masks/cavalier_top_armshide.png",
+   "x": 292,
+   "y": 474
+  },
+  "cavalier_bottoms_bodyhide": {
+   "file": "masks/cavalier_bottoms_bodyhide.png",
+   "x": 372,
+   "y": 672
+  },
+  "cavalier_bottoms_armshide": {
+   "file": "masks/cavalier_bottoms_armshide.png",
+   "x": 372,
+   "y": 672
+  },
+  "courtlady_head": {
+   "file": "pieces/courtlady_head.png",
+   "x": 424,
+   "y": 232
+  },
+  "courtlady_top": {
+   "file": "pieces/courtlady_top.png",
+   "x": 384,
+   "y": 458
+  },
+  "courtlady_top_ext": {
+   "file": "pieces/courtlady_top_ext.png",
+   "x": 436,
+   "y": 648
+  },
+  "courtlady_sleeves": {
+   "file": "pieces/courtlady_sleeves.png",
+   "x": 282,
+   "y": 479
+  },
+  "courtlady_bottoms": {
+   "file": "pieces/courtlady_bottoms.png",
+   "x": 88,
+   "y": 654
+  },
+  "courtlady_shirtstrip": {
+   "file": "pieces/courtlady_shirtstrip.png",
+   "x": 406,
+   "y": 611
+  },
+  "courtlady_top_bodyhide": {
+   "file": "masks/courtlady_top_bodyhide.png",
+   "x": 391,
+   "y": 482
+  },
+  "courtlady_top_armshide": {
+   "file": "masks/courtlady_top_armshide.png",
+   "x": 292,
+   "y": 482
+  },
+  "courtlady_bottoms_bodyhide": {
+   "file": "masks/courtlady_bottoms_bodyhide.png",
+   "x": 372,
+   "y": 638
+  },
+  "courtlady_bottoms_armshide": {
+   "file": "masks/courtlady_bottoms_armshide.png",
+   "x": 372,
+   "y": 638
+  },
+  "courtier_head": {
+   "file": "pieces/courtier_head.png",
+   "x": 432,
+   "y": 231
+  },
+  "courtier_hairhide_b1": {
+   "file": "masks/courtier_hairhide_b1.png",
+   "x": 430,
+   "y": 242
+  },
+  "courtier_hairhide_b2": {
+   "file": "masks/courtier_hairhide_b2.png",
+   "x": 431,
+   "y": 250
+  },
+  "courtier_hairhide_b3": {
+   "file": "masks/courtier_hairhide_b3.png",
+   "x": 430,
+   "y": 249
+  },
+  "courtier_hairhide_b4": {
+   "file": "masks/courtier_hairhide_b4.png",
+   "x": 458,
+   "y": 256
+  },
+  "courtier_hairhide_b6": {
+   "file": "masks/courtier_hairhide_b6.png",
+   "x": 430,
+   "y": 244
+  },
+  "courtier_top": {
+   "file": "pieces/courtier_top.png",
+   "x": 384,
+   "y": 458
+  },
+  "courtier_top_ext": {
+   "file": "pieces/courtier_top_ext.png",
+   "x": 426,
+   "y": 685
+  },
+  "courtier_sleeves": {
+   "file": "pieces/courtier_sleeves.png",
+   "x": 294,
+   "y": 491
+  },
+  "courtier_bottoms": {
+   "file": "pieces/courtier_bottoms.png",
+   "x": 361,
+   "y": 691
+  },
+  "courtier_shirtstrip": {
+   "file": "pieces/courtier_shirtstrip.png",
+   "x": 420,
+   "y": 648
+  },
+  "courtier_top_bodyhide": {
+   "file": "masks/courtier_top_bodyhide.png",
+   "x": 385,
+   "y": 471
+  },
+  "courtier_top_armshide": {
+   "file": "masks/courtier_top_armshide.png",
+   "x": 292,
+   "y": 471
+  },
+  "courtier_bottoms_bodyhide": {
+   "file": "masks/courtier_bottoms_bodyhide.png",
+   "x": 372,
+   "y": 675
+  },
+  "courtier_bottoms_armshide": {
+   "file": "masks/courtier_bottoms_armshide.png",
+   "x": 372,
+   "y": 675
+  },
+  "mariner_head": {
+   "file": "pieces/mariner_head.png",
+   "x": 433,
+   "y": 257
+  },
+  "mariner_hairhide_b1": {
+   "file": "masks/mariner_hairhide_b1.png",
+   "x": 420,
+   "y": 242
+  },
+  "mariner_hairhide_b2": {
+   "file": "masks/mariner_hairhide_b2.png",
+   "x": 404,
+   "y": 250
+  },
+  "mariner_hairhide_b3": {
+   "file": "masks/mariner_hairhide_b3.png",
+   "x": 424,
+   "y": 249
+  },
+  "mariner_hairhide_b4": {
+   "file": "masks/mariner_hairhide_b4.png",
+   "x": 423,
+   "y": 256
+  },
+  "mariner_hairhide_b5": {
+   "file": "masks/mariner_hairhide_b5.png",
+   "x": 435,
+   "y": 263
+  },
+  "mariner_hairhide_b6": {
+   "file": "masks/mariner_hairhide_b6.png",
+   "x": 366,
+   "y": 244
+  },
+  "mariner_top": {
+   "file": "pieces/mariner_top.png",
+   "x": 384,
+   "y": 471
+  },
+  "mariner_top_ext": {
+   "file": "pieces/mariner_top_ext.png",
+   "x": 406,
+   "y": 687
+  },
+  "mariner_sleeves": {
+   "file": "pieces/mariner_sleeves.png",
+   "x": 293,
+   "y": 503
+  },
+  "mariner_bottoms": {
+   "file": "pieces/mariner_bottoms.png",
+   "x": 361,
+   "y": 693
+  },
+  "mariner_shirtstrip": {
+   "file": "pieces/mariner_shirtstrip.png",
+   "x": 420,
+   "y": 650
+  },
+  "mariner_top_bodyhide": {
+   "file": "masks/mariner_top_bodyhide.png",
+   "x": 367,
+   "y": 482
+  },
+  "mariner_top_armshide": {
+   "file": "masks/mariner_top_armshide.png",
+   "x": 292,
+   "y": 482
+  },
+  "mariner_bottoms_bodyhide": {
+   "file": "masks/mariner_bottoms_bodyhide.png",
+   "x": 372,
+   "y": 677
+  },
+  "mariner_bottoms_armshide": {
+   "file": "masks/mariner_bottoms_armshide.png",
+   "x": 372,
+   "y": 677
+  },
+  "puritan_head": {
+   "file": "pieces/puritan_head.png",
+   "x": 371,
+   "y": 203
+  },
+  "puritan_top": {
+   "file": "pieces/puritan_top.png",
+   "x": 378,
+   "y": 475
+  },
+  "puritan_top_ext": {
+   "file": "pieces/puritan_top_ext.png",
+   "x": 422,
+   "y": 699
+  },
+  "puritan_sleeves": {
+   "file": "pieces/puritan_sleeves.png",
+   "x": 304,
+   "y": 508
+  },
+  "puritan_bottoms": {
+   "file": "pieces/puritan_bottoms.png",
+   "x": 361,
+   "y": 698
+  },
+  "puritan_shirtstrip": {
+   "file": "pieces/puritan_shirtstrip.png",
+   "x": 422,
+   "y": 655
+  },
+  "puritan_top_bodyhide": {
+   "file": "masks/puritan_top_bodyhide.png",
+   "x": 330,
+   "y": 471
+  },
+  "puritan_top_armshide": {
+   "file": "masks/puritan_top_armshide.png",
+   "x": 292,
+   "y": 471
+  },
+  "puritan_bottoms_bodyhide": {
+   "file": "masks/puritan_bottoms_bodyhide.png",
+   "x": 372,
+   "y": 682
+  },
+  "puritan_bottoms_armshide": {
+   "file": "masks/puritan_bottoms_armshide.png",
+   "x": 372,
+   "y": 682
+  },
+  "trooper_head": {
+   "file": "pieces/trooper_head.png",
+   "x": 429,
+   "y": 214
+  },
+  "trooper_hairhide_b1": {
+   "file": "masks/trooper_hairhide_b1.png",
+   "x": 420,
+   "y": 250
+  },
+  "trooper_hairhide_b2": {
+   "file": "masks/trooper_hairhide_b2.png",
+   "x": 390,
+   "y": 270
+  },
+  "trooper_hairhide_b3": {
+   "file": "masks/trooper_hairhide_b3.png",
+   "x": 424,
+   "y": 270
+  },
+  "trooper_hairhide_b4": {
+   "file": "masks/trooper_hairhide_b4.png",
+   "x": 423,
+   "y": 290
+  },
+  "trooper_hairhide_b5": {
+   "file": "masks/trooper_hairhide_b5.png",
+   "x": 579,
+   "y": 356
+  },
+  "trooper_hairhide_b6": {
+   "file": "masks/trooper_hairhide_b6.png",
+   "x": 350,
+   "y": 260
+  },
+  "trooper_top": {
+   "file": "pieces/trooper_top.png",
+   "x": 364,
+   "y": 462
+  },
+  "trooper_top_ext": {
+   "file": "pieces/trooper_top_ext.png",
+   "x": 416,
+   "y": 709
+  },
+  "trooper_sleeves": {
+   "file": "pieces/trooper_sleeves.png",
+   "x": 298,
+   "y": 486
+  },
+  "trooper_bottoms": {
+   "file": "pieces/trooper_bottoms.png",
+   "x": 365,
+   "y": 715
+  },
+  "trooper_shirtstrip": {
+   "file": "pieces/trooper_shirtstrip.png",
+   "x": 422,
+   "y": 672
+  },
+  "trooper_top_bodyhide": {
+   "file": "masks/trooper_top_bodyhide.png",
+   "x": 377,
+   "y": 482
+  },
+  "trooper_top_armshide": {
+   "file": "masks/trooper_top_armshide.png",
+   "x": 292,
+   "y": 482
+  },
+  "trooper_bottoms_bodyhide": {
+   "file": "masks/trooper_bottoms_bodyhide.png",
+   "x": 372,
+   "y": 699
+  },
+  "trooper_bottoms_armshide": {
+   "file": "masks/trooper_bottoms_armshide.png",
+   "x": 372,
+   "y": 699
+  },
+  "legionary_head": {
+   "file": "pieces/legionary_head.png",
+   "x": 425,
+   "y": 168
+  },
+  "legionary_hairhide_b1": {
+   "file": "masks/legionary_hairhide_b1.png",
+   "x": 420,
+   "y": 250
+  },
+  "legionary_hairhide_b2": {
+   "file": "masks/legionary_hairhide_b2.png",
+   "x": 390,
+   "y": 259
+  },
+  "legionary_hairhide_b3": {
+   "file": "masks/legionary_hairhide_b3.png",
+   "x": 424,
+   "y": 255
+  },
+  "legionary_hairhide_b4": {
+   "file": "masks/legionary_hairhide_b4.png",
+   "x": 423,
+   "y": 263
+  },
+  "legionary_hairhide_b5": {
+   "file": "masks/legionary_hairhide_b5.png",
+   "x": 541,
+   "y": 271
+  },
+  "legionary_hairhide_b6": {
+   "file": "masks/legionary_hairhide_b6.png",
+   "x": 358,
+   "y": 254
+  },
+  "legionary_top": {
+   "file": "pieces/legionary_top.png",
+   "x": 356,
+   "y": 460
+  },
+  "legionary_top_ext": {
+   "file": "pieces/legionary_top_ext.png",
+   "x": 377,
+   "y": 861
+  },
+  "legionary_sleeves": {
+   "file": "pieces/legionary_sleeves.png",
+   "x": 334,
+   "y": 459
+  },
+  "legionary_cloak": {
+   "file": "pieces/legionary_cloak.png",
+   "x": 346,
+   "y": 724
+  },
+  "legionary_bottoms": {
+   "file": "pieces/legionary_bottoms.png",
+   "x": 364,
+   "y": 688
+  },
+  "legionary_top_bodyhide": {
+   "file": "masks/legionary_top_bodyhide.png",
+   "x": 303,
+   "y": 471
+  },
+  "legionary_top_armshide": {
+   "file": "masks/legionary_top_armshide.png",
+   "x": 292,
+   "y": 471
+  },
+  "legionary_bottoms_bodyhide": {
+   "file": "masks/legionary_bottoms_bodyhide.png",
+   "x": 372,
+   "y": 861
+  },
+  "legionary_bottoms_armshide": {
+   "file": "masks/legionary_bottoms_armshide.png",
+   "x": 372,
+   "y": 861
+  },
+  "senator_head": {
+   "file": "pieces/senator_head.png",
+   "x": 415,
+   "y": 257
+  },
+  "senator_full": {
+   "file": "pieces/senator_full.png",
+   "x": 340,
+   "y": 468
+  },
+  "senator_top_bodyhide": {
+   "file": "masks/senator_top_bodyhide.png",
+   "x": 299,
+   "y": 471
+  },
+  "senator_top_armshide": {
+   "file": "masks/senator_top_armshide.png",
+   "x": 292,
+   "y": 471
+  }
+ },
+ "anchors": {
+  "groundLineY": 1420,
+  "feetCentreX": 510,
+  "neckPivot": [
+   512,
+   470
+  ],
+  "eyeLineY": 385,
+  "waistBandY": 700,
+  "bustCrop": {
+   "x": 312,
+   "y": 150,
+   "w": 400,
+   "h": 600
+  },
+  "note": "Canvas pixels. Pivots for weight shift (feet) and head tilt (neck). Breathing warps from waistBandY upwards."
+ },
+ "backgroundColour": "#CBCACA",
+ "pricesTBD": "Gold prices are null until the balance pass (step 5)."
+}

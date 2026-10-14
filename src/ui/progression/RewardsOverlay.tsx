@@ -5,6 +5,7 @@ import { Image, StyleSheet, Text, useWindowDimensions, View } from 'react-native
 import Animated, { Easing, FadeIn, FadeOut, ZoomIn } from 'react-native-reanimated';
 import { progression as config, rankTitle, type RewardOutcome, xpBarSegments } from '../../game/progression';
 import { GameButton } from '../GameButton';
+import { AvatarView } from '../profile/AvatarView';
 import { SkinPanel } from '../skin/SkinPanel';
 import { useSkin } from '../skin/SkinProvider';
 import { useSkinTextStyles } from '../skin/textStyles';
@@ -81,18 +82,24 @@ export function RewardsOverlay({
         <Text style={[text.caption, styles.title]} accessibilityRole="header">
           {strings.rewards}
         </Text>
-        <Text style={line}>
-          {format(strings.rewardDecisions, {
-            count: breakdown.decisions,
-            per: breakdown.perDecision,
-            xp: formatNumber(breakdown.decisionXp),
-          })}
-        </Text>
-        {breakdown.tier !== 1 && <Text style={line}>{format(strings.rewardTier, { tier: breakdown.tier })}</Text>}
-        {breakdown.newEnding && <Text style={line}>{format(strings.rewardNewEnding, { xp: formatNumber(tiered) })}</Text>}
-        <Text style={[text.heading, styles.total, { color: skin.colors.panelCaption }]}>
-          {format(strings.rewardTotal, { xp: formatNumber(breakdown.totalXp) })}
-        </Text>
+        {/* The player's avatar, full figure, beside how the XP was earned. */}
+        <View style={styles.breakdownRow}>
+          <AvatarView size={58} variant="full" />
+          <View style={styles.breakdown}>
+            <Text style={line}>
+              {format(strings.rewardDecisions, {
+                count: breakdown.decisions,
+                per: breakdown.perDecision,
+                xp: formatNumber(breakdown.decisionXp),
+              })}
+            </Text>
+            {breakdown.tier !== 1 && <Text style={line}>{format(strings.rewardTier, { tier: breakdown.tier })}</Text>}
+            {breakdown.newEnding && <Text style={line}>{format(strings.rewardNewEnding, { xp: formatNumber(tiered) })}</Text>}
+            <Text style={[text.heading, styles.total, { color: skin.colors.panelCaption }]}>
+              {format(strings.rewardTotal, { xp: formatNumber(breakdown.totalXp) })}
+            </Text>
+          </View>
+        </View>
 
         {/*
           The medallion, in its rank's colour; at each level-up a laurel scales in around it, framing
@@ -177,6 +184,8 @@ const styles = StyleSheet.create({
   panel: { alignSelf: 'center', width: '100%', maxWidth: 420 },
   title: { textAlign: 'center', marginBottom: 8 },
   line: { textAlign: 'center' },
+  breakdownRow: { flexDirection: 'row', alignItems: 'center', gap: 10 },
+  breakdown: { flex: 1 },
   total: { textAlign: 'center', marginTop: 4 },
   levelArea: { alignItems: 'center', justifyContent: 'center', marginTop: 4 },
   laurel: { position: 'absolute', pointerEvents: 'none', alignItems: 'center', justifyContent: 'center' },

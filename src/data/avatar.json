@@ -1,0 +1,18 @@
+{
+  "_note": "App-side avatar data alongside assets/avatar/avatar.catalogue.json. unlockAchievements: the achievement that unlocks each 'achievement' item. devPrices: temporary gold prices used only while the hidden testing switch is on, until the balance pass sets real ones. backdrops: the backdrops (only parchment is drawn yet); plinths take the rank colour.",
+  "unlockAchievements": {
+    "mariner": "sea_dog",
+    "trooper": "royalist_victory"
+  },
+  "devPrices": {
+    "puritan": 25,
+    "courtier": 60
+  },
+  "backdrops": [
+    { "id": "parchment", "name": "Parchment", "unlock": { "type": "free" }, "colour": "#E9DBBB" },
+    { "id": "throne_room", "name": "Throne room", "unlock": { "type": "gold", "price": null } },
+    { "id": "harbour", "name": "Harbour", "unlock": { "type": "gold", "price": null } },
+    { "id": "forum", "name": "Forum", "unlock": { "type": "gold", "price": null } },
+    { "id": "battlefield", "name": "Battlefield", "unlock": { "type": "gold", "price": null } }
+  ]
+}

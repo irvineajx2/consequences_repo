@@ -10,6 +10,7 @@ import {
   withRulerProfile,
 } from './profile';
 import { type Achievement, awardAchievements, type RulerFacts } from './achievements';
+import { unlockAchievementItems } from './wardrobe';
 import { applyRunRewards, type RewardOutcome } from './progression';
 import { parseRunSave, resume, type RunSave } from './save';
 import type { Presentation, Session } from './session';
@@ -157,7 +158,8 @@ export async function finishRun(
 
 /**
  * Awards every achievement the stored profile now qualifies for (after a run, and on load, which
- * also backfills older saves) and saves it. Returns those newly earned, in list order.
+ * also backfills older saves), unlocks the avatar items those achievements open, and saves it.
+ * Returns the achievements newly earned, in list order.
  */
 export async function recordAchievements(
   storage: KeyValueStorage,
@@ -165,9 +167,10 @@ export async function recordAchievements(
   now: string,
 ): Promise<Achievement[]> {
   const before = await loadProfile(storage);
-  const { profile, newlyEarned } = awardAchievements(before, rulers, now);
-  if (newlyEarned.length > 0) await saveProfile(storage, profile);
-  return newlyEarned;
+  const awarded = awardAchievements(before, rulers, now);
+  const { profile, unlocked } = unlockAchievementItems(awarded.profile, now);
+  if (awarded.newlyEarned.length > 0 || unlocked.length > 0) await saveProfile(storage, profile);
+  return awarded.newlyEarned;
 }
 
 /** Applies a change to the stored profile (e.g. the nickname or featured achievement) and saves it. */

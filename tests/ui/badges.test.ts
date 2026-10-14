@@ -8,7 +8,15 @@ const dir = path.join(__dirname, '../../assets/ui/skins/tudor/achievements');
 const listed = JSON.parse(fs.readFileSync(path.join(dir, 'badges.json'), 'utf8'));
 const all = [...achievementList(allRulerFacts).map((a) => a.id), 'badge_base'];
 /** Badges whose art is still to come: they show the placeholder badge. */
-const PENDING = ['cleopatra_history', 'cleopatra_outdone', 'cleopatra_every_road', 'love_older_than_rome', 'beware_the_ides'];
+const PENDING = [
+  'cleopatra_history',
+  'cleopatra_outdone',
+  'cleopatra_every_road',
+  'sea_dog',
+  'royalist_victory',
+  'love_older_than_rome',
+  'beware_the_ides',
+];
 const ids = all.filter((id) => !PENDING.includes(id));
 
 describe('achievement badges', () => {

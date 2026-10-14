@@ -41,6 +41,8 @@ describe('the achievement list', () => {
       'legendary',
       'rank_chronicler',
       'rank_sage',
+      'sea_dog',
+      'royalist_victory',
       'love_older_than_rome',
       'beware_the_ides',
     ]);
@@ -73,7 +75,7 @@ describe('earning achievements', () => {
   it('meets each condition only when its data says so', () => {
     const met = (p: Profile) => list.filter((a) => isMet(a, p, allRulerFacts)).map((a) => a.id);
     expect(met(emptyProfile)).toEqual([]);
-    expect(met(midGame)).toEqual(['first_reign', 'faithful_copy', 'elizabeth_history']);
+    expect(met(midGame)).toEqual(['first_reign', 'faithful_copy', 'elizabeth_history', 'sea_dog']);
     const caesar = getRuler('julius-caesar').rules.ruler;
     const brancher = withRulerProfile(emptyProfile, caesar, {
       ...emptyRulerProfile,
@@ -103,7 +105,7 @@ describe('earning achievements', () => {
     };
     const storage = memoryStorage({ 'consequences.profile.v2': JSON.stringify(v3) });
     const newly = await recordAchievements(storage, allRulerFacts, LATER);
-    expect(newly.map((a) => a.id)).toEqual(['first_reign', 'elizabeth_history', 'elizabeth_outdone', 'rank_chronicler']);
+    expect(newly.map((a) => a.id)).toEqual(['first_reign', 'elizabeth_history', 'elizabeth_outdone', 'rank_chronicler', 'sea_dog']);
     const after = await loadProfile(storage);
     expect(after.progression).toMatchObject({ totalXp: 4100, gold: 230 });
     expect(after.rulers.elizabeth_i.runsCompleted).toBe(9);
@@ -125,7 +127,7 @@ describe('earning achievements', () => {
       finishedAt: AT,
     });
     const newly = await recordAchievements(storage, allRulerFacts, AT);
-    expect(newly.map((a) => a.id)).toEqual(['first_reign', 'faithful_copy', 'elizabeth_history']);
+    expect(newly.map((a) => a.id)).toEqual(['first_reign', 'faithful_copy', 'elizabeth_history', 'sea_dog']);
     expect((await loadProfile(storage)).rulers.elizabeth_i.bestMatch).toEqual({ matched: 17, finishedAt: AT });
   });
 
@@ -156,7 +158,7 @@ describe('the featured achievement', () => {
 
   it('falls back to the default when saved data names an unearned or unknown achievement', () => {
     for (const id of ['rank_sage', 'no_such_achievement']) {
-      const odd = { ...midGame, identity: { nickname: 'X', featuredAchievementId: id } };
+      const odd = { ...midGame, identity: { ...midGame.identity, nickname: 'X', featuredAchievementId: id } };
       expect(featuredAchievement(odd, allRulerFacts)).toMatchObject({ kind: 'rarest', achievement: { id: 'faithful_copy' } });
     }
   });
