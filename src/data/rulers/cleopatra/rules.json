@@ -1,0 +1,3334 @@
+{
+  "ruler": "cleopatra",
+  "version": 1,
+  "meter_range": [
+    0,
+    100
+  ],
+  "meters": {
+    "treasury": 60,
+    "alexandria": 50,
+    "divinity": 45,
+    "fleet": 35,
+    "rome": 50,
+    "octavian": 0,
+    "rivals": 40
+  },
+  "flags": {
+    "path": "main",
+    "patron": "none",
+    "pompey": false,
+    "incourt": false,
+    "siege": false,
+    "arsinoe": "free",
+    "caesarion": "none",
+    "inrome": false,
+    "caesaralive": false,
+    "nile": "none",
+    "accession": "none",
+    "brother": "removed",
+    "famine": "none",
+    "triumvirs": false,
+    "lostwar": false,
+    "warwon": false
+  },
+  "failures": [
+    {
+      "if": [
+        [
+          "treasury",
+          "<=",
+          0
+        ]
+      ],
+      "end": "empty_granaries"
+    },
+    {
+      "if": [
+        [
+          "alexandria",
+          "<=",
+          0
+        ]
+      ],
+      "end": "alexandrian_mob"
+    },
+    {
+      "if": [
+        [
+          "divinity",
+          "<=",
+          0
+        ]
+      ],
+      "end": "priests_turn"
+    },
+    {
+      "if": [
+        [
+          "rome",
+          "<=",
+          0
+        ]
+      ],
+      "end": "annexed"
+    },
+    {
+      "if": [
+        [
+          "rivals",
+          ">=",
+          100
+        ]
+      ],
+      "end": "arsinoe_throne"
+    },
+    {
+      "if": [
+        [
+          "octavian",
+          ">=",
+          100
+        ]
+      ],
+      "end": "paraded_chains"
+    }
+  ],
+  "drift": [
+    {
+      "then": {
+        "add": {
+          "treasury": -5
+        }
+      }
+    },
+    {
+      "if": [
+        [
+          "accession",
+          "==",
+          "alone"
+        ]
+      ],
+      "then": {
+        "add": {
+          "divinity": 5
+        }
+      }
+    },
+    {
+      "if": [
+        [
+          "accession",
+          "==",
+          "share"
+        ]
+      ],
+      "then": {
+        "add": {
+          "alexandria": 5,
+          "rivals": 5
+        }
+      }
+    },
+    {
+      "if": [
+        [
+          "accession",
+          "==",
+          "council"
+        ]
+      ],
+      "then": {
+        "add": {
+          "treasury": 5,
+          "divinity": -5
+        }
+      }
+    },
+    {
+      "if": [
+        [
+          "divinity",
+          ">=",
+          50
+        ]
+      ],
+      "then": {
+        "add": {
+          "treasury": 15
+        }
+      }
+    },
+    {
+      "if": [
+        [
+          "patron",
+          "==",
+          "antony"
+        ]
+      ],
+      "then": {
+        "add": {
+          "octavian": 5
+        }
+      }
+    },
+    {
+      "if": [
+        [
+          "caesarion",
+          "==",
+          "named"
+        ]
+      ],
+      "then": {
+        "add": {
+          "octavian": 5
+        }
+      }
+    },
+    {
+      "if": [
+        [
+          "rivals",
+          ">=",
+          60
+        ]
+      ],
+      "then": {
+        "add": {
+          "alexandria": -5
+        }
+      }
+    }
+  ],
+  "events": {
+    "heirecho": {
+      "branches": [
+        {
+          "if": [
+            [
+              "arsinoe",
+              "==",
+              "dead"
+            ]
+          ],
+          "then": {
+            "add": {
+              "divinity": -10,
+              "rome": -5
+            }
+          }
+        },
+        {
+          "if": [
+            [
+              "arsinoe",
+              "==",
+              "home"
+            ]
+          ],
+          "then": {
+            "add": {
+              "rivals": 20
+            }
+          }
+        },
+        {
+          "if": [
+            [
+              "accession",
+              "==",
+              "alone"
+            ]
+          ],
+          "then": {
+            "add": {
+              "divinity": 5
+            }
+          }
+        },
+        {
+          "if": [
+            [
+              "caesarion",
+              "==",
+              "unnamed"
+            ]
+          ],
+          "then": {
+            "add": {
+              "octavian": -10,
+              "divinity": -5
+            }
+          }
+        },
+        {
+          "then": {}
+        }
+      ]
+    },
+    "famineecho": {
+      "branches": [
+        {
+          "if": [
+            [
+              "famine",
+              "==",
+              "fed"
+            ]
+          ],
+          "then": {
+            "add": {
+              "alexandria": 10,
+              "divinity": 10
+            }
+          }
+        },
+        {
+          "if": [
+            [
+              "famine",
+              "==",
+              "sold"
+            ]
+          ],
+          "then": {
+            "add": {
+              "alexandria": -15,
+              "divinity": -10
+            }
+          }
+        },
+        {
+          "then": {
+            "add": {
+              "divinity": -10
+            }
+          }
+        }
+      ]
+    },
+    "nileecho": {
+      "branches": [
+        {
+          "if": [
+            [
+              "nile",
+              "==",
+              "city"
+            ]
+          ],
+          "then": {
+            "add": {
+              "alexandria": 5
+            }
+          }
+        },
+        {
+          "if": [
+            [
+              "nile",
+              "==",
+              "villages"
+            ]
+          ],
+          "then": {
+            "add": {
+              "divinity": 5
+            }
+          }
+        },
+        {
+          "if": [
+            [
+              "nile",
+              "==",
+              "sold"
+            ]
+          ],
+          "then": {
+            "add": {
+              "divinity": -5,
+              "alexandria": -5
+            }
+          }
+        },
+        {
+          "then": {}
+        }
+      ]
+    },
+    "returns": {
+      "branches": [
+        {
+          "if": [
+            [
+              "arsinoe",
+              "in",
+              [
+                "ephesus",
+                "free"
+              ]
+            ]
+          ],
+          "beat": "QT7",
+          "then": {
+            "add": {
+              "octavian": 15,
+              "rivals": 25
+            }
+          }
+        },
+        {
+          "then": {}
+        }
+      ]
+    },
+    "brotherback": {
+      "branches": [
+        {
+          "if": [
+            [
+              "brother",
+              "==",
+              "kept"
+            ]
+          ],
+          "then": {
+            "add": {
+              "rivals": 25,
+              "alexandria": -10
+            }
+          }
+        },
+        {
+          "if": [
+            [
+              "brother",
+              "==",
+              "exiled"
+            ]
+          ],
+          "then": {
+            "add": {
+              "octavian": 15,
+              "rome": -10
+            }
+          }
+        },
+        {
+          "then": {}
+        }
+      ]
+    },
+    "cityturns": {
+      "branches": [
+        {
+          "if": [
+            [
+              "famine",
+              "==",
+              "sold"
+            ],
+            [
+              "lostwar",
+              "==",
+              true
+            ]
+          ],
+          "then": {
+            "add": {
+              "alexandria": -35
+            }
+          }
+        },
+        {
+          "if": [
+            [
+              "famine",
+              "==",
+              "fed"
+            ]
+          ],
+          "then": {
+            "add": {
+              "alexandria": 10
+            }
+          }
+        },
+        {
+          "then": {}
+        }
+      ]
+    },
+    "pompeyhead": {
+      "branches": [
+        {
+          "if": [
+            [
+              "pompey",
+              "==",
+              true
+            ]
+          ],
+          "beat": "QT1",
+          "then": {
+            "add": {
+              "rome": -10
+            }
+          }
+        },
+        {
+          "if": [
+            [
+              "pompey",
+              "==",
+              "refused"
+            ]
+          ],
+          "beat": "QT1",
+          "then": {
+            "add": {
+              "rome": 15
+            }
+          }
+        },
+        {
+          "beat": "QT1",
+          "then": {}
+        }
+      ]
+    },
+    "alexwar": {
+      "branches": [
+        {
+          "if": [
+            [
+              "siege",
+              "==",
+              true
+            ]
+          ],
+          "score": {
+            "terms": [
+              {
+                "var": "fleet",
+                "mult": 1
+              },
+              {
+                "var": "rome",
+                "mult": 0.5
+              },
+              {
+                "var": "alexandria",
+                "mult": 0.3
+              },
+              {
+                "var": "rivals",
+                "mult": -0.5
+              },
+              {
+                "if": [
+                  [
+                    "accession",
+                    "==",
+                    "share"
+                  ]
+                ],
+                "add": 10
+              },
+              {
+                "if": [
+                  [
+                    "accession",
+                    "==",
+                    "council"
+                  ]
+                ],
+                "add": -10
+              }
+            ],
+            "at_least": 41.0
+          },
+          "beat": "QT2",
+          "then": {
+            "add": {
+              "rivals": -40,
+              "rome": 10
+            },
+            "set": {
+              "siege": false
+            }
+          }
+        },
+        {
+          "if": [
+            [
+              "siege",
+              "==",
+              true
+            ]
+          ],
+          "beat": "QT2",
+          "then": {
+            "add": {
+              "rome": -15,
+              "fleet": -15,
+              "alexandria": -15,
+              "rivals": -10
+            },
+            "set": {
+              "siege": false
+            }
+          }
+        },
+        {
+          "then": {}
+        }
+      ]
+    },
+    "triumphbeat": {
+      "branches": [
+        {
+          "if": [
+            [
+              "arsinoe",
+              "==",
+              "ephesus"
+            ],
+            [
+              "inrome",
+              "==",
+              true
+            ]
+          ],
+          "beat": "QT3",
+          "then": {}
+        },
+        {
+          "then": {}
+        }
+      ]
+    },
+    "idesbeat": {
+      "branches": [
+        {
+          "if": [
+            [
+              "path",
+              "==",
+              "main"
+            ]
+          ],
+          "beat": "QT4",
+          "then": {}
+        },
+        {
+          "then": {}
+        }
+      ]
+    },
+    "stormbeat": {
+      "branches": [
+        {
+          "if": [
+            [
+              "triumvirs",
+              "==",
+              true
+            ]
+          ],
+          "beat": "QT5",
+          "then": {
+            "add": {
+              "fleet": -10
+            }
+          }
+        },
+        {
+          "then": {}
+        }
+      ]
+    },
+    "antonybeat": {
+      "branches": [
+        {
+          "if": [
+            [
+              "lostwar",
+              "==",
+              true
+            ],
+            [
+              "path",
+              "==",
+              "main"
+            ]
+          ],
+          "beat": "QT6",
+          "then": {}
+        },
+        {
+          "then": {}
+        }
+      ]
+    }
+  },
+  "beats": {
+    "QT1": {
+      "image": "QT1"
+    },
+    "QT2": {
+      "image": "QT2"
+    },
+    "QT3": {
+      "image": "QT3"
+    },
+    "QT4": {
+      "image": "QT4"
+    },
+    "QT5": {
+      "image": "QT5"
+    },
+    "QT6": {
+      "image": "QT6"
+    },
+    "QT7": {
+      "image": "QT7"
+    }
+  },
+  "early_finale": null,
+  "finale": {
+    "terms": [
+      {
+        "var": "rome",
+        "mult": 1
+      }
+    ],
+    "outcomes": [
+      {
+        "if": [
+          [
+            "warwon",
+            "==",
+            true
+          ],
+          [
+            "caesarion",
+            "in",
+            [
+              "named",
+              "amun"
+            ]
+          ],
+          [
+            "rome",
+            ">=",
+            80
+          ],
+          [
+            "divinity",
+            ">=",
+            75
+          ],
+          [
+            "alexandria",
+            ">=",
+            50
+          ],
+          [
+            "treasury",
+            ">=",
+            35
+          ],
+          [
+            "octavian",
+            "<=",
+            30
+          ],
+          [
+            "rivals",
+            "<=",
+            60
+          ],
+          [
+            "caesarion",
+            "!=",
+            "hostage"
+          ]
+        ],
+        "end": "queen_of_kings"
+      },
+      {
+        "if": [
+          [
+            "patron",
+            "==",
+            "octavian"
+          ],
+          [
+            "caesarion",
+            "in",
+            [
+              "unnamed",
+              "amun"
+            ]
+          ],
+          [
+            "rome",
+            ">=",
+            80
+          ],
+          [
+            "divinity",
+            ">=",
+            75
+          ],
+          [
+            "alexandria",
+            ">=",
+            50
+          ],
+          [
+            "treasury",
+            ">=",
+            35
+          ],
+          [
+            "octavian",
+            "<=",
+            30
+          ],
+          [
+            "rivals",
+            "<=",
+            60
+          ]
+        ],
+        "end": "queen_of_kings"
+      },
+      {
+        "end": "client_queen"
+      }
+    ],
+    "beats": []
+  },
+  "endings": {
+    "asp": {
+      "category": "historical",
+      "image": "QX01"
+    },
+    "queen_of_kings": {
+      "category": "outperformed",
+      "image": "QX02"
+    },
+    "client_queen": {
+      "category": "fallen_short",
+      "image": "QX03"
+    },
+    "empty_granaries": {
+      "category": "fallen",
+      "image": "QX04"
+    },
+    "alexandrian_mob": {
+      "category": "fallen",
+      "image": "QX05"
+    },
+    "priests_turn": {
+      "category": "fallen",
+      "image": "QX06"
+    },
+    "annexed": {
+      "category": "fallen",
+      "image": "QX07"
+    },
+    "arsinoe_throne": {
+      "category": "fallen",
+      "image": "QX08"
+    },
+    "paraded_chains": {
+      "category": "fallen",
+      "image": "QX09"
+    },
+    "exiled_forever": {
+      "category": "fallen",
+      "image": "QX10"
+    },
+    "murdered_in_rome": {
+      "category": "fallen",
+      "image": "QX11"
+    },
+    "lost_at_sea": {
+      "category": "fallen",
+      "image": "QX12"
+    },
+    "nile_pact": {
+      "category": "alternate",
+      "image": "QX13"
+    },
+    "two_worlds": {
+      "category": "alternate",
+      "image": "QX14"
+    },
+    "eastern_empire": {
+      "category": "alternate",
+      "image": "QX15"
+    },
+    "octavians_ally": {
+      "category": "alternate",
+      "image": "QX16"
+    },
+    "queen_indies": {
+      "category": "alternate",
+      "image": "QX17"
+    }
+  },
+  "scenes": [
+    {
+      "id": "Q01",
+      "title": "Accession",
+      "year": "51 BC",
+      "image": "Q01",
+      "variants": [
+        {
+          "if": [
+            [
+              "path",
+              "==",
+              "main"
+            ]
+          ],
+          "options": [
+            {
+              "id": "alone",
+              "label": "Rule alone, dropping your brother's name",
+              "historical": true,
+              "add": {
+                "divinity": 10,
+                "rivals": 15,
+                "alexandria": -5
+              },
+              "set": {
+                "accession": "alone"
+              }
+            },
+            {
+              "id": "share",
+              "label": "Share the throne with Ptolemy XIII",
+              "add": {
+                "rivals": -10,
+                "divinity": -5,
+                "alexandria": 5
+              },
+              "set": {
+                "accession": "share"
+              },
+              "historical": false
+            },
+            {
+              "id": "council",
+              "label": "Rule through Pothinus's regency council",
+              "add": {
+                "rivals": -5,
+                "divinity": -10,
+                "treasury": 5
+              },
+              "set": {
+                "accession": "council"
+              },
+              "historical": false
+            }
+          ]
+        },
+        {
+          "skip": true
+        }
+      ]
+    },
+    {
+      "id": "Q02",
+      "title": "The low Nile",
+      "year": "50 BC",
+      "image": "Q02",
+      "variants": [
+        {
+          "if": [
+            [
+              "path",
+              "==",
+              "main"
+            ]
+          ],
+          "options": [
+            {
+              "id": "alexgrain",
+              "label": "Send all the grain to Alexandria",
+              "historical": true,
+              "add": {
+                "alexandria": 10,
+                "divinity": -10,
+                "rivals": 5
+              },
+              "set": {
+                "nile": "city"
+              }
+            },
+            {
+              "id": "country",
+              "label": "Share it with the villages of the Nile",
+              "add": {
+                "divinity": 10,
+                "alexandria": -10,
+                "treasury": -5
+              },
+              "set": {
+                "nile": "villages"
+              },
+              "historical": false
+            },
+            {
+              "id": "sell",
+              "label": "Sell the surplus abroad",
+              "add": {
+                "treasury": 15,
+                "divinity": -10,
+                "alexandria": -5
+              },
+              "set": {
+                "nile": "sold"
+              },
+              "historical": false
+            }
+          ]
+        },
+        {
+          "skip": true
+        }
+      ]
+    },
+    {
+      "id": "Q03",
+      "title": "Pompey's son",
+      "year": "49 BC",
+      "image": "Q03",
+      "variants": [
+        {
+          "if": [
+            [
+              "path",
+              "==",
+              "main"
+            ]
+          ],
+          "options": [
+            {
+              "id": "ships",
+              "label": "Give him ships and grain",
+              "historical": true,
+              "add": {
+                "rome": 5,
+                "fleet": -5,
+                "treasury": -5
+              },
+              "set": {
+                "pompey": true
+              }
+            },
+            {
+              "id": "refuse",
+              "label": "Refuse him",
+              "add": {
+                "rome": -10,
+                "divinity": 5
+              },
+              "set": {
+                "pompey": "refused"
+              },
+              "historical": false
+            },
+            {
+              "id": "token",
+              "label": "Send a token gift",
+              "add": {
+                "treasury": -3
+              },
+              "historical": false
+            }
+          ]
+        },
+        {
+          "skip": true
+        }
+      ]
+    },
+    {
+      "id": "Q04",
+      "title": "Driven out",
+      "year": "48 BC",
+      "image": "Q04",
+      "variants": [
+        {
+          "if": [
+            [
+              "path",
+              "==",
+              "main"
+            ]
+          ],
+          "options": [
+            {
+              "id": "syria",
+              "label": "Raise an army in Syria",
+              "historical": true,
+              "add": {
+                "fleet": 10,
+                "treasury": -10,
+                "rivals": 10
+              }
+            },
+            {
+              "id": "pothinus",
+              "label": "Make peace with Pothinus",
+              "set": {
+                "path": "pothinus"
+              },
+              "historical": false
+            },
+            {
+              "id": "appeal",
+              "label": "Appeal to Rome for help",
+              "add": {
+                "rome": 5,
+                "divinity": -5,
+                "rivals": 5
+              },
+              "historical": false
+            }
+          ]
+        },
+        {
+          "skip": true
+        }
+      ],
+      "drift_after": true,
+      "after": [
+        "pompeyhead",
+        "nileecho"
+      ]
+    },
+    {
+      "id": "QB1",
+      "title": "The regent's peace",
+      "year": "48 BC",
+      "image": "QB1",
+      "variants": [
+        {
+          "if": [
+            [
+              "path",
+              "==",
+              "pothinus"
+            ]
+          ],
+          "options": [
+            {
+              "id": "coreign",
+              "label": "Reign beside your brother under Pothinus",
+              "add": {
+                "rivals": 20,
+                "divinity": -15
+              },
+              "set": {
+                "path": "main",
+                "incourt": true
+              },
+              "historical": false
+            },
+            {
+              "id": "plot",
+              "label": "Plot against Pothinus from inside the palace",
+              "cond": [
+                {
+                  "if": [
+                    [
+                      "alexandria",
+                      ">=",
+                      45
+                    ]
+                  ],
+                  "then": {
+                    "add": {
+                      "rivals": -20,
+                      "alexandria": 5
+                    },
+                    "set": {
+                      "path": "main",
+                      "incourt": true
+                    }
+                  },
+                  "else": {
+                    "end": "exiled_forever"
+                  }
+                }
+              ],
+              "historical": false
+            }
+          ]
+        },
+        {
+          "skip": true
+        }
+      ],
+      "branch": true
+    },
+    {
+      "id": "Q05",
+      "title": "Caesar in Alexandria",
+      "year": "48 BC",
+      "image": "Q05",
+      "variants": [
+        {
+          "if": [
+            [
+              "path",
+              "==",
+              "main"
+            ]
+          ],
+          "options": [
+            {
+              "id": "bedsack",
+              "label": "Be smuggled into the palace to meet him",
+              "historical": true,
+              "add": {
+                "rome": 15,
+                "rivals": 10
+              }
+            },
+            {
+              "id": "pelusium",
+              "label": "March on Alexandria with your army",
+              "set": {
+                "path": "pelusium"
+              },
+              "historical": false
+            },
+            {
+              "id": "envoys",
+              "label": "Send envoys and wait",
+              "add": {
+                "rome": 5,
+                "rivals": 5
+              },
+              "historical": false
+            }
+          ]
+        },
+        {
+          "skip": true
+        }
+      ]
+    },
+    {
+      "id": "QB2",
+      "title": "Pelusium",
+      "year": "48 BC",
+      "image": "QB2",
+      "variants": [
+        {
+          "if": [
+            [
+              "path",
+              "==",
+              "pelusium"
+            ]
+          ],
+          "options": [
+            {
+              "id": "attack",
+              "label": "Attack your brother's army",
+              "cond": [
+                {
+                  "if": [
+                    [
+                      "fleet",
+                      ">=",
+                      40
+                    ]
+                  ],
+                  "then": {
+                    "add": {
+                      "rivals": -25,
+                      "fleet": -10,
+                      "rome": 10
+                    },
+                    "set": {
+                      "path": "main"
+                    }
+                  },
+                  "else": {
+                    "end": "exiled_forever"
+                  }
+                }
+              ],
+              "historical": false
+            },
+            {
+              "id": "withdraw",
+              "label": "Withdraw and wait for Caesar",
+              "add": {
+                "rome": -10
+              },
+              "set": {
+                "path": "main"
+              },
+              "historical": false
+            }
+          ]
+        },
+        {
+          "skip": true
+        }
+      ],
+      "branch": true
+    },
+    {
+      "id": "Q06",
+      "title": "The Alexandrian War",
+      "year": "48-47 BC",
+      "image": "Q06",
+      "variants": [
+        {
+          "if": [
+            [
+              "path",
+              "==",
+              "main"
+            ]
+          ],
+          "options": [
+            {
+              "id": "siege",
+              "label": "Stand with Caesar through the siege",
+              "historical": true,
+              "set": {
+                "siege": true
+              }
+            },
+            {
+              "id": "negotiate",
+              "label": "Negotiate with your brother's side",
+              "add": {
+                "rivals": -10,
+                "rome": -15
+              },
+              "historical": false
+            },
+            {
+              "id": "slip",
+              "label": "Slip away to safety",
+              "add": {
+                "rome": -20,
+                "divinity": -5
+              },
+              "historical": false
+            }
+          ]
+        },
+        {
+          "skip": true
+        }
+      ],
+      "after": [
+        "alexwar"
+      ]
+    },
+    {
+      "id": "Q07",
+      "title": "Arsinoe captured",
+      "year": "47 BC",
+      "image": "Q07",
+      "variants": [
+        {
+          "if": [
+            [
+              "path",
+              "==",
+              "main"
+            ]
+          ],
+          "options": [
+            {
+              "id": "parade",
+              "label": "Let Caesar parade her in Rome",
+              "historical": true,
+              "add": {
+                "rome": 5,
+                "rivals": -10
+              },
+              "set": {
+                "arsinoe": "ephesus"
+              }
+            },
+            {
+              "id": "execute",
+              "label": "Have her executed",
+              "add": {
+                "rivals": -25,
+                "rome": -10,
+                "divinity": -5
+              },
+              "set": {
+                "arsinoe": "dead"
+              },
+              "historical": false
+            },
+            {
+              "id": "hostage",
+              "label": "Keep her as a hostage in Alexandria",
+              "add": {
+                "rivals": 5,
+                "alexandria": 5
+              },
+              "set": {
+                "arsinoe": "home"
+              },
+              "historical": false
+            }
+          ]
+        },
+        {
+          "skip": true
+        }
+      ]
+    },
+    {
+      "id": "Q08",
+      "title": "The Nile cruise",
+      "year": "47 BC",
+      "image": "Q08",
+      "variants": [
+        {
+          "if": [
+            [
+              "path",
+              "==",
+              "main"
+            ]
+          ],
+          "options": [
+            {
+              "id": "cruise",
+              "label": "Show Caesar Egypt",
+              "historical": true,
+              "add": {
+                "divinity": 10,
+                "rome": 5,
+                "treasury": -5
+              }
+            },
+            {
+              "id": "stay",
+              "label": "Ask Caesar to stay with you",
+              "set": {
+                "path": "nilepact"
+              },
+              "historical": false
+            },
+            {
+              "id": "sendback",
+              "label": "Send him back to Rome quickly",
+              "add": {
+                "rome": 10,
+                "divinity": -5
+              },
+              "historical": false
+            }
+          ]
+        },
+        {
+          "skip": true
+        }
+      ]
+    },
+    {
+      "id": "QN1",
+      "title": "Caesar's court",
+      "year": "47 BC",
+      "image": "QN1",
+      "variants": [
+        {
+          "if": [
+            [
+              "path",
+              "==",
+              "nilepact"
+            ]
+          ],
+          "options": [
+            {
+              "id": "consort",
+              "label": "Crown him your consort",
+              "add": {
+                "divinity": 5,
+                "rome": -30,
+                "alexandria": -10
+              },
+              "historical": false
+            },
+            {
+              "id": "general",
+              "label": "Keep him as Rome's general in Egypt",
+              "add": {
+                "rome": -15,
+                "fleet": 15
+              },
+              "historical": false
+            }
+          ]
+        },
+        {
+          "skip": true
+        }
+      ],
+      "branch": true
+    },
+    {
+      "id": "QN2",
+      "title": "Enemy of the Republic",
+      "year": "46 BC",
+      "image": "QN2",
+      "variants": [
+        {
+          "if": [
+            [
+              "path",
+              "==",
+              "nilepact"
+            ]
+          ],
+          "options": [
+            {
+              "id": "pay",
+              "label": "Pay his legions from your treasury",
+              "add": {
+                "treasury": -20,
+                "fleet": 15
+              },
+              "historical": false
+            },
+            {
+              "id": "bribe",
+              "label": "Buy friends in the Senate",
+              "add": {
+                "treasury": -15,
+                "rome": 15
+              },
+              "historical": false
+            },
+            {
+              "id": "home",
+              "label": "Send him home to Rome",
+              "add": {
+                "rome": 10
+              },
+              "set": {
+                "path": "main"
+              },
+              "historical": false
+            }
+          ]
+        },
+        {
+          "skip": true
+        }
+      ],
+      "branch": true
+    },
+    {
+      "id": "QN3",
+      "title": "The fleet at Pharos",
+      "year": "45 BC",
+      "image": "QN3",
+      "variants": [
+        {
+          "if": [
+            [
+              "path",
+              "==",
+              "nilepact"
+            ]
+          ],
+          "options": [
+            {
+              "id": "fight",
+              "label": "Fight the Roman fleet",
+              "cond": [
+                {
+                  "if": [
+                    [
+                      "fleet",
+                      ">=",
+                      55
+                    ],
+                    [
+                      "treasury",
+                      ">=",
+                      20
+                    ]
+                  ],
+                  "then": {
+                    "end": "nile_pact"
+                  },
+                  "else": {
+                    "end": "annexed"
+                  }
+                }
+              ],
+              "historical": false
+            },
+            {
+              "id": "treat",
+              "label": "Treat with the Senate's admiral",
+              "cond": [
+                {
+                  "if": [
+                    [
+                      "rome",
+                      ">=",
+                      40
+                    ]
+                  ],
+                  "then": {
+                    "end": "nile_pact"
+                  },
+                  "else": {
+                    "end": "annexed"
+                  }
+                }
+              ],
+              "historical": false
+            }
+          ]
+        },
+        {
+          "skip": true
+        }
+      ],
+      "branch": true
+    },
+    {
+      "id": "Q09",
+      "title": "Caesarion",
+      "year": "47 BC",
+      "image": "Q09",
+      "variants": [
+        {
+          "if": [
+            [
+              "path",
+              "==",
+              "main"
+            ]
+          ],
+          "options": [
+            {
+              "id": "name",
+              "label": "Name Caesar as the father",
+              "historical": true,
+              "add": {
+                "divinity": 10,
+                "rome": 5,
+                "octavian": 20
+              },
+              "set": {
+                "caesarion": "named"
+              }
+            },
+            {
+              "id": "unnamed",
+              "label": "Leave the father unnamed",
+              "add": {
+                "divinity": -5
+              },
+              "set": {
+                "caesarion": "unnamed"
+              },
+              "historical": false
+            },
+            {
+              "id": "amun",
+              "label": "Proclaim him a son of Amun",
+              "add": {
+                "divinity": 15,
+                "rome": -10
+              },
+              "set": {
+                "caesarion": "amun"
+              },
+              "historical": false
+            }
+          ]
+        },
+        {
+          "skip": true
+        }
+      ]
+    },
+    {
+      "id": "Q10",
+      "title": "Rome",
+      "year": "46 BC",
+      "image": "Q10",
+      "variants": [
+        {
+          "if": [
+            [
+              "path",
+              "==",
+              "main"
+            ]
+          ],
+          "options": [
+            {
+              "id": "villa",
+              "label": "Live in Caesar's villa across the Tiber",
+              "historical": true,
+              "add": {
+                "rome": 10,
+                "alexandria": -10,
+                "rivals": 10,
+                "treasury": -5
+              },
+              "set": {
+                "inrome": true
+              }
+            },
+            {
+              "id": "alexandria",
+              "label": "Stay in Alexandria",
+              "add": {
+                "alexandria": 10,
+                "rome": -10,
+                "divinity": 5
+              },
+              "historical": false
+            },
+            {
+              "id": "triumph",
+              "label": "Visit only for his triumph",
+              "add": {
+                "rome": 5,
+                "treasury": -5
+              },
+              "set": {
+                "inrome": true
+              },
+              "historical": false
+            }
+          ]
+        },
+        {
+          "skip": true
+        }
+      ],
+      "after": [
+        "triumphbeat"
+      ]
+    },
+    {
+      "id": "Q11",
+      "title": "The Ides of March",
+      "year": "44 BC",
+      "image": "Q11",
+      "variants": [
+        {
+          "if": [
+            [
+              "path",
+              "==",
+              "main"
+            ]
+          ],
+          "options": [
+            {
+              "id": "flee",
+              "label": "Flee Rome for Egypt",
+              "historical": true,
+              "add": {
+                "rome": -10
+              }
+            },
+            {
+              "id": "warn",
+              "label": "Warn Caesar of the plot",
+              "cond": [
+                {
+                  "if": [
+                    [
+                      "inrome",
+                      "==",
+                      true
+                    ]
+                  ],
+                  "then": {
+                    "set": {
+                      "path": "warning"
+                    }
+                  },
+                  "else": {
+                    "add": {
+                      "rome": -5
+                    }
+                  }
+                }
+              ],
+              "historical": false
+            },
+            {
+              "id": "claim",
+              "label": "Stay to press Caesarion's claim",
+              "add": {
+                "rome": -20,
+                "octavian": 20,
+                "alexandria": -5
+              },
+              "historical": false
+            }
+          ]
+        },
+        {
+          "skip": true
+        }
+      ],
+      "drift_after": true,
+      "after": [
+        "idesbeat",
+        "nileecho"
+      ]
+    },
+    {
+      "id": "QW1",
+      "title": "The morning of the Ides",
+      "year": "44 BC",
+      "image": "QW1",
+      "variants": [
+        {
+          "if": [
+            [
+              "path",
+              "==",
+              "warning"
+            ]
+          ],
+          "options": [
+            {
+              "id": "guard",
+              "label": "Beg him to keep his guard",
+              "cond": [
+                {
+                  "if": [
+                    [
+                      "rome",
+                      ">=",
+                      55
+                    ]
+                  ],
+                  "then": {
+                    "add": {
+                      "rome": 5
+                    },
+                    "set": {
+                      "caesaralive": true
+                    }
+                  },
+                  "else": {
+                    "add": {
+                      "rome": -15
+                    },
+                    "set": {
+                      "path": "main"
+                    }
+                  }
+                }
+              ],
+              "historical": false
+            },
+            {
+              "id": "names",
+              "label": "Name the conspirators to him",
+              "cond": [
+                {
+                  "if": [
+                    [
+                      "rome",
+                      ">=",
+                      45
+                    ],
+                    [
+                      "divinity",
+                      ">=",
+                      50
+                    ]
+                  ],
+                  "then": {
+                    "add": {
+                      "octavian": -10
+                    },
+                    "set": {
+                      "caesaralive": true
+                    }
+                  },
+                  "else": {
+                    "add": {
+                      "rome": -20
+                    },
+                    "set": {
+                      "path": "main"
+                    }
+                  }
+                }
+              ],
+              "historical": false
+            }
+          ]
+        },
+        {
+          "skip": true
+        }
+      ],
+      "branch": true
+    },
+    {
+      "id": "QW2",
+      "title": "Queen in Rome",
+      "year": "44 BC",
+      "image": "QW2",
+      "variants": [
+        {
+          "if": [
+            [
+              "path",
+              "==",
+              "warning"
+            ]
+          ],
+          "options": [
+            {
+              "id": "quiet",
+              "label": "Live quietly across the Tiber",
+              "add": {
+                "rome": 10,
+                "divinity": -10
+              },
+              "historical": false
+            },
+            {
+              "id": "beside",
+              "label": "Appear beside him as queen",
+              "add": {
+                "rome": -25,
+                "divinity": 10,
+                "alexandria": 5
+              },
+              "historical": false
+            },
+            {
+              "id": "egypt",
+              "label": "Return to Egypt as his ally",
+              "add": {
+                "alexandria": 10,
+                "rome": 5
+              },
+              "historical": false
+            }
+          ]
+        },
+        {
+          "skip": true
+        }
+      ],
+      "branch": true
+    },
+    {
+      "id": "QW3",
+      "title": "The succession",
+      "year": "43 BC",
+      "image": "QW3",
+      "variants": [
+        {
+          "if": [
+            [
+              "path",
+              "==",
+              "warning"
+            ]
+          ],
+          "options": [
+            {
+              "id": "caesarion",
+              "label": "Make Caesarion his heir",
+              "cond": [
+                {
+                  "if": [
+                    [
+                      "rome",
+                      ">=",
+                      50
+                    ]
+                  ],
+                  "then": {
+                    "end": "two_worlds"
+                  },
+                  "else": {
+                    "end": "murdered_in_rome"
+                  }
+                }
+              ],
+              "historical": false
+            },
+            {
+              "id": "split",
+              "label": "Rome for Octavian, Egypt for Caesarion",
+              "cond": [
+                {
+                  "if": [
+                    [
+                      "rome",
+                      ">=",
+                      35
+                    ]
+                  ],
+                  "then": {
+                    "end": "two_worlds"
+                  },
+                  "else": {
+                    "end": "murdered_in_rome"
+                  }
+                }
+              ],
+              "historical": false
+            }
+          ]
+        },
+        {
+          "skip": true
+        }
+      ],
+      "branch": true
+    },
+    {
+      "id": "Q12",
+      "title": "Ptolemy XIV",
+      "year": "44 BC",
+      "image": "Q12",
+      "variants": [
+        {
+          "if": [
+            [
+              "path",
+              "==",
+              "main"
+            ]
+          ],
+          "options": [
+            {
+              "id": "remove",
+              "label": "Remove him; make Caesarion co-ruler",
+              "historical": true,
+              "add": {
+                "rivals": -20,
+                "divinity": 5
+              }
+            },
+            {
+              "id": "keep",
+              "label": "Keep him as your husband-king",
+              "add": {
+                "rivals": 10
+              },
+              "set": {
+                "brother": "kept"
+              },
+              "historical": false
+            },
+            {
+              "id": "exile",
+              "label": "Exile him",
+              "add": {
+                "rivals": -5,
+                "alexandria": -5
+              },
+              "set": {
+                "brother": "exiled"
+              },
+              "historical": false
+            }
+          ]
+        },
+        {
+          "skip": true
+        }
+      ]
+    },
+    {
+      "id": "Q13",
+      "title": "Liberators or triumvirs",
+      "year": "43 BC",
+      "image": "Q13",
+      "variants": [
+        {
+          "if": [
+            [
+              "path",
+              "==",
+              "main"
+            ]
+          ],
+          "options": [
+            {
+              "id": "triumvirs",
+              "label": "Promise your fleet to the triumvirs",
+              "historical": true,
+              "add": {
+                "fleet": -15,
+                "rome": 5
+              },
+              "set": {
+                "triumvirs": true
+              }
+            },
+            {
+              "id": "cassius",
+              "label": "Send help to Cassius",
+              "add": {
+                "rome": -25,
+                "octavian": 20,
+                "treasury": -15
+              },
+              "historical": false
+            },
+            {
+              "id": "neutral",
+              "label": "Stay neutral and plead famine",
+              "add": {
+                "rome": -10,
+                "treasury": 5
+              },
+              "historical": false
+            }
+          ]
+        },
+        {
+          "skip": true
+        }
+      ],
+      "after": [
+        "stormbeat"
+      ]
+    },
+    {
+      "id": "Q14",
+      "title": "The famine",
+      "year": "42 BC",
+      "image": "Q14",
+      "variants": [
+        {
+          "if": [
+            [
+              "path",
+              "==",
+              "main"
+            ]
+          ],
+          "options": [
+            {
+              "id": "granaries",
+              "label": "Open the royal granaries",
+              "historical": true,
+              "add": {
+                "treasury": -10,
+                "alexandria": 10,
+                "divinity": 10
+              },
+              "set": {
+                "famine": "fed"
+              }
+            },
+            {
+              "id": "alexonly",
+              "label": "Feed only Alexandria",
+              "add": {
+                "alexandria": 10,
+                "divinity": -10
+              },
+              "historical": false
+            },
+            {
+              "id": "sellrome",
+              "label": "Sell grain to Rome's armies",
+              "add": {
+                "treasury": 15,
+                "divinity": -15,
+                "rome": 5
+              },
+              "set": {
+                "famine": "sold"
+              },
+              "historical": false
+            }
+          ]
+        },
+        {
+          "skip": true
+        }
+      ]
+    },
+    {
+      "id": "Q15",
+      "title": "Tarsus",
+      "year": "41 BC",
+      "image": "Q15",
+      "variants": [
+        {
+          "if": [
+            [
+              "path",
+              "==",
+              "main"
+            ]
+          ],
+          "options": [
+            {
+              "id": "barge",
+              "label": "Arrive on a golden barge as Aphrodite",
+              "historical": true,
+              "add": {
+                "rome": 10,
+                "divinity": 5,
+                "treasury": -10,
+                "octavian": 5
+              },
+              "set": {
+                "patron": "antony"
+              }
+            },
+            {
+              "id": "humble",
+              "label": "Go humbly and explain yourself",
+              "add": {
+                "rome": 5
+              },
+              "set": {
+                "patron": "antony"
+              },
+              "historical": false
+            },
+            {
+              "id": "octavian",
+              "label": "Refuse, and court Octavian instead",
+              "add": {
+                "octavian": -25,
+                "rome": -5
+              },
+              "set": {
+                "patron": "octavian"
+              },
+              "historical": false
+            }
+          ]
+        },
+        {
+          "skip": true
+        }
+      ],
+      "drift_after": true,
+      "after": [
+        "nileecho",
+        "heirecho"
+      ],
+      "scene_cond": [
+        {
+          "if": [
+            [
+              "caesarion",
+              "==",
+              "named"
+            ]
+          ],
+          "then": {
+            "add": {
+              "rome": 10,
+              "octavian": 5
+            }
+          }
+        },
+        {
+          "if": [
+            [
+              "caesarion",
+              "==",
+              "amun"
+            ]
+          ],
+          "then": {
+            "add": {
+              "divinity": 5,
+              "rome": -5
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "Q16",
+      "title": "Arsinoe at Ephesus",
+      "year": "41 BC",
+      "image": "Q16",
+      "variants": [
+        {
+          "if": [
+            [
+              "path",
+              "==",
+              "main"
+            ],
+            [
+              "arsinoe",
+              "!=",
+              "dead"
+            ]
+          ],
+          "options": [
+            {
+              "id": "kill",
+              "label": "Ask your Roman to have her killed",
+              "historical": true,
+              "add": {
+                "rivals": -25,
+                "divinity": -5,
+                "rome": -5
+              },
+              "set": {
+                "arsinoe": "dead"
+              }
+            },
+            {
+              "id": "live",
+              "label": "Let her live at Ephesus",
+              "add": {
+                "rivals": 10
+              },
+              "historical": false
+            },
+            {
+              "id": "home",
+              "label": "Bring her home as a hostage",
+              "add": {
+                "alexandria": -5,
+                "rivals": 5
+              },
+              "set": {
+                "arsinoe": "home"
+              },
+              "historical": false
+            }
+          ]
+        },
+        {
+          "skip": true
+        }
+      ]
+    },
+    {
+      "id": "Q17",
+      "title": "Antony's winter",
+      "year": "41 BC",
+      "image": "Q17",
+      "variants": [
+        {
+          "if": [
+            [
+              "path",
+              "==",
+              "main"
+            ],
+            [
+              "patron",
+              "==",
+              "octavian"
+            ]
+          ],
+          "image": "QO1",
+          "options": [
+            {
+              "id": "grain",
+              "label": "Send Octavian grain for Rome",
+              "add": {
+                "treasury": -15,
+                "rome": 15,
+                "octavian": -15
+              },
+              "historical": false
+            },
+            {
+              "id": "refuse",
+              "label": "Refuse his demand",
+              "add": {
+                "rome": -15,
+                "octavian": 15
+              },
+              "historical": false
+            },
+            {
+              "id": "both",
+              "label": "Send grain to Antony as well",
+              "add": {
+                "treasury": -20,
+                "octavian": 10,
+                "rome": 5
+              },
+              "historical": false
+            }
+          ]
+        },
+        {
+          "if": [
+            [
+              "path",
+              "==",
+              "main"
+            ],
+            [
+              "patron",
+              "!=",
+              "octavian"
+            ]
+          ],
+          "options": [
+            {
+              "id": "keep",
+              "label": "Keep Antony in Alexandria",
+              "historical": true,
+              "add": {
+                "rome": -10,
+                "alexandria": 10,
+                "treasury": -10,
+                "octavian": 10
+              }
+            },
+            {
+              "id": "send",
+              "label": "Send him back to Rome",
+              "add": {
+                "rome": 10
+              },
+              "historical": false
+            },
+            {
+              "id": "partner",
+              "label": "Plan the East with him as an equal",
+              "add": {
+                "fleet": 10,
+                "octavian": 5
+              },
+              "historical": false
+            }
+          ]
+        },
+        {
+          "skip": true
+        }
+      ]
+    },
+    {
+      "id": "Q18",
+      "title": "The Parthian war",
+      "year": "36 BC",
+      "image": "Q18",
+      "variants": [
+        {
+          "if": [
+            [
+              "path",
+              "==",
+              "main"
+            ],
+            [
+              "patron",
+              "==",
+              "octavian"
+            ]
+          ],
+          "image": "QO2",
+          "options": [
+            {
+              "id": "payoff",
+              "label": "Pay Antony to leave you alone",
+              "add": {
+                "treasury": -20,
+                "rome": 5
+              },
+              "historical": false
+            },
+            {
+              "id": "borders",
+              "label": "Guard your borders",
+              "add": {
+                "fleet": 10,
+                "treasury": -10
+              },
+              "historical": false
+            },
+            {
+              "id": "secret",
+              "label": "Court Antony in secret",
+              "add": {
+                "octavian": 25,
+                "rome": 5
+              },
+              "historical": false
+            }
+          ]
+        },
+        {
+          "if": [
+            [
+              "path",
+              "==",
+              "main"
+            ],
+            [
+              "patron",
+              "!=",
+              "octavian"
+            ]
+          ],
+          "options": [
+            {
+              "id": "fund",
+              "label": "Fund Antony but stay in Egypt",
+              "historical": true,
+              "add": {
+                "treasury": -10,
+                "rome": 5
+              }
+            },
+            {
+              "id": "ride",
+              "label": "Ride east with him",
+              "set": {
+                "path": "parthia"
+              },
+              "historical": false
+            },
+            {
+              "id": "nofund",
+              "label": "Refuse to pay for his war",
+              "add": {
+                "rome": -15,
+                "treasury": 10
+              },
+              "historical": false
+            }
+          ]
+        },
+        {
+          "skip": true
+        }
+      ]
+    },
+    {
+      "id": "QB3",
+      "title": "The Parthian march",
+      "year": "36 BC",
+      "image": "QB3",
+      "variants": [
+        {
+          "if": [
+            [
+              "path",
+              "==",
+              "parthia"
+            ]
+          ],
+          "options": [
+            {
+              "id": "front",
+              "label": "Lead from the front",
+              "cond": [
+                {
+                  "if": [
+                    [
+                      "fleet",
+                      ">=",
+                      45
+                    ],
+                    [
+                      "rome",
+                      ">=",
+                      55
+                    ]
+                  ],
+                  "then": {
+                    "add": {
+                      "rome": 15,
+                      "divinity": 10,
+                      "octavian": 10
+                    },
+                    "set": {
+                      "path": "main"
+                    }
+                  },
+                  "else": {
+                    "add": {
+                      "fleet": -20,
+                      "rome": -10
+                    },
+                    "set": {
+                      "path": "main"
+                    }
+                  }
+                }
+              ],
+              "historical": false
+            },
+            {
+              "id": "turn",
+              "label": "Turn back at Armenia",
+              "add": {
+                "rome": -10
+              },
+              "set": {
+                "path": "main"
+              },
+              "historical": false
+            }
+          ]
+        },
+        {
+          "skip": true
+        }
+      ],
+      "branch": true
+    },
+    {
+      "id": "Q19",
+      "title": "The Donations of Alexandria",
+      "year": "34 BC",
+      "image": "Q19",
+      "variants": [
+        {
+          "if": [
+            [
+              "path",
+              "==",
+              "main"
+            ],
+            [
+              "patron",
+              "==",
+              "octavian"
+            ]
+          ],
+          "image": "QO3",
+          "options": [
+            {
+              "id": "hide",
+              "label": "Hide Caesarion's father",
+              "add": {
+                "octavian": -25,
+                "divinity": -10
+              },
+              "historical": false
+            },
+            {
+              "id": "proclaim",
+              "label": "Proclaim him Caesar's son",
+              "add": {
+                "octavian": 30,
+                "divinity": 10
+              },
+              "historical": false
+            },
+            {
+              "id": "hostage",
+              "label": "Send him to Rome as a hostage",
+              "add": {
+                "rome": 15,
+                "divinity": -15,
+                "octavian": -15
+              },
+              "set": {
+                "caesarion": "hostage"
+              },
+              "historical": false
+            }
+          ]
+        },
+        {
+          "if": [
+            [
+              "path",
+              "==",
+              "main"
+            ],
+            [
+              "patron",
+              "!=",
+              "octavian"
+            ]
+          ],
+          "options": [
+            {
+              "id": "crown",
+              "label": "Crown your children rulers of the East",
+              "historical": true,
+              "add": {
+                "divinity": 15,
+                "alexandria": 10,
+                "rome": -20,
+                "octavian": 20
+              }
+            },
+            {
+              "id": "egyptonly",
+              "label": "Crown only Caesarion, king of Egypt",
+              "add": {
+                "divinity": 5,
+                "octavian": 10
+              },
+              "historical": false
+            },
+            {
+              "id": "refuse",
+              "label": "Refuse the titles",
+              "add": {
+                "rome": 5,
+                "divinity": -10
+              },
+              "historical": false
+            }
+          ]
+        },
+        {
+          "skip": true
+        }
+      ],
+      "drift_after": true,
+      "after": [
+        "famineecho"
+      ]
+    },
+    {
+      "id": "Q20",
+      "title": "War is declared",
+      "year": "32 BC",
+      "image": "Q20",
+      "variants": [
+        {
+          "if": [
+            [
+              "path",
+              "==",
+              "main"
+            ],
+            [
+              "patron",
+              "==",
+              "octavian"
+            ]
+          ],
+          "image": "QO4",
+          "options": [
+            {
+              "id": "sendfleet",
+              "label": "Send your fleet to Octavian",
+              "add": {
+                "fleet": -10,
+                "rome": 15,
+                "octavian": -15
+              },
+              "historical": false
+            },
+            {
+              "id": "neutral",
+              "label": "Stay neutral",
+              "add": {
+                "rome": -10
+              },
+              "historical": false
+            },
+            {
+              "id": "switch",
+              "label": "Change sides to Antony",
+              "add": {
+                "octavian": 30
+              },
+              "set": {
+                "patron": "antony"
+              },
+              "historical": false
+            }
+          ]
+        },
+        {
+          "if": [
+            [
+              "path",
+              "==",
+              "main"
+            ],
+            [
+              "patron",
+              "!=",
+              "octavian"
+            ]
+          ],
+          "options": [
+            {
+              "id": "sail",
+              "label": "Sail with the fleet yourself",
+              "historical": true,
+              "add": {
+                "fleet": 10,
+                "rome": -10,
+                "octavian": 10
+              }
+            },
+            {
+              "id": "stayhome",
+              "label": "Stay in Alexandria and send the fleet",
+              "add": {
+                "alexandria": 10,
+                "fleet": -5
+              },
+              "historical": false
+            },
+            {
+              "id": "abandon",
+              "label": "Make peace with Octavian, abandoning Antony",
+              "add": {
+                "octavian": -10,
+                "rome": 5,
+                "fleet": -10,
+                "divinity": -10
+              },
+              "set": {
+                "patron": "octavian"
+              },
+              "historical": false
+            }
+          ]
+        },
+        {
+          "skip": true
+        }
+      ],
+      "after": [
+        "returns",
+        "brotherback"
+      ]
+    },
+    {
+      "id": "Q21",
+      "title": "Actium",
+      "year": "31 BC",
+      "image": "Q21",
+      "variants": [
+        {
+          "if": [
+            [
+              "path",
+              "==",
+              "main"
+            ],
+            [
+              "patron",
+              "==",
+              "octavian"
+            ]
+          ],
+          "image": "QO5",
+          "options": [
+            {
+              "id": "handover",
+              "label": "Hand Antony over to Octavian",
+              "add": {
+                "octavian": -25,
+                "divinity": -10,
+                "alexandria": -10
+              },
+              "historical": false
+            },
+            {
+              "id": "shelter",
+              "label": "Give Antony shelter",
+              "add": {
+                "octavian": 30
+              },
+              "set": {
+                "patron": "antony",
+                "lostwar": true
+              },
+              "historical": false
+            },
+            {
+              "id": "pass",
+              "label": "Let him pass through Egypt",
+              "add": {
+                "octavian": 5
+              },
+              "historical": false
+            }
+          ]
+        },
+        {
+          "if": [
+            [
+              "path",
+              "==",
+              "main"
+            ],
+            [
+              "patron",
+              "!=",
+              "octavian"
+            ]
+          ],
+          "options": [
+            {
+              "id": "breakout",
+              "label": "Break out with the treasure ships",
+              "historical": true,
+              "add": {
+                "fleet": -20,
+                "treasury": 5
+              },
+              "set": {
+                "lostwar": true
+              }
+            },
+            {
+              "id": "fight",
+              "label": "Fight to the end",
+              "set": {
+                "path": "actium"
+              },
+              "historical": false
+            },
+            {
+              "id": "surrender",
+              "label": "Surrender the fleet to Octavian",
+              "add": {
+                "octavian": -10,
+                "rome": -10,
+                "fleet": -30
+              },
+              "set": {
+                "patron": "octavian",
+                "lostwar": true
+              },
+              "historical": false
+            }
+          ]
+        },
+        {
+          "skip": true
+        }
+      ],
+      "after": [
+        "antonybeat",
+        "cityturns"
+      ]
+    },
+    {
+      "id": "QB4",
+      "title": "Fight to the end",
+      "year": "31 BC",
+      "image": "QB4",
+      "variants": [
+        {
+          "if": [
+            [
+              "path",
+              "==",
+              "actium"
+            ]
+          ],
+          "options": [
+            {
+              "id": "line",
+              "label": "Hold the line with every ship",
+              "cond": [
+                {
+                  "if": [
+                    [
+                      "fleet",
+                      ">=",
+                      45
+                    ],
+                    [
+                      "treasury",
+                      ">=",
+                      30
+                    ],
+                    [
+                      "octavian",
+                      "<=",
+                      70
+                    ]
+                  ],
+                  "then": {
+                    "set": {
+                      "warwon": true,
+                      "path": "main"
+                    }
+                  },
+                  "else": {
+                    "end": "lost_at_sea"
+                  }
+                }
+              ],
+              "historical": false
+            },
+            {
+              "id": "fireships",
+              "label": "Send fireships into his line",
+              "cond": [
+                {
+                  "if": [
+                    [
+                      "fleet",
+                      ">=",
+                      35
+                    ],
+                    [
+                      "divinity",
+                      ">=",
+                      60
+                    ],
+                    [
+                      "octavian",
+                      "<=",
+                      70
+                    ]
+                  ],
+                  "then": {
+                    "set": {
+                      "warwon": true,
+                      "path": "main"
+                    }
+                  },
+                  "else": {
+                    "end": "lost_at_sea"
+                  }
+                }
+              ],
+              "historical": false
+            }
+          ]
+        },
+        {
+          "skip": true
+        }
+      ],
+      "branch": true
+    },
+    {
+      "id": "Q22",
+      "title": "The last summer",
+      "year": "30 BC",
+      "image": "Q22",
+      "variants": [
+        {
+          "if": [
+            [
+              "path",
+              "==",
+              "main"
+            ],
+            [
+              "warwon",
+              "==",
+              true
+            ]
+          ],
+          "image": "QO6",
+          "options": [
+            {
+              "id": "east",
+              "label": "Rule the East with Antony",
+              "end": "eastern_empire",
+              "historical": false
+            },
+            {
+              "id": "peace",
+              "label": "Crown Caesarion and make peace with Rome",
+              "add": {
+                "octavian": -40,
+                "rome": 30,
+                "divinity": 5
+              },
+              "set": {
+                "path": "settled"
+              },
+              "historical": false
+            }
+          ]
+        },
+        {
+          "if": [
+            [
+              "path",
+              "==",
+              "main"
+            ],
+            [
+              "patron",
+              "==",
+              "octavian"
+            ],
+            [
+              "lostwar",
+              "!=",
+              true
+            ]
+          ],
+          "image": "QO7",
+          "options": [
+            {
+              "id": "ally",
+              "label": "Stay Octavian's loyal ally",
+              "end": "octavians_ally",
+              "historical": false
+            },
+            {
+              "id": "freedom",
+              "label": "Ask freedom for Egypt and Caesarion",
+              "set": {
+                "path": "settled"
+              },
+              "historical": false
+            }
+          ]
+        },
+        {
+          "if": [
+            [
+              "path",
+              "==",
+              "main"
+            ]
+          ],
+          "options": [
+            {
+              "id": "asp",
+              "label": "Choose your own death",
+              "historical": true,
+              "end": "asp"
+            },
+            {
+              "id": "redsea",
+              "label": "Flee east by the Red Sea",
+              "set": {
+                "path": "redsea"
+              },
+              "historical": false
+            },
+            {
+              "id": "treat",
+              "label": "Treat with Octavian",
+              "cond": [
+                {
+                  "if": [
+                    [
+                      "octavian",
+                      "<=",
+                      40
+                    ]
+                  ],
+                  "then": {
+                    "end": "client_queen"
+                  }
+                },
+                {
+                  "if": [
+                    [
+                      "famine",
+                      "==",
+                      "fed"
+                    ],
+                    [
+                      "octavian",
+                      "<=",
+                      60
+                    ]
+                  ],
+                  "then": {
+                    "end": "client_queen"
+                  },
+                  "else": {
+                    "end": "paraded_chains"
+                  }
+                }
+              ],
+              "historical": false
+            }
+          ]
+        },
+        {
+          "skip": true
+        }
+      ]
+    },
+    {
+      "id": "QE1",
+      "title": "Hauling the fleet",
+      "year": "30 BC",
+      "image": "QE1",
+      "variants": [
+        {
+          "if": [
+            [
+              "path",
+              "==",
+              "redsea"
+            ]
+          ],
+          "options": [
+            {
+              "id": "drag",
+              "label": "Drag your ships across the isthmus",
+              "add": {
+                "treasury": -20,
+                "fleet": 10
+              },
+              "historical": false
+            },
+            {
+              "id": "buy",
+              "label": "Buy ships at Berenice",
+              "add": {
+                "treasury": -30
+              },
+              "historical": false
+            }
+          ]
+        },
+        {
+          "skip": true
+        }
+      ],
+      "branch": true
+    },
+    {
+      "id": "QE2",
+      "title": "The Nabataeans",
+      "year": "30 BC",
+      "image": "QE2",
+      "variants": [
+        {
+          "if": [
+            [
+              "path",
+              "==",
+              "redsea"
+            ]
+          ],
+          "options": [
+            {
+              "id": "payoff",
+              "label": "Pay off King Malichus",
+              "cond": [
+                {
+                  "if": [
+                    [
+                      "treasury",
+                      ">=",
+                      20
+                    ]
+                  ],
+                  "then": {
+                    "add": {
+                      "treasury": -20
+                    }
+                  },
+                  "else": {
+                    "end": "paraded_chains"
+                  }
+                }
+              ],
+              "historical": false
+            },
+            {
+              "id": "fight",
+              "label": "Fight your way through",
+              "cond": [
+                {
+                  "if": [
+                    [
+                      "fleet",
+                      ">=",
+                      40
+                    ]
+                  ],
+                  "then": {
+                    "add": {
+                      "fleet": -15
+                    }
+                  },
+                  "else": {
+                    "end": "paraded_chains"
+                  }
+                }
+              ],
+              "historical": false
+            }
+          ]
+        },
+        {
+          "skip": true
+        }
+      ],
+      "branch": true
+    },
+    {
+      "id": "QE3",
+      "title": "The Indian Ocean",
+      "year": "30 BC",
+      "image": "QE3",
+      "variants": [
+        {
+          "if": [
+            [
+              "path",
+              "==",
+              "redsea"
+            ]
+          ],
+          "options": [
+            {
+              "id": "sail",
+              "label": "Sail for India with Caesarion",
+              "end": "queen_indies",
+              "historical": false
+            },
+            {
+              "id": "alone",
+              "label": "Send Caesarion on alone, and face Octavian",
+              "end": "asp",
+              "historical": false
+            }
+          ]
+        },
+        {
+          "skip": true
+        }
+      ],
+      "branch": true
+    }
+  ]
+}

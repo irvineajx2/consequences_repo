@@ -2,11 +2,11 @@ import { flatten, replay } from '../../src/core';
 import { fixtureRulers, goldenCases, rules } from './helpers';
 
 const rulers = fixtureRulers();
-const EXPECTED_CASES: Record<string, number> = { 'charles-i': 1548, 'elizabeth-i': 218, 'julius-caesar': 170 };
+const EXPECTED_CASES: Record<string, number> = { 'charles-i': 1548, cleopatra: 1552, 'elizabeth-i': 218, 'julius-caesar': 170 };
 
 describe('golden paths', () => {
   it('finds fixtures for every ruler', () => {
-    expect(rulers.map((r) => r.id).sort()).toEqual(['charles-i', 'elizabeth-i', 'julius-caesar']);
+    expect(rulers.map((r) => r.id).sort()).toEqual(['charles-i', 'cleopatra', 'elizabeth-i', 'julius-caesar']);
   });
 
   describe.each(rulers.map((r) => [r.id, r] as const))('%s', (id, ruler) => {

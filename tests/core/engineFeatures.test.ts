@@ -29,7 +29,7 @@ function ruler(overrides: Record<string, unknown>): Rules {
   });
 }
 
-describe('engine features used by Charles I', () => {
+describe('engine features used by Charles I and Cleopatra', () => {
   it('string flags: sets and tests a string-valued flag', () => {
     const r = ruler({});
     expect(flatten(replay(r, ['b', 'a']).run.state).path).toBe('exile');
@@ -111,5 +111,64 @@ describe('engine features used by Charles I', () => {
     expect(won.run.history.decisions[0].beats).toEqual(['b1']);
     expect(flatten(won.run.state).gold).toBe(60);
     expect(replay(r, ['b']).outcome.ending).toBe('broke');
+  });
+
+  it('several cond entries on one option run in order, an earlier one with no else', () => {
+    const treat = (gold: number) =>
+      ruler({
+        meters: { gold, army: 50 },
+        scenes: [
+          {
+            id: 's1',
+            title: 'One',
+            image: '1',
+            options: [
+              {
+                id: 'treat',
+                label: 'Treat',
+                historical: true,
+                cond: [
+                  { if: [['gold', '<=', 40]], then: { end: 'won' } },
+                  { if: [['army', '>=', 50]], then: { end: 'done' }, else: { end: 'broke' } },
+                ],
+              },
+            ],
+          },
+        ],
+      });
+    // The first entry ends the run when it holds; otherwise the second decides.
+    expect(replay(treat(30), ['treat']).outcome.ending).toBe('won');
+    expect(replay(treat(60), ['treat']).outcome.ending).toBe('done');
+  });
+
+  it('two finale outcomes with different checklists can give the same ending', () => {
+    const r = ruler({
+      finale: {
+        terms: [{ var: 'gold', mult: 1 }],
+        outcomes: [
+          { if: [['path', '==', 'exile'], ['gold', '>=', 90]], end: 'won' },
+          { if: [['army', '>=', 50], ['gold', '>=', 50]], end: 'won' },
+          { end: 'done' },
+        ],
+        beats: [],
+      },
+    });
+    expect(replay(r, ['a', 'a']).outcome.ending).toBe('won'); // second route
+    expect(replay(r, ['b', 'b']).outcome.ending).toBe('done'); // neither
+  });
+
+  it('several events after one scene, each firing its own beat, one also changing meters', () => {
+    const r = ruler({
+      beats: { b1: { image: 'B1' }, b2: { image: 'B2' } },
+      events: {
+        first: { branches: [{ if: [['gold', '>=', 50]], beat: 'b1', then: { add: { army: -10 } } }] },
+        second: { branches: [{ if: [['army', '<=', 40]], beat: 'b2' }] },
+      },
+      scenes: [{ ...ruler({}).scenes[0], after: ['first', 'second'] }, ruler({}).scenes[1]],
+    });
+    const { run } = replay(r, ['a', 'a']);
+    // The second event sees the first one's change (army 40), so both beats fire, in order.
+    expect(run.history.decisions[0].beats).toEqual(['b1', 'b2']);
+    expect(flatten(run.state).army).toBe(40);
   });
 });
