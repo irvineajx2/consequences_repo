@@ -1,0 +1,23 @@
+{
+  "ruler": "cleopatra",
+  "heightPt": 48,
+  "effectPadPt": 6,
+  "shadowOffsetPt": 2,
+  "pieces": {
+    "treasury": {
+      "aspect": 0.7564
+    },
+    "alexandria": {
+      "aspect": 0.7169
+    },
+    "divinity": {
+      "aspect": 0.9399
+    },
+    "fleet": {
+      "aspect": 0.9011
+    },
+    "rome": {
+      "aspect": 0.8508
+    }
+  }
+}

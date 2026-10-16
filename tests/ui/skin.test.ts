@@ -146,7 +146,7 @@ describe('Tudor meters', () => {
   );
 
   it('registers exactly the meter images it names', () => {
-    expect(names).toHaveLength(23 + 20 + 23);
+    expect(names).toHaveLength(23 + 20 + 23 + 20);
     expect(Object.keys(tudorSkin.meters.images).sort()).toEqual([...names].sort());
   });
 
@@ -178,26 +178,28 @@ describe('Tudor meters', () => {
       }
     }
     expect(missing).toEqual([]);
-    expect(Object.keys(tudorSkin.meters.pending ?? {})).toEqual(['cleopatra']);
+    expect(Object.keys(tudorSkin.meters.pending ?? {})).toEqual([]);
   });
 
-  it("plans Cleopatra's five fill meters, named by meter like Charles's sheet", () => {
-    expect(tudorSkin.meters.pending?.cleopatra).toEqual(
-      Object.fromEntries(
-        ['treasury', 'alexandria', 'divinity', 'fleet', 'rome'].map((m) => [m, { full: `cleopatra_${m}`, empty: `cleopatra_${m}_empty` }]),
-      ),
+  it("maps Cleopatra's five fill meters, named by meter like Charles's sheet, and sizes them from her meters.json", () => {
+    const meters = ['treasury', 'alexandria', 'divinity', 'fleet', 'rome'];
+    expect(tudorSkin.meters.art.cleopatra).toEqual(
+      Object.fromEntries(meters.map((m) => [m, { full: `cleopatra_${m}`, empty: `cleopatra_${m}_empty` }])),
     );
+    const file = JSON.parse(fs.readFileSync(path.join(meterDir, 'cleopatra', 'meters.json'), 'utf8'));
+    for (const m of meters) {
+      expect(tudorSkin.meters.metrics[`cleopatra_${m}`]).toEqual({ heightPt: file.heightPt, aspect: file.pieces[m].aspect, effectPadPt: file.effectPadPt });
+    }
   });
 
-  test.each(Object.keys(tudorSkin.meters.pending ?? {}))(
-    '%s: planned art has not arrived yet (once it has, move it from pending into art and register it)',
-    (rulerId) => {
-      const names = meterImageNames({ art: { [rulerId]: tudorSkin.meters.pending![rulerId] } });
+  it('planned art has not arrived yet (once it has, move it from pending into art and register it)', () => {
+    for (const [rulerId, art] of Object.entries(tudorSkin.meters.pending ?? {})) {
+      const names = meterImageNames({ art: { [rulerId]: art } });
       const arrived = names.filter((n) => fs.existsSync(path.join(meterDir, rulerId, `${fileFor(rulerId, n)}.png`)));
       expect(arrived).toEqual([]);
       expect(tudorSkin.meters.art[rulerId]).toBeUndefined();
-    },
-  );
+    }
+  });
 
   it("maps Charles I's 7-piece sheet: chest, mace, lobster-tail helmet, crown; plain book, church, mitre", () => {
     expect(tudorSkin.meters.art['charles-i']).toEqual({
