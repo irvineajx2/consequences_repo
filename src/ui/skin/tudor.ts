@@ -3,6 +3,7 @@
 // assets/ui/skins/tudor/meters/.
 import caesarMeterFile from '../../../assets/ui/skins/tudor/meters/julius-caesar/meters.json';
 import charlesMeterFile from '../../../assets/ui/skins/tudor/meters/charles-i/meters.json';
+import cleopatraMeterFile from '../../../assets/ui/skins/tudor/meters/cleopatra/meters.json';
 import meterFile from '../../../assets/ui/skins/tudor/meters/meters.json';
 import progressionLayout from '../../../assets/ui/skins/tudor/progression/progression_ui.json';
 import rankFile from '../../../assets/ui/skins/tudor/progression/rank_ui.json';
@@ -13,21 +14,27 @@ import type { Skin } from './types';
 const { _note: _meterNote, ...elizabethMeterMetrics } = meterFile;
 const { _note: _caesarMeterNote, ...caesarMeterMetrics } = caesarMeterFile;
 const { _note: _rankNote, ...rankArt } = rankFile;
-// Charles's sheet gives every piece one height (48 pt, the art drawn for the 1.2x icon scale) and
-// its aspect. His names would clash with Elizabeth's (both have a treasury), so his pieces are
-// registered as charles_<piece>. His Church gauge is drawn at Elizabeth's Religion gauge's
-// proportions: ends 24 pt and marker 30 pt before scaling, padding in proportion.
-const CHARLES = 'charles_';
-const charlesGaugeHeights: Readonly<Record<string, number>> = { church_puritan: 24, church_high: 24, church_marker: 30 };
-const charlesMeterMetrics = Object.fromEntries(
-  Object.entries(charlesMeterFile.pieces).map(([piece, { aspect }]) => {
-    const heightPt = charlesGaugeHeights[piece] ?? charlesMeterFile.heightPt;
-    const effectPadPt = (charlesMeterFile.effectPadPt * heightPt) / charlesMeterFile.heightPt;
-    return [`${CHARLES}${piece}`, { heightPt, aspect, effectPadPt }];
-  }),
-);
+// Later rulers' sheets give every piece one height (48 pt, the art drawn for the 1.2x icon scale)
+// and its aspect. Their names would clash with Elizabeth's (all have a treasury), so their pieces
+// are registered as <ruler>_<piece>. Charles's Church gauge is drawn at Elizabeth's Religion
+// gauge's proportions: ends 24 pt and marker 30 pt before scaling, padding in proportion.
+interface RulerMeterFile {
+  readonly heightPt: number;
+  readonly effectPadPt: number;
+  readonly pieces: Readonly<Record<string, { readonly aspect: number }>>;
+}
+const prefixedMetrics = (file: RulerMeterFile, prefix: string, gaugeHeights: Readonly<Record<string, number>> = {}) =>
+  Object.fromEntries(
+    Object.entries(file.pieces).map(([piece, { aspect }]) => {
+      const heightPt = gaugeHeights[piece] ?? file.heightPt;
+      const effectPadPt = (file.effectPadPt * heightPt) / file.heightPt;
+      return [`${prefix}${piece}`, { heightPt, aspect, effectPadPt }];
+    }),
+  );
+const charlesMeterMetrics = prefixedMetrics(charlesMeterFile, 'charles_', { church_puritan: 24, church_high: 24, church_marker: 30 });
+const cleopatraMeterMetrics = prefixedMetrics(cleopatraMeterFile, 'cleopatra_');
 // Image names are unique across rulers, so one table sizes them all.
-const meterMetrics = { ...elizabethMeterMetrics, ...caesarMeterMetrics, ...charlesMeterMetrics };
+const meterMetrics = { ...elizabethMeterMetrics, ...caesarMeterMetrics, ...charlesMeterMetrics, ...cleopatraMeterMetrics };
 
 export const tudorSkin: Skin = {
   id: 'tudor',
@@ -103,10 +110,7 @@ export const tudorSkin: Skin = {
         army: { full: 'charles_army', empty: 'charles_army_empty' },
         majesty: { full: 'charles_majesty', empty: 'charles_majesty_empty' },
       },
-    },
-    pending: {
-      // Cleopatra's 5-piece sheet (grain jar, Pharos, Isis crown, galley prow, Roman helmet) is still
-      // to come, as meters/cleopatra/<meter>.png like Charles's: placeholder medals until then.
+      // Cleopatra's sheet: grain jar, Pharos, Isis crown, galley prow, Roman helmet.
       cleopatra: {
         treasury: { full: 'cleopatra_treasury', empty: 'cleopatra_treasury_empty' },
         alexandria: { full: 'cleopatra_alexandria', empty: 'cleopatra_alexandria_empty' },
@@ -185,6 +189,27 @@ export const tudorSkin: Skin = {
       charles_church_marker_shadow: require('../../../assets/ui/skins/tudor/meters/charles-i/church_marker_shadow.png'),
       charles_church_puritan: require('../../../assets/ui/skins/tudor/meters/charles-i/church_puritan.png'),
       charles_church_puritan_shadow: require('../../../assets/ui/skins/tudor/meters/charles-i/church_puritan_shadow.png'),
+      // Cleopatra (files named without the cleopatra_ prefix)
+      cleopatra_alexandria: require('../../../assets/ui/skins/tudor/meters/cleopatra/alexandria.png'),
+      cleopatra_alexandria_empty: require('../../../assets/ui/skins/tudor/meters/cleopatra/alexandria_empty.png'),
+      cleopatra_alexandria_glow: require('../../../assets/ui/skins/tudor/meters/cleopatra/alexandria_glow.png'),
+      cleopatra_alexandria_shadow: require('../../../assets/ui/skins/tudor/meters/cleopatra/alexandria_shadow.png'),
+      cleopatra_divinity: require('../../../assets/ui/skins/tudor/meters/cleopatra/divinity.png'),
+      cleopatra_divinity_empty: require('../../../assets/ui/skins/tudor/meters/cleopatra/divinity_empty.png'),
+      cleopatra_divinity_glow: require('../../../assets/ui/skins/tudor/meters/cleopatra/divinity_glow.png'),
+      cleopatra_divinity_shadow: require('../../../assets/ui/skins/tudor/meters/cleopatra/divinity_shadow.png'),
+      cleopatra_fleet: require('../../../assets/ui/skins/tudor/meters/cleopatra/fleet.png'),
+      cleopatra_fleet_empty: require('../../../assets/ui/skins/tudor/meters/cleopatra/fleet_empty.png'),
+      cleopatra_fleet_glow: require('../../../assets/ui/skins/tudor/meters/cleopatra/fleet_glow.png'),
+      cleopatra_fleet_shadow: require('../../../assets/ui/skins/tudor/meters/cleopatra/fleet_shadow.png'),
+      cleopatra_rome: require('../../../assets/ui/skins/tudor/meters/cleopatra/rome.png'),
+      cleopatra_rome_empty: require('../../../assets/ui/skins/tudor/meters/cleopatra/rome_empty.png'),
+      cleopatra_rome_glow: require('../../../assets/ui/skins/tudor/meters/cleopatra/rome_glow.png'),
+      cleopatra_rome_shadow: require('../../../assets/ui/skins/tudor/meters/cleopatra/rome_shadow.png'),
+      cleopatra_treasury: require('../../../assets/ui/skins/tudor/meters/cleopatra/treasury.png'),
+      cleopatra_treasury_empty: require('../../../assets/ui/skins/tudor/meters/cleopatra/treasury_empty.png'),
+      cleopatra_treasury_glow: require('../../../assets/ui/skins/tudor/meters/cleopatra/treasury_glow.png'),
+      cleopatra_treasury_shadow: require('../../../assets/ui/skins/tudor/meters/cleopatra/treasury_shadow.png'),
     },
     layout: { iconScale: 1.2, fillHeight: 40, balanceWidth: 130, gap: 9, margin: 12, shadowOffset: 2 },
     colors: {
