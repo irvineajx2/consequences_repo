@@ -194,14 +194,12 @@ Screenshots, in `docs/tasks/task17_screens/`:
   - the banner;
   - each battle's sector positions.
 - Missing images fall back to the placeholder, and a test checks this.
-- **`alesia_map_sectors.json` hasn't arrived yet.** Until it does, the placeholder
-  `content/battles/alesia/map_sectors.placeholder.json` is used, with positions as the task
-  describes.
-  - Drop the real file into `assets/battles/alesia/` (or `content/battles/alesia/`) and run
-    `npm run images`; it replaces the placeholder with no code change.
-  - The reader accepts sectors keyed by id or listed, points as `[x, y]` or `{x, y}`, and an
-    anchor or just an outline. It's worth a look when the real file arrives in case it uses another
-    shape.
+- **`alesia_map_sectors.json`** is in `assets/battles/alesia/`. I traced it from the art chat's
+  annotated map: an anchor and an outline per sector, as fractions of the 941 × 1672 map. The
+  annotated image matches the map's top 1,150 pixels exactly.
+  - `npm run images` picks it up in place of the placeholder
+    (`content/battles/alesia/map_sectors.placeholder.json`, kept as the fallback).
+  - The map screenshots above use the real positions.
 
 ## Text
 

@@ -65,5 +65,5 @@ export const battleBanner: ImageSourcePropType | null = require("../../../assets
 
 /** Each battle's sector positions on its maps (the art chat's file, or the placeholder). */
 export const battleSectorFiles: Readonly<Record<string, unknown>> = {
-  "alesia": require("../../../content/battles/alesia/map_sectors.placeholder.json"),
+  "alesia": require("../../../assets/battles/alesia/alesia_map_sectors.json"),
 };
