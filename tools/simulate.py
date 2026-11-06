@@ -13,10 +13,21 @@ Measures (as used to balance Caesar and Charles):
 The game itself is deterministic; this tool samples player choices with a seeded RNG.
 
 Usage (from the repo root): python tools/simulate.py src/data/rulers/<ruler>/rules.json [RUNS] [FORESIGHT_TRIALS]
+
+Battles: python tools/simulate.py battle alesia [BATTLES_PER_TYPE] [CLIMB_ITERS] runs the battle report
+(tools/battle_sim/report.py) on the battle's reference model.
 """
 import sys, random
 from collections import Counter, defaultdict
 sys.path.insert(0, __file__.rsplit("/", 1)[0] if "/" in __file__ else ".")
+
+if len(sys.argv) > 1 and sys.argv[1] == "battle":
+    import os
+    sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "battle_sim"))
+    import report
+    report.main(sys.argv[2:])
+    sys.exit(0)
+
 from engine import Engine
 
 RULES = sys.argv[1]

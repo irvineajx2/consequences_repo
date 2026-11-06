@@ -26,7 +26,7 @@ import { AvatarView } from './AvatarView';
 import { Badge } from './Badge';
 
 /** Text on the dark screen background, in the skin's fonts. */
-function useScreenText() {
+export function useScreenText() {
   const skin = useSkin();
   return {
     heading: { ...textSizes.heading, fontFamily: skin.fonts.caption, color: skin.screen.text },
@@ -36,7 +36,7 @@ function useScreenText() {
   };
 }
 
-function Card({ children, style }: { children: ReactNode; style?: object }) {
+export function Card({ children, style }: { children: ReactNode; style?: object }) {
   const skin = useSkin();
   return <View style={[styles.card, { backgroundColor: skin.progression.colors.plate }, style]}>{children}</View>;
 }

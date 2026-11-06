@@ -97,6 +97,31 @@
         "octavians_ally": "uncommon",
         "queen_indies": "uncommon"
       }
+    },
+    "battles": {
+      "_note": "Gold bands for battle endings and unlockable endings, from `python tools/simulate.py battle alesia` (share across the four player types: common >= 5%, uncommon >= 1%, rare >= 0.1%, else legendary). Provisional: set in the balance pass. Gold = band amount x the battle's tier (battle.json).",
+      "alesia": {
+        "endings": {
+          "gold": "common",
+          "silver": "common",
+          "bronze": "uncommon",
+          "stalemate": "common",
+          "trapped": "uncommon",
+          "army_breaks": "rare",
+          "siege_lifted": "common",
+          "death": "rare",
+          "gaul_rises": "legendary"
+        },
+        "unlockables": {
+          "throws_down_arms": "uncommon",
+          "red_cloak": "common",
+          "iron_ring": "common",
+          "hunter_hunted": "rare",
+          "clemency": "common",
+          "eagle_free": "legendary",
+          "gaul_unbound": "uncommon"
+        }
+      }
     }
   },
   "ranks": [

@@ -16,6 +16,10 @@ const PENDING = [
   'royalist_victory',
   'love_older_than_rome',
   'beware_the_ides',
+  'first_command',
+  'gold_at_alesia',
+  'every_plan',
+  'alesia_complete',
 ];
 const ids = all.filter((id) => !PENDING.includes(id));
 

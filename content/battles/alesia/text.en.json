@@ -1,0 +1,297 @@
+{
+  "battle": {
+    "title": "Alesia",
+    "years": "52 BC",
+    "commander": "Julius Caesar",
+    "card": "Besieging Gaul's last army while a second army besieges you. Hold two walls with too few men.",
+    "intro_caption": "Alesia, Gaul, 52 BC",
+    "intro": "Vercingetorix and 80,000 Gauls are shut in the hill town of Alesia. You have 50,000 men to starve them out, and word is coming that all of Gaul is marching to their rescue. Build your walls."
+,
+    "real_result": "a decisive victory"
+  },
+  "sectors": {
+    "inner": {
+      "name": "The inner wall",
+      "desc": "Faces the town. If it breaks while the outer wall is under attack, the army is trapped."
+    },
+    "plain": {
+      "name": "The plain of Les Laumes",
+      "desc": "Open ground to the west: cavalry country, and the obvious place to attack."
+    },
+    "rea": {
+      "name": "Mont Réa",
+      "desc": "A camp on the hillside where the outer wall crosses a slope. The weakest point."
+    },
+    "north": {
+      "name": "The northern heights",
+      "desc": "Steep, wooded hills. Strong ground, but a long wall to hold."
+    },
+    "camp": {
+      "name": "Caesar's camp",
+      "desc": "Headquarters on the eastern hill, where the reserve gathers. Safe, but far from the walls."
+    }
+  },
+  "pools": {
+    "cohorts": "Cohorts",
+    "cavalry": "Cavalry",
+    "reserve": "Reserve",
+    "patrol": "Foraging patrols"
+  },
+  "resources": {
+    "grain": "Grain",
+    "morale": "Morale",
+    "allies": "Allies",
+    "works": "Works"
+  },
+  "phases": {
+    "1": {
+      "title": "The blockade",
+      "caption": "September, 52 BC",
+      "text": "The town is surrounded, but your walls are only begun. Vercingetorix's cavalry ride out to test them. Every man digging is a man not standing guard."
+    },
+    "2": {
+      "title": "The second wall",
+      "caption": "September, 52 BC",
+      "text": "News comes that a Gallic relief army is gathering. You must build a second, longer wall facing outwards, and your grain will not last for ever."
+    },
+    "3": {
+      "title": "The cavalry battle",
+      "caption": "October, 52 BC",
+      "text": "The relief army has arrived. Its horsemen pour onto the plain while Alesia's defenders watch from their walls. The first great test has come."
+    },
+    "4": {
+      "title": "The night attack",
+      "caption": "October, 52 BC",
+      "text": "At midnight, with a great shout, the Gauls attack your outer walls with ladders and hurdles, and Vercingetorix's trumpets answer from the town."
+    },
+    "5": {
+      "title": "The final assault",
+      "caption": "October, 52 BC",
+      "text": "The Gauls have found your weakest point. Their best warriors gather for one great attack, timed with a sortie from the town. Everything will be decided today."
+    }
+  },
+  "moves": {
+    "build": {
+      "label": "Build",
+      "desc": "Strengthen the walls, ditches and traps. Costs a little grain."
+    },
+    "forage": {
+      "label": "Forage",
+      "desc": "Send men to gather grain from the countryside."
+    },
+    "scout": {
+      "label": "Scout",
+      "desc": "Send scouts to learn what the Gauls are planning."
+    },
+    "harass": {
+      "label": "Harass the town",
+      "desc": "Raid Alesia's foragers. The town goes hungrier, your men take heart."
+    },
+    "forests": {
+      "label": "Cut the forests",
+      "desc": "Fell the woods for timber and clear fields of fire."
+    },
+    "hold": {
+      "label": "Hold",
+      "desc": "Stand firm and make no special move."
+    },
+    "german": {
+      "label": "Charge with the German horse",
+      "desc": "Throw your German cavalry into the fight on the plain."
+    },
+    "sortie": {
+      "label": "Sortie onto the plain",
+      "desc": "March out of your walls and fight the relief army in the open. Risky."
+    },
+    "feint": {
+      "label": "Feint",
+      "desc": "Pretend to weaken the plain, to draw the next attack where you want it."
+    },
+    "light": {
+      "label": "Light the field",
+      "desc": "Fires and torches along the walls, so the night attack is seen coming."
+    },
+    "counter": {
+      "label": "Counter-attack",
+      "desc": "If the plain holds well, strike back at the attackers."
+    },
+    "shiftres": {
+      "label": "Move the reserve",
+      "desc": "Send the reserve to wherever you stand."
+    },
+    "labienus": {
+      "label": "Send Labienus with the reserve",
+      "desc": "Your best general leads the reserve to wherever you stand."
+    },
+    "leadres": {
+      "label": "Lead the reserve yourself",
+      "desc": "Ride with the reserve to wherever you stand."
+    },
+    "cavround": {
+      "label": "Ride round the walls",
+      "desc": "Send cavalry out of the far side of the works to strike the attackers from behind."
+    }
+  },
+  "results": {
+    "breach": "{sector}: the wall is broken.",
+    "strained": "{sector}: the line holds, barely.",
+    "held": "{sector}: held.",
+    "easy": "{sector}: held easily.",
+    "none": "{sector}: quiet."
+  },
+  "scenes": {
+    "riders": {
+      "caption": "Alesia, September 52 BC",
+      "narration": "Under cover of night, Vercingetorix's cavalry slip through a gap in your unfinished works. They are riding to raise all of Gaul against you. What will you do?",
+      "options": {
+        "chase": "Chase them with your cavalry",
+        "letgo": "Let them go and keep building",
+        "terms": "Send word to their chiefs offering terms"
+      },
+      "consequences": {
+        "chase": "Your horsemen ride them down in the dark. Fewer will answer their call; your cavalry are spent.",
+        "letgo": "The riders vanish into the night. You put every man to the walls.",
+        "terms": "Some chiefs listen. Gaul's anger is a little divided."
+      }
+    },
+    "mandubii": {
+      "caption": "Alesia, October 52 BC",
+      "narration": "Vercingetorix has driven Alesia's townspeople out to save food. Thousands of men, women and children stand between the walls, begging you to let them through. What will you do?",
+      "options": {
+        "through": "Let them through your lines",
+        "keepout": "Keep them out",
+        "labour": "Take them in as labourers"
+      },
+      "consequences": {
+        "through": "The Mandubii pass through to safety. Your allies hear of your mercy, but there may be spies among them.",
+        "keepout": "Your gates stay shut. Your soldiers try not to look at the ground between the walls.",
+        "labour": "They dig in exchange for food. The walls grow; the grain shrinks; Gaul calls it slavery."
+      }
+    },
+    "crisis": {
+      "caption": "Mont Réa, October 52 BC",
+      "narration": "Labienus rides up, his horse lathered. The main attack has fallen on one point, and the wall there is about to give. Your reserve is ready. What will you do?",
+      "options": {
+        "sendlab": "Send Labienus with half the reserve",
+        "yourself": "Go there yourself in your red cloak",
+        "abandon": "Abandon that point and hold behind it"
+      },
+      "consequences": {
+        "sendlab": "Labienus gallops back with fresh cohorts.",
+        "yourself": "You ride for the crisis. Your men see the red cloak coming.",
+        "abandon": "Your men fall back to the next line. The Gauls pour into the gap."
+      }
+    },
+    "surrender": {
+      "caption": "Alesia, October 52 BC",
+      "narration": "The relief army is gone. Vercingetorix rides out in his finest armour, throws his weapons at your feet and sits down before you in silence. What will you do with him?",
+      "options": {
+        "triumph": "Keep him for your triumph in Rome",
+        "spare": "Spare him and make him a client king",
+        "execute": "Execute him now"
+      },
+      "consequences": {
+        "triumph": "Vercingetorix is led away in chains, to wait for your triumph.",
+        "spare": "You raise him up. Gaul has a king again, and Rome a friend.",
+        "execute": "Vercingetorix dies before the walls of Alesia. Gaul will not forget it."
+      }
+    }
+  },
+  "grades": {
+    "gold": "Gold",
+    "silver": "Silver",
+    "bronze": "Bronze",
+    "none": "No medal"
+  },
+  "endings": {
+    "trapped": {
+      "title": "Trapped Between the Walls",
+      "text": "Your inner and outer walls break at once, and your army is caught between two Gallic hosts. Few escape the ring you built."
+    },
+    "army_breaks": {
+      "title": "The Army Breaks",
+      "text": "Your exhausted legions will fight no more. They abandon the walls, and the siege of Alesia collapses with them."
+    },
+    "siege_lifted": {
+      "title": "The Siege Is Lifted",
+      "text": "The grain is gone. You march away from Alesia in good order, while the Gauls cheer from the walls. Gaul stays free, for now."
+    },
+    "death": {
+      "title": "Death at Alesia",
+      "text": "You led from the front once too often. Your red cloak is found on the hillside, and with you dies Rome's war in Gaul."
+    },
+    "gaul_rises": {
+      "title": "Gaul Rises Behind You",
+      "text": "Your allies desert you and the roads behind you are cut. Starved of men and grain, you must fight your way out of Gaul."
+    },
+    "gold": {
+      "title": "Decisive Victory",
+      "text": "The relief army is destroyed and Alesia surrenders. The war in Gaul is over, and you have won it."
+    },
+    "silver": {
+      "title": "Victory",
+      "text": "Alesia surrenders, but the relief army escapes to fight another day. Gaul is beaten, though not yet broken."
+    },
+    "bronze": {
+      "title": "Pyrrhic Victory",
+      "text": "Alesia falls, but your legions are shattered. Rome will celebrate; your soldiers will count the empty places."
+    },
+    "stalemate": {
+      "title": "Stalemate",
+      "text": "Neither side can break the other. Both armies pull back, and Alesia still stands on its hill."
+    }
+  },
+  "unlockables": {
+    "throws_down_arms": {
+      "title": "Vercingetorix Throws Down His Arms",
+      "text": "As history records: the relief army destroyed, and Vercingetorix kneeling at your feet. You fought Alesia as Caesar did."
+    },
+    "red_cloak": {
+      "title": "The Red Cloak",
+      "text": "You led the reserve yourself, and your men followed the red cloak into the decisive fight."
+    },
+    "iron_ring": {
+      "title": "The Iron Ring",
+      "text": "Not one wall broken, not once. Your double ring held from the first day to the last."
+    },
+    "hunter_hunted": {
+      "title": "The Hunter Hunted",
+      "text": "You marched out of your own walls and beat the relief army in the open field."
+    },
+    "clemency": {
+      "title": "Caesar's Clemency",
+      "text": "You spared the Mandubii and spared Vercingetorix, and still you won. Gaul will remember your mercy."
+    },
+    "eagle_free": {
+      "title": "The Eagle Flies Free",
+      "text": "Vercingetorix broke out and escaped, but you destroyed the army that came to save him."
+    },
+    "gaul_unbound": {
+      "title": "Gaul Unbound",
+      "text": "Your walls fell to the Gauls in the last great fight. Vercingetorix stands victorious, and Gaul is free."
+    }
+  },
+  "plans": {
+    "historical": {
+      "name": "The historical attack",
+      "reveal": "The Gauls fought as they really did: the cavalry battle, the night attack on the plain, then everything against Mont Réa.",
+      "clue": "Scouts report ladders and hurdles being made, and Gallic chiefs studying the hillside at Mont Réa."
+    },
+    "northern": {
+      "name": "The northern hammer",
+      "reveal": "The relief army threw its weight against the northern heights, with little help from the town.",
+      "clue": "Scouts report the relief army's camps moving north, and fewer horsemen on the plain than expected."
+    },
+    "hunger": {
+      "name": "The long hunger",
+      "reveal": "The Gauls tried to starve you out, raiding your foragers and waiting for one late attack.",
+      "clue": "Scouts report Gallic horsemen raiding the countryside, and no siege ladders anywhere."
+    },
+    "breakout": {
+      "name": "The breakout",
+      "reveal": "Vercingetorix tried to break out by night early, while the relief army feinted on the plain.",
+      "clue": "Scouts report fires and movement inside the town at night, and the relief army carrying no ladders."
+    }
+  },
+  "economy_note": "XP per phase played and a bonus for a first-time ending; gold for each first-time ending and a one-off reward for the first gold, silver and bronze medal at each battle."
+}

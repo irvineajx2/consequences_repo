@@ -10,19 +10,23 @@ interface Props {
   readonly visible: boolean;
   readonly onConfirm: () => void;
   readonly onCancel: () => void;
+  /** Other wording (a battle's), instead of the reign's. */
+  readonly message?: string;
+  readonly confirmLabel?: string;
+  readonly cancelLabel?: string;
 }
 
-/** Asks before beginning a reign that would discard the one in progress. */
-export function ConfirmNewReign({ visible, onConfirm, onCancel }: Props) {
+/** Asks before beginning a reign (or a battle) that would discard the one in progress. */
+export function ConfirmNewReign({ visible, onConfirm, onCancel, message, confirmLabel, cancelLabel }: Props) {
   const skin = useSkin();
   const text = useSkinTextStyles();
   return (
     <Modal transparent visible={visible} animationType="fade" onRequestClose={onCancel}>
       <View style={[styles.scrim, { backgroundColor: skin.screen.lockedOverlay }]}>
         <SkinPanel style={styles.dialog}>
-          <Text style={text.body}>{strings.confirmNewReign}</Text>
-          <GameButton label={strings.confirmDiscard} onPress={onConfirm} />
-          <GameButton label={strings.keepReign} onPress={onCancel} />
+          <Text style={text.body}>{message ?? strings.confirmNewReign}</Text>
+          <GameButton label={confirmLabel ?? strings.confirmDiscard} onPress={onConfirm} />
+          <GameButton label={cancelLabel ?? strings.keepReign} onPress={onCancel} />
         </SkinPanel>
       </View>
     </Modal>

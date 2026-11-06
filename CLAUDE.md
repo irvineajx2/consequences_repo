@@ -45,7 +45,14 @@ docs/tasks/                            # task prompts
 tools/engine.py                        # Python reference engine (the spec in executable form)
 tools/make_fixtures.py                 # exhaustive fixture generator (small rulers: Elizabeth)
 tools/make_fixtures_sampled.py         # coverage-sampled fixture generator (large rulers: Caesar)
+content/battles/<battle>/              # battle mode: battle.json, text.en.json, fixtures.json
+src/battle/                            # pure TypeScript battle runtime + one module per battle
+tools/battle_sim/battle.py             # battle reference model (the spec); check_fixtures.py replays fixtures
 ```
+
+Battle mode follows the same rules: `tools/battle_sim/battle.py` is the specification, its fixtures
+are never hand-edited, `src/battle` is pure TypeScript (the purity test covers it), and each
+battle's own move and scene effects live in one module behind `BattleModule` (`src/battle/types.ts`).
 
 ## Architecture
 

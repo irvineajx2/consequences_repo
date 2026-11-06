@@ -11,7 +11,8 @@ function sourceFiles(dir: string): string[] {
   });
 }
 
-const files = sourceFiles(coreDir);
+// The battle runtime (src/battle) is pure TypeScript too.
+const files = [...sourceFiles(coreDir), ...sourceFiles(path.join(__dirname, '../../src/battle'))];
 const importPattern = /(?:from\s+|import\s+|require\s*\(\s*)['"]([^'"]+)['"]/g;
 
 describe('core purity', () => {
@@ -30,7 +31,7 @@ describe('core purity', () => {
     },
   );
 
-  test.each(files.map((f) => [path.relative(coreDir, f), f]))('%s is ruler-agnostic', (_name, file) => {
+  test.each(files.filter((f) => f.startsWith(coreDir)).map((f) => [path.relative(coreDir, f), f]))('%s is ruler-agnostic', (_name, file) => {
     const source = fs.readFileSync(file, 'utf8');
     expect(source).not.toMatch(/elizabeth|armada|spain|gloriana/i);
   });

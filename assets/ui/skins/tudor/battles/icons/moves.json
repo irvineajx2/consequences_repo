@@ -1,0 +1,65 @@
+{
+ "heightPt": 40,
+ "pieces": {
+  "build": {
+   "heightPt": 40,
+   "aspect": 0.9842
+  },
+  "forage": {
+   "heightPt": 40,
+   "aspect": 0.9842
+  },
+  "scout": {
+   "heightPt": 40,
+   "aspect": 0.9842
+  },
+  "harass": {
+   "heightPt": 40,
+   "aspect": 0.9842
+  },
+  "forests": {
+   "heightPt": 40,
+   "aspect": 0.9842
+  },
+  "hold": {
+   "heightPt": 40,
+   "aspect": 0.9842
+  },
+  "german": {
+   "heightPt": 40,
+   "aspect": 0.9842
+  },
+  "sortie": {
+   "heightPt": 40,
+   "aspect": 0.9842
+  },
+  "feint": {
+   "heightPt": 40,
+   "aspect": 0.9842
+  },
+  "light": {
+   "heightPt": 40,
+   "aspect": 0.9842
+  },
+  "counter": {
+   "heightPt": 40,
+   "aspect": 0.9842
+  },
+  "shiftres": {
+   "heightPt": 40,
+   "aspect": 0.9842
+  },
+  "labienus": {
+   "heightPt": 40,
+   "aspect": 0.9842
+  },
+  "leadres": {
+   "heightPt": 40,
+   "aspect": 0.9842
+  },
+  "cavround": {
+   "heightPt": 40,
+   "aspect": 0.9842
+  }
+ }
+}

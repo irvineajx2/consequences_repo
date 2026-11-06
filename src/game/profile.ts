@@ -2,6 +2,7 @@
 // reached. Pure TypeScript.
 import type { Decision } from '../core';
 import { DEFAULT_OUTFIT, type Outfit } from './avatar';
+import { type BattleRecord, emptyBattleRecord, parseBattleRecord } from './battleRecord';
 import { emptyProgression, migrateProgression, type Progression, type WardrobeEntry } from './progression';
 
 export interface EndingRecord {
@@ -48,18 +49,20 @@ export const defaultIdentity: Identity = { nickname: DEFAULT_NICKNAME, avatar: D
  * The stored profile: one record per ruler, keyed by the rules file's `ruler` id, plus the
  * account-wide progression (XP, gold and achievements, shared across rulers) and the player's
  * identity. Version 2 added uncharted paths, version 3 progression, version 4 each ruler's best
- * match, achievements and identity, version 5 the avatar and its wardrobe; older profiles are
- * migrated on reading, keeping everything they recorded.
+ * match, achievements and identity, version 5 the avatar and its wardrobe, version 6 battles; older
+ * profiles are migrated on reading, keeping everything they recorded.
  */
 export interface Profile {
-  readonly version: 5;
+  readonly version: 6;
   readonly rulers: Readonly<Record<string, RulerProfile>>;
   readonly progression: Progression;
   readonly identity: Identity;
+  /** One record per battle, by battle id. */
+  readonly battles: Readonly<Record<string, BattleRecord>>;
 }
 
 export const emptyRulerProfile: RulerProfile = { discovered: [], endings: {}, runsCompleted: 0, uncharted: [] };
-export const emptyProfile: Profile = { version: 5, rulers: {}, progression: emptyProgression, identity: defaultIdentity };
+export const emptyProfile: Profile = { version: 6, rulers: {}, progression: emptyProgression, identity: defaultIdentity, battles: {} };
 
 /**
  * A profile key (the rules file's `ruler` id, e.g. "elizabeth_i") as a ruler id (its folder name,
@@ -132,6 +135,14 @@ export function withRulerProfile(profile: Profile, rulerId: string, ruler: Ruler
   return { ...profile, rulers: { ...profile.rulers, [rulerId]: ruler } };
 }
 
+export function battleRecord(profile: Profile, battleId: string): BattleRecord {
+  return profile.battles[battleId] ?? emptyBattleRecord;
+}
+
+export function withBattleRecord(profile: Profile, battleId: string, record: BattleRecord): Profile {
+  return { ...profile, battles: { ...profile.battles, [battleId]: record } };
+}
+
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
 }
@@ -198,9 +209,19 @@ function parseIdentity(value: unknown): Identity {
   };
 }
 
+function parseBattles(value: unknown): Record<string, BattleRecord> {
+  if (!isRecord(value)) return {};
+  const battles: Record<string, BattleRecord> = {};
+  for (const [id, b] of Object.entries(value)) {
+    const parsed = parseBattleRecord(b);
+    if (parsed) battles[id] = parsed;
+  }
+  return battles;
+}
+
 /**
- * Reads a stored profile, versions 1 to 5, as version 5. A profile from before progression is
- * credited for what it already records (see `migrateProgression`); one from before version 4 gets
+ * Reads a stored profile, versions 1 to 6, as version 6 (profiles before version 6 have no battles
+ * yet). A profile from before progression is credited for what it already records (see `migrateProgression`); one from before version 4 gets
  * the default identity and no achievements yet (they are checked against its records on load).
  * Anything unreadable becomes an empty profile rather than an error.
  */
@@ -209,7 +230,7 @@ export function parseProfile(json: string | null): Profile {
   try {
     const value: unknown = JSON.parse(json);
     const version = isRecord(value) ? value.version : undefined;
-    if (!isRecord(value) || ![1, 2, 3, 4, 5].includes(version as number) || !isRecord(value.rulers)) {
+    if (!isRecord(value) || ![1, 2, 3, 4, 5, 6].includes(version as number) || !isRecord(value.rulers)) {
       return emptyProfile;
     }
     const rulers: Record<string, RulerProfile> = {};
@@ -217,13 +238,13 @@ export function parseProfile(json: string | null): Profile {
       const parsed = parseRuler(r);
       if (parsed) rulers[id] = parsed;
     }
-    const stored = version === 3 || version === 4 || version === 5 ? parseProgression(value.progression) : null;
+    const stored = (version as number) >= 3 ? parseProgression(value.progression) : null;
     const progression =
       stored ??
       migrateProgression(
         Object.fromEntries(Object.entries(rulers).map(([key, r]) => [rulerIdForProfileKey(key), r])),
       );
-    return { version: 5, rulers, progression, identity: parseIdentity(value.identity) };
+    return { version: 6, rulers, progression, identity: parseIdentity(value.identity), battles: parseBattles(value.battles) };
   } catch {
     return emptyProfile;
   }

@@ -1,5 +1,5 @@
 {
-  "_note": "Achievements, in display order. A 'forEachRuler' entry is repeated for every ruler: {key} is the ruler's short name in lower case (elizabeth_history), {name} the short name itself. Conditions read only what the profile already records. Cross-ruler achievements ('endingsReached') need endings from several rulers, reached in any runs and any order.",
+  "_note": "Achievements, in display order. A 'forEachRuler' entry is repeated for every ruler: {key} is the ruler's short name in lower case (elizabeth_history), {name} the short name itself. Conditions read only what the profile already records. Cross-ruler achievements ('endingsReached') need endings from several rulers, reached in any runs and any order. Battle achievements read the profile's battle records.",
   "achievements": [
     {
       "id": "first_reign",
@@ -176,6 +176,44 @@
             ]
           }
         ]
+      }
+    },
+    {
+      "id": "first_command",
+      "title": "First Command",
+      "description": "Finish any battle.",
+      "condition": {
+        "type": "battlesCompleted",
+        "atLeast": 1
+      }
+    },
+    {
+      "id": "gold_at_alesia",
+      "title": "Gold at Alesia",
+      "description": "Win gold at Alesia.",
+      "condition": {
+        "type": "battleMedal",
+        "battle": "alesia",
+        "medal": "gold"
+      }
+    },
+    {
+      "id": "every_plan",
+      "title": "Every Plan",
+      "description": "Win at Alesia against all four of the enemy's hidden plans.",
+      "condition": {
+        "type": "battleEveryPlanWon",
+        "battle": "alesia"
+      }
+    },
+    {
+      "id": "alesia_complete",
+      "title": "Alesia Complete",
+      "description": "Earn every unlockable ending at Alesia.",
+      "hidden": true,
+      "condition": {
+        "type": "battleEveryUnlockable",
+        "battle": "alesia"
       }
     }
   ]

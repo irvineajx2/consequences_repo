@@ -1,0 +1,21 @@
+{
+ "heightPt": 56,
+ "pieces": {
+  "medal_gold": {
+   "heightPt": 56,
+   "aspect": 0.6899
+  },
+  "medal_silver": {
+   "heightPt": 56,
+   "aspect": 0.6899
+  },
+  "medal_bronze": {
+   "heightPt": 56,
+   "aspect": 0.6899
+  },
+  "medal_none": {
+   "heightPt": 56,
+   "aspect": 0.6899
+  }
+ }
+}

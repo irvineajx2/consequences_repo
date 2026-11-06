@@ -12,6 +12,8 @@ export const storageKeys = {
   /** Read once to migrate, then removed. */
   legacyProfile: 'consequences.profile.v1',
   run: (rulerId: string) => `consequences.run.${rulerId}.v1`,
+  /** A battle in progress. */
+  battle: (battleId: string) => `consequences.battle.${battleId}.v1`,
   /** The hidden testing switch that unlocks every ruler. */
   unlockAll: 'consequences.debug.unlockAll.v1',
 } as const;

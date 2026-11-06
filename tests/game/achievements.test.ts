@@ -20,7 +20,7 @@ const ids = list.map((a) => a.id);
 const earnedIds = (p: Profile) => Object.keys(p.progression.achievements).sort();
 
 describe('the achievement list', () => {
-  it('has the first set, in order, with three per ruler generated from the ruler list, then the cross-ruler two', () => {
+  it('has the first set, in order, with three per ruler generated from the ruler list, then the cross-ruler ones and the battles', () => {
     expect(ids).toEqual([
       'first_reign',
       'uncharted',
@@ -45,6 +45,10 @@ describe('the achievement list', () => {
       'royalist_victory',
       'love_older_than_rome',
       'beware_the_ides',
+      'first_command',
+      'gold_at_alesia',
+      'every_plan',
+      'alesia_complete',
     ]);
     expect(list.find((a) => a.id === 'caesar_history')!.title).toBe('In Their Footsteps: Caesar');
     expect(list.filter((a) => a.hidden).map((a) => a.id)).toEqual([
@@ -54,6 +58,7 @@ describe('the achievement list', () => {
       'cleopatra_outdone',
       'love_older_than_rome',
       'beware_the_ides',
+      'alesia_complete',
     ]);
   });
 
