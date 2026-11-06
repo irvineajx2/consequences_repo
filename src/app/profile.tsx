@@ -15,10 +15,12 @@ import {
   SectionTitle,
   SummaryTiles,
 } from '@/ui/profile/ProfileSections';
+import { BattlesSection } from '@/ui/profile/BattlesSection';
 import { allRulerFacts } from '@/ui/profile/rulerFacts';
 import { useProfileData } from '@/ui/profile/useProfileData';
 import { ScreenScaffold } from '@/ui/screens/ScreenScaffold';
 import { strings } from '@/ui/strings';
+import { useUnlockAll } from '@/ui/useProfile';
 import { StyleSheet, View } from 'react-native';
 
 /**
@@ -26,7 +28,8 @@ import { StyleSheet, View } from 'react-native';
  * ever named (the view hides it before it gets here).
  */
 export default function ProfileScreen() {
-  const { view, update } = useProfileData();
+  const { profile, view, update } = useProfileData();
+  const [unlockAll] = useUnlockAll();
   const [editing, setEditing] = useState(false);
   const [openAchievement, setOpenAchievement] = useState<string | null>(null);
   const [sharing, setSharing] = useState(false);
@@ -54,6 +57,8 @@ export default function ProfileScreen() {
           <RarityRows rows={view.rarity} />
           <SectionTitle>{strings.sectionRulers}</SectionTitle>
           <RulerCards rulers={view.rulers} />
+          <SectionTitle>{strings.battles.sectionTitle}</SectionTitle>
+          {profile && <BattlesSection profile={profile} unlockAll={unlockAll} />}
           <SectionTitle>{strings.sectionAchievements}</SectionTitle>
           <AchievementGrid achievements={view.achievements} onPress={setOpenAchievement} />
           <QuizCard />

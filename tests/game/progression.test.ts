@@ -212,13 +212,14 @@ describe('migration to version 3', () => {
     expect((await loadProfile(storage)).progression).toEqual(profile.progression);
   });
 
-  it("keeps a version 3 profile's progress, as version 5 with no achievements and the default identity", () => {
+  it("keeps a version 3 profile's progress, as version 6 with no achievements and the default identity", () => {
     const v3 = { version: 3, rulers: {}, progression: { totalXp: 999, gold: 5, awardedRunIds: ['x'] } };
     expect(parseProfile(JSON.stringify(v3))).toEqual({
-      version: 5,
+      version: 6,
       rulers: {},
       progression: { ...v3.progression, achievements: {}, wardrobe: {} },
       identity: defaultIdentity,
+      battles: {},
     });
   });
 
@@ -237,16 +238,17 @@ describe('migration to version 3', () => {
       progression: { totalXp: 999, gold: 5, awardedRunIds: ['x'], achievements: { first_reign: AT } },
       identity: { nickname: 'Gloriana', featuredAchievementId: 'first_reign' },
     };
-    // As version 5: no wardrobe yet, the default avatar.
+    // As version 6: no wardrobe or battles yet, the default avatar.
     expect(parseProfile(JSON.stringify(v4))).toEqual({
       ...v4,
-      version: 5,
+      version: 6,
+      battles: {},
       progression: { ...v4.progression, wardrobe: {} },
       identity: { ...v4.identity, avatar: DEFAULT_OUTFIT },
     });
   });
 
-  it('keeps a version 5 profile as stored, avatar and wardrobe included', () => {
+  it('keeps a version 5 profile, avatar and wardrobe included, with no battles yet', () => {
     const v5 = {
       version: 5,
       rulers: {},
@@ -259,7 +261,27 @@ describe('migration to version 3', () => {
       },
       identity: { nickname: 'Gloriana', avatar: { base: 'b2', head: 'mariner', top: 'mariner', bottoms: 'puritan' } },
     };
-    expect(parseProfile(JSON.stringify(v5))).toEqual(v5);
+    expect(parseProfile(JSON.stringify(v5))).toEqual({ ...v5, version: 6, battles: {} });
+  });
+
+  it('keeps a version 6 profile as stored, battles included', () => {
+    const v6 = {
+      version: 6,
+      rulers: {},
+      progression: { totalXp: 999, gold: 5, awardedRunIds: ['x'], achievements: {}, wardrobe: {} },
+      identity: { nickname: 'Gloriana', avatar: DEFAULT_OUTFIT },
+      battles: {
+        alesia: {
+          battlesCompleted: 3,
+          endings: { gold: { firstReached: AT, timesReached: 1 }, trapped: { firstReached: AT, timesReached: 2 } },
+          unlockables: { iron_ring: AT },
+          plansFaced: ['historical', 'breakout'],
+          plansWon: ['historical'],
+          medals: { gold: AT },
+        },
+      },
+    };
+    expect(parseProfile(JSON.stringify(v6))).toEqual(v6);
   });
 
   it('gives an empty profile nothing', () => {

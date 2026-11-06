@@ -49,6 +49,8 @@
     "test": "jest",
     "images": "node scripts/build-image-registry.js",
     "rarity": "python tools/rarity.py",
+    "battle-fixtures": "python tools/battle_sim/check_fixtures.py",
+    "battle-report": "python tools/simulate.py battle alesia",
     "check-avatar": "node scripts/check-avatar.js",
     "text": "node scripts/generate-text.js"
   },

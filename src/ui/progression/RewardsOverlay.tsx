@@ -27,11 +27,14 @@ export function RewardsOverlay({
   rewards,
   achievements = [],
   onDone,
+  wording,
 }: {
   rewards: RewardOutcome;
   /** Titles of achievements this run earned. */
   achievements?: readonly string[];
   onDone: () => void;
+  /** A battle's wording: phases instead of decisions, its tier line, and its gold itemised. */
+  wording?: { readonly decisions: string; readonly tier: string; readonly gold: readonly string[]; readonly goldRule: string };
 }) {
   const skin = useSkin();
   const text = useSkinTextStyles();
@@ -87,13 +90,14 @@ export function RewardsOverlay({
           <AvatarView size={58} variant="full" />
           <View style={styles.breakdown}>
             <Text style={line}>
-              {format(strings.rewardDecisions, {
-                count: breakdown.decisions,
-                per: breakdown.perDecision,
-                xp: formatNumber(breakdown.decisionXp),
-              })}
+              {wording?.decisions ??
+                format(strings.rewardDecisions, {
+                  count: breakdown.decisions,
+                  per: breakdown.perDecision,
+                  xp: formatNumber(breakdown.decisionXp),
+                })}
             </Text>
-            {breakdown.tier !== 1 && <Text style={line}>{format(strings.rewardTier, { tier: breakdown.tier })}</Text>}
+            {breakdown.tier !== 1 && <Text style={line}>{wording?.tier ?? format(strings.rewardTier, { tier: breakdown.tier })}</Text>}
             {breakdown.newEnding && <Text style={line}>{format(strings.rewardNewEnding, { xp: formatNumber(tiered) })}</Text>}
             <Text style={[text.heading, styles.total, { color: skin.colors.panelCaption }]}>
               {format(strings.rewardTotal, { xp: formatNumber(breakdown.totalXp) })}
@@ -145,7 +149,16 @@ export function RewardsOverlay({
             </Text>
           </View>
         )}
-        {breakdown.gold > 0 ? (
+        {wording && breakdown.gold > 0 ? (
+          wording.gold.map((g) => (
+            <View key={g} style={styles.iconRow}>
+              <Coin />
+              <Text style={[text.body, { color: skin.colors.panelText }]}>{g}</Text>
+            </View>
+          ))
+        ) : wording ? (
+          <Text style={[text.muted, styles.centre]}>{wording.goldRule}</Text>
+        ) : breakdown.gold > 0 ? (
           <View style={styles.iconRow}>
             <Coin />
             <Text style={[text.body, { color: skin.colors.panelText }]}>

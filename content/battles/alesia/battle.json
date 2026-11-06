@@ -1,0 +1,358 @@
+{
+ "id": "alesia",
+ "version": 1,
+ "ruler": "julius-caesar",
+ "unlock": "Complete any run as Julius Caesar (reach any ending).",
+ "tier": 2,
+ "sectors": [
+  "inner",
+  "plain",
+  "rea",
+  "north",
+  "camp"
+ ],
+ "terrain": {
+  "inner": 1.0,
+  "plain": 1.0,
+  "rea": 0.8,
+  "north": 1.3
+ },
+ "pools": {
+  "cohorts": {
+   "total": 100,
+   "step": 10,
+   "bins": [
+    "inner",
+    "plain",
+    "rea",
+    "north",
+    "reserve"
+   ]
+  },
+  "cavalry": {
+   "total": 20,
+   "step": 4,
+   "bins": [
+    "plain",
+    "patrol",
+    "reserve"
+   ]
+  }
+ },
+ "commanderPositions": [
+  "inner",
+  "plain",
+  "rea",
+  "north",
+  "camp"
+ ],
+ "phases": {
+  "1": {
+   "moves": [
+    "build",
+    "forage",
+    "scout",
+    "harass"
+   ],
+   "mapLighting": "day"
+  },
+  "2": {
+   "moves": [
+    "build",
+    "forage",
+    "scout",
+    "forests"
+   ],
+   "mapLighting": "day"
+  },
+  "3": {
+   "moves": [
+    "hold",
+    "german",
+    "sortie",
+    "feint"
+   ],
+   "mapLighting": "day"
+  },
+  "4": {
+   "moves": [
+    "hold",
+    "light",
+    "counter",
+    "shiftres"
+   ],
+   "mapLighting": "night"
+  },
+  "5": {
+   "moves": [
+    "hold",
+    "labienus",
+    "leadres",
+    "cavround"
+   ],
+   "mapLighting": "final"
+  }
+ },
+ "scenes": {
+  "riders": {
+   "before": 2,
+   "options": [
+    "chase",
+    "letgo",
+    "terms"
+   ]
+  },
+  "mandubii": {
+   "before": 4,
+   "options": [
+    "through",
+    "keepout",
+    "labour"
+   ]
+  },
+  "crisis": {
+   "during": 5,
+   "after": "allocation",
+   "options": [
+    "sendlab",
+    "yourself",
+    "abandon"
+   ]
+  },
+  "surrender": {
+   "after": "victory",
+   "options": [
+    "triumph",
+    "spare",
+    "execute"
+   ]
+  }
+ },
+ "plans": [
+  "historical",
+  "northern",
+  "hunger",
+  "breakout"
+ ],
+ "pressure": {
+  "historical": {
+   "1": {
+    "inner": 15,
+    "plain": 4,
+    "rea": 0,
+    "north": 0
+   },
+   "2": {
+    "inner": 14,
+    "plain": 16,
+    "rea": 4,
+    "north": 4
+   },
+   "3": {
+    "inner": 10,
+    "plain": 30,
+    "rea": 6,
+    "north": 6
+   },
+   "4": {
+    "inner": 24,
+    "plain": 34,
+    "rea": 6,
+    "north": 6
+   },
+   "5": {
+    "inner": 26,
+    "plain": 10,
+    "rea": 44,
+    "north": 8
+   }
+  },
+  "northern": {
+   "1": {
+    "inner": 15,
+    "plain": 4,
+    "rea": 0,
+    "north": 0
+   },
+   "2": {
+    "inner": 14,
+    "plain": 4,
+    "rea": 4,
+    "north": 24
+   },
+   "3": {
+    "inner": 10,
+    "plain": 14,
+    "rea": 10,
+    "north": 28
+   },
+   "4": {
+    "inner": 14,
+    "plain": 10,
+    "rea": 14,
+    "north": 32
+   },
+   "5": {
+    "inner": 18,
+    "plain": 10,
+    "rea": 18,
+    "north": 40
+   }
+  },
+  "hunger": {
+   "1": {
+    "inner": 15,
+    "plain": 0,
+    "rea": 0,
+    "north": 0
+   },
+   "2": {
+    "inner": 10,
+    "plain": 6,
+    "rea": 0,
+    "north": 0
+   },
+   "3": {
+    "inner": 8,
+    "plain": 14,
+    "rea": 4,
+    "north": 4
+   },
+   "4": {
+    "inner": 14,
+    "plain": 16,
+    "rea": 10,
+    "north": 10
+   },
+   "5": {
+    "inner": 32,
+    "plain": 26,
+    "rea": 30,
+    "north": 20
+   }
+  },
+  "breakout": {
+   "1": {
+    "inner": 15,
+    "plain": 0,
+    "rea": 0,
+    "north": 0
+   },
+   "2": {
+    "inner": 44,
+    "plain": 16,
+    "rea": 0,
+    "north": 0
+   },
+   "3": {
+    "inner": 10,
+    "plain": 26,
+    "rea": 4,
+    "north": 4
+   },
+   "4": {
+    "inner": 20,
+    "plain": 26,
+    "rea": 6,
+    "north": 6
+   },
+   "5": {
+    "inner": 12,
+    "plain": 30,
+    "rea": 30,
+    "north": 10
+   }
+  }
+ },
+ "tuning": {
+  "pressureScale": 1.6,
+  "wallBase": 5.0,
+  "startWorks": {
+   "inner": 1.2,
+   "outer": 0.8
+  },
+  "goldMinCohorts": 75,
+  "goldMinMorale": 45,
+  "commanderBonus": 1.15,
+  "buildGain": 0.2,
+  "breachMorale": 8,
+  "deathMorale": 25,
+  "startGrain": 80,
+  "upkeep": 10
+ },
+ "bands": {
+  "breach": 0.6,
+  "strained": 0.9,
+  "held": 1.5
+ },
+ "outcomes": {
+  "early": [
+   "trapped",
+   "army_breaks",
+   "siege_lifted",
+   "death",
+   "gaul_rises"
+  ],
+  "final": [
+   "gold",
+   "silver",
+   "bronze",
+   "stalemate"
+  ]
+ },
+ "unlockables": [
+  "throws_down_arms",
+  "red_cloak",
+  "iron_ring",
+  "hunter_hunted",
+  "clemency",
+  "eagle_free",
+  "gaul_unbound"
+ ],
+ "economy": {
+  "xp": "per phase played, at the same per-decision rate as a tier-2 ruler run, plus the first-time ending bonus",
+  "goldFirstEnding": "as for ruler runs, for each first-time ending and unlockable ending",
+  "goldFirstMedal": {
+   "gold": 100,
+   "silver": 60,
+   "bronze": 30,
+   "_note": "provisional; set in the balance pass"
+  }
+ },
+ "images": {
+  "card": "ALC1",
+  "maps": {
+   "day": "ALMAP1",
+   "night": "ALMAP2",
+   "final": "ALMAP3"
+  },
+  "scenes": {
+   "riders": "ALS1",
+   "mandubii": "ALS2",
+   "crisis": "ALS3",
+   "surrender": "ALS4"
+  },
+  "endings": {
+   "trapped": "ALE1",
+   "army_breaks": "ALE2",
+   "siege_lifted": "ALE3",
+   "death": "ALE4",
+   "gaul_rises": "ALE5",
+   "gold": "ALO1",
+   "silver": "ALO2",
+   "bronze": "ALO3",
+   "stalemate": "ALO4"
+  },
+  "unlockables": {
+   "throws_down_arms": "ALU1",
+   "red_cloak": "ALU2",
+   "iron_ring": "ALU3",
+   "hunter_hunted": "ALU4",
+   "clemency": "ALU5",
+   "eagle_free": "ALU6",
+   "gaul_unbound": "ALU7"
+  },
+  "modeBanner": "BMODE1",
+  "sectorPositions": "alesia_map_sectors.json"
+ }
+}

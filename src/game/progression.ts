@@ -13,6 +13,10 @@ export interface ProgressionConfig {
     readonly bands: Readonly<Record<Band, number>>;
     /** Ending band by ruler id (folder name), then ending id. */
     readonly endings: Readonly<Record<string, Readonly<Record<string, Band>>>>;
+    /** Battle endings' and unlockable endings' bands, by battle id. */
+    readonly battles?: Readonly<
+      Record<string, { readonly endings: Readonly<Record<string, Band>>; readonly unlockables: Readonly<Record<string, Band>> }>
+    >;
   };
   readonly ranks: readonly { readonly fromLevel: number; readonly title: string }[];
   readonly migration: { readonly xpPerEarlierRun: number };

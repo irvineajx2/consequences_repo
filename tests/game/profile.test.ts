@@ -96,10 +96,11 @@ describe('parseProfile', () => {
     const good = applyRunResult(emptyRulerProfile, resultOf('historical_path')).profile;
     const json = JSON.stringify({ version: 1, rulers: { a: good, b: { discovered: 'nope' } } });
     expect(parseProfile(json)).toEqual({
-      version: 5,
+      version: 6,
       rulers: { a: good },
       progression: migrateProgression({ a: good }),
       identity: defaultIdentity,
+      battles: {},
     });
   });
 });

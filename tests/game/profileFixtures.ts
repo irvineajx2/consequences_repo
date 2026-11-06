@@ -1,4 +1,5 @@
 // Fixture players for the profile tests: new, mid-game and completionist.
+import { getBattle } from '../../src/data/battles';
 import { getRuler } from '../../src/data/rulers';
 import { awardAchievements } from '../../src/game/achievements';
 import { emptyProfile, type Profile, type RulerProfile } from '../../src/game/profile';
@@ -37,7 +38,9 @@ export const midGame: Profile = withAchievements({
   progression: { totalXp: 1000, gold: 140, awardedRunIds: [], achievements: {}, wardrobe: {} },
 });
 
-/** Every ending, branch scene and chronicle entry of every ruler; level 30. */
+const alesia = getBattle('alesia').battle.data;
+
+/** Every ending, branch scene and chronicle entry of every ruler, and everything at Alesia; level 30. */
 export const completionist: Profile = withAchievements({
   ...emptyProfile,
   rulers: Object.fromEntries(
@@ -54,4 +57,14 @@ export const completionist: Profile = withAchievements({
     }),
   ),
   progression: { totalXp: xpAtLevel(30), gold: 2000, awardedRunIds: [], achievements: {}, wardrobe: {} },
+  battles: {
+    alesia: {
+      battlesCompleted: 30,
+      endings: reached([...alesia.outcomes.early, ...alesia.outcomes.final]),
+      unlockables: Object.fromEntries(alesia.unlockables.map((u) => [u, AT])),
+      plansFaced: [...alesia.plans],
+      plansWon: [...alesia.plans],
+      medals: { gold: AT, silver: AT, bronze: AT },
+    },
+  },
 });

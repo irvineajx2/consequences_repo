@@ -152,7 +152,7 @@ describe('profiles', () => {
     expect(rulerProfile(after, caesar.rules.ruler).discovered).toHaveLength(22);
   });
 
-  it('migrate a version 1 profile to version 5 without losing anything, crediting its progress', async () => {
+  it('migrate a version 1 profile to version 6 without losing anything, crediting its progress', async () => {
     const lizRun = elizabethCases.find((c) => c.name === 'historical_path')!;
     const v1Record = {
       discovered: lizRun.expected.decisions.map((d) => d.scene),
@@ -165,10 +165,11 @@ describe('profiles', () => {
     const profile = await loadProfile(storage);
     // Gloriana (rare, new-ending XP 100, 80 gold) and 5 earlier runs at 120 XP each.
     expect(profile).toEqual({
-      version: 5,
+      version: 6,
       rulers: { elizabeth_i: { ...v1Record, uncharted: [] } },
       progression: { totalXp: 100 + 5 * 120, gold: 80, awardedRunIds: [], achievements: {}, wardrobe: {} },
       identity: defaultIdentity,
+      battles: {},
     });
     // Saved under the new key; the old one is gone; reading again gives the same.
     expect(storage.contents.has(storageKeys.legacyProfile)).toBe(false);

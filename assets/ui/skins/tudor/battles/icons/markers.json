@@ -1,0 +1,29 @@
+{
+ "heightPt": 32,
+ "pieces": {
+  "commander": {
+   "heightPt": 32,
+   "aspect": 0.9615
+  },
+  "roman_sector": {
+   "heightPt": 32,
+   "aspect": 0.9615
+  },
+  "enemy_pressure": {
+   "heightPt": 32,
+   "aspect": 0.9615
+  },
+  "breach": {
+   "heightPt": 32,
+   "aspect": 0.9615
+  },
+  "held": {
+   "heightPt": 32,
+   "aspect": 0.9615
+  },
+  "strained": {
+   "heightPt": 32,
+   "aspect": 0.9615
+  }
+ }
+}

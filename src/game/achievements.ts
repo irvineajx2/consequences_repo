@@ -1,7 +1,8 @@
 // Achievements: defined in src/data/achievements.json, earned from what the profile already records,
 // and recorded once in the progression ledger with the date. Pure TypeScript.
 import data from '../data/achievements.json';
-import { type Profile, rulerProfile } from './profile';
+import { battleDataList } from '../data/battles/data';
+import { battleRecord, type Profile, rulerProfile } from './profile';
 import { levelFromTotalXp, progression as progressionConfig } from './progression';
 import type { RarityTier } from './rarity';
 
@@ -14,7 +15,13 @@ export type AchievementCondition =
   | { readonly type: 'endingRarity'; readonly tier: RarityTier }
   | { readonly type: 'rank'; readonly title: string }
   /** Endings from several rulers, reached in any runs and any order: one of each group's `anyOf`. */
-  | { readonly type: 'endingsReached'; readonly all: readonly { readonly ruler: string; readonly anyOf: readonly string[] }[] };
+  | { readonly type: 'endingsReached'; readonly all: readonly { readonly ruler: string; readonly anyOf: readonly string[] }[] }
+  /** Battles finished, across every battle. */
+  | { readonly type: 'battlesCompleted'; readonly atLeast: number }
+  | { readonly type: 'battleMedal'; readonly battle: string; readonly medal: string }
+  /** A victory (any medal) against every one of the battle's hidden plans. */
+  | { readonly type: 'battleEveryPlanWon'; readonly battle: string }
+  | { readonly type: 'battleEveryUnlockable'; readonly battle: string };
 
 export interface Achievement {
   readonly id: string;
@@ -112,6 +119,18 @@ export function isMet(a: Achievement, profile: Profile, rulers: readonly RulerFa
         const x = records.find((r) => r.facts.id === group.ruler);
         return x !== undefined && group.anyOf.some((e) => x.record.endings[e] !== undefined);
       });
+    case 'battlesCompleted':
+      return Object.values(profile.battles).reduce((n, b) => n + b.battlesCompleted, 0) >= c.atLeast;
+    case 'battleMedal':
+      return (battleRecord(profile, c.battle).medals as Record<string, string | undefined>)[c.medal] !== undefined;
+    case 'battleEveryPlanWon': {
+      const plans = battleDataList.find((b) => b.id === c.battle)?.plans ?? [];
+      return plans.length > 0 && plans.every((p) => battleRecord(profile, c.battle).plansWon.includes(p));
+    }
+    case 'battleEveryUnlockable': {
+      const unlockables = battleDataList.find((b) => b.id === c.battle)?.unlockables ?? [];
+      return unlockables.length > 0 && unlockables.every((u) => battleRecord(profile, c.battle).unlockables[u] !== undefined);
+    }
   }
 }
 
@@ -150,6 +169,7 @@ export function achievementShare(a: Achievement, rulers: readonly RulerFacts[]):
   const best = (f: (r: RulerFacts) => number) => (rulers.length ? Math.max(...rulers.map(f)) : undefined);
   switch (c.type) {
     case 'runsCompleted':
+    case 'battlesCompleted':
       return c.atLeast <= 1 ? 1 : undefined;
     case 'branchScenesVisited':
       return c.atLeast <= 1 ? best((r) => r.anyBranchShare) : undefined;
